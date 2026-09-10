@@ -62,6 +62,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
     ],
   },
 
@@ -81,7 +85,7 @@ const nextConfig = {
           "default-src 'self'",
           "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://connect.facebook.net https://analytics.tiktok.com https://www.googletagmanager.com https://va.vercel-scripts.com",
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-          "img-src 'self' blob: data: https://res.cloudinary.com https://lh3.googleusercontent.com https://www.facebook.com https://*.facebook.com https://*.tiktok.com",
+          "img-src 'self' blob: data: https://res.cloudinary.com https://lh3.googleusercontent.com https://images.unsplash.com https://www.facebook.com https://*.facebook.com https://*.tiktok.com",
           "font-src 'self' https://fonts.gstatic.com data:",
           "connect-src 'self' wss://*.pusher.com https://*.pusher.com https://res.cloudinary.com https://*.facebook.com https://*.tiktok.com https://analytics.tiktok.com https://www.google-analytics.com https://api.resend.com https://*.vercel-insights.com https://*.on.aws https://*.a.run.app",
           "frame-src 'self' https://www.facebook.com https://www.google.com https://maps.google.com",
