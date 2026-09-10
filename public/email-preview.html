@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>China Unique Store - Email Templates Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0d1411;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #14241d;
+      border-bottom: 1px solid #1f3d30;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .brand-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #34d399;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .tabs-bar {
+      display: flex;
+      gap: 6px;
+      background: #0a130f;
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid #1f3d30;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #8da59a;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover {
+      color: #e2f2ea;
+    }
+    .tab-btn.active {
+      background: #10b981;
+      color: #06281e;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .view-btn {
+      background: #192a22;
+      border: 1px solid #274738;
+      color: #c7ded3;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .view-btn:hover {
+      background: #233b30;
+    }
+    .view-btn.active {
+      background: #34d399;
+      color: #06281e;
+      border-color: #34d399;
+      font-weight: 700;
+    }
+    .preview-container {
+      flex: 1;
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background: #090e0c;
+    }
+    .frame-wrapper {
+      transition: width 0.3s ease;
+      width: 600px;
+      max-width: 100%;
+      height: calc(100vh - 110px);
+      background: #e5ece8;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      border: 1px solid #243d31;
+    }
+    .frame-wrapper.mobile {
+      width: 375px;
+    }
+    .frame-wrapper.tablet {
+      width: 600px;
+    }
+    .frame-wrapper.full {
+      width: 100%;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-title">
+      <img src="/china-unique-logo-cropped.png" alt="Logo" style="height: 30px; filter: brightness(0) invert(1);" />
+      <span>Email Templates Suite</span>
+    </div>
+
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTemplate('/email-templates/1-customer-order-confirmation.html', this)">
+        1. Order Confirmation
+      </button>
+      <button class="tab-btn" onclick="switchTemplate('/email-templates/2-admin-new-order-alert.html', this)">
+        2. Admin Order Alert
+      </button>
+      <button class="tab-btn" onclick="switchTemplate('/email-templates/3-customer-order-delivered.html', this)">
+        3. Order Delivered
+      </button>
+      <button class="tab-btn" onclick="switchTemplate('/email-preview-dark.html', this)">
+        4. Soft Dark Mode
+      </button>
+    </div>
+
+    <div class="controls">
+      <span style="font-size: 12px; color: #8da59a; font-weight: 600;">Device View:</span>
+      <button class="view-btn active" onclick="setDevice('tablet', this)">Desktop / Tablet (600px)</button>
+      <button class="view-btn" onclick="setDevice('mobile', this)">Mobile View (375px)</button>
+      <button class="view-btn" onclick="setDevice('full', this)">Full Screen</button>
+    </div>
+  </header>
+
+  <div class="preview-container">
+    <div id="frameWrapper" class="frame-wrapper tablet">
+      <iframe id="previewIframe" src="/email-templates/1-customer-order-confirmation.html"></iframe>
+    </div>
+  </div>
+
+  <script>
+    function switchTemplate(url, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('previewIframe').src = url;
+    }
+
+    function setDevice(type, btn) {
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const wrapper = document.getElementById('frameWrapper');
+      wrapper.className = 'frame-wrapper ' + type;
+    }
+  </script>
+
+</body>
+</html>
