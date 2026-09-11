@@ -397,6 +397,7 @@ function NavbarContent({
 
   function handleSidebarOpen() {
     revealNavbar();
+    setIsCartOpen(false);
     openSidebar();
   }
 
@@ -502,7 +503,7 @@ function NavbarContent({
                 storeName={storeName}
                 lightLogoUrl={lightLogoUrl}
                 darkLogoUrl={darkLogoUrl}
-                logoScalePercent={logoScalePercent * 1.15}
+                logoScalePercent={logoScalePercent * 0.92}
                 variant="light-surface"
                 priority
                 onClick={(event) => {
@@ -545,7 +546,14 @@ function NavbarContent({
                 type="button"
                 variant="ghost"
                 size="icon"
-                onClick={() => isCartOpen ? setIsCartOpen(false) : openCart()}
+                onClick={() => {
+                  if (isCartOpen) {
+                    setIsCartOpen(false);
+                  } else {
+                    setIsSidebarOpen(false);
+                    openCart();
+                  }
+                }}
                 className={cn(
                   'relative rounded-full text-[#121212] size-10 transition-all duration-300 ease-out hover:bg-white hover:text-[#A67C52] hover:shadow-[0_2px_12px_rgba(166,124,82,0.18)] hover:scale-105 active:scale-95 select-none cursor-pointer',
                   isCartBumping && 'scale-115'
@@ -723,7 +731,7 @@ function NavbarContent({
             side="left"
             showCloseButton={false}
             className={cn(
-              "w-[85vw] max-w-sm border-r border-sidebar-border bg-sidebar p-0 text-sidebar-foreground sm:w-[22rem] md:w-[min(76vw,22rem)] flex flex-col h-full max-h-[100dvh] overflow-hidden data-[state=closed]:duration-300 data-[state=open]:duration-300",
+              "w-full sm:!w-[340px] md:!w-[360px] max-w-full sm:max-w-[360px] border-r border-[#E8E5DF] bg-[#FAF9F6] p-0 text-[#121212] flex flex-col h-full max-h-[100dvh] overflow-hidden data-[state=closed]:duration-300 data-[state=open]:duration-300 shadow-2xl z-[150]",
               showAnnouncementBar ? "pt-[96px]" : "pt-[64px]"
             )}
           >
@@ -772,68 +780,74 @@ export function NavbarStaticShell({
   return (
     <div className="navbar-shell sticky top-0 z-[200] overflow-visible bg-[#F7F3EE] border-b border-[#E8E5DF] shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
       <div className="relative z-50">
-        <header className="relative z-[60] mx-auto flex h-16 md:h-20 w-full max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 xl:px-10">
-          <div className="flex items-center gap-4 lg:gap-8 shrink-0">
+        <header className="relative mx-auto flex h-16 sm:h-18 md:h-20 max-w-[1440px] items-center justify-between px-4 sm:px-6 xl:px-10">
+          {/* Left Zone: Mobile Hamburger Placeholder & Desktop Left Logo */}
+          <div className="flex items-center gap-4">
+            <div className="lg:hidden flex size-10.5 items-center justify-center text-[#121212]">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6">
+                <line x1="3.5" y1="7" x2="20.5" y2="7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <line x1="3.5" y1="12" x2="20.5" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <line x1="3.5" y1="17" x2="20.5" y2="17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </div>
+
+            <div className="hidden lg:flex items-center">
+              <StoreLogo
+                storeName={storeName}
+                lightLogoUrl={lightLogoUrl}
+                darkLogoUrl={darkLogoUrl}
+                logoScalePercent={logoScalePercent * 1.15}
+                variant="light-surface"
+                priority
+                isLink={false}
+              />
+            </div>
+          </div>
+
+          {/* Mobile Center Logo */}
+          <div className="lg:hidden absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
             <StoreLogo
               storeName={storeName}
               lightLogoUrl={lightLogoUrl}
               darkLogoUrl={darkLogoUrl}
-              logoScalePercent={logoScalePercent * 1.15}
+              logoScalePercent={logoScalePercent * 0.92}
               variant="light-surface"
               priority
               isLink={false}
-              className="absolute left-1/2 -translate-x-1/2 lg:static lg:left-auto lg:translate-x-0 cursor-pointer"
             />
           </div>
 
-          <div className="hidden lg:block flex-1 max-w-md mx-8">
+          {/* Desktop Center Search Bar Placeholder */}
+          <div className="hidden lg:flex flex-1 max-w-lg xl:max-w-xl mx-6 xl:mx-10 relative">
             <div className="relative flex h-10 w-full items-center border border-[#E8E5DF] bg-white/80 px-4 text-xs font-sans text-neutral-400">
               <Search className="mr-2.5 size-4 text-neutral-400" />
-              <span>Search rings, necklaces, bracelets...</span>
+              <span>Search rings, necklaces, bracelets, gold...</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 md:gap-3 shrink-0">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="relative rounded-none text-[#121212] size-10"
-              aria-label="Wishlist"
-            >
-              <Heart strokeWidth={1.8} className="size-4.5" />
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="relative rounded-none text-[#121212] size-10"
-              aria-label="Account"
-            >
-              <User strokeWidth={1.8} className="size-4.5" />
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="relative rounded-none text-[#121212] size-10"
-              aria-label="Cart"
-            >
+          {/* Right Zone */}
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            <div className="hidden sm:inline-flex items-center justify-center size-10 text-[#121212]">
+              <Heart strokeWidth={1.8} className="size-5" />
+            </div>
+            <div className="hidden sm:inline-flex items-center justify-center size-10 text-[#121212]">
+              <User strokeWidth={1.8} className="size-5" />
+            </div>
+            <div className="inline-flex items-center justify-center size-10 text-[#121212]">
               <ShoppingBag strokeWidth={1.8} className="size-5" />
-            </Button>
+            </div>
           </div>
         </header>
 
-        <div className="hidden lg:flex relative z-40 bg-[#F7F3EE] py-2 border-t border-[#E8E5DF]">
-          <div className="mx-auto flex w-full max-w-[1440px] items-center justify-center px-4 text-[11.5px] font-sans uppercase tracking-[0.2em] text-[#121212]/75">
-            <div className="flex items-center justify-center gap-8 xl:gap-12">
-              <span className="py-1">Home</span>
-              <span className="py-1">All Jewelry</span>
-              <span className="py-1">Collections</span>
-              <span className="py-1">About Us</span>
-              <span className="py-1">Contact Us</span>
-              <span className="py-1">Track Your Order</span>
-            </div>
+        {/* Tier 2: Sub-Navbar for PC only */}
+        <div className="hidden lg:block border-t border-[#E8E5DF] bg-[#F7F3EE]">
+          <div className="mx-auto flex h-9 max-w-[1440px] items-center justify-center gap-4 sm:gap-6 xl:gap-8 px-4 text-[10px] sm:text-[10.5px] font-sans uppercase tracking-[0.16em] text-[#121212]/80">
+            <span className="px-2 py-1 font-medium">Home</span>
+            <span className="px-2 py-1 font-medium">All Jewelry</span>
+            <span className="px-2 py-1 font-medium">Collections</span>
+            <span className="px-2 py-1 font-medium">About Us</span>
+            <span className="px-2 py-1 font-medium">Contact Us</span>
+            <span className="px-2 py-1 font-medium">Track Your Order</span>
           </div>
         </div>
       </div>

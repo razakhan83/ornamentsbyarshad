@@ -38,11 +38,15 @@ function CategoryCarouselArrows() {
   );
 }
 
-export default function HomeCategoriesGrid({ title = 'Our Collections', categories = [] }) {
+export default function HomeCategoriesGrid({ title = 'Collections', categories = [] }) {
   const displayedCategories = Array.isArray(categories) ? categories.slice(0, 10) : [];
   if (displayedCategories.length === 0) return null;
 
   const [emblaApi, setEmblaApi] = useState(null);
+
+  const displayTitle = (title && !title.toLowerCase().includes('shop by') && !title.toLowerCase().includes('our collections'))
+    ? title
+    : 'Collections';
 
   return (
     <section className="relative bg-[#FAF9F6] py-6 sm:py-10">
@@ -61,7 +65,7 @@ export default function HomeCategoriesGrid({ title = 'Our Collections', categori
           <div className="mb-4 sm:mb-6 flex items-center justify-between gap-4 pb-2 border-b border-[#E8E5DF]/60">
             <div>
               <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-medium tracking-wide text-[#121212] uppercase">
-                {title || 'Our Collections'}
+                {displayTitle}
               </h2>
             </div>
 
@@ -84,14 +88,14 @@ export default function HomeCategoriesGrid({ title = 'Our Collections', categori
             ))}
           </CarouselContent>
 
-          {/* Minimal Clean View All Collections Link Below */}
+          {/* Minimal Clean View All Link Below */}
           <div className="mt-5 sm:mt-7 flex justify-center">
             <Link
               href="/categories"
               prefetch={false}
               className="inline-flex items-center justify-center gap-1.5 py-1 text-[10.5px] sm:text-[11.5px] font-sans uppercase tracking-[0.22em] font-medium text-[#121212]/80 hover:text-[#A67C52] border-b border-[#121212]/30 hover:border-[#A67C52] transition-all group"
             >
-              <span>View All Collections</span>
+              <span>View All</span>
               <ArrowRight className="size-3 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>

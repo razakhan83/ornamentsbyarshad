@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -37,6 +37,82 @@ function CarouselArrows() {
   );
 }
 
+function CarouselDots() {
+  const { api } = useCarousel();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState([]);
+
+  useEffect(() => {
+    if (!api) return;
+
+    const onInit = () => {
+      const snaps = typeof api.snapList === 'function'
+        ? api.snapList()
+        : typeof api.scrollSnapList === 'function'
+        ? api.scrollSnapList()
+        : [];
+      const current = typeof api.selectedSnap === 'function'
+        ? api.selectedSnap()
+        : typeof api.selectedScrollSnap === 'function'
+        ? api.selectedScrollSnap()
+        : 0;
+      setScrollSnaps(snaps);
+      setSelectedIndex(current);
+    };
+
+    const onSelect = () => {
+      const current = typeof api.selectedSnap === 'function'
+        ? api.selectedSnap()
+        : typeof api.selectedScrollSnap === 'function'
+        ? api.selectedScrollSnap()
+        : 0;
+      setSelectedIndex(current);
+    };
+
+    onInit();
+    api.on('init', onInit);
+    api.on('reInit', onInit);
+    api.on('select', onSelect);
+
+    return () => {
+      api.off('init', onInit);
+      api.off('reInit', onInit);
+      api.off('select', onSelect);
+    };
+  }, [api]);
+
+  if (!scrollSnaps || scrollSnaps.length <= 1) return null;
+
+  return (
+    <div className="flex justify-center items-center gap-1.5 mt-3.5 sm:mt-4">
+      {scrollSnaps.map((_, index) => (
+        <button
+          key={`product-dot-${index}`}
+          type="button"
+          aria-label={`Go to slide ${index + 1}`}
+          onClick={() => {
+            if (typeof api?.goTo === 'function') {
+              api.goTo(index);
+            } else if (typeof api?.scrollTo === 'function') {
+              api.scrollTo(index);
+            }
+          }}
+          className="flex min-h-[28px] min-w-[28px] -m-1 items-center justify-center cursor-pointer p-0 border-0 bg-transparent outline-none focus-visible:ring-2 focus-visible:ring-[#121212]/50 rounded-full"
+        >
+          <span
+            className={cn(
+              "h-1.5 sm:h-2 rounded-full transition-all duration-300 pointer-events-none block",
+              selectedIndex === index
+                ? "w-6 sm:w-7 bg-[#121212]"
+                : "w-1.5 sm:w-2 bg-[#121212]/20 hover:bg-[#121212]/50"
+            )}
+          />
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function CategoryProductSlider({ categoryLabel, children, viewAllHref }) {
   const slides = Array.isArray(children)
     ? children.flat().filter(Boolean)
@@ -46,12 +122,9 @@ export default function CategoryProductSlider({ categoryLabel, children, viewAll
   const slideCount = slides.length;
   if (slideCount === 0) return null;
 
-  const [emblaApi, setEmblaApi] = useState(null);
-
   return (
     <div className="w-full">
       <Carousel
-        setApi={setEmblaApi}
         opts={{
           align: 'start',
           loop: false,
@@ -85,15 +158,18 @@ export default function CategoryProductSlider({ categoryLabel, children, viewAll
           ))}
         </CarouselContent>
 
+        {/* Indicator dots for sliding products */}
+        <CarouselDots />
+
         {/* Centered Minimal View All Link Below Products */}
         {viewAllHref ? (
-          <div className="mt-5 sm:mt-7 flex justify-center">
+          <div className="mt-3.5 sm:mt-5 flex justify-center">
             <Link
               href={viewAllHref}
               prefetch={false}
               className="inline-flex items-center justify-center gap-1.5 py-1 text-[10.5px] sm:text-[11.5px] font-sans uppercase tracking-[0.22em] font-medium text-[#121212]/80 hover:text-[#A67C52] border-b border-[#121212]/30 hover:border-[#A67C52] transition-all group"
             >
-              <span>View All {categoryLabel}</span>
+              <span>View All</span>
               <ArrowRight className="size-3 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>

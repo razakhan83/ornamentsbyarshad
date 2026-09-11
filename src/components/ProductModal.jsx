@@ -19,8 +19,8 @@ export default function ProductModal({ product, onClose, whatsappNumber = '', st
 
     const formatPrice = (raw) => {
         let cleanNumbers = String(raw).replace(/[^\d.]/g, '');
-        if (!cleanNumbers) return 'Rs. 0';
-        return `Rs. ${Number(cleanNumbers).toLocaleString('en-PK')}`;
+        if (!cleanNumbers) return 'Rs.\u00A00';
+        return `Rs.\u00A0${Number(cleanNumbers).toLocaleString('en-PK')}`;
     };
 
     const categories = getProductCategoryNames(product);

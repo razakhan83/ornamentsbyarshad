@@ -8,6 +8,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   Sheet,
   SheetContent,
   SheetHeader,
@@ -116,45 +123,27 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
         </SheetHeader>
 
         <div className="flex flex-col gap-6 overflow-y-auto px-5 py-5">
-          {/* Metal Type Filter */}
+          {/* Metal Type Filter Dropdown */}
           <div>
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+            <p className="mb-2.5 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
               Metal Category
             </p>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  const newMetal = currentMetal === 'gold' ? '' : 'gold';
-                  router.push(buildUrl({ metal: newMetal }), { scroll: false });
-                }}
-                className={cn(
-                  "h-10 px-3 rounded-[6px] border text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer",
-                  currentMetal === 'gold'
-                    ? "bg-[#121212] text-white border-[#121212] shadow-xs"
-                    : "bg-white text-[#121212] border-[#E8E5DF] hover:bg-[#FAF9F6]"
-                )}
-              >
-                <span>🟡</span>
-                <span>Gold</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  const newMetal = currentMetal === 'silver' ? '' : 'silver';
-                  router.push(buildUrl({ metal: newMetal }), { scroll: false });
-                }}
-                className={cn(
-                  "h-10 px-3 rounded-[6px] border text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer",
-                  currentMetal === 'silver'
-                    ? "bg-[#121212] text-white border-[#121212] shadow-xs"
-                    : "bg-white text-[#121212] border-[#E8E5DF] hover:bg-[#FAF9F6]"
-                )}
-              >
-                <span>⚪</span>
-                <span>Silver</span>
-              </button>
-            </div>
+            <Select
+              value={currentMetal || 'all'}
+              onValueChange={(val) => {
+                const newMetal = val === 'all' ? '' : val;
+                router.push(buildUrl({ metal: newMetal }), { scroll: false });
+              }}
+            >
+              <SelectTrigger className="h-10 w-full border border-[#E8E5DF] bg-white px-3.5 text-xs uppercase tracking-wider font-semibold focus:ring-1 focus:ring-[#121212] rounded-[6px]">
+                <SelectValue placeholder="All Metals" />
+              </SelectTrigger>
+              <SelectContent align="start" className="rounded-[8px] border border-[#E8E5DF] bg-white shadow-lg">
+                <SelectItem value="all" className="text-xs uppercase tracking-wider font-medium">All Metals</SelectItem>
+                <SelectItem value="gold" className="text-xs uppercase tracking-wider font-medium">Gold</SelectItem>
+                <SelectItem value="silver" className="text-xs uppercase tracking-wider font-medium">Silver</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <Separator />

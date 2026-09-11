@@ -792,13 +792,12 @@ export default function AddProduct() {
                         type="button"
                         onClick={() => setMetalType(metalType?.toLowerCase()?.includes('gold') ? '' : '22K Gold')}
                         className={cn(
-                          "h-12 px-4 rounded-xl border flex items-center justify-center gap-2.5 font-bold text-xs sm:text-sm tracking-wider uppercase transition-all cursor-pointer",
+                          "h-12 px-4 rounded-xl border flex items-center justify-center gap-2 font-bold text-xs sm:text-sm tracking-wider uppercase transition-all cursor-pointer",
                           metalType?.toLowerCase()?.includes('gold')
                             ? "bg-amber-50 border-amber-500 text-amber-900 ring-2 ring-amber-500/20 shadow-sm"
                             : "bg-background border-border text-muted-foreground hover:bg-muted/40"
                         )}
                       >
-                        <span className="text-base">🟡</span>
                         <span>GOLD</span>
                       </button>
 
@@ -806,13 +805,12 @@ export default function AddProduct() {
                         type="button"
                         onClick={() => setMetalType(metalType?.toLowerCase()?.includes('silver') ? '' : '925 Sterling Silver')}
                         className={cn(
-                          "h-12 px-4 rounded-xl border flex items-center justify-center gap-2.5 font-bold text-xs sm:text-sm tracking-wider uppercase transition-all cursor-pointer",
+                          "h-12 px-4 rounded-xl border flex items-center justify-center gap-2 font-bold text-xs sm:text-sm tracking-wider uppercase transition-all cursor-pointer",
                           metalType?.toLowerCase()?.includes('silver')
                             ? "bg-slate-100 border-slate-500 text-slate-900 ring-2 ring-slate-500/20 shadow-sm"
                             : "bg-background border-border text-muted-foreground hover:bg-muted/40"
                         )}
                       >
-                        <span className="text-base">⚪</span>
                         <span>SILVER</span>
                       </button>
                     </div>

@@ -203,7 +203,7 @@ export default function HeroSlider({ slides = [] }) {
   if (resolvedSlides.length === 0) {
     return (
       <section className="relative w-full overflow-hidden bg-transparent px-3 sm:px-5 md:px-6 lg:px-8 pt-2.5 sm:pt-3.5 md:pt-4 pb-2">
-        <div className="relative min-h-[500px] md:min-h-[600px] lg:min-h-[680px] w-full flex items-center justify-center overflow-hidden rounded-xl sm:rounded-2xl bg-[#121212] border border-[#E8E5DF]/70">
+        <div className="relative min-h-[500px] md:min-h-[600px] lg:min-h-[680px] w-full flex items-center justify-center overflow-hidden rounded-2xl sm:rounded-3xl bg-[#121212]">
           <Image
             src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1920&q=85"
             alt="Ornaments by Arshad Luxury High Jewelry"
@@ -252,7 +252,7 @@ export default function HeroSlider({ slides = [] }) {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="relative h-[58vh] min-h-[400px] w-full overflow-hidden rounded-xl sm:rounded-2xl md:h-[540px] lg:h-[680px] border border-[#E8E5DF]/70 bg-[#121212]">
+      <div className="relative h-[58vh] min-h-[400px] w-full overflow-hidden rounded-2xl sm:rounded-3xl md:h-[540px] lg:h-[680px] bg-[#121212]">
         {resolvedSlides.map((slide, index) => {
           const isActive = safeActiveIndex === index;
           return (

@@ -12,7 +12,10 @@ export default function HomeProductGridSection({
 }) {
   if (!products.length) return null;
 
-  const sectionLabel = title || category?.label || 'Products';
+  let rawLabel = title || category?.label || 'Products';
+  const sectionLabel = (rawLabel.trim().toLowerCase() === 'featured products' || rawLabel.trim().toLowerCase() === 'featured product')
+    ? 'Featured'
+    : rawLabel;
   
   // Determine if it's category-specific or a general section (like New Arrivals)
   const isGeneral = !category && (

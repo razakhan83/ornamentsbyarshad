@@ -17,11 +17,11 @@ export default async function HomeBelowFold() {
       <section id="store-brand-story" className="border-t border-b border-[#E8E5DF] bg-[#FAF9F6] py-16 md:py-24">
         <div className="mx-auto max-w-[1440px] px-4 sm:px-6 xl:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <div className="relative aspect-[4/5] sm:aspect-[3/2] lg:aspect-[4/5] overflow-hidden bg-[#F4F2EE] border border-[#E8E5DF] rounded-xl sm:rounded-2xl">
+            <div className="relative aspect-[4/5] sm:aspect-[3/2] lg:aspect-[4/5] overflow-hidden bg-[#F4F2EE] rounded-2xl sm:rounded-3xl">
               <img
                 src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=1200&q=80"
                 alt="Master Goldsmith Crafting Fine Jewelry"
-                className="w-full h-full object-cover rounded-xl sm:rounded-2xl transition-transform duration-700 hover:scale-105"
+                className="w-full h-full object-cover rounded-2xl sm:rounded-3xl transition-transform duration-700 hover:scale-105"
                 loading="lazy"
               />
             </div>

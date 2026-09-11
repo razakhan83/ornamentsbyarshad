@@ -48,7 +48,7 @@ const HOME_MARKETING_SECTIONS = [
 ];
 const HOME_PAGE_PRODUCT_COLLECTION_CONFIG = {
   'featured': {
-    label: 'Featured Products',
+    label: 'Featured',
     viewAllHref: '/products?sort=featured',
   },
   'new-arrivals': {

@@ -14,8 +14,8 @@ import { getProductUnitPrice, getVisibleCompareAtPrice, isProductOutOfStock } fr
 
 const formatPrice = (raw) => {
   let cleanNumbers = String(raw).replace(/[^\d.]/g, "");
-  if (!cleanNumbers) return "Rs. 0";
-  return `Rs. ${Number(cleanNumbers).toLocaleString("en-PK")}`;
+  if (!cleanNumbers) return "Rs.\u00A00";
+  return `Rs.\u00A0${Number(cleanNumbers).toLocaleString("en-PK")}`;
 };
 
 export default function ProductCard({ product, className = "", priority = false }) {
@@ -59,7 +59,7 @@ export default function ProductCard({ product, className = "", priority = false 
     >
       {/* Product Image Area with Light Gray Background & Soft Premium Rounded Edges */}
       <div 
-        className="relative w-full aspect-[4/5] overflow-hidden rounded-[8px] bg-[#F4F2EE] transition-all duration-300"
+        className="relative w-full aspect-[4/5] overflow-hidden rounded-[8px] bg-[#F4F2EE] transition-[border-color,box-shadow] duration-300"
       >
         <ProductCardWishlistSlot product={product} />
 
@@ -70,7 +70,7 @@ export default function ProductCard({ product, className = "", priority = false 
               type="button"
               onClick={prevImage}
               aria-label="Previous image"
-              className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/80 sm:bg-white/90 hover:bg-white text-[#121212] flex items-center justify-center shadow-xs backdrop-blur-[2px] border border-[#E8E5DF] opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 cursor-pointer active:scale-90"
+              className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/80 sm:bg-white/90 hover:bg-white text-[#121212] flex items-center justify-center shadow-xs backdrop-blur-[2px] border border-[#E8E5DF] opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-[opacity,transform,background-color] duration-200 cursor-pointer active:scale-90"
             >
               <ChevronLeft className="size-3.5 sm:size-4" />
             </button>
@@ -78,7 +78,7 @@ export default function ProductCard({ product, className = "", priority = false 
               type="button"
               onClick={nextImage}
               aria-label="Next image"
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/80 sm:bg-white/90 hover:bg-white text-[#121212] flex items-center justify-center shadow-xs backdrop-blur-[2px] border border-[#E8E5DF] opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 cursor-pointer active:scale-90"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/80 sm:bg-white/90 hover:bg-white text-[#121212] flex items-center justify-center shadow-xs backdrop-blur-[2px] border border-[#E8E5DF] opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-[opacity,transform,background-color] duration-200 cursor-pointer active:scale-90"
             >
               <ChevronRight className="size-3.5 sm:size-4" />
             </button>
@@ -90,7 +90,7 @@ export default function ProductCard({ product, className = "", priority = false 
           href={productHref}
           prefetch={false}
           scroll={true}
-          className="relative block size-full"
+          className="relative block size-full active:scale-[0.99] transition-transform duration-200"
           draggable={false}
         >
           {normalizedImages.length > 0 ? (
@@ -108,9 +108,10 @@ export default function ProductCard({ product, className = "", priority = false 
                 <div
                   key={idx}
                   className={cn(
-                    "absolute inset-0 size-full transition-opacity duration-300 ease-out",
+                    "absolute inset-0 size-full transition-opacity duration-300 ease-out transform-gpu",
                     isCurrent ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
                   )}
+                  style={{ transform: 'translateZ(0)' }}
                 >
                   <Image
                     src={src}
@@ -120,8 +121,9 @@ export default function ProductCard({ product, className = "", priority = false 
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     priority={priority && idx === 0}
                     loading={priority && idx === 0 ? "eager" : "lazy"}
+                    decoding="async"
                     className={cn(
-                      "object-cover transition-transform duration-700 ease-out",
+                      "object-cover transition-transform duration-500 ease-out will-change-transform",
                       "md:group-hover:scale-105",
                       isUnavailable && "grayscale-[30%] opacity-75"
                     )}
@@ -209,13 +211,27 @@ export default function ProductCard({ product, className = "", priority = false 
           </span>
         </div>
 
-        {/* Price Display */}
-        <div className="mt-1.5 flex items-center gap-2">
-          <p className="text-xs sm:text-sm font-semibold text-[#121212] tabular-nums">
+        {/* Price Display: Strictly Single Line with Non-Breaking Space & Scaled Typography */}
+        <div className="mt-1.5 flex items-baseline gap-1.5 sm:gap-2 flex-wrap min-w-0 w-full">
+          <p
+            className={cn(
+              "font-semibold text-[#121212] tabular-nums whitespace-nowrap shrink-0",
+              sellingPrice >= 100000
+                ? "text-[11px] min-[360px]:text-[12px] sm:text-[13px] md:text-sm"
+                : "text-xs min-[360px]:text-[13px] sm:text-sm"
+            )}
+          >
             {formatPrice(sellingPrice)}
           </p>
           {compareAtPrice ? (
-            <p className="text-[11px] font-normal text-neutral-400 line-through tabular-nums">
+            <p
+              className={cn(
+                "font-normal text-neutral-400 line-through tabular-nums whitespace-nowrap shrink-0",
+                compareAtPrice >= 100000
+                  ? "text-[9.5px] min-[360px]:text-[10px] sm:text-[11px]"
+                  : "text-[10px] min-[360px]:text-[11px] sm:text-xs"
+              )}
+            >
               {formatPrice(compareAtPrice)}
             </p>
           ) : null}

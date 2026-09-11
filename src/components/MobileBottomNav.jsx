@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Heart, LogOut, Home, Search, Settings, ShoppingBag, ShoppingCart, Package, User, UserPlus, X, MapPin } from 'lucide-react';
+import { Heart, LogOut, Home, Search, Settings, ShoppingBag, ShoppingCart, Package, User, UserPlus, X, MapPin, Gem } from 'lucide-react';
 
 import { useCartActions, useCartUi } from '@/context/CartContext';
 
@@ -231,7 +231,7 @@ export default function MobileBottomNav({
               iconSwap={isSearchOpen ? <X className="size-5" strokeWidth={2.5} /> : undefined}
             />
             <MobileNavButton
-              icon={ShoppingBag}
+              icon={Gem}
               label="Shop"
               href="/products"
               onClick={() => {
