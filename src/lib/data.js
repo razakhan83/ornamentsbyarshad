@@ -744,7 +744,7 @@ function buildDefaultHomePageSections({ categories = [], coverPhotos = [] } = {}
     id: 'categories-grid-default',
     type: 'CategoriesGrid',
     order: sections.length,
-    title: 'Shop by Category',
+    title: 'Collections',
   });
 
   HOME_PAGE_PRODUCT_COLLECTIONS.forEach((collectionKey) => {

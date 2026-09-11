@@ -205,7 +205,7 @@ function createSection(template, index = 0) {
     return {
       id: createSectionId(type, index),
       type,
-      title: 'Shop by Category',
+      title: 'Collections',
       description: '',
       isEnabled: true,
     };

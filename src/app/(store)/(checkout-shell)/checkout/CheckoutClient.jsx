@@ -469,69 +469,6 @@ function OrderSummaryContent({
           <span className={styles.grandTotalValue}>Rs.&nbsp;{total.toLocaleString('en-PK')}</span>
         </span>
       </div>
-
-      {/* Cross-sell */}
-      {availableRelated?.length > 0 && (
-        <div className="mt-8">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-[0.95rem] font-bold text-foreground">You might also like</h3>
-            <button 
-              onClick={handleRefreshRelated}
-              disabled={isRefreshingRelated || availableRelated.length <= 3}
-              className="flex items-center gap-1.5 px-2 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors disabled:opacity-50"
-            >
-              <RefreshCw className={cn("size-3.5", isRefreshingRelated && "animate-spin")} />
-              Refresh products
-            </button>
-          </div>
-          <div className="flex flex-col gap-3">
-            {isRefreshingRelated ? (
-              Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="flex items-center gap-3.5 bg-background border border-border/60 rounded-md p-2.5 shadow-sm">
-                  <div className={styles.summaryProductThumbWrapper} style={{ transform: 'none', margin: 0 }}>
-                    <Skeleton className="size-full" />
-                  </div>
-                  <div className="flex flex-col min-w-0 flex-1 justify-center gap-2">
-                    <Skeleton className="h-3.5 w-3/4" />
-                    <Skeleton className="h-3 w-1/4" />
-                  </div>
-                  <Skeleton className="size-8 rounded-full shrink-0 mr-1" />
-                </div>
-              ))
-            ) : (
-              visibleRelated.map((product) => {
-                const img = getPrimaryProductImage(product);
-                const price = product.discountedPrice || product.Price;
-                return (
-                  <div key={product.id} className="flex items-center gap-3.5 bg-background border border-border/60 rounded-md p-2.5 shadow-sm">
-                    <div className={styles.summaryProductThumbWrapper} style={{ transform: 'none', margin: 0 }}>
-                      <div className={styles.summaryProductThumb}>
-                        {img && <Image src={img.url} alt={product.Name} fill className="object-cover" />}
-                      </div>
-                    </div>
-                    <div className="flex flex-col min-w-0 flex-1 justify-center">
-                      <span className="text-[13px] font-semibold text-foreground/90 line-clamp-1">{product.Name}</span>
-                      <span className="text-[13px] text-muted-foreground font-medium mt-0.5">Rs.&nbsp;{price.toLocaleString('en-PK')}</span>
-                    </div>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (addToCart) {
-                          addToCart(product, 1);
-                        }
-                      }}
-                      className="inline-flex shrink-0 size-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 outline-none transition-all duration-300 ease-out hover:bg-emerald-200 hover:text-emerald-800 hover:scale-[1.15] active:scale-[0.85] mr-0.5"
-                      aria-label="Add to cart"
-                    >
-                      <Plus className="size-4" strokeWidth={2.5} />
-                    </button>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
-      )}
     </>
   );
 }

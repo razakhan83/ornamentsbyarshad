@@ -46,7 +46,7 @@ export async function GET(req) {
         }
 
         let dbQuery = Product.find(filter)
-            .select('Name Description shortDescription seoTitle seoDescription seoKeywords seoCanonicalUrl seoOgTitle seoOgDescription seoOgImage seoOgImageRatio Price compareAtPrice Images Category StockStatus slug showOnStore createdAt updatedAt stockQuantity discountPercentage isDiscounted discountedPrice isNewArrival isBestSelling packOptions tags primaryTag')
+            .select('Name Description shortDescription seoTitle seoDescription seoKeywords seoCanonicalUrl seoOgTitle seoOgDescription seoOgImage seoOgImageRatio Price compareAtPrice Images Category StockStatus slug showOnStore createdAt updatedAt stockQuantity discountPercentage isDiscounted discountedPrice isNewArrival isBestSelling packOptions tags primaryTag metalType purity grossWeightGrams certificateNumber size availableSizes availableColors gemstone customReviewCount')
             .populate({ path: 'Category', select: 'name slug bgColor' })
             .sort({ createdAt: -1 })
             .lean();

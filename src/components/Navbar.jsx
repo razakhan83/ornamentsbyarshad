@@ -525,14 +525,14 @@ function NavbarContent({
             </div>
 
             {/* Right Zone: Wishlist, Account, Cart */}
-            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
               {/* Wishlist Button (Desktop) */}
               <Link 
                 href="/wishlist" 
-                className="hidden sm:inline-flex items-center justify-center size-9 rounded-none hover:bg-black/5 text-[#121212] transition-colors select-none"
+                className="hidden sm:inline-flex items-center justify-center size-10 rounded-none hover:bg-black/5 text-[#121212] transition-colors select-none"
                 title="Wishlist"
               >
-                <Heart className={cn("size-4.5", pathname === '/wishlist' && "fill-current text-[#A67C52]")} strokeWidth={1.8} />
+                <Heart className={cn("size-5", pathname === '/wishlist' && "fill-current text-[#A67C52]")} strokeWidth={1.8} />
               </Link>
 
               {/* Desktop Account Control */}
@@ -547,20 +547,20 @@ function NavbarContent({
                 size="icon"
                 onClick={() => isCartOpen ? setIsCartOpen(false) : openCart()}
                 className={cn(
-                  'relative rounded-none hover:bg-black/5 text-[#121212] size-9 transition-transform duration-200 select-none cursor-pointer',
+                  'relative rounded-none hover:bg-black/5 text-[#121212] size-10 transition-transform duration-200 select-none cursor-pointer',
                   isCartBumping && 'scale-110'
                 )}
                 aria-label={isCartOpen ? "Close cart" : "Open cart"}
                 title={isCartOpen ? "Close Cart" : "Cart"}
               >
                 {isCartOpen ? (
-                  <X strokeWidth={1.8} className="size-4.5 transition-transform duration-200 rotate-0" />
+                  <X strokeWidth={1.8} className="size-5 transition-transform duration-200 rotate-0" />
                 ) : (
-                  <ShoppingBag strokeWidth={1.8} className="size-4.5 transition-transform duration-200" />
+                  <ShoppingBag strokeWidth={1.8} className="size-5 transition-transform duration-200" />
                 )}
                 {isCartInitialized && cartCount > 0 && !isCartOpen ? (
                   <span className={cn(
-                    "absolute top-0.5 right-0.5 inline-flex size-4 items-center justify-center rounded-full bg-[#A67C52] text-[9.5px] font-sans font-bold leading-none text-white pointer-events-none transition-transform",
+                    "absolute top-0.5 right-0.5 inline-flex size-4.5 items-center justify-center rounded-full bg-[#A67C52] text-[10px] font-sans font-bold leading-none text-white pointer-events-none transition-transform",
                     isCartBumping && "scale-125"
                   )}>
                     {cartCount}

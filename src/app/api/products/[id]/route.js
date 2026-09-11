@@ -48,14 +48,14 @@ export async function GET(_request, { params }) {
         const { id } = await params;
         const query = resolveProductQuery(id);
         let product = await Product.findOne(query)
-            .select('Name Description shortDescription seoTitle seoDescription seoKeywords seoCanonicalUrl seoOgTitle seoOgDescription seoOgImage seoOgImageRatio Price compareAtPrice Images Category StockStatus slug showOnStore createdAt updatedAt stockQuantity discountPercentage isDiscounted discountedPrice isNewArrival isBestSelling isFeatured isFreeDelivery featuredPriority vendors packOptions tags primaryTag')
+            .select('Name Description shortDescription seoTitle seoDescription seoKeywords seoCanonicalUrl seoOgTitle seoOgDescription seoOgImage seoOgImageRatio Price compareAtPrice Images Category StockStatus slug showOnStore createdAt updatedAt stockQuantity discountPercentage isDiscounted discountedPrice isNewArrival isBestSelling isFeatured isFreeDelivery featuredPriority vendors packOptions tags primaryTag metalType purity grossWeightGrams certificateNumber size availableSizes availableColors gemstone customReviewCount')
             .populate({ path: 'Category', select: 'name slug bgColor' })
             .lean();
 
         if (!product && typeof id === 'string' && id.trim()) {
             const escaped = id.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             product = await Product.findOne({ slug: { $regex: new RegExp(`^${escaped}$`, 'i') } })
-                .select('Name Description shortDescription seoTitle seoDescription seoKeywords seoCanonicalUrl seoOgTitle seoOgDescription seoOgImage seoOgImageRatio Price compareAtPrice Images Category StockStatus slug showOnStore createdAt updatedAt stockQuantity discountPercentage isDiscounted discountedPrice isNewArrival isBestSelling isFeatured isFreeDelivery featuredPriority vendors packOptions tags primaryTag')
+                .select('Name Description shortDescription seoTitle seoDescription seoKeywords seoCanonicalUrl seoOgTitle seoOgDescription seoOgImage seoOgImageRatio Price compareAtPrice Images Category StockStatus slug showOnStore createdAt updatedAt stockQuantity discountPercentage isDiscounted discountedPrice isNewArrival isBestSelling isFeatured isFreeDelivery featuredPriority vendors packOptions tags primaryTag metalType purity grossWeightGrams certificateNumber size availableSizes availableColors gemstone customReviewCount')
                 .populate({ path: 'Category', select: 'name slug bgColor' })
                 .lean();
         }

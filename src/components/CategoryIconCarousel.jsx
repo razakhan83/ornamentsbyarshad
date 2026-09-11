@@ -126,7 +126,7 @@ export default function CategoryIconCarousel({ categories = [] }) {
           <div className="mb-3 md:mb-6 flex items-center justify-between gap-4 md:items-end">
             <div className="min-w-0 flex-1">
               <h2 className="text-[1.25rem] leading-tight font-bold tracking-[-0.03em] text-primary [text-wrap:balance] sm:text-[1.5rem] md:text-[2.1rem]">
-                Shop by Category
+                Collections
               </h2>
             </div>
 

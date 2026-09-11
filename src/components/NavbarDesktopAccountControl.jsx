@@ -54,10 +54,10 @@ export default function NavbarDesktopAccountControl({ navActionButtonClass = '' 
             setIsNavigating(true);
             setIsAuthModalOpen(true);
           }}
-          className={cn("size-9 rounded-none text-[#121212] hover:bg-black/5 transition-colors", navActionButtonClass)}
+          className={cn("size-10 rounded-none text-[#121212] hover:bg-black/5 transition-colors", navActionButtonClass)}
           title="Sign In / Account"
         >
-          {isNavigating ? <Spinner className="size-4" /> : <User strokeWidth={1.8} className="size-4.5" />}
+          {isNavigating ? <Spinner className="size-4" /> : <User strokeWidth={1.8} className="size-5" />}
         </Button>
         {mounted && isAuthModalOpen ? <AuthModal open={isAuthModalOpen} onOpenChange={setIsAuthModalOpen} /> : null}
       </div>
@@ -71,10 +71,10 @@ export default function NavbarDesktopAccountControl({ navActionButtonClass = '' 
           <Button
             variant="ghost"
             size="icon"
-            className={cn("size-9 rounded-none text-[#121212] hover:bg-black/5 transition-colors", navActionButtonClass)}
+            className={cn("size-10 rounded-none text-[#121212] hover:bg-black/5 transition-colors", navActionButtonClass)}
             title={`Account (${session.user?.name || 'User'})`}
           >
-            <User strokeWidth={1.8} className="size-4.5" />
+            <User strokeWidth={1.8} className="size-5" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 bg-[#FAF9F6] border border-[#E8E5DF] shadow-lg rounded-none" align="end" sideOffset={8}>
