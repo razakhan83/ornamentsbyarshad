@@ -418,14 +418,14 @@ function ProductHeroSection({ product, settings, reviewSummary, categoryLabel })
         </div>
 
         <div className="w-full md:w-[52%] lg:w-[54%]">
-          <div className="flex flex-col gap-4 md:sticky md:top-[140px] md:gap-6">
-            <div className="space-y-2">
-              <span className="text-[11px] font-sans font-medium uppercase tracking-[0.22em] text-[#A67C52] block">
+          <div className="flex flex-col gap-3.5 sm:gap-4 md:sticky md:top-[140px] md:gap-6">
+            <div className="space-y-1.5 sm:space-y-2">
+              <span className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-[#A67C52] block">
                 {categoryLabel || 'Fine Jewelry Haute Joaillerie'}
               </span>
 
-              <div className="flex items-start justify-between gap-4">
-                <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal leading-[1.2] tracking-wide text-[#121212]">
+              <div className="flex items-start justify-between gap-3">
+                <h1 className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal leading-[1.25] tracking-normal sm:tracking-wide text-[#121212]">
                   {product.Name}
                 </h1>
                 <ProductSocialActions product={product} className="mt-0.5 shrink-0 md:hidden" />

@@ -302,18 +302,18 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
 
     return (
         <>
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4 sm:gap-5">
             {/* Price Row */}
-            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2 border-b border-[#E8E5DF] pb-4">
-                <span className="font-serif text-3xl sm:text-4xl text-[#121212] tracking-wide font-normal">
+            <div className="flex flex-wrap items-baseline gap-x-3 sm:gap-x-4 gap-y-1.5 border-b border-[#E8E5DF] pb-3 sm:pb-4">
+                <span className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#121212] tracking-wide font-normal">
                     {formatPrice(displayPrice)}
                 </span>
                 {displayComparePrice ? (
-                    <div className="flex items-center gap-2.5">
-                        <span className="text-base text-[#737373] line-through">
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm sm:text-base text-[#737373] line-through">
                             {formatPrice(displayComparePrice)}
                         </span>
-                        <span className="text-[11px] uppercase tracking-wider font-semibold text-[#A67C52] bg-[#A67C52]/10 px-2 py-0.5">
+                        <span className="text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold text-[#A67C52] bg-[#A67C52]/10 px-2 py-0.5 rounded-xs">
                             Save {formatPrice(displayComparePrice - displayPrice)}
                         </span>
                     </div>
