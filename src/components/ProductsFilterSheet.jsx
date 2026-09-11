@@ -17,6 +17,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
 const PRICE_BUCKETS = [
   { value: 'under10k', label: 'Under Rs. 10,000' },
@@ -32,11 +33,13 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
   const searchParams = useSearchParams();
 
   const currentPrice = searchParams.get('price') || '';
+  const currentMetal = searchParams.get('metal') || '';
   const currentInstock = searchParams.get('instock') === 'true';
 
   // Count active non-sort filters
   const activeFilterCount = [
     currentPrice ? 1 : 0,
+    currentMetal ? 1 : 0,
     currentInstock ? 1 : 0,
   ].reduce((a, b) => a + b, 0);
 
@@ -44,17 +47,19 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
     const params = new URLSearchParams();
 
     const price = 'price' in overrides ? overrides.price : currentPrice;
+    const metal = 'metal' in overrides ? overrides.metal : currentMetal;
     const instock = 'instock' in overrides ? overrides.instock : currentInstock;
     const sort = 'sort' in overrides ? overrides.sort : currentSort;
 
     if (activeCategory && activeCategory !== 'all') params.set('category', activeCategory);
     if (sort && sort !== 'newest') params.set('sort', sort);
     if (price) params.set('price', price);
+    if (metal) params.set('metal', metal);
     if (instock) params.set('instock', 'true');
 
     const query = params.toString();
     return query ? `${pathname}?${query}` : pathname;
-  }, [pathname, activeCategory, currentPrice, currentInstock, currentSort]);
+  }, [pathname, activeCategory, currentPrice, currentMetal, currentInstock, currentSort]);
 
   function handlePriceChange(value) {
     router.push(buildUrl({ price: value }), { scroll: false });
@@ -75,7 +80,7 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
   return (
     <Sheet>
       <SheetTrigger
-        className="relative inline-flex h-8.5 shrink-0 items-center justify-center gap-1.5 rounded-none border border-[#121212]/30 bg-white px-3 text-xs uppercase tracking-wider font-semibold shadow-none transition-all outline-none hover:bg-[#121212] hover:text-white cursor-pointer select-none"
+        className="relative inline-flex h-8.5 shrink-0 items-center justify-center gap-1.5 rounded-[6px] border border-[#121212]/30 bg-white px-3 text-xs uppercase tracking-wider font-semibold shadow-none transition-all outline-none hover:bg-[#121212] hover:text-white cursor-pointer select-none"
         aria-label="Open filters"
       >
         <SlidersHorizontal className="size-3.5" />
@@ -87,7 +92,7 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
         ) : null}
       </SheetTrigger>
 
-      <SheetContent side="bottom" className="rounded-t-none border-t border-[#E8E5DF] bg-[#FAF9F6] px-0 pb-[calc(env(safe-area-inset-bottom)+5.5rem)] pt-0 md:side-right md:rounded-none">
+      <SheetContent side="bottom" className="rounded-t-2xl border-t border-[#E8E5DF] bg-[#FAF9F6] px-0 pb-[calc(env(safe-area-inset-bottom)+5.5rem)] pt-0 md:side-right md:rounded-none">
         <SheetHeader className="flex flex-row items-center justify-between border-b border-border px-5 py-3.5 pr-14">
           <SheetTitle className="text-base font-bold flex items-center gap-2">
             Filter Products
@@ -111,6 +116,49 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
         </SheetHeader>
 
         <div className="flex flex-col gap-6 overflow-y-auto px-5 py-5">
+          {/* Metal Type Filter */}
+          <div>
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+              Metal Category
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  const newMetal = currentMetal === 'gold' ? '' : 'gold';
+                  router.push(buildUrl({ metal: newMetal }), { scroll: false });
+                }}
+                className={cn(
+                  "h-10 px-3 rounded-[6px] border text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer",
+                  currentMetal === 'gold'
+                    ? "bg-[#121212] text-white border-[#121212] shadow-xs"
+                    : "bg-white text-[#121212] border-[#E8E5DF] hover:bg-[#FAF9F6]"
+                )}
+              >
+                <span>🟡</span>
+                <span>Gold</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const newMetal = currentMetal === 'silver' ? '' : 'silver';
+                  router.push(buildUrl({ metal: newMetal }), { scroll: false });
+                }}
+                className={cn(
+                  "h-10 px-3 rounded-[6px] border text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer",
+                  currentMetal === 'silver'
+                    ? "bg-[#121212] text-white border-[#121212] shadow-xs"
+                    : "bg-white text-[#121212] border-[#E8E5DF] hover:bg-[#FAF9F6]"
+                )}
+              >
+                <span>⚪</span>
+                <span>Silver</span>
+              </button>
+            </div>
+          </div>
+
+          <Separator />
+
           {/* Price Range */}
           <div>
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">

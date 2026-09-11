@@ -1429,7 +1429,7 @@ export async function getStorefrontHomePage() {
   }
 }
 
-export async function getProductsList({ category = 'all', search = '', sort = 'newest', page = 1, limit = 12, price = 'all' } = {}) {
+export async function getProductsList({ category = 'all', search = '', sort = 'newest', page = 1, limit = 12, price = 'all', metal = 'all' } = {}) {
   'use cache';
   cacheLife('foreverish');
   cacheTag('products', 'categories');
@@ -1439,10 +1439,17 @@ export async function getProductsList({ category = 'all', search = '', sort = 'n
   const safeCategory = String(category || 'all').trim() || 'all';
   const safeSearch = String(search || '').trim();
   const safeSort = String(sort || 'newest').trim() || 'newest';
+  const safeMetal = String(metal || 'all').trim().toLowerCase();
   const safePage = Math.max(1, Number(page) || 1);
   const safeLimit = Math.max(1, Number(limit) || 12);
 
   const query = { showOnStore: true };
+
+  if (safeMetal === 'gold' || safeSort === 'gold') {
+    query.metalType = { $regex: /gold/i };
+  } else if (safeMetal === 'silver' || safeSort === 'silver') {
+    query.metalType = { $regex: /silver/i };
+  }
 
   if (price === 'under10k' || price === 'under-10k' || price === 'under300' || price === 'under500' || price === 'under1000') {
     query.Price = { $lte: 10000 };
@@ -1499,6 +1506,7 @@ export async function getProductsList({ category = 'all', search = '', sort = 'n
           activeCategory: safeCategory,
           searchTerm: safeSearch,
           sort: safeSort,
+          metal: safeMetal,
         };
       }
     }
@@ -1531,6 +1539,8 @@ export async function getProductsList({ category = 'all', search = '', sort = 'n
     if (safeSort === 'deals') return { compareAtPrice: -1, createdAt: -1 };
     if (safeSort === 'az') return { Name: 1, createdAt: -1 };
     if (safeSort === 'za') return { Name: -1, createdAt: -1 };
+    if (safeSort === 'gold') return { metalType: -1, createdAt: -1 };
+    if (safeSort === 'silver') return { metalType: 1, createdAt: -1 };
     return { createdAt: -1 };
   })();
 

@@ -783,13 +783,46 @@ export default function AddProduct() {
               <div className="space-y-4 pt-1">
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <Label className="mb-2">Metal Type</Label>
+                    <Label className="mb-2 font-semibold flex items-center justify-between">
+                      <span>Metal Category (Gold / Silver)</span>
+                      <span className="text-xs font-normal text-muted-foreground">Select one</span>
+                    </Label>
+                    <div className="grid grid-cols-2 gap-3 mb-2.5">
+                      <button
+                        type="button"
+                        onClick={() => setMetalType(metalType?.toLowerCase()?.includes('gold') ? '' : '22K Gold')}
+                        className={cn(
+                          "h-12 px-4 rounded-xl border flex items-center justify-center gap-2.5 font-bold text-xs sm:text-sm tracking-wider uppercase transition-all cursor-pointer",
+                          metalType?.toLowerCase()?.includes('gold')
+                            ? "bg-amber-50 border-amber-500 text-amber-900 ring-2 ring-amber-500/20 shadow-sm"
+                            : "bg-background border-border text-muted-foreground hover:bg-muted/40"
+                        )}
+                      >
+                        <span className="text-base">🟡</span>
+                        <span>GOLD</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setMetalType(metalType?.toLowerCase()?.includes('silver') ? '' : '925 Sterling Silver')}
+                        className={cn(
+                          "h-12 px-4 rounded-xl border flex items-center justify-center gap-2.5 font-bold text-xs sm:text-sm tracking-wider uppercase transition-all cursor-pointer",
+                          metalType?.toLowerCase()?.includes('silver')
+                            ? "bg-slate-100 border-slate-500 text-slate-900 ring-2 ring-slate-500/20 shadow-sm"
+                            : "bg-background border-border text-muted-foreground hover:bg-muted/40"
+                        )}
+                      >
+                        <span className="text-base">⚪</span>
+                        <span>SILVER</span>
+                      </button>
+                    </div>
+
                     <Input
                       type="text"
                       value={metalType}
                       onChange={(e) => setMetalType(e.target.value)}
-                      className="h-11 px-4"
-                      placeholder="e.g., 18K Yellow Gold, 22K Gold, 925 Silver, Kundan"
+                      className="h-10 px-4 text-xs"
+                      placeholder="e.g., 18K Yellow Gold, 22K Gold, 925 Sterling Silver"
                     />
                     <div className="mt-1.5 flex flex-wrap gap-1">
                       {['18K Yellow Gold', '22K Gold', '24K Pure Gold', 'Rose Gold', 'White Gold', '925 Sterling Silver', 'Kundan'].map((preset) => (

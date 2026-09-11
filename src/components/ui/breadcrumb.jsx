@@ -25,7 +25,7 @@ function BreadcrumbList({
     <ol
       data-slot="breadcrumb-list"
       className={cn(
-        "flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground",
+        "flex flex-wrap items-center gap-1 sm:gap-1.5 text-[10.5px] sm:text-[11px] uppercase tracking-[0.14em] text-muted-foreground",
         className
       )}
       {...props} />
@@ -96,7 +96,7 @@ function BreadcrumbSeparator({
       data-slot="breadcrumb-separator"
       role="presentation"
       aria-hidden="true"
-      className={cn("[&>svg]:size-3.5", className)}
+      className={cn("[&>svg]:size-2.5 sm:[&>svg]:size-3 opacity-60", className)}
       {...props}>
       {children ?? (
         <ChevronRightIcon />

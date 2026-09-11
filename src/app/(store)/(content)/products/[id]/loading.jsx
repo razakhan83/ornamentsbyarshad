@@ -19,10 +19,10 @@ export default function ProductDetailLoading() {
           
           {/* Gallery Column (5 cols on desktop) */}
           <div className="lg:col-span-6 space-y-3">
-            <Skeleton className="aspect-square w-full rounded-2xl border border-[#E8E5DF]" />
+            <Skeleton className="aspect-[4/5] w-full rounded-none border border-[#E8E5DF]" />
             <div className="flex gap-2.5 overflow-hidden pt-1">
               {Array.from({ length: 4 }).map((_, index) => (
-                <Skeleton key={index} className="aspect-square w-16 sm:w-20 rounded-xl shrink-0" />
+                <Skeleton key={index} className="aspect-[4/5] w-16 sm:w-20 rounded-none shrink-0" />
               ))}
             </div>
           </div>

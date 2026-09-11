@@ -57,9 +57,9 @@ export default function ProductCard({ product, className = "", priority = false 
         className
       )}
     >
-      {/* Product Image Area with Light Gray Background & Rounded-2xl */}
+      {/* Product Image Area with Light Gray Background & Soft Premium Rounded Edges */}
       <div 
-        className="relative w-full aspect-[4/5] overflow-hidden rounded-2xl bg-[#F4F2EE] transition-all duration-300"
+        className="relative w-full aspect-[4/5] overflow-hidden rounded-[8px] bg-[#F4F2EE] transition-all duration-300"
       >
         <ProductCardWishlistSlot product={product} />
 
@@ -70,7 +70,7 @@ export default function ProductCard({ product, className = "", priority = false 
               type="button"
               onClick={prevImage}
               aria-label="Previous image"
-              className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/50 sm:bg-white/85 hover:bg-white/80 sm:hover:bg-white text-[#121212] flex items-center justify-center shadow-xs backdrop-blur-[2px] border border-white/30 opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 cursor-pointer active:scale-90"
+              className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/80 sm:bg-white/90 hover:bg-white text-[#121212] flex items-center justify-center shadow-xs backdrop-blur-[2px] border border-[#E8E5DF] opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 cursor-pointer active:scale-90"
             >
               <ChevronLeft className="size-3.5 sm:size-4" />
             </button>
@@ -78,14 +78,14 @@ export default function ProductCard({ product, className = "", priority = false 
               type="button"
               onClick={nextImage}
               aria-label="Next image"
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/50 sm:bg-white/85 hover:bg-white/80 sm:hover:bg-white text-[#121212] flex items-center justify-center shadow-xs backdrop-blur-[2px] border border-white/30 opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 cursor-pointer active:scale-90"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/80 sm:bg-white/90 hover:bg-white text-[#121212] flex items-center justify-center shadow-xs backdrop-blur-[2px] border border-[#E8E5DF] opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 cursor-pointer active:scale-90"
             >
               <ChevronRight className="size-3.5 sm:size-4" />
             </button>
           </>
         )}
 
-        {/* Main Product Link & Image Slider */}
+        {/* Main Product Link & Image */}
         <Link
           href={productHref}
           prefetch={false}
@@ -95,11 +95,15 @@ export default function ProductCard({ product, className = "", priority = false 
         >
           {normalizedImages.length > 0 ? (
             normalizedImages.map((img, idx) => {
+              const isCurrent = idx === activeImageIndex;
+              // Only mount active image and the adjacent images to save bandwidth & memory
+              if (!isCurrent && Math.abs(idx - activeImageIndex) > 1 && idx !== 0) return null;
+              
               const src = img?.url
                 ? optimizeCloudinaryUrl(img.url, CLOUDINARY_IMAGE_PRESETS.productCard)
                 : "";
               if (!src) return null;
-              const isCurrent = idx === activeImageIndex;
+
               return (
                 <div
                   key={idx}
@@ -134,7 +138,7 @@ export default function ProductCard({ product, className = "", priority = false 
 
           {isUnavailable && (
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/30 pointer-events-none">
-              <span className="bg-[#121212] text-white px-3 py-1 text-[10px] font-sans font-medium uppercase tracking-[0.2em] rounded-sm">
+              <span className="bg-[#121212] text-white px-3 py-1 text-[10px] font-sans font-medium uppercase tracking-[0.2em] rounded-[4px]">
                 Sold Out
               </span>
             </div>

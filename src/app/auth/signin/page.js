@@ -28,85 +28,87 @@ export default async function SignInPage() {
       {/* ========================================= */}
       {/* MOBILE LAYOUT (Hidden on Desktop) */}
       {/* ========================================= */}
-      <div className="lg:hidden relative flex min-h-[100dvh] w-full flex-col bg-[#006B5F] overflow-hidden">
+      <div className="lg:hidden relative flex min-h-[100dvh] w-full flex-col bg-[#121212] overflow-hidden">
         
         {/* Top Header Section */}
-        <div className="relative flex flex-col justify-end pt-12 pb-12 px-8 shrink-0 text-white min-h-[22dvh] overflow-hidden">
+        <div className="relative flex flex-col justify-end pt-12 pb-10 px-8 shrink-0 text-white min-h-[20dvh] overflow-hidden">
             {/* Back Button */}
             <div className="absolute top-6 left-6 z-20">
-              <SignInBackButton iconClassName="size-6 drop-shadow-sm" text="" className="inline-flex items-center gap-1.5 text-sm font-medium text-white/90 transition-colors hover:text-white" />
+              <SignInBackButton iconClassName="size-5 drop-shadow-sm" text="" className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-[#FAF9F6]/90 transition-colors hover:text-[#A67C52]" />
             </div>
             
             {/* Animated Hello Section */}
-            <div className="relative z-10 font-sans mt-auto">
-               <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-1 text-white">Hello</h1>
-               <p className="text-white/90 text-sm sm:text-base font-normal">Welcome to {settings.storeName || 'our store'}</p>
+            <div className="relative z-10 mt-auto">
+               <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#A67C52] mb-1">Welcome Back</p>
+               <h1 className="font-serif text-3xl sm:text-4xl uppercase tracking-wider text-[#FAF9F6] font-normal [text-wrap:balance]">
+                 {settings.storeName || 'Ornaments'}
+               </h1>
             </div>
         </div>
 
         {/* Bottom Card Section */}
-        <div className="relative flex-1 bg-background rounded-t-3xl px-6 pt-8 pb-6 flex flex-col mt-[-20px] shadow-sm z-20 border-t border-border">
+        <div className="relative flex-1 bg-[#FAF9F6] px-6 pt-8 pb-6 flex flex-col shadow-2xl z-20 border-t border-[#E8E5DF]">
           <div className="mx-auto w-full max-w-sm flex flex-col flex-1">
-              <div className="mb-8 text-left">
-                 <h2 className="text-2xl font-bold text-foreground mb-1">Login</h2>
-                 <p className="text-muted-foreground text-sm">Sign in to securely access your account.</p>
+              <div className="mb-6 text-left">
+                 <h2 className="font-serif text-2xl font-normal uppercase tracking-wide text-[#121212] mb-1">Client Login</h2>
+                 <p className="text-[#737373] text-xs">Sign in to securely access your account and orders.</p>
               </div>
 
               <div className="flex flex-col gap-4">
-                 <GoogleSignInButton className="h-12 rounded-xl text-sm font-medium bg-card ring-1 ring-inset ring-border hover:bg-muted/50 border-0" />
+                 <GoogleSignInButton className="h-12 rounded-none text-xs uppercase tracking-widest font-medium bg-white ring-1 ring-inset ring-[#E8E5DF] hover:bg-[#F4F2EE] border-0" />
               </div>
 
-              <div className="text-center text-[13px] font-medium mt-6">
+              <div className="text-center text-xs font-medium mt-6">
                 <Dialog>
-                  <DialogTrigger className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2 group">
-                    <HelpCircle className="size-4 text-primary" />
+                  <DialogTrigger className="text-[#737373] hover:text-[#A67C52] transition-colors inline-flex items-center gap-2 group">
+                    <HelpCircle className="size-4 text-[#A67C52]" />
                     <span>Why should I sign in?</span>
                   </DialogTrigger>
-                  <DialogContent className="max-w-[90vw] sm:max-w-md rounded-xl p-6 border border-border bg-card shadow-lg">
+                  <DialogContent className="max-w-[90vw] sm:max-w-md rounded-none p-6 border border-[#E8E5DF] bg-[#FAF9F6] shadow-xl">
                     <DialogHeader>
-                      <DialogTitle className="text-lg sm:text-xl font-bold text-foreground mb-3 text-left pr-8">
-                        Benefits of Signing In
+                      <DialogTitle className="font-serif text-lg sm:text-xl font-normal uppercase tracking-wider text-[#121212] mb-3 text-left pr-8">
+                        Benefits of Membership
                       </DialogTitle>
                     </DialogHeader>
                     <div className="flex flex-col gap-4 mt-2">
                       
                       <div className="flex items-start gap-3.5">
                         <div className="flex items-center justify-center shrink-0 mt-0.5">
-                          <CheckCircle2 className="size-4.5 text-primary" />
+                          <CheckCircle2 className="size-4.5 text-[#A67C52]" />
                         </div>
                         <div className="text-left">
-                          <h4 className="text-sm font-semibold text-foreground">Fast & Easy Checkout</h4>
-                          <p className="text-xs text-muted-foreground mt-0.5">Save your delivery details for a seamless checkout experience.</p>
+                          <h4 className="text-xs uppercase tracking-wider font-semibold text-[#121212]">Fast & Easy Checkout</h4>
+                          <p className="text-xs text-[#737373] mt-0.5">Save your delivery details for seamless one-click purchasing.</p>
                         </div>
                       </div>
 
                       <div className="flex items-start gap-3.5">
                         <div className="flex items-center justify-center shrink-0 mt-0.5">
-                          <Truck className="size-4.5 text-primary" />
+                          <Truck className="size-4.5 text-[#A67C52]" />
                         </div>
                         <div className="text-left">
-                          <h4 className="text-sm font-semibold text-foreground">Track Orders Easily</h4>
-                          <p className="text-xs text-muted-foreground mt-0.5">View your order history and track the status of your deliveries.</p>
+                          <h4 className="text-xs uppercase tracking-wider font-semibold text-[#121212]">Live Order Tracking</h4>
+                          <p className="text-xs text-[#737373] mt-0.5">Real-time status updates from our jeweler workshop to your doorstep.</p>
                         </div>
                       </div>
 
                       <div className="flex items-start gap-3.5">
                         <div className="flex items-center justify-center shrink-0 mt-0.5">
-                          <Tag className="size-4.5 text-primary" />
+                          <Tag className="size-4.5 text-[#A67C52]" />
                         </div>
                         <div className="text-left">
-                          <h4 className="text-sm font-semibold text-foreground">Exclusive Discounts</h4>
-                          <p className="text-xs text-muted-foreground mt-0.5">Get access to member-only offers and special deals.</p>
+                          <h4 className="text-xs uppercase tracking-wider font-semibold text-[#121212]">Private Invitations</h4>
+                          <p className="text-xs text-[#737373] mt-0.5">Exclusive access to new arrival launches and private VIP sales.</p>
                         </div>
                       </div>
 
                       <div className="flex items-start gap-3.5">
                         <div className="flex items-center justify-center shrink-0 mt-0.5">
-                          <HeartIcon className="size-4.5 text-primary" />
+                          <HeartIcon className="size-4.5 text-[#A67C52]" />
                         </div>
                         <div className="text-left">
-                          <h4 className="text-sm font-semibold text-foreground">Save Your Favorites</h4>
-                          <p className="text-xs text-muted-foreground mt-0.5">Create a wishlist of products to easily buy them later.</p>
+                          <h4 className="text-xs uppercase tracking-wider font-semibold text-[#121212]">Curated Wishlist</h4>
+                          <p className="text-xs text-[#737373] mt-0.5">Save and curate your personal collection of fine jewelry pieces.</p>
                         </div>
                       </div>
 
@@ -122,19 +124,19 @@ export default async function SignInPage() {
                     alt="Login Illustration" 
                     width={280}
                     height={220}
-                    className="w-full max-w-[220px] h-auto object-contain opacity-90 mix-blend-multiply dark:mix-blend-normal"
+                    className="w-full max-w-[200px] h-auto object-contain opacity-80 mix-blend-multiply dark:mix-blend-normal"
                     priority
                   />
               </div>
           </div>
 
           {/* Privacy Policy and Terms of Service */}
-          <div className="mt-auto pt-4 text-center flex items-center justify-center gap-3 text-xs text-muted-foreground w-full">
-              <Link href="/terms-of-service" className="hover:text-foreground transition-colors hover:underline underline-offset-2">
+          <div className="mt-auto pt-4 text-center flex items-center justify-center gap-3 text-[11px] text-[#737373] w-full">
+              <Link href="/terms-of-service" className="hover:text-[#121212] transition-colors hover:underline underline-offset-2">
                 Terms & Conditions
               </Link>
-              <span className="size-1 rounded-full bg-border"></span>
-              <Link href="/privacy-policy" className="hover:text-foreground transition-colors hover:underline underline-offset-2">
+              <span className="size-1 rounded-full bg-[#E8E5DF]"></span>
+              <Link href="/privacy-policy" className="hover:text-[#121212] transition-colors hover:underline underline-offset-2">
                 Privacy Policy
               </Link>
           </div>

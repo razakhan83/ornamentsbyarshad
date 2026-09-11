@@ -1,12 +1,6 @@
 import 'server-only';
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI;
-
-if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
-}
-
 let cached = global.__mongooseConnection;
 const isDev = process.env.NODE_ENV !== 'production';
 const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
@@ -36,9 +30,14 @@ const connectionOptions = {
 };
 
 async function createConnection() {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    throw new Error('Please define the MONGODB_URI environment variable in Vercel / .env.local');
+  }
+
   const startedAt = performance.now();
 
-  return mongoose.connect(MONGODB_URI, connectionOptions)
+  return mongoose.connect(uri, connectionOptions)
     .then((mongooseInstance) => {
       if (isDev) {
         console.log(`[DB] MongoDB connected in ${Math.round(performance.now() - startedAt)}ms`);

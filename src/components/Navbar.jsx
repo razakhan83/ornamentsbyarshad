@@ -440,7 +440,7 @@ function NavbarContent({
   const mobileMenuButtonClass =
     'min-h-10 rounded-xl px-2.5 py-2 text-sidebar-foreground transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.2,0,0,1)] hover:bg-sidebar-accent/45 hover:text-sidebar-accent-foreground data-[active=true]:text-sidebar-primary-foreground active:scale-[0.99]';
   const navActionButtonClass =
-    'nav-icon-button relative rounded-full md:border border-transparent md:border-border/60 bg-transparent md:bg-background p-0 text-foreground transition-all duration-300 ease-out hover:-translate-y-1.5 hover:scale-110 hover:border-[#E3FCEF] hover:bg-[#E3FCEF] hover:text-[#015347] hover:shadow-[0_8px_25px_rgba(227,252,239,0.8)] active:scale-95 active:translate-y-0';
+    'nav-icon-button relative rounded-none md:border border-transparent md:border-border/60 bg-transparent md:bg-background p-0 text-foreground transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#A67C52]/40 hover:bg-[#F4F2EE] hover:text-[#A67C52] hover:shadow-[0_4px_16px_rgba(166,124,82,0.12)] active:scale-95 active:translate-y-0';
   const announcementItems = normalizeAnnouncementItems(announcementBarMessages, announcementBarText);
   const showAnnouncementBar = announcementBarEnabled && announcementItems.length > 0;
 
@@ -465,9 +465,9 @@ function NavbarContent({
                 size="icon" 
                 onClick={() => isSidebarOpen ? setIsSidebarOpen(false) : handleSidebarOpen()} 
                 aria-label={isSidebarOpen ? "Close menu" : "Open menu"} 
-                className="lg:hidden relative rounded-none hover:bg-black/5 text-[#121212] size-11"
+                className="lg:hidden relative rounded-full hover:bg-white hover:text-[#A67C52] hover:shadow-[0_2px_10px_rgba(166,124,82,0.15)] text-[#121212] size-10.5 transition-all duration-300 ease-out active:scale-95 cursor-pointer"
               >
-                <span className="relative flex size-7 items-center justify-center">
+                <span className="relative flex size-6 items-center justify-center">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={cn('absolute inset-0 size-full transition-all duration-300', isSidebarOpen ? 'opacity-0 scale-50 rotate-90' : 'opacity-100 scale-100 rotate-0')}>
                     <line x1="3.5" y1="7" x2="20.5" y2="7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                     <line x1="3.5" y1="12" x2="20.5" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -524,19 +524,19 @@ function NavbarContent({
               />
             </div>
 
-            {/* Right Zone: Wishlist, Account, Cart */}
-            <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+            {/* Right Zone: Wishlist, Account, Cart with Premium Micro-Interactions */}
+            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
               {/* Wishlist Button (Desktop) */}
               <Link 
                 href="/wishlist" 
-                className="hidden sm:inline-flex items-center justify-center size-10 rounded-none hover:bg-black/5 text-[#121212] transition-colors select-none"
+                className="group hidden sm:inline-flex items-center justify-center size-10 rounded-full text-[#121212] transition-all duration-300 ease-out hover:bg-white hover:text-[#A67C52] hover:shadow-[0_2px_12px_rgba(166,124,82,0.18)] hover:scale-105 active:scale-95 select-none"
                 title="Wishlist"
               >
-                <Heart className={cn("size-5", pathname === '/wishlist' && "fill-current text-[#A67C52]")} strokeWidth={1.8} />
+                <Heart className={cn("size-5 transition-transform duration-300 group-hover:scale-110", pathname === '/wishlist' && "fill-current text-[#A67C52]")} strokeWidth={1.8} />
               </Link>
 
               {/* Desktop Account Control */}
-              <NavbarDesktopAccountControl navActionButtonClass="rounded-none hover:bg-black/5 text-[#121212]" />
+              <NavbarDesktopAccountControl navActionButtonClass="rounded-full hover:bg-white hover:text-[#A67C52] hover:shadow-[0_2px_12px_rgba(166,124,82,0.18)] hover:scale-105 transition-all duration-300 ease-out active:scale-95" />
 
               {/* Cart Drawer Trigger Button */}
               <Button
@@ -547,20 +547,20 @@ function NavbarContent({
                 size="icon"
                 onClick={() => isCartOpen ? setIsCartOpen(false) : openCart()}
                 className={cn(
-                  'relative rounded-none hover:bg-black/5 text-[#121212] size-10 transition-transform duration-200 select-none cursor-pointer',
-                  isCartBumping && 'scale-110'
+                  'relative rounded-full text-[#121212] size-10 transition-all duration-300 ease-out hover:bg-white hover:text-[#A67C52] hover:shadow-[0_2px_12px_rgba(166,124,82,0.18)] hover:scale-105 active:scale-95 select-none cursor-pointer',
+                  isCartBumping && 'scale-115'
                 )}
                 aria-label={isCartOpen ? "Close cart" : "Open cart"}
                 title={isCartOpen ? "Close Cart" : "Cart"}
               >
                 {isCartOpen ? (
-                  <X strokeWidth={1.8} className="size-5 transition-transform duration-200 rotate-0" />
+                  <X strokeWidth={1.8} className="size-5 transition-transform duration-300 rotate-0" />
                 ) : (
-                  <ShoppingBag strokeWidth={1.8} className="size-5 transition-transform duration-200" />
+                  <ShoppingBag strokeWidth={1.8} className="size-5 transition-transform duration-300 hover:scale-105" />
                 )}
                 {isCartInitialized && cartCount > 0 && !isCartOpen ? (
                   <span className={cn(
-                    "absolute top-0.5 right-0.5 inline-flex size-4.5 items-center justify-center rounded-full bg-[#A67C52] text-[10px] font-sans font-bold leading-none text-white pointer-events-none transition-transform",
+                    "absolute -top-0.5 -right-0.5 inline-flex size-5 items-center justify-center rounded-full bg-[#A67C52] text-[10.5px] font-sans font-bold leading-none text-white shadow-sm pointer-events-none transition-transform",
                     isCartBumping && "scale-125"
                   )}>
                     {cartCount}

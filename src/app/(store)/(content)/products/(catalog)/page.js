@@ -16,6 +16,7 @@ function buildSuspenseKey(searchParams) {
     search: searchParams?.search || '',
     sort: searchParams?.sort || 'newest',
     price: searchParams?.price || 'all',
+    metal: searchParams?.metal || 'all',
     layout: searchParams?.layout || 'grid4',
   });
 }
@@ -24,11 +25,20 @@ export async function generateMetadata({ searchParams }) {
   const params = (await searchParams) || {};
   const category = params.category || 'all';
   const search = params.search || '';
+  const metal = params.metal || '';
 
   if (search) {
     return {
       title: `Search results for "${search}"`,
       description: `Browse matching Ornaments by Arshad jewelry pieces for "${search}".`,
+    };
+  }
+
+  if (metal && metal !== 'all') {
+    const metalLabel = metal.charAt(0).toUpperCase() + metal.slice(1);
+    return {
+      title: `${metalLabel} Jewelry Collection`,
+      description: `Browse handcrafted ${metalLabel} jewelry pieces at Ornaments by Arshad.`,
     };
   }
 
@@ -53,6 +63,7 @@ export default async function ProductsPage({ searchParams }) {
     search: resolvedSearchParams.search || '',
     sort: resolvedSearchParams.sort || 'newest',
     price: resolvedSearchParams.price || 'all',
+    metal: resolvedSearchParams.metal || 'all',
     page: 1,
     limit: PRODUCTS_PAGE_SIZE,
   });
@@ -87,6 +98,7 @@ export default async function ProductsPage({ searchParams }) {
                   search={resolvedSearchParams.search || ''}
                   sort={resolvedSearchParams.sort || 'newest'}
                   price={resolvedSearchParams.price || 'all'}
+                  metal={resolvedSearchParams.metal || 'all'}
                 />
               </Suspense>
             </div>
@@ -97,7 +109,7 @@ export default async function ProductsPage({ searchParams }) {
   );
 }
 
-async function ProductsResultsContent({ productsPromise, layout, category, search, sort, price }) {
+async function ProductsResultsContent({ productsPromise, layout, category, search, sort, price, metal }) {
   const data = await productsPromise;
 
   return (
@@ -111,6 +123,7 @@ async function ProductsResultsContent({ productsPromise, layout, category, searc
         search={search}
         sort={sort}
         price={price}
+        metal={metal}
       />
     </ProductsPendingResults>
   );

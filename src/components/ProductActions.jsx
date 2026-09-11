@@ -6,12 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
 import ProductWishlistButton from '@/components/ProductWishlistButton';
-import { cn } from '@/lib/utils';
-import { Share2, Minus, Plus } from 'lucide-react';
-import WhatsAppIcon from '@/components/icons/WhatsAppIcon';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
+import { Share2, Minus, Plus, ShieldCheck, Truck, RotateCcw, Award } from 'lucide-react';
+import WhatsAppIcon from '@/components/icons/WhatsAppIcon';
 import { buildProductWhatsAppMessage, createWhatsAppUrl } from '@/lib/whatsapp';
 import { flyToCart } from '@/lib/flyToCart';
 import { useActionLock } from '@/hooks/useActionLock';
@@ -43,7 +42,7 @@ export function ProductSocialActions({ product, className = '' }) {
             <Button
                 onClick={handleShare}
                 variant="outline"
-                className="size-11 rounded-none border border-[#E8E5DF] bg-white text-[#121212] hover:bg-[#FAF9F6] transition-colors duration-200"
+                className="size-11 rounded-[6px] border border-[#E8E5DF] bg-white text-[#121212] hover:bg-[#FAF9F6] transition-colors duration-200"
                 title="Share this creation"
             >
                 <Share2 className="size-4" />
@@ -51,7 +50,7 @@ export function ProductSocialActions({ product, className = '' }) {
             <ProductWishlistButton
                 product={product}
                 mode="detail"
-                className="hidden md:inline-flex size-11 shrink-0 rounded-none border border-[#E8E5DF] bg-white text-[#121212] hover:bg-[#FAF9F6] [&>span]:hidden transition-colors duration-200"
+                className="hidden md:inline-flex size-11 shrink-0 rounded-[6px] border border-[#E8E5DF] bg-white text-[#121212] hover:bg-[#FAF9F6] [&>span]:hidden transition-colors duration-200"
                 title="Save to Wishlist"
             />
         </div>
@@ -80,7 +79,7 @@ export function ProductWhatsAppOrderButton({ product, whatsappNumber = '', store
             type="button"
             onClick={handleWhatsApp}
             className={cn(
-                "w-full h-12 flex items-center justify-center gap-2.5 rounded-none border border-[#E8E5DF] bg-white hover:bg-[#FAF9F6] text-[#121212] uppercase tracking-[0.15em] text-xs font-semibold transition-all duration-300 cursor-pointer shadow-none",
+                "w-full h-12 flex items-center justify-center gap-2.5 rounded-[6px] border border-[#E8E5DF] bg-white hover:bg-[#FAF9F6] text-[#121212] uppercase tracking-[0.15em] text-xs font-semibold transition-all duration-300 cursor-pointer shadow-none",
                 className
             )}
         >
@@ -459,7 +458,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                 {/* Quantity Row */}
                 <div className="flex items-center justify-between">
                     <span className="text-xs font-medium text-[#121212]">Quantity</span>
-                    <div className="inline-flex items-center border border-[#E8E5DF] bg-white rounded-xl h-9">
+                    <div className="inline-flex items-center border border-[#E8E5DF] bg-white rounded-[6px] h-9 overflow-hidden">
                         <button
                             type="button"
                             onClick={decrement}
@@ -487,7 +486,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                     {isOutOfStock ? (
                         <Button
                             onClick={() => setNotifyModalOpen(true)}
-                            className="h-12.5 w-full rounded-none bg-[#121212] text-white hover:bg-neutral-800 uppercase tracking-[0.2em] text-xs font-semibold shadow-xs"
+                            className="h-12.5 w-full rounded-[6px] bg-[#121212] text-white hover:bg-neutral-800 uppercase tracking-[0.2em] text-xs font-semibold shadow-xs"
                         >
                             Notify When Available
                         </Button>
@@ -499,7 +498,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                                 onClick={handleAddToCart}
                                 disabled={addLock.isPending || isOutOfStock}
                                 className={cn(
-                                    "add-to-cart-button h-12.5 w-full inline-flex items-center justify-center rounded-none font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-xs bg-[#121212] hover:bg-[#A67C52] text-white disabled:opacity-50 cursor-pointer active:scale-[0.98]"
+                                    "add-to-cart-button h-12.5 w-full inline-flex items-center justify-center rounded-[6px] font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-xs bg-[#121212] hover:bg-[#A67C52] text-white disabled:opacity-50 cursor-pointer active:scale-[0.98]"
                                 )}
                             >
                                 {addLock.isPending ? (
@@ -513,7 +512,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                                 type="button"
                                 onClick={handleBuyNow}
                                 disabled={buyLock.isPending || isOutOfStock}
-                                className="buy-now-button h-12.5 w-full inline-flex items-center justify-center rounded-none font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 border border-[#121212] text-[#121212] hover:bg-[#121212] hover:text-white bg-transparent active:scale-[0.98] cursor-pointer"
+                                className="buy-now-button h-12.5 w-full inline-flex items-center justify-center rounded-[6px] font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 border border-[#121212] text-[#121212] hover:bg-[#121212] hover:text-white bg-transparent active:scale-[0.98] cursor-pointer"
                             >
                                 {buyLock.isPending ? (
                                     <Spinner className="size-4 animate-spin mr-2" />
@@ -540,7 +539,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                             const whatsappUrl = createWhatsAppUrl(whatsappNumber, message);
                             if (whatsappUrl) window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
                         }}
-                        className="w-full h-12.5 inline-flex items-center justify-center gap-2.5 rounded-none border border-[#121212]/30 bg-[#FAF9F6] hover:bg-[#121212] text-[#121212] hover:text-white text-xs uppercase tracking-[0.18em] font-semibold transition-all duration-300 shadow-none active:scale-[0.98] cursor-pointer group"
+                        className="w-full h-12.5 inline-flex items-center justify-center gap-2.5 rounded-[6px] border border-[#121212]/30 bg-[#FAF9F6] hover:bg-[#121212] text-[#121212] hover:text-white text-xs uppercase tracking-[0.18em] font-semibold transition-all duration-300 shadow-none active:scale-[0.98] cursor-pointer group"
                     >
                         <WhatsAppIcon className="size-4 text-[#121212] group-hover:text-white transition-colors shrink-0" />
                         <span>Order on WhatsApp</span>
@@ -548,26 +547,29 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                 </div>
             </div>
 
-            {/* Guarantee Safe & Secure Checkout with Bank Badges */}
-            <div className="border-t border-[#E8E5DF] pt-6 mt-2 text-center">
-                <p className="text-[11px] font-sans uppercase tracking-[0.2em] font-semibold text-[#121212] mb-3">
-                    GUARANTEE SAFE & SECURE CHECKOUT
-                </p>
-                <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 opacity-90">
-                    <div className="flex items-center justify-center px-3 py-1.5 rounded-lg bg-white border border-[#E8E5DF] shadow-xs text-[10.5px] font-bold text-[#1F2937]">
-                        Meezan Bank
+            {/* Luxury Guarantees & Authenticity Badges */}
+            <div className="border-t border-[#E8E5DF] pt-5 mt-3 space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    <div className="flex items-center gap-2.5 p-2.5 bg-white border border-[#E8E5DF] rounded-[8px]">
+                        <Award className="size-4 text-[#A67C52] shrink-0" />
+                        <div className="text-left">
+                            <p className="text-[10px] font-sans font-bold uppercase tracking-wider text-[#121212]">Authenticity</p>
+                            <p className="text-[9.5px] text-[#737373] leading-none mt-0.5">Certified Precious Metals</p>
+                        </div>
                     </div>
-                    <div className="flex items-center justify-center px-3 py-1.5 rounded-lg bg-white border border-[#E8E5DF] shadow-xs text-[10.5px] font-bold text-emerald-600">
-                        easypaisa
+                    <div className="flex items-center gap-2.5 p-2.5 bg-white border border-[#E8E5DF] rounded-[8px]">
+                        <Truck className="size-4 text-[#A67C52] shrink-0" />
+                        <div className="text-left">
+                            <p className="text-[10px] font-sans font-bold uppercase tracking-wider text-[#121212]">Insured Delivery</p>
+                            <p className="text-[9.5px] text-[#737373] leading-none mt-0.5">Tracked & Tamper-Proof</p>
+                        </div>
                     </div>
-                    <div className="flex items-center justify-center px-3 py-1.5 rounded-lg bg-white border border-[#E8E5DF] shadow-xs text-[10.5px] font-bold text-teal-600">
-                        SadaPay
-                    </div>
-                    <div className="flex items-center justify-center px-3 py-1.5 rounded-lg bg-white border border-[#E8E5DF] shadow-xs text-[10.5px] font-bold text-orange-600">
-                        NayaPay
-                    </div>
-                    <div className="flex items-center justify-center px-3 py-1.5 rounded-lg bg-white border border-[#E8E5DF] shadow-xs text-[10.5px] font-bold text-red-600">
-                        JazzCash
+                    <div className="flex items-center gap-2.5 p-2.5 bg-white border border-[#E8E5DF] rounded-[8px]">
+                        <ShieldCheck className="size-4 text-[#A67C52] shrink-0" />
+                        <div className="text-left">
+                            <p className="text-[10px] font-sans font-bold uppercase tracking-wider text-[#121212]">Secure Payment</p>
+                            <p className="text-[9.5px] text-[#737373] leading-none mt-0.5">Cash on Delivery & Bank</p>
+                        </div>
                     </div>
                 </div>
             </div>

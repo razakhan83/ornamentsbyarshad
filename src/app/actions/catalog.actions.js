@@ -11,6 +11,7 @@ export async function fetchMoreProductsAction({
   search = '',
   sort = 'newest',
   price = 'all',
+  metal = 'all',
   page = 2,
   limit = 20,
 } = {}) {
@@ -20,6 +21,7 @@ export async function fetchMoreProductsAction({
       search,
       sort,
       price,
+      metal,
       page: Math.max(1, Number(page) || 1),
       limit: Math.max(1, Math.min(48, Number(limit) || 20)),
     });

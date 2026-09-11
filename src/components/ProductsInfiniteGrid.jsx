@@ -20,6 +20,7 @@ export default function ProductsInfiniteGrid({
   search = '',
   sort = 'newest',
   price = 'all',
+  metal = 'all',
 }) {
   const [products, setProducts] = useState(initialProducts);
   const [page, setPage] = useState(1);
@@ -36,7 +37,7 @@ export default function ProductsInfiniteGrid({
     setHasMore(initialHasMore);
     setIsLoading(false);
     loadingLockRef.current = false;
-  }, [category, search, sort, price, initialProducts, initialHasMore]);
+  }, [category, search, sort, price, metal, initialProducts, initialHasMore]);
 
   // Load next chunk
   const loadNextBatch = useCallback(async () => {
@@ -53,6 +54,7 @@ export default function ProductsInfiniteGrid({
         search,
         sort,
         price,
+        metal,
         page: nextPage,
         limit: 20,
       });

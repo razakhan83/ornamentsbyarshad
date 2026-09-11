@@ -1,24 +1,24 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import { Suspense } from 'react';
+import { usePathname } from 'next/navigation';
 
-function ConditionalLayoutInner({ children }) {
+function ConditionalHideContent({ children }) {
   const pathname = usePathname();
   if (pathname?.startsWith('/checkout')) return null;
-  
+
   return <>{children}</>;
 }
 
 export default function ConditionalLayoutElements({ children }) {
   return (
-    <Suspense fallback={null}>
-      <ConditionalLayoutInner>{children}</ConditionalLayoutInner>
+    <Suspense fallback={<>{children}</>}>
+      <ConditionalHideContent>{children}</ConditionalHideContent>
     </Suspense>
   );
 }
 
-function HomeOnlyLayoutInner({ children }) {
+function HomeOnlyContent({ children }) {
   const pathname = usePathname();
   if (pathname !== '/') return null;
 
@@ -28,7 +28,8 @@ function HomeOnlyLayoutInner({ children }) {
 export function HomeOnlyLayoutElements({ children }) {
   return (
     <Suspense fallback={null}>
-      <HomeOnlyLayoutInner>{children}</HomeOnlyLayoutInner>
+      <HomeOnlyContent>{children}</HomeOnlyContent>
     </Suspense>
   );
 }
+

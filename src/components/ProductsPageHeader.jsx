@@ -301,9 +301,9 @@ export default function ProductsPageHeader({
                 disabled={isLoading}
                 onClick={(event) => handleCategoryClick(category.id, href, event)}
                 className={cn(
-                  "inline-flex items-center justify-center whitespace-nowrap rounded-none border transition-all outline-none active:scale-[0.97] h-8 px-3 text-[11px] uppercase tracking-[0.16em] font-medium shrink-0 select-none",
+                  "inline-flex items-center justify-center whitespace-nowrap rounded-[6px] border transition-all outline-none active:scale-[0.97] h-8 px-3 text-[11px] uppercase tracking-[0.16em] font-medium shrink-0 select-none cursor-pointer",
                   isActive
-                    ? "border-[#121212] bg-[#121212] text-white"
+                    ? "border-[#121212] bg-[#121212] text-white shadow-xs"
                     : "border-[#E8E5DF] bg-white text-[#121212]/80 hover:border-[#121212]/50"
                 )}
               >

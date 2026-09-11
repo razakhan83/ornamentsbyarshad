@@ -81,6 +81,8 @@ const productNavItems = [
 const ordersNavItems = [
   { href: '/admin/orders', label: 'View All Orders', icon: ShoppingCart, match: (pathname) => pathname.startsWith('/admin/orders') },
   { href: '/admin/abandoned-carts', label: 'Abandoned Carts', icon: ShoppingBag, match: (pathname) => pathname.startsWith('/admin/abandoned-carts') },
+  { href: '/admin/payments', label: 'Payments & Revenue', icon: CreditCard, match: (pathname) => pathname.startsWith('/admin/payments') },
+  { href: '/admin/top-performing-products', label: 'Top Products', icon: Sparkles, match: (pathname) => pathname.startsWith('/admin/top-performing-products') },
 ];
 
 // 4. Customers
@@ -102,6 +104,7 @@ const marketingNavItems = [
 const websiteNavItems = [
   { href: '/admin/website/general', label: 'General Information', icon: FileText, match: (pathname) => pathname.startsWith('/admin/website/general') },
   { href: '/admin/home-page', label: 'Home Layout Settings', icon: LayoutGrid, match: (pathname) => pathname.startsWith('/admin/home-page') },
+  { href: '/admin/cover-photos', label: 'Cover & Banners', icon: Images, match: (pathname) => pathname.startsWith('/admin/cover-photos') },
   { href: '/admin/store-setup', label: 'Store Setup', icon: Store, match: (pathname) => pathname.startsWith('/admin/store-setup') },
 ];
 
@@ -116,6 +119,7 @@ const settingsNavItems = [
   { href: '/admin/shipping', label: 'Shipping Settings', icon: Truck, match: (pathname) => pathname.startsWith('/admin/shipping') },
   { href: '/admin/settings/whatsapp', label: 'WhatsApp Order Notifications', icon: Smartphone, match: (pathname) => pathname.startsWith('/admin/settings/whatsapp') },
   { href: '/admin/settings/email', label: 'Email Notifications', icon: Bell, match: (pathname) => pathname.startsWith('/admin/settings/email') },
+  { href: '/admin/notifications', label: 'Admin Notification Logs', icon: Bell, match: (pathname) => pathname.startsWith('/admin/notifications') },
   { href: '/admin/settings/dark-mode', label: 'Dark Mode', icon: Moon, match: (pathname) => pathname.startsWith('/admin/settings/dark-mode') },
 ];
 

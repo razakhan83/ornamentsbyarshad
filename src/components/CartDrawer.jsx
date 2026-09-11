@@ -127,11 +127,11 @@ export default function CartDrawer({ whatsappNumber = '', storeName = 'Ornaments
                         return (
                           <div
                             key={item.id || item.slug || item._id || item.Name || item.name || index}
-                            className="bg-white p-3 transition-colors duration-200"
+                            className="bg-white p-3 rounded-[8px] border border-[#E8E5DF]/70 shadow-[0_1px_3px_rgba(0,0,0,0.02)] transition-colors duration-200"
                           >
                             <div className="flex items-center gap-3">
                               {/* Product Thumbnail with Light Gray BG */}
-                              <div className="relative size-16 shrink-0 overflow-hidden bg-[#F4F2EE] flex items-center justify-center">
+                              <div className="relative size-16 shrink-0 overflow-hidden rounded-[6px] bg-[#F4F2EE] flex items-center justify-center">
                                 {primaryImageSrc ? (
                                   <Image
                                     src={primaryImageSrc}
@@ -165,7 +165,7 @@ export default function CartDrawer({ whatsappNumber = '', storeName = 'Ornaments
                                   <button
                                     type="button"
                                     onClick={() => scheduleRemove(item)}
-                                    className="text-[#737373] hover:text-destructive p-1 transition-colors"
+                                    className="text-[#737373] hover:text-destructive p-1 transition-colors rounded-md"
                                     aria-label="Remove item"
                                   >
                                     <Trash2 className="size-3.5" />
@@ -173,7 +173,7 @@ export default function CartDrawer({ whatsappNumber = '', storeName = 'Ornaments
                                 </div>
 
                                 <div className="flex items-center justify-between pt-1.5">
-                                  <div className="inline-flex items-center border border-[#E8E5DF] bg-white h-6">
+                                  <div className="inline-flex items-center border border-[#E8E5DF] bg-white rounded-[6px] h-6 overflow-hidden">
                                     <button
                                       type="button"
                                       aria-label="Decrease quantity"
@@ -209,7 +209,7 @@ export default function CartDrawer({ whatsappNumber = '', storeName = 'Ornaments
                 </SidebarGroup>
               ) : (
                 <SidebarGroup className="p-0">
-                  <Empty className="flex min-h-[18rem] flex-col items-center justify-center bg-white px-6 py-12">
+                  <Empty className="flex min-h-[18rem] flex-col items-center justify-center bg-white rounded-xl border border-[#E8E5DF]/60 px-6 py-12">
                     <EmptyHeader>
                       <div className="mb-3 flex items-center justify-center">
                         <ShoppingBag className="size-10 text-[#A67C52]/40" strokeWidth={1.5} />
@@ -221,7 +221,7 @@ export default function CartDrawer({ whatsappNumber = '', storeName = 'Ornaments
                     </EmptyHeader>
                     <div className="mt-6 flex justify-center">
                       <Link href="/products" onClick={continueShopping}>
-                        <Button className="rounded-none bg-[#121212] text-white hover:bg-neutral-800 uppercase tracking-[0.18em] text-xs h-11 px-6 font-semibold">
+                        <Button className="rounded-[6px] bg-[#121212] text-white hover:bg-neutral-800 uppercase tracking-[0.18em] text-xs h-11 px-6 font-semibold">
                           Explore Collections
                         </Button>
                       </Link>
@@ -245,7 +245,7 @@ export default function CartDrawer({ whatsappNumber = '', storeName = 'Ornaments
                 <Link 
                   href="/checkout" 
                   onClick={() => setIsCartOpen(false)} 
-                  className="w-full h-12 inline-flex items-center justify-center gap-2 rounded-none bg-[#121212] text-white hover:bg-neutral-800 text-xs uppercase tracking-[0.18em] font-semibold transition-all duration-300 cursor-pointer"
+                  className="w-full h-12 inline-flex items-center justify-center gap-2 rounded-[6px] bg-[#121212] text-white hover:bg-neutral-800 text-xs uppercase tracking-[0.18em] font-semibold transition-all duration-300 cursor-pointer shadow-xs active:scale-[0.98]"
                 >
                   <span>Proceed to Checkout</span>
                   <ArrowRight className="size-4" />
@@ -253,7 +253,7 @@ export default function CartDrawer({ whatsappNumber = '', storeName = 'Ornaments
 
                 <button
                   type="button"
-                  className="w-full h-11 inline-flex items-center justify-center gap-2 rounded-none border border-[#E8E5DF] bg-white hover:bg-[#FAF9F6] text-[#121212] text-xs uppercase tracking-[0.16em] font-semibold transition-all duration-200 cursor-pointer"
+                  className="w-full h-11 inline-flex items-center justify-center gap-2 rounded-[6px] border border-[#E8E5DF] bg-white hover:bg-[#FAF9F6] text-[#121212] text-xs uppercase tracking-[0.16em] font-semibold transition-all duration-200 cursor-pointer active:scale-[0.98]"
                   onClick={handleWhatsAppDirectCheckout}
                 >
                   <WhatsAppIcon className="size-4 text-[#25D366] shrink-0" />

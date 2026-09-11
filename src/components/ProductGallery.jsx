@@ -140,14 +140,14 @@ export default function ProductGallery({ images, primaryTag, product }) {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         className={cn(
-          "relative aspect-[4/5] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-[#F4F2EE] border border-[#E8E5DF]",
+          "relative aspect-[4/5] w-full overflow-hidden rounded-none bg-[#F4F2EE] border border-[#E8E5DF]",
           isMagnifierActive && "cursor-crosshair touch-none"
         )}
       >
         {/* Product Tag Badge */}
         {mainTag && (
           <div 
-            className="absolute left-2.5 top-2.5 sm:left-3 sm:top-3 z-20 pointer-events-auto flex items-center gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9.5px] sm:text-[10px] font-sans uppercase tracking-[0.16em] font-semibold text-white bg-[#121212] rounded-md shadow-xs"
+            className="absolute left-2.5 top-2.5 sm:left-3 sm:top-3 z-20 pointer-events-auto flex items-center gap-1.5 px-2.5 py-1 text-[9.5px] sm:text-[10px] font-sans uppercase tracking-[0.2em] font-semibold text-white bg-[#121212] rounded-none shadow-xs"
             title={mainTag.label}
           >
             {mainTag.label}
@@ -160,7 +160,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
             <ProductWishlistButton
               product={product}
               mode="detail"
-              className="!bg-white/90 backdrop-blur-sm !border-[#E8E5DF] text-[#121212] hover:text-[#A67C52] [&>span]:hidden flex items-center justify-center size-8 p-0 rounded-full shadow-sm"
+              className="!bg-white/90 backdrop-blur-sm !border-[#E8E5DF] text-[#121212] hover:text-[#A67C52] [&>span]:hidden flex items-center justify-center size-8 p-0 rounded-none shadow-sm"
             />
           </div>
         )}
@@ -183,9 +183,9 @@ export default function ProductGallery({ images, primaryTag, product }) {
             aria-pressed={isMagnifierActive}
             title={isMagnifierActive ? "Turn off magnifier" : "Magnify jewelry details"}
             className={cn(
-              "inline-flex items-center justify-center gap-1.5 size-8 sm:size-auto sm:px-2.5 sm:py-1.5 rounded-lg sm:rounded-xl text-[10.5px] font-sans font-semibold tracking-wider uppercase transition-all duration-300 shadow-md cursor-pointer active:scale-95",
+              "inline-flex items-center justify-center gap-1.5 size-8 sm:size-auto sm:px-3 sm:py-1.5 rounded-none text-[10.5px] font-sans font-semibold tracking-wider uppercase transition-all duration-300 shadow-md cursor-pointer active:scale-95",
               isMagnifierActive
-                ? "bg-[#121212] text-white ring-2 ring-[#A67C52] shadow-lg"
+                ? "bg-[#121212] text-white ring-1 ring-[#A67C52] shadow-lg"
                 : "bg-white/95 text-[#121212] border border-[#E8E5DF] hover:bg-[#121212] hover:text-white"
             )}
           >
@@ -298,9 +298,9 @@ export default function ProductGallery({ images, primaryTag, product }) {
               onClick={() => handleThumbnailClick(index)}
               aria-label={`Show product image ${index + 1}`}
               aria-pressed={index === selectedIndex}
-              className={`relative aspect-square w-full cursor-pointer overflow-hidden rounded-xl bg-[#F4F2EE] border transition-all duration-300 ${
+              className={`relative aspect-[4/5] w-full cursor-pointer overflow-hidden rounded-none bg-[#F4F2EE] border transition-all duration-300 ${
                 index === selectedIndex
-                  ? 'border-[#121212] opacity-100 ring-2 ring-[#121212]'
+                  ? 'border-[#121212] opacity-100 ring-1 ring-[#121212]'
                   : 'border-[#E8E5DF] opacity-70 hover:opacity-100 hover:border-[#121212]/40'
               }`}
             >
@@ -309,7 +309,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
                 alt={`Thumbnail ${index + 1}`}
                 fill
                 sizes="120px"
-                className="object-cover p-1 rounded-lg"
+                className="object-cover rounded-none"
                 {...getBlurPlaceholderProps(image.blurDataURL)}
                 loading="lazy"
               />
