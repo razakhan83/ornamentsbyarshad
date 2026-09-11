@@ -50,7 +50,7 @@ export default function CartDrawer({ whatsappNumber = '', storeName = 'Ornaments
   const [animationParent] = useAutoAnimate();
 
   const subtotal = cart.reduce((total, item) => {
-    const itemPrice = item.discountedPrice != null ? item.discountedPrice : formatPrice(item.Price || item.price);
+    const itemPrice = formatPrice(item.Price || item.price);
     return total + itemPrice * item.quantity;
   }, 0);
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
@@ -122,7 +122,7 @@ export default function CartDrawer({ whatsappNumber = '', storeName = 'Ornaments
                         const primaryImageSrc = primaryImage?.url
                           ? optimizeCloudinaryUrl(primaryImage.url, CLOUDINARY_IMAGE_PRESETS.cartItem)
                           : '';
-                        const itemTotal = formatPrice(item.discountedPrice != null ? item.discountedPrice : item.Price || item.price) * item.quantity;
+                        const itemTotal = formatPrice(item.Price || item.price) * item.quantity;
 
                         return (
                           <div
@@ -159,7 +159,7 @@ export default function CartDrawer({ whatsappNumber = '', storeName = 'Ornaments
                                       </p>
                                     )}
                                     <p className="mt-0.5 text-[11px] font-medium text-[#737373] tabular-nums">
-                                      {formatPriceLabel(item.discountedPrice != null ? item.discountedPrice : item.Price || item.price)}
+                                      {formatPriceLabel(item.Price || item.price)}
                                     </p>
                                   </div>
                                   <button

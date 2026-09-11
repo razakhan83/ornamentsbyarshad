@@ -28,7 +28,7 @@ export async function GET(request) {
     }
 
     const products = await Product.find(query)
-      .select('Name Price discountedPrice isDiscounted Images slug Category StockStatus isFeatured featuredPriority discountPercentage')
+      .select('Name Price compareAtPrice Images slug Category StockStatus isFeatured featuredPriority')
       .sort({ createdAt: -1 })
       .limit(limit)
       .lean();
@@ -39,9 +39,7 @@ export async function GET(request) {
         _id: String(p._id),
         Name: p.Name || '',
         Price: Number(p.Price || 0),
-        discountedPrice: p.discountedPrice != null ? Number(p.discountedPrice) : null,
-        isDiscounted: p.isDiscounted === true,
-        discountPercentage: Number(p.discountPercentage || 0),
+        compareAtPrice: p.compareAtPrice != null ? Number(p.compareAtPrice) : null,
         StockStatus: p.StockStatus || 'In Stock',
         Images: p.Images || [],
         slug: p.slug || '',

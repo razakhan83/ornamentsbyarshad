@@ -28,16 +28,12 @@ import { formatRichTextDescriptionHtml, stripHtmlTags } from '@/lib/richText';
 import { getSiteUrl } from '@/lib/siteUrl';
 import { metadataTitle } from '@/lib/siteSeo';
 import { getProductSocialShareImage } from '@/lib/cloudinaryImage';
+import { getProductUnitPrice, getVisibleCompareAtPrice as getVisibleCompareAt, isProductOutOfStock } from '@/lib/productCommerce';
+import { getProductRating, getProductReviewCount } from '@/lib/productReviewUtils';
 
 const formatPrice = (raw) => `Rs. ${Number(raw || 0).toLocaleString('en-PK')}`;
-const getSellingPrice = (product) =>
-  Number(product.discountedPrice ?? product.Price ?? 0);
-const getVisibleCompareAtPrice = (product) => {
-  const compareAtPrice = Number(product.compareAtPrice ?? 0);
-  const sellingPrice = getSellingPrice(product);
-
-  return compareAtPrice > sellingPrice ? compareAtPrice : null;
-};
+const getSellingPrice = getProductUnitPrice;
+const getVisibleCompareAtPrice = (product) => getVisibleCompareAt(product, getSellingPrice(product));
 const siteUrl = getSiteUrl();
 const PRODUCT_PRERENDER_LIMIT = 48;
 const EMPTY_REVIEW_SUMMARY = {
@@ -123,20 +119,25 @@ function getProductJsonLd({ product, reviewSummary = null }) {
       priceCurrency: 'PKR',
       price,
       availability:
-        product.StockStatus === 'In Stock'
-          ? 'https://schema.org/InStock'
-          : 'https://schema.org/OutOfStock',
+        isProductOutOfStock(product)
+          ? 'https://schema.org/OutOfStock'
+          : 'https://schema.org/InStock',
       itemCondition: 'https://schema.org/NewCondition',
     },
   };
 
-  if (reviewSummary?.reviewCount > 0) {
-    productSchema.aggregateRating = {
-      '@type': 'AggregateRating',
-      ratingValue: Number(reviewSummary.averageRating.toFixed(1)),
-      reviewCount: reviewSummary.reviewCount,
-    };
-  }
+  const ratingValue = reviewSummary?.reviewCount > 0
+    ? Number(reviewSummary.averageRating.toFixed(1))
+    : getProductRating(product);
+  const ratingCount = reviewSummary?.reviewCount > 0
+    ? reviewSummary.reviewCount
+    : getProductReviewCount(product);
+
+  productSchema.aggregateRating = {
+    '@type': 'AggregateRating',
+    ratingValue,
+    reviewCount: ratingCount,
+  };
 
   const breadcrumbItems = [
     {
@@ -244,8 +245,8 @@ export async function generateMetadata({ params }) {
   const productImage = getPrimaryImage(product);
   const shareDescription = getShareDescription(product);
   const keywords = getProductKeywords(product, categories);
-  const price = Number(product.discountedPrice ?? product.Price ?? 0);
-  const availability = product.StockStatus === 'In Stock' ? 'in stock' : 'out of stock';
+  const price = getSellingPrice(product);
+  const availability = isProductOutOfStock(product) ? 'out of stock' : 'in stock';
 
   const isSquare = product.seoOgImageRatio === '1:1';
   const ogWidth = isSquare ? 1080 : 1200;
@@ -285,12 +286,16 @@ export async function generateMetadata({ params }) {
       'product:price:amount': String(price),
       'product:price:currency': 'PKR',
       'product:availability': availability,
-      ...(reviewSummary.reviewCount > 0
-        ? {
-            'product:rating:value': reviewSummary.averageRating.toFixed(1),
-            'product:rating:count': String(reviewSummary.reviewCount),
-          }
-        : {}),
+      'product:rating:value': String(
+        reviewSummary.reviewCount > 0
+          ? reviewSummary.averageRating.toFixed(1)
+          : getProductRating(product)
+      ),
+      'product:rating:count': String(
+        reviewSummary.reviewCount > 0
+          ? reviewSummary.reviewCount
+          : getProductReviewCount(product)
+      ),
     },
   };
 }
@@ -392,7 +397,7 @@ function ProductBreadcrumb({ product, primaryCategory }) {
 
 function ProductHeroSection({ product, settings, reviewSummary, categoryLabel }) {
   const price = getSellingPrice(product);
-  const availability = product.StockStatus === 'In Stock' ? 'in stock' : 'out of stock';
+  const availability = isProductOutOfStock(product) ? 'out of stock' : 'in stock';
   const compareAtPrice = getVisibleCompareAtPrice(product);
 
   return (
@@ -431,21 +436,29 @@ function ProductHeroSection({ product, settings, reviewSummary, categoryLabel })
                 <ProductSocialActions product={product} className="mt-0.5 shrink-0 md:hidden" />
               </div>
 
-              {reviewSummary.reviewCount > 0 && (
+              {(() => {
+                const rating = reviewSummary.reviewCount > 0
+                  ? reviewSummary.averageRating
+                  : getProductRating(product);
+                const count = reviewSummary.reviewCount > 0
+                  ? reviewSummary.reviewCount
+                  : getProductReviewCount(product);
+                return (
                 <a 
                   href="#product-reviews"
                   className="group flex w-fit items-center gap-2 pt-1"
                 >
                    <div className="flex items-center text-[#A67C52]">
                       {Array.from({ length: 5 }).map((_, i) => (
-                        <Star key={i} className={`size-3.5 ${i < Math.round(reviewSummary.averageRating || 0) ? 'fill-current' : 'text-neutral-300'}`} />
+                        <Star key={i} className={`size-3.5 ${i < Math.round(rating || 0) ? 'fill-current' : 'text-neutral-300'}`} />
                       ))}
                    </div>
                    <span className="text-xs font-sans tracking-wide text-[#737373] transition-colors group-hover:text-[#121212]">
-                     ({reviewSummary.reviewCount} {reviewSummary.reviewCount === 1 ? 'review' : 'reviews'})
+                     ({count} {count === 1 ? 'review' : 'reviews'})
                    </span>
                 </a>
-              )}
+                );
+              })()}
             </div>
 
             <div className="pt-2">

@@ -42,7 +42,7 @@ export function buildCartWhatsAppMessage({ items = [], subtotal = 0, storeName =
   items.forEach((item, index) => {
     const name = item?.Name || item?.name || 'Item';
     const quantity = Math.max(1, Number(item?.quantity || 1));
-    const price = Number(item?.discountedPrice ?? item?.Price ?? item?.price ?? 0);
+    const price = Number(item?.Price ?? item?.price ?? 0);
     lines.push(`${index + 1}. ${name} - ${quantity} x Rs. ${price.toLocaleString('en-PK')}`);
   });
 

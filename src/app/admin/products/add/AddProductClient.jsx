@@ -25,7 +25,6 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import ProductRichTextEditor from "@/components/admin/ProductRichTextEditor";
-import VendorAssignmentsEditor from "@/components/admin/VendorAssignmentsEditor";
 import { uploadImageDataUrl } from "@/lib/cloudinaryUpload";
 import { moveProductImageToFront } from "@/lib/productImages";
 import { getBlurPlaceholderProps } from "@/lib/imagePlaceholder";
@@ -62,11 +61,10 @@ export default function AddProduct() {
   const [seoOgImage, setSeoOgImage] = useState("");
   const [Price, setPrice] = useState("");
   const [compareAtPrice, setCompareAtPrice] = useState("");
-  const [discountPercentage, setDiscountPercentage] = useState("");
-  const [packOptions, setPackOptions] = useState([{ label: "1 pcs", price: "" }]);
   const [stockQuantity, setStockQuantity] = useState("1");
   const [stockStatus, setStockStatus] = useState("In Stock");
   const [customReviewCount, setCustomReviewCount] = useState("");
+  const [rating, setRating] = useState("4.6");
   const [metalType, setMetalType] = useState("");
   const [purity, setPurity] = useState("");
   const [grossWeightGrams, setGrossWeightGrams] = useState("");
@@ -80,20 +78,17 @@ export default function AddProduct() {
   const [gemstoneClarity, setGemstoneClarity] = useState("");
   const [gemstoneColor, setGemstoneColor] = useState("");
   const [Categories, setCategories] = useState([]);
-  const [vendorAssignments, setVendorAssignments] = useState([]);
   const [images, setImages] = useState([]);
   const [showOnStore, setIsLive] = useState(true);
   const [isNewArrival, setIsNewArrival] = useState(true);
   const [isBestSelling, setIsBestSelling] = useState(false);
   const [isFeatured, setIsFeatured] = useState(false);
-  const [isFreeDelivery, setIsFreeDelivery] = useState(false);
   const [featuredPriority, setFeaturedPriority] = useState(0);
   const [tags, setTags] = useState([]);
   const [primaryTag, setPrimaryTag] = useState("");
 
   const [isDragOver, setIsDragOver] = useState(false);
   const [allCategories, setAllCategories] = useState([]);
-  const [allVendors, setAllVendors] = useState([]);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [newCatName, setNewCatName] = useState("");
   const [newCatImage, setNewCatImage] = useState("");
@@ -106,17 +101,6 @@ export default function AddProduct() {
   const [seoOgImageRatio, setSeoOgImageRatio] = useState('1.91:1');
   const [ogPreviewFit, setOgPreviewFit] = useState('cover'); // 'cover' | 'contain'
   const ogImageFileInputRef = useRef(null);
-
-  const handleFreeDeliveryToggle = (checked) => {
-    setIsFreeDelivery(checked);
-    if (checked) {
-      setTags((prev) => (prev.includes('free-shipping') ? prev : [...prev, 'free-shipping']));
-      setPrimaryTag((prev) => (!prev ? 'free-shipping' : prev));
-    } else {
-      setTags((prev) => prev.filter((t) => t !== 'free-shipping'));
-      setPrimaryTag((prev) => (prev === 'free-shipping' ? '' : prev));
-    }
-  };
 
   const resetForm = useCallback(() => {
     setName("");
@@ -132,8 +116,8 @@ export default function AddProduct() {
     setSeoOgImageRatio("1.91:1");
     setPrice("");
     setCompareAtPrice("");
-    setDiscountPercentage("");
     setCustomReviewCount("");
+    setRating("4.6");
     setMetalType("");
     setPurity("");
     setGrossWeightGrams("");
@@ -146,17 +130,14 @@ export default function AddProduct() {
     setGemstoneCut("");
     setGemstoneClarity("");
     setGemstoneColor("");
-    setPackOptions([{ label: "1 pcs", price: "" }]);
     setStockQuantity("1");
     setStockStatus("In Stock");
     setCategories([]);
-    setVendorAssignments([]);
     setImages([]);
     setIsLive(true);
     setIsNewArrival(true);
     setIsBestSelling(false);
     setIsFeatured(false);
-    setIsFreeDelivery(false);
     setFeaturedPriority(0);
     setTags([]);
     setPrimaryTag("");
@@ -169,17 +150,9 @@ export default function AddProduct() {
   useEffect(() => {
     const fetchDependencies = async () => {
       try {
-        const [categoriesRes, vendorsRes] = await Promise.all([
-          fetch("/api/categories"),
-          fetch("/api/admin/vendors"),
-        ]);
-        const [categoriesData, vendorsData] = await Promise.all([
-          categoriesRes.json(),
-          vendorsRes.json(),
-        ]);
-
+        const categoriesRes = await fetch("/api/categories");
+        const categoriesData = await categoriesRes.json();
         if (categoriesData.success) setAllCategories(categoriesData.data);
-        if (vendorsData.success) setAllVendors(vendorsData.data);
       } catch (err) {
         console.error("Failed to fetch admin form dependencies:", err);
       }
@@ -379,8 +352,8 @@ export default function AddProduct() {
           seoOgImageRatio,
           Price: Number(Price),
           compareAtPrice: compareAtPrice === "" ? null : Number(compareAtPrice),
-          discountPercentage: Number(discountPercentage) || 0,
           customReviewCount: customReviewCount === "" ? null : Number(customReviewCount),
+          rating: rating === "" ? null : Number(rating),
           stockQuantity: Math.max(0, Number(stockQuantity) || 0),
           StockStatus: stockStatus,
           Images: finalImages,
@@ -403,7 +376,6 @@ export default function AddProduct() {
           isNewArrival,
           isBestSelling,
           isFeatured,
-          isFreeDelivery,
           featuredPriority: Number(featuredPriority) || 0,
           tags,
           primaryTag,
@@ -511,29 +483,22 @@ export default function AddProduct() {
   const seoReady = seoCompleteCount === seoChecks.length;
   const priceValue = Number(Price) || 0;
   const compareAtValue = Number(compareAtPrice) || 0;
-  const discountValue = Math.min(
-    100,
-    Math.max(0, Number(discountPercentage) || 0)
-  );
-  const discountedPreview =
-    discountValue > 0
-      ? Math.round(priceValue * (1 - discountValue / 100))
-      : priceValue;
 
   const mockProduct = {
     _id: "preview",
     slug: "preview",
     Name: Name || "Product Name",
-    Price: Number(Price) || 0,
+                Price: Number(Price) || 0,
     compareAtPrice: Number(compareAtPrice) || 0,
     Images: images,
     Categories: Categories.map(id => ({ _id: id, name: allCategories?.find(c => c._id === id)?.name || "Category" })),
     StockStatus: stockStatus,
+    stockQuantity: Number(stockQuantity) || 0,
     showOnStore: showOnStore,
     primaryTag: primaryTag,
     tags: tags,
-    reviewCount: 0,
-    averageRating: 0,
+    rating: Number(rating) || 4.6,
+    customReviewCount: customReviewCount === "" ? null : Number(customReviewCount),
   };
 
   return (
@@ -609,76 +574,19 @@ export default function AddProduct() {
             </div>
 
             <div>
-              <Label className="mb-2">Discount Percentage</Label>
+              <Label className="mb-2">Storefront Rating</Label>
               <Input
                 type="number"
-                min="0"
-                max="100"
-                step="1"
-                value={discountPercentage}
-                onChange={(e) => setDiscountPercentage(e.target.value)}
+                min="1"
+                max="5"
+                step="0.1"
+                value={rating}
+                onChange={(e) => setRating(e.target.value)}
                 className="h-11 px-4"
-                placeholder="0"
+                placeholder="4.6"
               />
+              <p className="mt-1 text-xs text-muted-foreground">Editable storefront rating (1.0–5.0). Empty on create seeds 4.2–4.9.</p>
             </div>
-          </div>
-
-          <div className="rounded-xl border border-border bg-muted/35 p-4 space-y-4">
-            <div>
-              <p className="text-sm font-semibold text-foreground">Pack Variations</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                Define different pack sizes and their prices. Leave empty if not applicable.
-              </p>
-            </div>
-            {packOptions.map((pack, index) => (
-              <div key={index} className="flex items-center gap-3">
-                <div className="flex-1">
-                  <Input
-                    type="text"
-                    value={pack.label}
-                    onChange={(e) => {
-                      const newOptions = [...packOptions];
-                      newOptions[index].label = e.target.value;
-                      setPackOptions(newOptions);
-                    }}
-                    className="h-11 px-4"
-                    placeholder="e.g., Pack of 5"
-                  />
-                </div>
-                <div className="flex-1">
-                  <Input
-                    type="number"
-                    value={pack.price}
-                    onChange={(e) => {
-                      const newOptions = [...packOptions];
-                      newOptions[index].price = e.target.value;
-                      setPackOptions(newOptions);
-                    }}
-                    className="h-11 px-4"
-                    placeholder="Price (Rs)"
-                    step="0.01"
-                  />
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  className="h-11 w-11 shrink-0 rounded-lg text-destructive hover:bg-destructive hover:text-destructive-foreground"
-                  onClick={() => setPackOptions(packOptions.filter((_, i) => i !== index))}
-                >
-                  <Trash2 className="size-4" />
-                </Button>
-              </div>
-            ))}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setPackOptions([...packOptions, { label: "", price: "" }])}
-              className="w-full rounded-xl border-dashed"
-            >
-              <PlusCircle className="mr-2 size-4" />
-              Add More Pack Option
-            </Button>
           </div>
 
           <div>
@@ -1127,7 +1035,7 @@ export default function AddProduct() {
             <AccordionContent className="pb-4">
               <div className="pt-2">
             <p className="text-sm font-semibold text-foreground">Marketing Flags</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-4 sm:border-0 sm:pb-0">
                 <Label
                   className="mr-2 cursor-pointer text-xs text-muted-foreground"
@@ -1154,19 +1062,6 @@ export default function AddProduct() {
                   Best Selling
                 </Label>
                 <Switch id="toggle-best" checked={isBestSelling} onCheckedChange={setIsBestSelling} />
-              </div>
-              <div className="flex items-center justify-between gap-2">
-                <Label
-                  className="mr-2 cursor-pointer text-xs text-muted-foreground"
-                  htmlFor="toggle-free-marketing"
-                >
-                  Free Delivery
-                </Label>
-                <Switch 
-                  id="toggle-free-marketing" 
-                  checked={isFreeDelivery} 
-                  onCheckedChange={handleFreeDeliveryToggle}
-                />
               </div>
             </div>
             

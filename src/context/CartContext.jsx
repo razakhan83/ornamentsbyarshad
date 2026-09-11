@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { CheckCircle2, ShoppingCart } from 'lucide-react';
 
 import { trackAddToCartEvent } from '@/lib/clientTracking';
+import { getAvailableStock, getProductUnitPrice, isProductOutOfStock } from '@/lib/productCommerce';
 
 const CART_STORAGE_KEY = 'ornaments_cart_v1';
 const LEGACY_CART_STORAGE_KEY = 'kifayatly_cart_v2';
@@ -14,44 +15,34 @@ const CartUiContext = createContext(null);
 const CartActionsContext = createContext(null);
 
 function getCartItemId(item) {
-  if (item?.id && item?.packLabel && typeof item.id === 'string' && item.id.endsWith(item.packLabel)) {
-    return item.id;
-  }
-  const baseId = item?.slug || item?._id || item?.id || item?.productId || item?.Name || item?.name;
-  return item?.packLabel ? `${baseId}-${item.packLabel}` : baseId;
+  return item?.slug || item?._id || item?.id || item?.productId || item?.Name || item?.name;
 }
 
 function normalizeCartItem(item) {
-  const basePrice = Number(item.Price || item.price || 0);
-  const discountPercentage = Math.max(0, Number(item.discountPercentage || 0));
-  const isDiscounted = item.isDiscounted === true;
-  const discountedPrice = item.discountedPrice != null
-    ? Number(item.discountedPrice)
-    : isDiscounted && discountPercentage > 0
-      ? Math.round(basePrice * (1 - discountPercentage / 100))
-      : null;
-
-  const packLabel = item.packLabel || '';
+  const basePrice = getProductUnitPrice(item);
   const originalName = item.originalName || item.Name || item.name || 'Untitled Product';
-  const finalName = packLabel && !originalName.includes(`(${packLabel})`) 
-      ? `${originalName} (${packLabel})` 
-      : originalName;
+  const stockQuantity = getAvailableStock({
+    ...item,
+    stockQuantity: item.stockQuantity ?? item.stockCap,
+    StockStatus: item.StockStatus,
+    showOnStore: item.showOnStore,
+  });
 
   return {
     id: getCartItemId(item),
     slug: item.slug || item.id || item._id || '',
     _id: item._id || item.id || item.slug || '',
-    Name: finalName,
+    Name: originalName,
     originalName,
-    packLabel,
     Price: basePrice,
-    discountedPrice,
-    discountPercentage,
-    isDiscounted,
-    isFreeDelivery: item.isFreeDelivery === true,
     Category: Array.isArray(item.Category) ? item.Category : item.Category ? [item.Category] : [],
     Images: item.Images || [],
     quantity: Math.max(1, Number(item.quantity || 1)),
+    stockQuantity,
+    StockStatus: item.StockStatus,
+    selectedMetal: item.selectedMetal || item.metalType || '',
+    selectedSize: item.selectedSize || item.size || '',
+    selectedColor: item.selectedColor || '',
   };
 }
 
@@ -138,24 +129,63 @@ function CartProviderContent({ children }) {
         setIsSidebarOpen(true);
       },
       async addToCart(product, qtyToAdd = 1) {
-        const normalized = normalizeCartItem({ ...product, quantity: qtyToAdd });
-        if (!normalized.id) {
+        if (isProductOutOfStock(product)) {
+          toast.error('This piece is out of stock.');
+          return { success: false, error: 'Out of stock' };
+        }
+
+        const requestedQty = Math.max(1, Number(qtyToAdd) || 1);
+        const stockCap = getAvailableStock(product);
+        const itemId = getCartItemId(product);
+        let addedItem = null;
+        let rejected = false;
+        let capped = false;
+
+        setCart((prev) => {
+          const existing = prev.find((item) => item.id === itemId);
+          const currentQty = existing?.quantity || 0;
+          const nextQty = currentQty + requestedQty;
+          if (nextQty > stockCap) {
+            if (currentQty >= stockCap) {
+              rejected = true;
+              return prev;
+            }
+            capped = true;
+            const allowed = stockCap - currentQty;
+            addedItem = normalizeCartItem({ ...product, quantity: allowed, stockQuantity: stockCap });
+            return mergeCartItems(prev, addedItem);
+          }
+          addedItem = normalizeCartItem({ ...product, quantity: requestedQty, stockQuantity: stockCap });
+          return mergeCartItems(prev, addedItem);
+        });
+
+        if (addedItem) {
+          startTransition(() => {
+            addOptimisticCart({ type: 'add', item: addedItem });
+          });
+        }
+
+        if (rejected) {
+          toast.error(`Only ${stockCap} available.`);
+          return { success: false, error: 'Insufficient stock' };
+        }
+
+        if (capped) {
+          toast.error(`Only ${stockCap} available. Quantity was adjusted.`);
+        }
+
+        if (!addedItem?.id) {
           toast.error('This item could not be added to the cart.');
           return { success: false, error: 'Invalid product' };
         }
 
-        startTransition(() => {
-          addOptimisticCart({ type: 'add', item: normalized });
-          setCart((prev) => mergeCartItems(prev, normalized));
-        });
-
         try {
           trackAddToCartEvent({
-            productId: normalized.slug || normalized._id || normalized.id,
-            name: normalized.Name,
-            category: Array.isArray(normalized.Category) ? normalized.Category.join(', ') : '',
-            value: normalized.discountedPrice ?? normalized.Price,
-            quantity: normalized.quantity,
+            productId: addedItem.slug || addedItem._id || addedItem.id,
+            name: addedItem.Name,
+            category: Array.isArray(addedItem.Category) ? addedItem.Category.join(', ') : '',
+            value: addedItem.Price,
+            quantity: addedItem.quantity,
           });
         } catch (error) {
           console.error('Failed to track add to cart event', error);
@@ -183,7 +213,7 @@ function CartProviderContent({ children }) {
             }
         );
 
-        return { success: true, item: normalized };
+        return { success: true, item: addedItem };
       },
       removeFromCart(product) {
         const itemId = getCartItemId(product);
@@ -216,9 +246,12 @@ function CartProviderContent({ children }) {
 
         startTransition(() => {
           setCart((prev) =>
-            prev.map((item) =>
-              item.id === itemId ? { ...item, quantity: safeQuantity } : item
-            )
+            prev.flatMap((item) => {
+              if (item.id !== itemId) return [item];
+              const stockCap = Math.max(0, Number(item.stockQuantity) || 0);
+              if (stockCap <= 0) return [];
+              return [{ ...item, quantity: Math.min(safeQuantity, stockCap) }];
+            })
           );
         });
         return { success: true };

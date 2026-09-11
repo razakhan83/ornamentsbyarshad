@@ -28,6 +28,7 @@ import {
 import { toast } from 'sonner';
 
 import { getLastOrderDetailsAction, submitOrderAction, validateCouponAction } from '@/app/actions';
+import { getAvailableStock, isProductOutOfStock } from '@/lib/productCommerce';
 
 import AuthModal from '@/components/AuthModal';
 import OrderSuccessModal from '@/components/OrderSuccessModal';
@@ -288,7 +289,11 @@ function OrderSummaryContent({
   isRefreshingRelated,
   handleRefreshRelated,
 }) {
-  const { subtotal, shipping, total, isFreeShipping, discountAmount } = pricing;
+  const { subtotal, shipping, total, isFreeShipping, discountAmount, freeShippingThreshold } = pricing;
+  const amountUntilFreeShipping =
+    !isFreeShipping && freeShippingThreshold > 0
+      ? Math.max(0, freeShippingThreshold - subtotal)
+      : 0;
 
   const availableRelated = relatedProducts
     ?.filter((p) => !cart.some((item) => String(item.id || item._id) === String(p.id || p._id)));
@@ -308,7 +313,7 @@ function OrderSummaryContent({
       {/* Product list */}
       <div className="flex flex-col divide-y divide-border/50 mb-4">
         {cart.map((item, index) => {
-          const itemPrice = item.discountedPrice != null ? item.discountedPrice : item.Price || item.price;
+          const itemPrice = item.Price || item.price;
           const lineTotal = formatPrice(itemPrice) * item.quantity;
           const imgUrl = getPrimaryProductImage(item)?.url;
 
@@ -457,6 +462,11 @@ function OrderSummaryContent({
             {isFreeShipping ? 'Free' : `Rs.\u00A0${shipping.toLocaleString('en-PK')}`}
           </span>
         </div>
+        {amountUntilFreeShipping > 0 ? (
+          <p className="text-[11px] text-muted-foreground">
+            Add Rs.&nbsp;{amountUntilFreeShipping.toLocaleString('en-PK')} more for free delivery.
+          </p>
+        ) : null}
       </div>
 
       <div className={styles.summaryDivider} />
@@ -671,7 +681,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
   const subtotal = useMemo(
     () =>
       cart.reduce((total, item) => {
-        const itemPrice = item.discountedPrice != null ? item.discountedPrice : formatPrice(item.Price || item.price);
+        const itemPrice = formatPrice(item.Price || item.price);
         return total + itemPrice * item.quantity;
       }, 0),
     [cart]
@@ -689,20 +699,21 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
     return CITY_OPTIONS.filter((city) => city.sortKey.includes(normalizedCitySearch)).slice(0, SEARCH_RESULTS_LIMIT);
   }, [normalizedCitySearch]);
 
-  const hasFreeDeliveryProduct = useMemo(
-    () => cart.some((item) => Boolean(item?.isFreeDelivery)),
-    [cart]
-  );
-
   const pricing = calculateCheckoutPricing({
     subtotal,
     city: formData.city,
     settings,
     appliedCoupon,
-    hasFreeDeliveryProduct,
-    items: cart,
   });
-  const { shipping, total, isFreeShipping, freeShippingThreshold, isKarachi, discountAmount } = pricing;
+  const { total } = pricing;
+  const hasStockIssue = useMemo(
+    () =>
+      cart.some((item) => {
+        const available = getAvailableStock(item);
+        return isProductOutOfStock(item) || Number(item.quantity) > available;
+      }),
+    [cart]
+  );
 
   useEffect(() => {
     if (hasTrackedCheckoutView || cart.length === 0) return;
@@ -948,6 +959,13 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
   function handlePlaceOrder(event) {
     event?.preventDefault?.();
     if (submissionLockRef.current || submitting || !isInitialized || !validateForm() || cart.length === 0) return;
+    if (hasStockIssue) {
+      setErrors((previous) => ({
+        ...previous,
+        submit: 'One or more items are out of stock or exceed available quantity. Please update your cart.',
+      }));
+      return;
+    }
 
     submissionLockRef.current = true;
     setSubmitting(true);
@@ -971,7 +989,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
         slug: item.slug,
         packLabel: item.packLabel || '',
         name: item.Name || item.name,
-        price: item.discountedPrice != null ? item.discountedPrice : item.Price || item.price,
+        price: item.Price || item.price,
         quantity: item.quantity,
         image: getPrimaryProductImage(item)?.url || '',
       })),
@@ -1526,7 +1544,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
                   : 'bg-card text-foreground border border-slate-300 hover:bg-muted/40 shadow-none'
               )}
               onClick={() => document.getElementById('checkout-submit')?.click()}
-              disabled={submitting || !isInitialized}
+              disabled={submitting || !isInitialized || hasStockIssue}
               aria-busy={submitting}
             >
               {submitting && <Loader2 className="size-4 animate-spin" />}
@@ -1571,7 +1589,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
                 : 'bg-card text-foreground border border-slate-300 hover:bg-muted/40 shadow-none'
             )}
             onClick={() => document.getElementById('checkout-submit')?.click()}
-            disabled={submitting || !isInitialized}
+            disabled={submitting || !isInitialized || hasStockIssue}
             aria-busy={submitting}
           >
             {submitting && <Loader2 className="size-4 animate-spin" />}
@@ -1612,7 +1630,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
                   {itemToRemove.Name || itemToRemove.name}
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Qty: {itemToRemove.quantity} · {formatPriceLabel((itemToRemove.discountedPrice != null ? itemToRemove.discountedPrice : itemToRemove.Price || itemToRemove.price) * itemToRemove.quantity)}
+                  Qty: {itemToRemove.quantity} · {formatPriceLabel((itemToRemove.Price || itemToRemove.price) * itemToRemove.quantity)}
                 </p>
               </div>
             </div>

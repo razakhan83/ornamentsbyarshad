@@ -6,15 +6,13 @@ import Link from 'next/link';
 
 import { authOptions } from '@/lib/auth';
 import mongooseConnect from '@/lib/mongooseConnect';
-import { getStoreSettings } from '@/lib/data';
-import { getSiteUrl } from '@/lib/siteUrl';
 import Order from '@/models/Order';
 import OrderDetailsClient from './OrderDetailsClient';
 import { Button } from '@/components/ui/button';
 
 export const metadata = {
   title: 'Order Details | Ornaments by Arshad',
-  description: 'View your order status and invoice.',
+  description: 'View your order status and tracking details.',
 };
 
 export default function SingleOrderPage({ params, searchParams }) {
@@ -113,19 +111,6 @@ async function SingleOrderContent({ params, searchParams }) {
     redirect('/api/auth/signin?callbackUrl=/orders/' + id);
   }
 
-  const settings = await getStoreSettings();
-  const siteUrl = getSiteUrl();
-  const invoiceBranding = {
-    storeName: settings.storeName,
-    supportEmail: settings.supportEmail,
-    businessAddress: settings.businessAddress,
-    lightLogoUrl: settings.lightLogoUrl,
-    darkLogoUrl: settings.darkLogoUrl,
-    invoiceLogoScalePercent: settings.invoiceLogoScalePercent,
-    baseUrl: siteUrl,
-    returnPolicyUrl: `${siteUrl}/refund-policy`,
-  };
-
   return (
     <main className="min-h-screen bg-background pb-20 pt-12">
       <div className="container mx-auto max-w-6xl px-4">
@@ -139,7 +124,7 @@ async function SingleOrderContent({ params, searchParams }) {
               Back to My Orders
             </Link>
             <h1 className="text-3xl font-bold tracking-tight text-foreground">Order Status</h1>
-            <p className="mt-2 text-muted-foreground">Manage your shipment and download your invoice below.</p>
+            <p className="mt-2 text-muted-foreground">Manage your shipment and track your order below.</p>
           </div>
           
           <div className="flex items-center gap-3">
@@ -147,7 +132,7 @@ async function SingleOrderContent({ params, searchParams }) {
           </div>
         </div>
 
-        <OrderDetailsClient order={order} invoiceBranding={invoiceBranding} />
+        <OrderDetailsClient order={order} />
         
         {!session && (
           <div className="mt-8 rounded-xl border border-accent/25 bg-accent/12 p-6 text-center">

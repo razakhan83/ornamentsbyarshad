@@ -14,12 +14,11 @@ function serializeWishlistProduct(product) {
     slug: product.slug || product._id.toString(),
     Name: product.Name || '',
     Price: Number(product.Price || 0),
-    discountedPrice: product.discountedPrice != null ? Number(product.discountedPrice) : null,
-    discountPercentage: Number(product.discountPercentage || 0),
-    isDiscounted: product.isDiscounted === true,
+    compareAtPrice: product.compareAtPrice != null ? Number(product.compareAtPrice) : null,
     Images: Array.isArray(product.Images) ? product.Images : [],
     Category: Array.isArray(product.Category) ? product.Category : product.Category ? [product.Category] : [],
     StockStatus: product.StockStatus || 'Out of Stock',
+    stockQuantity: Math.max(0, Number(product.stockQuantity) || 0),
     showOnStore: product.showOnStore !== false,
   };
 }
@@ -39,7 +38,7 @@ async function getWishlistPayload(email) {
     _id: { $in: wishlistIds },
     showOnStore: true,
   })
-    .select('Name Price Images slug StockStatus discountPercentage isDiscounted discountedPrice')
+    .select('Name Price compareAtPrice Images slug StockStatus stockQuantity')
     .lean();
 
   const productMap = new Map(products.map((product) => [product._id.toString(), serializeWishlistProduct(product)]));

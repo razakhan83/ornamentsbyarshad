@@ -50,7 +50,6 @@ export const draftOrderSchema = z.object({
   itemType: z.string().trim().max(50).optional().or(z.literal('')),
   weight: z.coerce.number().nonnegative().optional(),
   manualCodAmount: z.union([z.coerce.number().nonnegative(), z.literal('')]).optional(),
-  createLinkedInvoice: z.boolean().optional(),
 });
 
 export const updateOrderSchema = draftOrderSchema.partial().extend({

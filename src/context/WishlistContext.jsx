@@ -19,7 +19,7 @@ function fireAddToWishlist(product, eventId) {
     content_ids: [itemId],
     content_name: product?.Name || product?.name || 'Product',
     content_type: 'product',
-    value: Number(product?.discountedPrice ?? product?.Price ?? product?.price ?? 0),
+    value: Number(product?.Price ?? product?.price ?? 0),
     currency: 'PKR',
   };
 
@@ -41,7 +41,7 @@ function postMetaAddToWishlist(product, eventId) {
       eventSourceUrl: window.location.href,
       customData: {
         currency: 'PKR',
-        value: Number(product?.discountedPrice ?? product?.Price ?? product?.price ?? 0),
+        value: Number(product?.Price ?? product?.price ?? 0),
         content_type: 'product',
         content_ids: [itemId],
         content_name: product?.Name || product?.name || 'Product',

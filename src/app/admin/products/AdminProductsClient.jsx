@@ -26,6 +26,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
+import { getProductUnitPrice, getVisibleCompareAtPrice } from "@/lib/productCommerce";
 
 import BulkImportModal from "@/components/admin/BulkImportModal";
 import AppPagination from "@/components/AppPagination";
@@ -245,71 +246,6 @@ function StockDialog({ open, product, quantity, onQuantityChange, saving, onOpen
   );
 }
 
-function VendorsModal({ open, product, onOpenChange }) {
-  const vendors = Array.isArray(product?.vendors) ? product.vendors : [];
-  
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-base font-bold">
-            <Store className="size-4 text-muted-foreground" />
-            Vendor Details
-          </DialogTitle>
-          <DialogDescription className="text-xs">
-            Sourcing and vendor contacts for <span className="font-semibold text-foreground">{product?.Name}</span>.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="py-2 space-y-2.5 max-h-[350px] overflow-y-auto">
-          {vendors.length === 0 ? (
-            <div className="py-8 text-center text-xs text-muted-foreground">
-              No vendors assigned to this product yet.
-            </div>
-          ) : (
-            vendors.map((v, i) => (
-              <div key={i} className="rounded-lg border border-border/80 bg-muted/20 p-3 space-y-1.5 text-xs">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-foreground text-[13px]">{v.name || "Vendor " + (i + 1)}</span>
-                  {v.vendorPrice != null && (
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">
-                      Cost: PKR {Number(v.vendorPrice).toLocaleString("en-PK")}
-                    </span>
-                  )}
-                </div>
-                {v.vendorProductName && (
-                  <p className="text-muted-foreground">Item Name: <span className="text-foreground font-medium">{v.vendorProductName}</span></p>
-                )}
-                {v.phone && (
-                  <p className="text-muted-foreground">Phone: <span className="text-foreground font-mono font-medium">{v.phone}</span></p>
-                )}
-                {v.whatsappNumber && (
-                  <p className="text-muted-foreground">WhatsApp: <span className="text-foreground font-mono font-medium">{v.whatsappNumber}</span></p>
-                )}
-                {(v.shopNumber || v.address) && (
-                  <p className="text-muted-foreground">Address: <span className="text-foreground font-medium">{[v.shopNumber, v.address].filter(Boolean).join(", ")}</span></p>
-                )}
-              </div>
-            ))
-          )}
-        </div>
-
-        <DialogFooter className="gap-2 sm:justify-between">
-          <Button type="button" variant="outline" size="sm" onClick={() => onOpenChange(false)}>
-            Close
-          </Button>
-          {product && (
-            <Link href={`/admin/products/edit/${product._id}`} className={cn(buttonVariants({ size: "sm" }))}>
-              <Pencil className="size-3.5 mr-1.5" />
-              Edit Sourcing Details
-            </Link>
-          )}
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
 export default function AdminProductsClient({
   initialProducts,
   total,
@@ -349,7 +285,6 @@ export default function AdminProductsClient({
   const [isSavingStock, setIsSavingStock] = useState(false);
   const [isBulkUpdating, setIsBulkUpdating] = useState(false);
   const [quickViewModal, setQuickViewModal] = useState({ open: false, product: null });
-  const [vendorsModal, setVendorsModal] = useState({ open: false, product: null });
   const [optimisticToggles, setOptimisticToggles] = useState({});
 
   useEffect(() => {
@@ -609,12 +544,6 @@ export default function AdminProductsClient({
         onOpenChange={(open) => setQuickViewModal((prev) => ({ ...prev, open }))}
         product={quickViewModal.product}
         categoryOptions={categoryOptions}
-      />
-
-      <VendorsModal
-        open={vendorsModal.open}
-        onOpenChange={(open) => setVendorsModal((prev) => ({ ...prev, open }))}
-        product={vendorsModal.product}
       />
 
       <StockDialog
@@ -981,29 +910,26 @@ export default function AdminProductsClient({
                             >
                               {product.Name}
                             </button>
-                            {product.isFreeDelivery && (
-                              <div className="mt-0.5 flex items-center">
-                                <span className="inline-flex items-center rounded-sm bg-emerald-500/15 border border-emerald-500/25 text-emerald-700 dark:text-emerald-300 px-1 py-0.2 text-[9.5px] font-bold tracking-tight">
-                                  Free DC
-                                </span>
-                              </div>
-                            )}
                           </div>
                         </div>
                       </td>
 
                       {/* Price */}
                       <td className="px-3 py-2.5 whitespace-nowrap">
-                        {product.isDiscounted && product.discountPercentage > 0 ? (
+                        {(() => {
+                          const selling = getProductUnitPrice(product);
+                          const compare = getVisibleCompareAtPrice(product, selling);
+                          return compare ? (
                           <div className="flex flex-col gap-0.5">
                             <span className="text-[13px] font-bold text-foreground tabular-nums">
-                              PKR {Math.round(product.Price * (1 - product.discountPercentage / 100)).toLocaleString("en-PK")}
+                              PKR {selling.toLocaleString("en-PK")}
                             </span>
-                            <span className="text-[11px] text-muted-foreground line-through tabular-nums">{formatPrice(product.Price)}</span>
+                            <span className="text-[11px] text-muted-foreground line-through tabular-nums">{formatPrice(compare)}</span>
                           </div>
-                        ) : (
-                          <span className="text-[13px] font-bold text-foreground tabular-nums">{formatPrice(product.Price)}</span>
-                        )}
+                          ) : (
+                          <span className="text-[13px] font-bold text-foreground tabular-nums">{formatPrice(selling)}</span>
+                          );
+                        })()}
                       </td>
 
                       {/* Category */}

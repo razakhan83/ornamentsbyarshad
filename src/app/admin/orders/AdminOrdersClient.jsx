@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { formatDistanceToNow } from 'date-fns';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { AlertTriangle, Calendar, Eye, Receipt, RotateCcw, Search, Trash2, X, Download, Edit, Zap, Check, ChevronsUpDown, MoreHorizontal, FileSpreadsheet, PackageCheck, Truck, Plus, Printer, Send, FileText, Upload, Globe, UserCog } from 'lucide-react';
+import { AlertTriangle, Calendar, Eye, Receipt, RotateCcw, Search, Trash2, X, Download, Edit, Zap, Check, ChevronsUpDown, MoreHorizontal, PackageCheck, Truck, Plus, Printer, Send, FileText, Upload, Globe, UserCog } from 'lucide-react';
 import AppPagination from '@/components/AppPagination';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -389,7 +389,6 @@ export default function AdminOrdersClient({
     customItemPrice: '',
   });
   const [draftItems, setDraftItems] = useState([defaultUnknownItem]);
-  const [createLinkedInvoice, setCreateLinkedInvoice] = useState(true); // default ON
   
   // Modals & Popovers State
   const [editingOrder, setEditingOrder] = useState(null);
@@ -1063,7 +1062,7 @@ export default function AdminOrdersClient({
         {
           productId,
           name: product.Name,
-          price: Number(product.discountedPrice ?? product.Price ?? 0),
+          price: Number(product.Price ?? 0),
           image: getPrimaryProductImage(product)?.url || '',
           quantity: 1,
         },
@@ -1091,7 +1090,7 @@ export default function AdminOrdersClient({
         {
           productId,
           name: product.Name,
-          price: Number(product.discountedPrice ?? product.Price ?? 0),
+          price: Number(product.Price ?? 0),
           image: getPrimaryProductImage(product)?.url || '',
           quantity: 1,
         },
@@ -1898,7 +1897,6 @@ export default function AdminOrdersClient({
         weight: draftForm.weight,
         notes: draftForm.notes,
         manualCodAmount: draftForm.manualCodAmount,
-        createLinkedInvoice,
         items: draftItems.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
@@ -1943,18 +1941,6 @@ export default function AdminOrdersClient({
       <div className="flex items-center justify-between gap-2.5">
         <h2 className="text-xl font-bold tracking-tight text-foreground md:text-xl">Orders</h2>
         <div className="flex items-center gap-2">
-          <Link href="/admin/invoices">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="h-8 gap-1.5 px-2.5 text-xs text-foreground hover:bg-muted"
-            >
-              <FileSpreadsheet className="size-3.5 text-emerald-600" />
-              <span className="hidden sm:inline">Invoices Management</span>
-              <span className="sm:hidden">Invoices</span>
-            </Button>
-          </Link>
           <Button
             type="button"
             size="sm"
@@ -3460,7 +3446,7 @@ export default function AdminOrdersClient({
                                           </div>
                                         </div>
                                         <span className="shrink-0 text-[11px] font-semibold text-foreground">
-                                          {formatPrice(product.discountedPrice ?? product.Price ?? 0)}
+                                          {formatPrice(product.Price ?? 0)}
                                         </span>
                                       </div>
                                     </CommandItem>
@@ -3600,17 +3586,6 @@ export default function AdminOrdersClient({
             </div>
 
             <DialogFooter className="sticky bottom-0 z-[100] -mx-3 -mb-3 mt-4 bg-card/95 pb-3 pl-3 pr-3 pt-4 border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] backdrop-blur sm:-mx-5 sm:-mb-5 sm:pb-5 sm:pl-5 sm:pr-5 sm:pt-4 lg:-mx-6 lg:-mb-6 lg:pb-6 lg:pl-6 lg:pr-6 gap-1.5 sm:gap-2">
-              {/* Also create invoice checkbox */}
-              <label className="flex items-center gap-2 cursor-pointer select-none mr-auto">
-                <input
-                  type="checkbox"
-                  checked={createLinkedInvoice}
-                  onChange={(e) => setCreateLinkedInvoice(e.target.checked)}
-                  className="w-4 h-4 rounded accent-emerald-600 cursor-pointer"
-                />
-                <span className="text-xs font-medium text-foreground">Also create linked Invoice</span>
-                <span className="text-[10px] text-muted-foreground">(default: on)</span>
-              </label>
               <Button type="button" variant="ghost" size="sm" onClick={() => { setIsCreateModalOpen(false); resetDraftComposer(); }} className="admin-cta-button">
                 Cancel
               </Button>
@@ -3791,7 +3766,7 @@ export default function AdminOrdersClient({
                         <p className="p-3 text-center text-[12px] text-muted-foreground">No matching products found.</p>
                       ) : (
                         availableEditProducts.map(({ product, primaryImage, categorySummary }) => {
-                          const price = Number(product.discountedPrice ?? product.Price ?? 0);
+                          const price = Number(product.Price ?? 0);
                           return (
                             <div
                               key={product._id}

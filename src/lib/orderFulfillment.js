@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
 
 import Product from '@/models/Product';
-import Vendor from '@/models/Vendor';
 import mongooseConnect from '@/lib/mongooseConnect';
-import { normalizeVendorSnapshot } from '@/lib/vendors';
 import { normalizeProductImages } from '@/lib/productImages';
+import { getAvailableStock, getProductUnitPrice, isProductOutOfStock } from '@/lib/productCommerce';
 
 function toCleanId(value = '') {
   return String(value || '').trim();
@@ -17,21 +16,6 @@ function toCleanString(value = '') {
 function toSafeNumber(value, fallback = 0) {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : fallback;
-}
-
-function resolveCheckoutUnitPrice(product, packLabel = '') {
-  if (packLabel && Array.isArray(product.packOptions)) {
-    const pack = product.packOptions.find(p => p.label === packLabel);
-    if (pack) {
-      return Math.max(0, toSafeNumber(pack.price));
-    }
-  }
-
-  if (product.isDiscounted === true && product.discountedPrice != null) {
-    return Math.max(0, toSafeNumber(product.discountedPrice));
-  }
-
-  return Math.max(0, toSafeNumber(product.Price));
 }
 
 function buildProductLookupMap(products = []) {
@@ -54,7 +38,6 @@ export async function buildOrderItemsWithSourcing(items = []) {
     .map((item) => ({
       productId: toCleanId(item.slug || item.productId || item._id || item.id),
       quantity: Math.max(1, toSafeNumber(item.quantity, 1)),
-      packLabel: toCleanString(item.packLabel || ''),
       name: toCleanString(item.name || ''),
       price: toSafeNumber(item.price, 0),
       image: toCleanString(item.image || ''),
@@ -68,13 +51,12 @@ export async function buildOrderItemsWithSourcing(items = []) {
   const customItems = [];
   const dbItems = [];
 
-  requestedItems.forEach(item => {
+  requestedItems.forEach((item) => {
     if (item.productId.startsWith('custom-') || item.productId.startsWith('unknown-')) {
       customItems.push({
         productId: item.productId,
         name: item.name,
         price: item.price,
-        packLabel: item.packLabel,
         quantity: item.quantity,
         image: item.image,
         sourcingVendors: [],
@@ -92,7 +74,7 @@ export async function buildOrderItemsWithSourcing(items = []) {
       ...(objectIds.length > 0 ? [{ _id: { $in: objectIds } }] : []),
     ],
   })
-    .select('slug Name Price discountedPrice isDiscounted isFreeDelivery vendors Images packOptions')
+    .select('slug Name Price Images stockQuantity StockStatus showOnStore')
     .lean();
   const productMap = buildProductLookupMap(products);
 
@@ -103,65 +85,26 @@ export async function buildOrderItemsWithSourcing(items = []) {
     throw new Error(`Some checkout items are no longer available: ${missingProductIds.join(', ')}`);
   }
 
-  const vendorIds = Array.from(
-    new Set(
-      products.flatMap((product) =>
-        (Array.isArray(product.vendors) ? product.vendors : [])
-          .map((vendor) => toCleanId(vendor.vendorId))
-          .filter(Boolean)
-      )
-    )
-  ).filter((value) => mongoose.Types.ObjectId.isValid(value));
-
-  const vendors = vendorIds.length > 0
-    ? await Vendor.find({ _id: { $in: vendorIds } }, 'name shopNumber phone whatsappNumber email address').lean()
-    : [];
-  const vendorMap = new Map(vendors.map((vendor) => [vendor._id.toString(), vendor]));
-
-  const sourcingMap = new Map();
-  products.forEach((product) => {
-    const sourcingVendors = (Array.isArray(product.vendors) ? product.vendors : [])
-      .map(normalizeVendorSnapshot)
-      .filter(Boolean)
-      .map((entry) => {
-        const vendor = vendorMap.get(toCleanId(entry.vendorId));
-        return {
-          vendorId: toCleanId(entry.vendorId),
-          name: toCleanString(vendor?.name || entry.name),
-          shopNumber: toCleanString(vendor?.shopNumber || entry.shopNumber),
-          phone: toCleanString(vendor?.phone || entry.phone),
-          whatsappNumber: toCleanString(vendor?.whatsappNumber || entry.whatsappNumber),
-          email: toCleanString(vendor?.email || entry.email),
-          address: toCleanString(vendor?.address || entry.address),
-          vendorProductName: toCleanString(entry.vendorProductName),
-          vendorPrice: entry.vendorPrice == null ? null : Math.max(0, toSafeNumber(entry.vendorPrice)),
-        };
-      });
-
-    sourcingMap.set(product._id.toString(), sourcingVendors);
-    if (product.slug) {
-      sourcingMap.set(toCleanString(product.slug), sourcingVendors);
-    }
-  });
-
   const resolvedDbItems = dbItems.map((item) => {
     const product = productMap.get(item.productId);
-    const images = normalizeProductImages(product.Images);
-    
-    let finalName = toCleanString(product.Name);
-    if (item.packLabel && !finalName.includes(`(${item.packLabel})`)) {
-      finalName = `${finalName} (${item.packLabel})`;
+    if (isProductOutOfStock(product)) {
+      throw new Error(`${product.Name} is out of stock.`);
     }
+
+    const available = getAvailableStock(product);
+    if (item.quantity > available) {
+      throw new Error(`${product.Name} only has ${available} in stock.`);
+    }
+
+    const images = normalizeProductImages(product.Images);
 
     return {
       productId: item.productId,
-      name: finalName,
-      price: resolveCheckoutUnitPrice(product, item.packLabel),
-      packLabel: item.packLabel,
+      name: toCleanString(product.Name),
+      price: getProductUnitPrice(product),
       quantity: item.quantity,
       image: toCleanString(images[0]?.url),
-      sourcingVendors: sourcingMap.get(item.productId) || [],
-      isFreeDelivery: Boolean(product.isFreeDelivery),
+      sourcingVendors: [],
     };
   });
 
@@ -219,9 +162,6 @@ export async function applyInventoryAdjustments(orderItems = []) {
     },
   }));
 
-  if (operations.length > 0) {
-    await Product.bulkWrite(operations, { ordered: false });
-  }
-
-  return operations;
+  if (operations.length === 0) return [];
+  return Product.bulkWrite(operations);
 }

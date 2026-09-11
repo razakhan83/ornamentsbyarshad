@@ -109,7 +109,7 @@ function SortableProductItem({ product, index, onRemove }) {
           </p>
           <div className="flex flex-wrap items-center gap-2 mt-1">
             <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
-              Rs. {(product.discountedPrice || product.price || 0).toLocaleString()}
+              Rs. {(product.price || 0).toLocaleString()}
             </span>
             <Badge
               variant={product.stockStatus === 'In Stock' ? 'outline' : 'secondary'}
@@ -534,7 +534,7 @@ export default function CategoryShowcaseDialog({
                             </p>
                             <div className="flex items-center gap-2 mt-1">
                               <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                                Rs. {(product.discountedPrice || product.price || 0).toLocaleString()}
+                                Rs. {(product.price || 0).toLocaleString()}
                               </span>
                               <Badge
                                 variant={product.stockStatus === 'In Stock' ? 'outline' : 'secondary'}

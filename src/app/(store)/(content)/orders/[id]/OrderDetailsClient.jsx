@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Package, Truck, ExternalLink, MessageSquare, CheckCircle2, Star } from 'lucide-react';
 import CopyButton from '@/components/CopyButton';
-import InvoiceButton from '@/components/InvoiceButtonWrapper';
 import NocTrackingModal from '@/components/NocTrackingModal';
 import ReviewModal from '@/components/ReviewModal';
 import { Button } from '@/components/ui/button';
@@ -28,7 +27,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-export default function OrderDetailsClient({ order, invoiceBranding }) {
+export default function OrderDetailsClient({ order }) {
   const [showTrackingModal, setShowTrackingModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [currentOrder, setCurrentOrder] = useState(order);
@@ -183,7 +182,6 @@ export default function OrderDetailsClient({ order, invoiceBranding }) {
                 <Badge variant="outline" className="px-2.5 py-0.5 text-xs font-semibold bg-blue-50 text-blue-700 border-blue-200">
                   {displayStatus}
                 </Badge>
-                <InvoiceButton order={currentOrder} branding={invoiceBranding} variant="outline" className="h-8 sm:h-9 text-xs sm:text-sm" />
               </div>
             </CardHeader>
           </Card>

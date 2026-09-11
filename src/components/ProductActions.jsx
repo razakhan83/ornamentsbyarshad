@@ -15,16 +15,7 @@ import { toast } from 'sonner';
 import { buildProductWhatsAppMessage, createWhatsAppUrl } from '@/lib/whatsapp';
 import { flyToCart } from '@/lib/flyToCart';
 import { useActionLock } from '@/hooks/useActionLock';
-
-const METALS = [
-    { id: '18k-yellow', label: '18K Yellow Gold', color: '#E5C378' },
-    { id: '18k-white', label: '18K White Gold', color: '#E2E5E8' },
-    { id: '18k-rose', label: '18K Rose Gold', color: '#EAB2A0' },
-    { id: '22k-gold', label: '22K Gold', color: '#F3BA4F' },
-    { id: 'platinum', label: 'Platinum 950', color: '#D5DCE2' },
-];
-
-const SIZES = ['US 5', 'US 6', 'US 7', 'US 8', 'US 9', 'Custom'];
+import { getAvailableStock, isProductOutOfStock } from '@/lib/productCommerce';
 
 export function ProductSocialActions({ product, className = '' }) {
     const handleShare = async () => {
@@ -117,9 +108,6 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
 
     const [descriptionOpen, setDescriptionOpen] = useState(false);
     const [specsOpen, setSpecsOpen] = useState(true);
-    const packOptions = Array.isArray(product?.packOptions) ? product.packOptions : [];
-    const [selectedPack, setSelectedPack] = useState(packOptions.length > 0 ? packOptions[0] : null);
-    const [selectedMetal, setSelectedMetal] = useState(METALS[0]);
     const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
     const addLock = useActionLock();
     const buyLock = useActionLock();
@@ -171,8 +159,19 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
         };
     }, []);
 
-    const increment = () => setQuantity(q => q + 1);
-    const decrement = () => setQuantity(q => (q > 1 ? q - 1 : 1));
+    const availableStock = getAvailableStock(product);
+    const isOutOfStock = isProductOutOfStock(product);
+
+    useEffect(() => {
+        if (availableStock <= 0) {
+            setQuantity(1);
+            return;
+        }
+        setQuantity((q) => Math.min(Math.max(1, q), availableStock));
+    }, [availableStock]);
+
+    const increment = () => setQuantity((q) => (availableStock > 0 ? Math.min(q + 1, availableStock) : 1));
+    const decrement = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
     const handleAddToCart = (event) => addLock.run(async () => {
         if (isOutOfStock) return;
@@ -184,13 +183,10 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
         try {
             const productToAdd = {
                 ...product,
-                Price: selectedPack ? selectedPack.price : (product.discountedPrice ?? product.Price ?? basePrice),
-                discountedPrice: selectedPack ? selectedPack.price : (product.discountedPrice ?? product.Price ?? basePrice),
-                selectedMetal: product?.metalType || selectedMetal?.label,
+                Price: product.Price ?? basePrice,
+                selectedMetal: product?.metalType || undefined,
                 selectedSize: selectedSize || product?.size || undefined,
                 selectedColor: selectedColor || undefined,
-                packLabel: selectedPack?.label,
-                isFreeDelivery: true,
             };
 
             const result = await addToCart(productToAdd, quantity);
@@ -212,13 +208,10 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
         try {
             const productToAdd = {
                 ...product,
-                Price: selectedPack ? selectedPack.price : (product.discountedPrice ?? product.Price ?? basePrice),
-                discountedPrice: selectedPack ? selectedPack.price : (product.discountedPrice ?? product.Price ?? basePrice),
-                selectedMetal: product?.metalType || selectedMetal?.label,
+                Price: product.Price ?? basePrice,
+                selectedMetal: product?.metalType || undefined,
                 selectedSize: selectedSize || product?.size || undefined,
                 selectedColor: selectedColor || undefined,
-                packLabel: selectedPack?.label,
-                isFreeDelivery: true,
             };
 
             const result = await addToCart(productToAdd, quantity);
@@ -229,8 +222,6 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
             toast.error('Failed to proceed to checkout.');
         }
     });
-
-    const isOutOfStock = product.StockStatus === "Out of Stock" || product.showOnStore === false;
 
     const handleNotifyFieldChange = (field) => (event) => {
         setNotifyForm((previous) => ({ ...previous, [field]: event.target.value }));
@@ -271,15 +262,8 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
     };
 
     const formatPrice = (raw) => `Rs. ${Number(raw || 0).toLocaleString('en-PK')}`;
-    const displayPrice = selectedPack ? selectedPack.price : basePrice;
-    const displayComparePrice = (() => {
-        if (!compareAtPrice) return null;
-        if (!selectedPack) return compareAtPrice > basePrice ? compareAtPrice : null;
-        const match = selectedPack.label.match(/\d+/);
-        const qty = match ? parseInt(match[0], 10) : 1;
-        const calculatedCompare = compareAtPrice * qty;
-        return calculatedCompare > selectedPack.price ? calculatedCompare : null;
-    })();
+    const displayPrice = basePrice;
+    const displayComparePrice = compareAtPrice && compareAtPrice > basePrice ? compareAtPrice : null;
 
     // Has any jewelry specification
     const hasJewelrySpecs = Boolean(
@@ -324,7 +308,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
             <div className="flex items-center gap-2">
               <span className={cn("size-2.5 rounded-full", isOutOfStock ? "bg-red-500 animate-pulse" : "bg-emerald-500")} />
               <span className="text-xs font-medium text-[#121212]">
-                {isOutOfStock ? "Out of Stock" : `${product.stockQuantity || 1} item in stock`}
+                {isOutOfStock ? "Out of Stock" : `${availableStock} ${availableStock === 1 ? "item" : "items"} in stock`}
               </span>
             </div>
 

@@ -37,7 +37,7 @@ export async function GET(req, { params }) {
     }
 
     const products = await Product.find(filter)
-      .select('Name Price discountedPrice isDiscounted Images StockStatus stockQuantity showOnStore isFeatured createdAt')
+      .select('Name Price compareAtPrice Images StockStatus stockQuantity showOnStore isFeatured createdAt')
       .sort({ createdAt: -1 })
       .limit(100)
       .lean();
@@ -50,8 +50,7 @@ export async function GET(req, { params }) {
         _id: p._id.toString(),
         name: p.Name || 'Untitled Product',
         price: p.Price || 0,
-        discountedPrice: p.discountedPrice || null,
-        isDiscounted: Boolean(p.isDiscounted),
+        compareAtPrice: p.compareAtPrice || null,
         image: optimizeCloudinaryUrl(imageUrl),
         stockStatus: p.StockStatus || (p.stockQuantity > 0 ? 'In Stock' : 'Out of Stock'),
         stockQuantity: p.stockQuantity ?? 0,

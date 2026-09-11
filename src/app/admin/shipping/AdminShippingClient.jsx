@@ -161,7 +161,7 @@ export default function AdminShippingClient({ initialSettings }) {
             </div>
             <FieldDescription className="pt-1 flex items-center gap-1.5">
               <Info className="size-3" />
-              Orders exceeding this amount will have zero shipping charges.
+              Orders at or above this amount ship free. Set to 0 to disable free shipping.
             </FieldDescription>
             </FieldContent>
           </Field>

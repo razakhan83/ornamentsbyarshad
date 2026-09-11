@@ -25,6 +25,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { getPrimaryProductImage } from '@/lib/productImages';
+import { compareAtPriceFromPercentOff, getCompareAtOffPercent, getVisibleCompareAtPrice } from '@/lib/productCommerce';
 
 export default function CampaignsClient({ initialDiscounted = [] }) {
   const router = useRouter();
@@ -69,26 +70,24 @@ export default function CampaignsClient({ initialDiscounted = [] }) {
     const pNum = Math.min(99, Math.max(0, Number(percentage) || 0));
     setSaving(true);
     try {
+      const compareAtPrice = compareAtPriceFromPercentOff(product.Price, pNum);
       const res = await fetch(`/api/products/${product._id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          discountPercentage: pNum,
-          isDiscounted: pNum > 0
-        }),
+        body: JSON.stringify({ compareAtPrice }),
       });
 
-      if (!res.ok) throw new Error('Failed to update product discount');
+      if (!res.ok) throw new Error('Failed to update product offer');
 
-      if (pNum > 0) {
+      if (compareAtPrice) {
         setProducts((prev) => [
-          { ...product, discountPercentage: pNum, isDiscounted: true },
+          { ...product, compareAtPrice },
           ...prev.filter((p) => p._id !== product._id)
         ]);
-        toast.success(`Applied ${pNum}% discount to "${product.Name}".`);
+        toast.success(`Applied ${pNum}% compare-at offer to "${product.Name}".`);
       } else {
         setProducts((prev) => prev.filter((p) => p._id !== product._id));
-        toast.success(`Removed discount from "${product.Name}".`);
+        toast.success(`Removed special offer from "${product.Name}".`);
       }
 
       setIsAddModalOpen(false);
@@ -268,7 +267,8 @@ export default function CampaignsClient({ initialDiscounted = [] }) {
           <div className="divide-y divide-border">
             {products.map((product) => {
               const img = getPrimaryProductImage(product);
-              const discountedPrice = Math.round(product.Price * (1 - (product.discountPercentage || 0) / 100));
+              const compareAtPrice = getVisibleCompareAtPrice(product);
+              const offPercent = getCompareAtOffPercent(product);
               return (
                 <div key={product._id} className="p-3.5 sm:p-4 flex items-center justify-between gap-3 hover:bg-muted/20 transition-colors">
                   <div className="flex items-center gap-3 sm:gap-4 min-w-0">
@@ -284,14 +284,18 @@ export default function CampaignsClient({ initialDiscounted = [] }) {
                       </Link>
                       <div className="flex items-center gap-2 mt-0.5">
                         <span className="text-xs font-bold text-rose-600">
-                          PKR {discountedPrice.toLocaleString('en-PK')}
-                        </span>
-                        <span className="text-xs text-muted-foreground line-through">
                           PKR {Number(product.Price || 0).toLocaleString('en-PK')}
                         </span>
-                        <Badge className="bg-rose-500 text-white text-[10px] px-1.5 py-0">
-                          {product.discountPercentage}% OFF
-                        </Badge>
+                        {compareAtPrice ? (
+                          <span className="text-xs text-muted-foreground line-through">
+                            PKR {compareAtPrice.toLocaleString('en-PK')}
+                          </span>
+                        ) : null}
+                        {offPercent > 0 ? (
+                          <Badge className="bg-rose-500 text-white text-[10px] px-1.5 py-0">
+                            {offPercent}% OFF
+                          </Badge>
+                        ) : null}
                       </div>
                     </div>
                   </div>

@@ -12,8 +12,6 @@ export function calculateCheckoutPricing({
   city = '',
   settings = {},
   appliedCoupon = null,
-  hasFreeDeliveryProduct = false,
-  items = [],
 } = {}) {
   const safeSubtotal = Math.max(0, toSafeNumber(subtotal));
   const normalizedCity = normalizeCheckoutCity(city);
@@ -34,14 +32,10 @@ export function calculateCheckoutPricing({
   }
 
   const freeShippingThreshold = Math.max(0, toSafeNumber(settings?.freeShippingThreshold, 0));
-  const qualifiesByThreshold = safeSubtotal >= freeShippingThreshold && freeShippingThreshold > 0;
+  const qualifiesByThreshold = freeShippingThreshold > 0 && safeSubtotal >= freeShippingThreshold;
   const qualifiesByCoupon = appliedCoupon?.discountType === 'free_shipping';
-  const qualifiesByProduct = Boolean(
-    hasFreeDeliveryProduct || 
-    (Array.isArray(items) && items.some((item) => Boolean(item?.isFreeDelivery)))
-  );
 
-  const isFreeShipping = qualifiesByThreshold || qualifiesByCoupon || qualifiesByProduct;
+  const isFreeShipping = qualifiesByThreshold || qualifiesByCoupon;
   const shipping = isFreeShipping ? 0 : Math.max(0, shippingBase);
   const total = Math.max(0, safeSubtotal - discountAmount) + shipping;
 
@@ -54,6 +48,5 @@ export function calculateCheckoutPricing({
     isKarachi,
     discountAmount,
     appliedCoupon,
-    isProductFreeDelivery: qualifiesByProduct,
   };
 }

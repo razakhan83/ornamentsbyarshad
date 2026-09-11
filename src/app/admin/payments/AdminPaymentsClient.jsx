@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { CreditCard, Search, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -64,7 +63,7 @@ export default function AdminPaymentsClient({ initialPayments = [] }) {
             <span>Payments Received</span>
           </h1>
           <p className="text-xs text-zinc-500 mt-1">
-            Audit history of all customer payments recorded against invoices.
+            Audit history of all recorded customer payments.
           </p>
         </div>
 
@@ -132,9 +131,7 @@ export default function AdminPaymentsClient({ initialPayments = [] }) {
                     <td className="px-4 py-3 font-bold text-zinc-900">{p.paymentNumber}</td>
                     <td className="px-4 py-3 whitespace-nowrap">{formatDate(p.paymentDate)}</td>
                     <td className="px-4 py-3 whitespace-nowrap font-semibold text-emerald-600">
-                      <Link href={`/admin/invoices/${p.invoiceId}`} className="hover:underline">
                         {p.invoiceNumber}
-                      </Link>
                     </td>
                     <td className="px-4 py-3 font-medium text-zinc-900">{p.customerName}</td>
                     <td className="px-4 py-3">

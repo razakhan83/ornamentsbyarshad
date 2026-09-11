@@ -161,7 +161,6 @@ function getPageMeta(pathname) {
   if (pathname.startsWith('/admin/abandoned-carts')) return { title: 'Abandoned Carts' };
   if (pathname.startsWith('/admin/orders')) return { title: 'Orders' };
   if (pathname.startsWith('/admin/products')) return { title: 'Products' };
-  if (pathname.startsWith('/admin/vendors')) return { title: 'Vendors' };
   if (pathname.startsWith('/admin/categories')) return { title: 'Categories' };
   if (pathname.startsWith('/admin/reviews')) return { title: 'Reviews' };
   if (pathname.startsWith('/admin/restock-requests')) return { title: 'Restock Requests' };

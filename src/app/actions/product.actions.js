@@ -35,7 +35,16 @@ export async function getProductDetailsAction(productId) {
   if (!product) {
     throw new Error('Product not found');
   }
-  return JSON.parse(JSON.stringify(product));
+  const {
+    vendors,
+    packOptions,
+    discountPercentage,
+    isDiscounted,
+    discountedPrice,
+    isFreeDelivery,
+    ...safeProduct
+  } = product;
+  return JSON.parse(JSON.stringify(safeProduct));
 }
 
 export async function toggleProductLiveAction(productId, nextValue) {
@@ -115,27 +124,16 @@ export async function setProductDiscountAction(productId, discountPercentage) {
   await assertAdmin();
   await mongooseConnect();
   const Product = (await import('@/models/Product')).default;
+  const { compareAtPriceFromPercentOff } = await import('@/lib/productCommerce');
 
   const product = await Product.findById(productId);
   if (!product) {
     throw new Error('Product not found');
   }
 
-  const pct = Math.min(100, Math.max(0, Number(discountPercentage) || 0));
-  product.discountPercentage = pct;
-  product.isDiscounted = pct > 0;
-  
-  // Compute discountedPrice if needed
-  if (product.isDiscounted) {
-    product.discountedPrice = Math.round(Number(product.Price) * (1 - pct / 100));
-  } else {
-    product.discountedPrice = null;
-  }
-  
+  product.compareAtPrice = compareAtPriceFromPercentOff(product.Price, discountPercentage);
   await product.save();
 
-  // Use revalidateTag (hard/immediate flush) not updateTag (lazy background)
-  // so the admin page re-render after this action gets fresh data from MongoDB
   updateTag('products');
   if (product.slug) {
     updateTag(`product-${product.slug}`);
@@ -148,5 +146,5 @@ export async function setProductDiscountAction(productId, discountPercentage) {
   revalidatePath('/admin/products');
   revalidatePath('/products');
 
-  return { success: true, discountPercentage: product.discountPercentage, isDiscounted: product.isDiscounted };
+  return { success: true, compareAtPrice: product.compareAtPrice };
 }

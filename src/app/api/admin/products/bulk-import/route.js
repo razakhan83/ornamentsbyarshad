@@ -5,6 +5,7 @@ import Product from '@/models/Product';
 import Category from '@/models/Category';
 import ExcelJS from 'exceljs';
 import { revalidateTag, revalidatePath } from 'next/cache';
+import { generateNewProductRating } from '@/lib/productReviewUtils';
 
 const slugify = (text) => {
     return (text || '').toString().toLowerCase()
@@ -131,8 +132,7 @@ export async function POST(req) {
                 showOnStore: false, // Default to hidden for bulk uploads
                 StockStatus: 'In Stock',
                 stockQuantity: 0,
-                discountPercentage: 0,
-                isDiscounted: false,
+                rating: generateNewProductRating(),
                 isNewArrival: false,
                 isBestSelling: false,
                 Description: '',

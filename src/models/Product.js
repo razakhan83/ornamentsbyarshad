@@ -22,78 +22,6 @@ const ProductImageSchema = new mongoose.Schema(
     }
 );
 
-const PackOptionSchema = new mongoose.Schema(
-    {
-        label: {
-            type: String,
-            required: true,
-            trim: true,
-        },
-        price: {
-            type: Number,
-            required: true,
-            min: 0,
-        },
-    },
-    {
-        _id: false,
-    }
-);
-
-const ProductVendorSchema = new mongoose.Schema(
-    {
-        vendorId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Vendor',
-            required: false,
-        },
-        name: {
-            type: String,
-            required: true,
-            trim: true,
-        },
-        shopNumber: {
-            type: String,
-            default: '',
-            trim: true,
-        },
-        phone: {
-            type: String,
-            default: '',
-            trim: true,
-        },
-        whatsappNumber: {
-            type: String,
-            default: '',
-            trim: true,
-        },
-        email: {
-            type: String,
-            default: '',
-            trim: true,
-            lowercase: true,
-        },
-        address: {
-            type: String,
-            default: '',
-            trim: true,
-        },
-        vendorProductName: {
-            type: String,
-            default: '',
-            trim: true,
-        },
-        vendorPrice: {
-            type: Number,
-            default: null,
-            min: 0,
-        },
-    },
-    {
-        _id: false,
-    }
-);
-
 const ProductSchema = new mongoose.Schema(
     {
         Name: {
@@ -176,14 +104,6 @@ const ProductSchema = new mongoose.Schema(
             required: [true, 'Please provide at least one category.'],
             default: [],
         },
-        vendors: {
-            type: [ProductVendorSchema],
-            default: [],
-        },
-        packOptions: {
-            type: [PackOptionSchema],
-            default: [],
-        },
         // Jewelry Specific Specifications
         metalType: {
             type: String,
@@ -244,24 +164,16 @@ const ProductSchema = new mongoose.Schema(
             type: Boolean,
             default: true
         },
-        discountPercentage: {
-            type: Number,
-            default: 0,
-            min: 0,
-            max: 100,
-        },
         customReviewCount: {
             type: Number,
             default: null,
             min: 0,
         },
-        isDiscounted: {
-            type: Boolean,
-            default: false,
-        },
-        discountedPrice: {
+        rating: {
             type: Number,
             default: null,
+            min: 1,
+            max: 5,
         },
         isNewArrival: {
             type: Boolean,
@@ -272,10 +184,6 @@ const ProductSchema = new mongoose.Schema(
             default: false,
         },
         isFeatured: {
-            type: Boolean,
-            default: false,
-        },
-        isFreeDelivery: {
             type: Boolean,
             default: false,
         },
@@ -300,15 +208,12 @@ const ProductSchema = new mongoose.Schema(
 ProductSchema.index({ showOnStore: 1, createdAt: -1 });
 ProductSchema.index({ showOnStore: 1, Category: 1, createdAt: -1 });
 ProductSchema.index({ showOnStore: 1, slug: 1 });
-ProductSchema.index({ showOnStore: 1, isDiscounted: 1, createdAt: -1 });
 ProductSchema.index({ showOnStore: 1, isNewArrival: 1, createdAt: -1 });
 ProductSchema.index({ showOnStore: 1, isBestSelling: 1, createdAt: -1 });
 ProductSchema.index({ showOnStore: 1, isFeatured: 1, featuredPriority: -1, createdAt: -1 });
-ProductSchema.index({ showOnStore: 1, isFreeDelivery: 1, createdAt: -1 });
 ProductSchema.index({ showOnStore: 1, Price: 1, createdAt: -1 });
 ProductSchema.index({ showOnStore: 1, Price: -1, createdAt: -1 });
-ProductSchema.index({ 'vendors.name': 1 });
-ProductSchema.index({ 'vendors.vendorId': 1 });
+ProductSchema.index({ showOnStore: 1, rating: -1 });
 
 const cachedProduct = mongoose.models.Product;
 if (
@@ -316,18 +221,10 @@ if (
     (
         !cachedProduct.schema.path('compareAtPrice') ||
         !cachedProduct.schema.path('shortDescription') ||
-        !cachedProduct.schema.path('vendors') ||
-        !cachedProduct.schema.path('vendors').schema?.path('vendorProductName') ||
-        !cachedProduct.schema.path('vendors').schema?.path('vendorPrice') ||
-        !cachedProduct.schema.path('vendors').schema?.path('phone') ||
-        !cachedProduct.schema.path('vendors').schema?.path('whatsappNumber') ||
-        !cachedProduct.schema.path('vendors').schema?.path('email') ||
-        !cachedProduct.schema.path('vendors').schema?.path('address') ||
-        !cachedProduct.schema.path('packOptions') ||
+        !cachedProduct.schema.path('rating') ||
         !cachedProduct.schema.path('tags') ||
         !cachedProduct.schema.path('primaryTag') ||
         !cachedProduct.schema.path('isFeatured') ||
-        !cachedProduct.schema.path('isFreeDelivery') ||
         !cachedProduct.schema.path('featuredPriority') ||
         !cachedProduct.schema.path('availableColors')
     )

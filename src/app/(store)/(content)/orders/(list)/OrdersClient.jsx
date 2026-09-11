@@ -57,7 +57,6 @@ import NocTrackingModal from '@/components/NocTrackingModal';
 import { normalizeOrderStatus } from '@/lib/order-status';
 import { cn } from '@/lib/utils';
 import CopyButton from '@/components/CopyButton';
-import InvoiceButton from '@/components/InvoiceButtonWrapper';
 
 const getOrderStatusDetails = (status) => {
   const norm = normalizeOrderStatus(status);
@@ -302,7 +301,7 @@ const TrackingTimeline = ({ order, mounted }) => {
 };
 
 
-export default function OrdersClient({ initialOrders, invoiceBranding }) {
+export default function OrdersClient({ initialOrders }) {
   const orders = initialOrders || [];
   const activeOrders = orders.filter(o => ['Order Confirmed', 'In Process', 'Packed', 'Shipped', 'Out For Delivery'].includes(normalizeOrderStatus(o.status)));
   const deliveredOrders = orders.filter(o => ['Delivered', 'Returned'].includes(normalizeOrderStatus(o.status)));
@@ -494,8 +493,6 @@ export default function OrdersClient({ initialOrders, invoiceBranding }) {
                         <Link href={`/orders/${order._id}`} className="text-primary hover:underline font-bold text-[13px]">
                           View order details
                         </Link>
-                        <div className="w-px h-3 bg-gray-300" />
-                        <InvoiceButton order={order} branding={invoiceBranding} variant="link" className="text-primary hover:underline font-bold text-[13px] p-0 h-auto" />
                       </div>
                     </div>
                   </div>

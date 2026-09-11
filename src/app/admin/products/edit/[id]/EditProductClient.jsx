@@ -13,7 +13,6 @@ import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import ProductRichTextEditor from '@/components/admin/ProductRichTextEditor';
-import VendorAssignmentsEditor from '@/components/admin/VendorAssignmentsEditor';
 import { AdminEditProductSkeleton } from '@/components/AdminDashboardSkeleton';
 import { uploadImageDataUrl } from '@/lib/cloudinaryUpload';
 import { getProductCategories } from '@/lib/productCategories';
@@ -25,6 +24,7 @@ import { cn } from '@/lib/utils';
 import { PRODUCT_TAGS } from '@/lib/productTags';
 import { getSiteUrl } from '@/lib/siteUrl';
 import { getProductSocialShareImage } from '@/lib/cloudinaryImage';
+import { getProductRating } from '@/lib/productReviewUtils';
 
 const selectionChipClass = (selected) =>
   cn(
@@ -53,7 +53,7 @@ export default function EditProduct({ id }) {
   const [Price, setPrice] = useState('');
   const [compareAtPrice, setCompareAtPrice] = useState('');
   const [customReviewCount, setCustomReviewCount] = useState('');
-  const [packOptions, setPackOptions] = useState([{ label: "1 pcs", price: "" }]);
+  const [rating, setRating] = useState('4.6');
   const [metalType, setMetalType] = useState('');
   const [purity, setPurity] = useState('');
   const [grossWeightGrams, setGrossWeightGrams] = useState('');
@@ -67,13 +67,11 @@ export default function EditProduct({ id }) {
   const [gemstoneClarity, setGemstoneClarity] = useState('');
   const [gemstoneColor, setGemstoneColor] = useState('');
   const [Categories, setCategories] = useState([]); // array of selected category ids
-  const [vendorAssignments, setVendorAssignments] = useState([]);
   const [images, setImages] = useState([]); // Array of { url, blurDataURL, publicId, file, isNew }
   const [showOnStore, setIsLive] = useState(false);
   const [isNewArrival, setIsNewArrival] = useState(false);
   const [isBestSelling, setIsBestSelling] = useState(false);
   const [isFeatured, setIsFeatured] = useState(false);
-  const [isFreeDelivery, setIsFreeDelivery] = useState(false);
   const [featuredPriority, setFeaturedPriority] = useState(0);
   const [tags, setTags] = useState([]);
   const [primaryTag, setPrimaryTag] = useState("");
@@ -81,7 +79,6 @@ export default function EditProduct({ id }) {
 
   const [isDragOver, setIsDragOver] = useState(false);
   const [allCategories, setAllCategories] = useState([]);
-  const [allVendors, setAllVendors] = useState([]);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [newCatName, setNewCatName] = useState('');
   const [newCatImage, setNewCatImage] = useState('');
@@ -102,32 +99,13 @@ export default function EditProduct({ id }) {
     else toast.success(message);
   };
 
-  const handleFreeDeliveryToggle = (checked) => {
-    setIsFreeDelivery(checked);
-    if (checked) {
-      setTags((prev) => (prev.includes('free-shipping') ? prev : [...prev, 'free-shipping']));
-      setPrimaryTag((prev) => (!prev ? 'free-shipping' : prev));
-    } else {
-      setTags((prev) => prev.filter((t) => t !== 'free-shipping'));
-      setPrimaryTag((prev) => (prev === 'free-shipping' ? '' : prev));
-    }
-  };
-
   const fetchCategories = useCallback(async () => {
     try {
-      const [categoriesRes, vendorsRes] = await Promise.all([
-        fetch('/api/categories'),
-        fetch('/api/admin/vendors'),
-      ]);
-      const [categoriesData, vendorsData] = await Promise.all([
-        categoriesRes.json(),
-        vendorsRes.json(),
-      ]);
-
+      const categoriesRes = await fetch('/api/categories');
+      const categoriesData = await categoriesRes.json();
       if (categoriesData.success) setAllCategories(categoriesData.data);
-      if (vendorsData.success) setAllVendors(vendorsData.data);
     } catch (err) {
-      console.error('Failed to fetch categories and vendors:', err);
+      console.error('Failed to fetch categories:', err);
     }
   }, []);
 
@@ -155,6 +133,7 @@ export default function EditProduct({ id }) {
           setPrice(p.Price || '');
           setCompareAtPrice(p.compareAtPrice ?? '');
           setCustomReviewCount(p.customReviewCount ?? '');
+          setRating(String(getProductRating(p)));
           setMetalType(p.metalType || '');
           setPurity(p.purity || '');
           setGrossWeightGrams(p.grossWeightGrams ?? '');
@@ -168,16 +147,6 @@ export default function EditProduct({ id }) {
           setGemstoneClarity(p.gemstone?.clarity || '');
           setGemstoneColor(p.gemstone?.color || '');
           setCategories(getProductCategories(p).map((category) => category._id || category.id));
-          setVendorAssignments(
-            Array.isArray(p.vendors)
-              ? p.vendors.map((vendor) => ({
-                  vendorId: vendor.vendorId || vendor._id || vendor.id,
-                  vendorProductName: vendor.vendorProductName || '',
-                  vendorPrice: vendor.vendorPrice ?? '',
-                })).filter((vendor) => vendor.vendorId)
-              : []
-          );
-          setPackOptions(p.packOptions?.length > 0 ? p.packOptions : [{ label: "1 pcs", price: p.Price || "" }]);
           
           const existingImages = normalizeProductImages(
             p.Images,
@@ -188,7 +157,6 @@ export default function EditProduct({ id }) {
           setIsNewArrival(p.isNewArrival === true);
           setIsBestSelling(p.isBestSelling === true);
           setIsFeatured(p.isFeatured === true);
-          setIsFreeDelivery(p.isFreeDelivery === true);
           setFeaturedPriority(p.featuredPriority || 0);
           setTags(Array.isArray(p.tags) ? p.tags : []);
           setPrimaryTag(p.primaryTag || '');
@@ -399,6 +367,7 @@ export default function EditProduct({ id }) {
           Price: Number(Price),
           compareAtPrice: compareAtPrice === '' ? null : Number(compareAtPrice),
           customReviewCount: customReviewCount === '' ? null : Number(customReviewCount),
+          rating: rating === '' ? null : Number(rating),
           Images: finalImages,
           Category: Categories,
           metalType,
@@ -419,7 +388,6 @@ export default function EditProduct({ id }) {
           isNewArrival,
           isBestSelling,
           isFeatured,
-          isFreeDelivery,
           featuredPriority: Number(featuredPriority) || 0,
           tags,
           primaryTag,
@@ -624,6 +592,20 @@ export default function EditProduct({ id }) {
                 placeholder="0.00"
                 step="0.01"
               />
+            </div>
+            <div>
+              <Label className="mb-2">Storefront Rating</Label>
+              <Input
+                type="number"
+                min="1"
+                max="5"
+                step="0.1"
+                value={rating}
+                onChange={(e) => setRating(e.target.value)}
+                className="h-11 px-4"
+                placeholder="4.6"
+              />
+              <p className="mt-1 text-xs text-muted-foreground">Editable storefront rating (1.0–5.0). Saved on the product and shown on the store.</p>
             </div>
             <div>
               <Label className="mb-2">Reviews Count (Optional)</Label>
@@ -1022,7 +1004,7 @@ export default function EditProduct({ id }) {
                         {/* Marketing Flags */}
           <div className="pt-2">
             <p className="text-sm font-semibold text-foreground">Marketing Flags</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-4 sm:border-0 sm:pb-0">
                 <Label className="text-xs text-muted-foreground mr-2 cursor-pointer" htmlFor="toggle-featured">Featured (Ads)</Label>
                 <Switch id="toggle-featured" checked={isFeatured} onCheckedChange={setIsFeatured} />
@@ -1034,14 +1016,6 @@ export default function EditProduct({ id }) {
               <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-4 sm:border-0 sm:pb-0">
                 <Label className="text-xs text-muted-foreground mr-2 cursor-pointer" htmlFor="toggle-best">Best Selling</Label>
                 <Switch id="toggle-best" checked={isBestSelling} onCheckedChange={setIsBestSelling} />
-              </div>
-              <div className="flex items-center justify-between gap-2">
-                <Label className="text-xs text-muted-foreground mr-2 cursor-pointer" htmlFor="toggle-free-marketing-edit">Free Delivery</Label>
-                <Switch 
-                  id="toggle-free-marketing-edit" 
-                  checked={isFreeDelivery} 
-                  onCheckedChange={handleFreeDeliveryToggle} 
-                />
               </div>
             </div>
             

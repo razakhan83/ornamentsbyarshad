@@ -10,7 +10,34 @@ import { getProductCategories } from '@/lib/productCategories';
 import { normalizeProductImages } from '@/lib/productImages';
 import { ensureProductImagesBlur } from '@/lib/serverImageBlur';
 import { formatSeoKeywords } from '@/lib/seoKeywords';
-import { buildProductVendorSnapshots, normalizeVendorSnapshot } from '@/lib/vendors';
+import { resolveStockStatus } from '@/lib/productCommerce';
+import { generateNewProductRating, getProductRating, normalizeProductRating } from '@/lib/productReviewUtils';
+
+const PUBLIC_PRODUCT_SELECT = 'Name Description shortDescription seoTitle seoDescription seoKeywords seoCanonicalUrl seoOgTitle seoOgDescription seoOgImage seoOgImageRatio Price compareAtPrice Images Category StockStatus slug showOnStore createdAt updatedAt stockQuantity isNewArrival isBestSelling isFeatured featuredPriority tags primaryTag metalType purity grossWeightGrams certificateNumber size availableSizes availableColors gemstone customReviewCount rating';
+
+function toPublicProductPayload(product) {
+    const {
+        Image,
+        ImageURL,
+        vendors,
+        packOptions,
+        discountPercentage,
+        isDiscounted,
+        discountedPrice,
+        isFreeDelivery,
+        ...safeProduct
+    } = product;
+
+    return {
+        ...safeProduct,
+        _id: safeProduct._id.toString(),
+        id: safeProduct.slug || safeProduct._id.toString(),
+        Category: getProductCategories(safeProduct),
+        Images: normalizeProductImages(safeProduct.Images),
+        rating: getProductRating(safeProduct),
+        stockQuantity: Math.max(0, Number(safeProduct.stockQuantity) || 0),
+    };
+}
 
 // Utility for formatting a string to a unique URL-friendly slug
 const slugify = (text) => {
@@ -27,7 +54,7 @@ export async function GET(req) {
     try {
         await mongooseConnect();
 
-        // Support ?search= and ?limit= for invoice product search
+        // Support ?search= and ?limit= for admin product search
         const { searchParams } = new URL(req.url);
         const searchQuery = searchParams.get('search') || '';
         const limit = parseInt(searchParams.get('limit') || '0', 10);
@@ -46,7 +73,7 @@ export async function GET(req) {
         }
 
         let dbQuery = Product.find(filter)
-            .select('Name Description shortDescription seoTitle seoDescription seoKeywords seoCanonicalUrl seoOgTitle seoOgDescription seoOgImage seoOgImageRatio Price compareAtPrice Images Category StockStatus slug showOnStore createdAt updatedAt stockQuantity discountPercentage isDiscounted discountedPrice isNewArrival isBestSelling packOptions tags primaryTag metalType purity grossWeightGrams certificateNumber size availableSizes availableColors gemstone customReviewCount')
+            .select(PUBLIC_PRODUCT_SELECT)
             .populate({ path: 'Category', select: 'name slug bgColor' })
             .sort({ createdAt: -1 })
             .lean();
@@ -56,17 +83,7 @@ export async function GET(req) {
         const products = await dbQuery;
 
         // Format objectId to string securely
-        const safeProducts = products.map((p) => {
-            const { Image, ImageURL, ...safeProduct } = p;
-
-            return {
-                ...safeProduct,
-                _id: safeProduct._id.toString(),
-                id: safeProduct.slug || safeProduct._id.toString(),
-                Category: getProductCategories(safeProduct),
-                Images: normalizeProductImages(safeProduct.Images),
-            };
-        });
+        const safeProducts = products.map((p) => toPublicProductPayload(p));
 
         return NextResponse.json({ success: true, data: safeProducts });
     } catch (error) {
@@ -102,7 +119,6 @@ export async function POST(req) {
             seoOgImage,
             Price,
             compareAtPrice,
-            discountPercentage,
             stockQuantity,
             Images,
             cloudinary_id,
@@ -113,13 +129,11 @@ export async function POST(req) {
             isNewArrival,
             isBestSelling,
             isFeatured,
-            isFreeDelivery,
             featuredPriority,
-            vendors,
-            packOptions,
             tags,
             primaryTag,
             customReviewCount,
+            rating,
         } = body;
 
         if (!Name || !Price || !categoryInput) {
@@ -155,20 +169,12 @@ export async function POST(req) {
             ? null
             : Number(compareAtPrice);
         const normalizedStockQuantity = Math.max(0, Number(stockQuantity) || 0);
-        const normalizedDiscountPercentage = Math.min(100, Math.max(0, Number(discountPercentage) || 0));
-        const stockStatus = StockStatus === 'Out of Stock'
-            ? 'Out of Stock'
-            : StockStatus === 'In Stock'
-                ? 'In Stock'
-                : normalizedStockQuantity > 0
-                    ? 'In Stock'
-                    : 'Out of Stock';
-        const discountedPrice = normalizedDiscountPercentage > 0
-            ? Math.round(normalizedPrice * (1 - normalizedDiscountPercentage / 100))
-            : null;
+        const stockStatus = resolveStockStatus(normalizedStockQuantity, StockStatus);
+        const persistedRating = rating !== '' && rating != null
+            ? normalizeProductRating(rating)
+            : generateNewProductRating();
 
         const normalizedImages = await ensureProductImagesBlur(normalizeProductImages(Images));
-        const normalizedVendors = await buildProductVendorSnapshots(vendors);
 
         const product = await Product.create({
             Name,
@@ -185,22 +191,17 @@ export async function POST(req) {
             Price: normalizedPrice,
             compareAtPrice: Number.isFinite(normalizedCompareAtPrice) ? normalizedCompareAtPrice : null,
             customReviewCount: customReviewCount !== '' && customReviewCount != null ? Math.max(0, Number(customReviewCount)) : null,
+            rating: persistedRating,
             Images: normalizedImages,
             cloudinary_id,
             Category: categoryArray,
             stockQuantity: normalizedStockQuantity,
             StockStatus: stockStatus,
             slug: uniqueSlug, // Ensure slug is saved
-            vendors: normalizedVendors,
             showOnStore: showOnStore !== false && showOnStore !== 'false',
-            discountPercentage: normalizedDiscountPercentage,
-            isDiscounted: normalizedDiscountPercentage > 0,
-            discountedPrice,
             isNewArrival: isNewArrival === true || isNewArrival === 'true',
             isBestSelling: isBestSelling === true || isBestSelling === 'true',
             isFeatured: isFeatured === true || isFeatured === 'true',
-            isFreeDelivery: isFreeDelivery === true || isFreeDelivery === 'true',
-            packOptions: Array.isArray(packOptions) ? packOptions : [],
             tags: Array.isArray(tags) ? tags : [],
             primaryTag: primaryTag || '',
             metalType: typeof body.metalType === 'string' ? body.metalType.trim() : '',
@@ -230,14 +231,7 @@ export async function POST(req) {
         revalidatePath(`/products/${product._id.toString()}`);
         return NextResponse.json({
             success: true,
-            data: {
-                ...product.toObject(),
-                _id: product._id.toString(),
-                id: product.slug || product._id.toString(),
-                Category: getProductCategories(product.toObject()),
-                Images: normalizeProductImages(product.Images),
-                vendors: Array.isArray(product.vendors) ? product.vendors.map(normalizeVendorSnapshot).filter(Boolean) : [],
-            },
+            data: toPublicProductPayload(product.toObject()),
         }, { status: 201 });
     } catch (error) {
         console.error('[API] Error:', error.message);

@@ -21,7 +21,6 @@ import {
   normalizeHomePageSections,
 } from '@/lib/homePageSections';
 import { normalizeEmail, getPhoneRegex } from '@/lib/admin';
-import { normalizeVendorSnapshot } from '@/lib/vendors';
 import { getSiteUrl } from '@/lib/siteUrl';
 import {
   DEFAULT_ORDER_STATUS,
@@ -37,6 +36,8 @@ import {
 } from '@/lib/productCategories';
 import { normalizeProductImages } from '@/lib/productImages';
 import { DEFAULT_CUSTOM_PAGES, getCustomPageBySlug as findCustomPageBySlug, mergeCustomPages } from '@/lib/customPages';
+import { COMPARE_AT_SALE_FILTER } from '@/lib/productCommerce';
+import { getProductRating } from '@/lib/productReviewUtils';
 
 const SETTINGS_KEY = 'site-settings';
 const COVER_PHOTOS_KEY = 'home-cover-photos';
@@ -77,13 +78,11 @@ const PRODUCT_CARD_PROJECTION = [
   'Images',
   'Category',
   'StockStatus',
+  'stockQuantity',
   'slug',
   'showOnStore',
   'createdAt',
   'updatedAt',
-  'discountPercentage',
-  'isDiscounted',
-  'discountedPrice',
   'isNewArrival',
   'isBestSelling',
   'isFeatured',
@@ -91,12 +90,12 @@ const PRODUCT_CARD_PROJECTION = [
   'tags',
   'primaryTag',
   'customReviewCount',
+  'rating',
   'availableColors',
   'availableSizes',
 ].join(' ');
 const PRODUCT_DETAIL_PROJECTION = [
   PRODUCT_CARD_PROJECTION,
-  'stockQuantity',
   'seoTitle',
   'seoDescription',
   'seoKeywords',
@@ -105,8 +104,6 @@ const PRODUCT_DETAIL_PROJECTION = [
   'seoOgDescription',
   'seoOgImage',
   'seoOgImageRatio',
-  'vendors',
-  'packOptions',
   'metalType',
   'purity',
   'size',
@@ -196,7 +193,17 @@ function normalizeMediaItem(item, sortOrder = 0, fallbackItem = null) {
 }
 
 function serializeProduct(product) {
-  const { Image, ImageURL, ...safeProduct } = product;
+  const {
+    Image,
+    ImageURL,
+    vendors,
+    packOptions,
+    discountPercentage,
+    isDiscounted,
+    discountedPrice,
+    isFreeDelivery,
+    ...safeProduct
+  } = product;
 
   return {
     ...safeProduct,
@@ -205,18 +212,16 @@ function serializeProduct(product) {
     slug: safeProduct.slug || safeProduct._id.toString(),
     Category: getProductCategories(safeProduct),
     Images: normalizeProductImages(safeProduct.Images),
-    vendors: Array.isArray(safeProduct.vendors)
-      ? safeProduct.vendors.map(normalizeVendorSnapshot).filter(Boolean)
-      : [],
     createdAt: safeProduct.createdAt ? new Date(safeProduct.createdAt).toISOString() : null,
     updatedAt: safeProduct.updatedAt ? new Date(safeProduct.updatedAt).toISOString() : null,
     isNewArrival: safeProduct.isNewArrival === true,
     isBestSelling: safeProduct.isBestSelling === true,
     isFeatured: safeProduct.isFeatured === true,
-    isFreeDelivery: safeProduct.isFreeDelivery === true,
     featuredPriority: Number(safeProduct.featuredPriority || 0),
     tags: Array.isArray(safeProduct.tags) ? safeProduct.tags : [],
     primaryTag: safeProduct.primaryTag || '',
+    rating: getProductRating(safeProduct),
+    stockQuantity: Math.max(0, Number(safeProduct.stockQuantity) || 0),
   };
 }
 
@@ -233,18 +238,16 @@ function toProductCardItem(product) {
     Category: product.Category,
     Images: product.Images,
     StockStatus: product.StockStatus || 'Out of Stock',
+    stockQuantity: Number(product.stockQuantity || 0),
     createdAt: product.createdAt,
     showOnStore: product.showOnStore !== false,
     isNewArrival: product.isNewArrival === true,
     isBestSelling: product.isBestSelling === true,
     isFeatured: product.isFeatured === true,
-    isFreeDelivery: product.isFreeDelivery === true,
     featuredPriority: Number(product.featuredPriority || 0),
     averageRating: Number(product.averageRating || 0),
     reviewCount: Number(product.reviewCount || 0),
-    discountPercentage: Number(product.discountPercentage || 0),
-    isDiscounted: product.isDiscounted === true,
-    discountedPrice: product.discountedPrice != null ? Number(product.discountedPrice) : null,
+    rating: getProductRating(product),
     tags: Array.isArray(product.tags) ? product.tags : [],
     primaryTag: product.primaryTag || '',
     customReviewCount: product.customReviewCount != null ? Number(product.customReviewCount) : null,
@@ -269,19 +272,12 @@ function toProductDetailView(product) {
     showOnStore: product.showOnStore !== false,
     stockQuantity: Number(product.stockQuantity || 0),
     createdAt: product.createdAt,
-    vendors: Array.isArray(product.vendors)
-      ? product.vendors.map(normalizeVendorSnapshot).filter(Boolean)
-      : [],
-    discountPercentage: Number(product.discountPercentage || 0),
-    isDiscounted: product.isDiscounted === true,
-    discountedPrice: product.discountedPrice != null ? Number(product.discountedPrice) : null,
-    packOptions: Array.isArray(product.packOptions) ? product.packOptions : [],
+    rating: getProductRating(product),
     tags: Array.isArray(product.tags) ? product.tags : [],
     primaryTag: product.primaryTag || '',
     isNewArrival: product.isNewArrival === true,
     isBestSelling: product.isBestSelling === true,
     isFeatured: product.isFeatured === true,
-    isFreeDelivery: product.isFreeDelivery === true,
     featuredPriority: Number(product.featuredPriority || 0),
     customReviewCount: product.customReviewCount != null ? Number(product.customReviewCount) : null,
     metalType: product.metalType || '',
@@ -333,15 +329,9 @@ function toAdminProductRow(product) {
     isNewArrival: product.isNewArrival === true,
     isBestSelling: product.isBestSelling === true,
     isFeatured: product.isFeatured === true,
-    isFreeDelivery: product.isFreeDelivery === true,
     featuredPriority: Number(product.featuredPriority || 0),
-    vendors: Array.isArray(product.vendors)
-      ? product.vendors.map(normalizeVendorSnapshot).filter(Boolean)
-      : [],
-    discountPercentage: Number(product.discountPercentage || 0),
-    isDiscounted: product.isDiscounted === true,
-    discountedPrice: product.discountedPrice != null ? Number(product.discountedPrice) : null,
-    packOptions: Array.isArray(product.packOptions) ? product.packOptions : [],
+    rating: getProductRating(product),
+    customReviewCount: product.customReviewCount != null ? Number(product.customReviewCount) : null,
     tags: Array.isArray(product.tags) ? product.tags : [],
     primaryTag: product.primaryTag || '',
   };
@@ -483,11 +473,7 @@ function toOrderSummaryRow(order) {
           ...item,
           _id: item._id?.toString(),
           productId: item.productId?.toString() || item.productId,
-          sourcingVendors: Array.isArray(item.sourcingVendors)
-            ? item.sourcingVendors
-                .map((vendor) => normalizeVendorSnapshot(vendor))
-                .filter(Boolean)
-            : [],
+          sourcingVendors: Array.isArray(item.sourcingVendors) ? item.sourcingVendors : [],
         }))
       : [],
     createdAt: order.createdAt ? new Date(order.createdAt).toISOString() : null,
@@ -974,11 +960,11 @@ async function getProductsForHomeCollectionSectionsRaw(collectionKeys = [], limi
     const requestedLimit = Math.max(1, Number(limitByCollection.get('special-offers') || 8));
     const products = await Product.find({
       showOnStore: true,
-      isDiscounted: true,
+      ...COMPARE_AT_SALE_FILTER,
     })
       .select(PRODUCT_CARD_PROJECTION)
       .populate(PRODUCT_CATEGORY_POPULATE)
-      .sort({ discountPercentage: -1, createdAt: -1 })
+      .sort({ createdAt: -1 })
       .limit(Math.min(24, requestedLimit))
       .lean();
 
@@ -1118,7 +1104,7 @@ export async function getHomeSections() {
       let label = category?.label || 'Special Offers';
       if (category.id === 'special-offers') {
         const discountedProducts = products
-          .filter((product) => product.isDiscounted === true)
+          .filter((product) => Number(product.compareAtPrice || 0) > Number(product.Price || 0))
           .sort((a, b) => {
             const dateA = new Date(a.createdAt || 0).getTime();
             const dateB = new Date(b.createdAt || 0).getTime();
@@ -1477,7 +1463,7 @@ export async function getProductsList({ category = 'all', search = '', sort = 'n
   } else if (safeCategory === 'best-selling') {
     query.isBestSelling = true;
   } else if (safeCategory === 'special-offers') {
-    query.isDiscounted = true;
+    Object.assign(query, COMPARE_AT_SALE_FILTER);
   } else if (safeCategory && safeCategory !== 'all') {
     const categories = await getCategoriesRaw();
     const matchedCategory = categories.find(
@@ -1542,7 +1528,7 @@ export async function getProductsList({ category = 'all', search = '', sort = 'n
     if (safeSort === 'price-high') return { Price: -1, createdAt: -1 };
     if (safeSort === 'best-selling') return { isBestSelling: -1, createdAt: -1 };
     if (safeSort === 'featured') return { isFeatured: -1, featuredPriority: -1, createdAt: -1 };
-    if (safeSort === 'deals') return { isDiscounted: -1, discountPercentage: -1, createdAt: -1 };
+    if (safeSort === 'deals') return { compareAtPrice: -1, createdAt: -1 };
     if (safeSort === 'az') return { Name: 1, createdAt: -1 };
     if (safeSort === 'za') return { Name: -1, createdAt: -1 };
     return { createdAt: -1 };
@@ -1701,17 +1687,16 @@ function buildCatalogFeedItem(product, siteUrl, storeName) {
   const additionalImages = product.Images?.slice(1).map((image) => image.url).filter(Boolean) || [];
   const categoryNames = getProductCategoryNames(product);
   const basePrice = Number(product.Price || 0);
-  const salePrice = product.isDiscounted === true && product.discountedPrice != null
-    ? Number(product.discountedPrice)
-    : null;
+  const compareAtPrice = Number(product.compareAtPrice || 0);
+  const salePrice = compareAtPrice > basePrice ? basePrice : null;
 
   return {
     id: String(product._id),
     title: product.Name,
     description: stripHtml(product.Description || `Buy ${product.Name} from ${storeName}.`),
-    availability: product.StockStatus === 'In Stock' ? 'in stock' : 'out of stock',
+    availability: Number(product.stockQuantity || 0) > 0 && product.StockStatus !== 'Out of Stock' ? 'in stock' : 'out of stock',
     condition: 'new',
-    price: formatFeedPrice(basePrice),
+    price: formatFeedPrice(compareAtPrice > basePrice ? compareAtPrice : basePrice),
     salePrice: salePrice != null ? formatFeedPrice(salePrice) : null,
     link: productUrl,
     imageLink: primaryImage,
@@ -1933,8 +1918,8 @@ export async function getAdminOrderProductCatalog() {
       'Images',
       'Category',
       'slug',
-      'discountedPrice',
-      'isDiscounted',
+      'stockQuantity',
+      'StockStatus',
     ].join(' '))
     .populate(PRODUCT_CATEGORY_POPULATE)
     .sort({ createdAt: -1 })
@@ -1948,9 +1933,6 @@ export async function getAdminOrderProductCatalog() {
       slug: serialized.slug,
       Name: serialized.Name,
       Price: Number(serialized.Price || 0),
-      discountedPrice:
-        serialized.discountedPrice != null ? Number(serialized.discountedPrice) : null,
-      isDiscounted: serialized.isDiscounted === true,
       Category: serialized.Category,
       Images: serialized.Images,
     };
@@ -1991,7 +1973,7 @@ export async function getAdminProductsPage({
   if (safeStock === 'out-of-stock') query.StockStatus = { $ne: 'In Stock' };
 
   if (safeCategory === 'special-offers') {
-    query.isDiscounted = true;
+    Object.assign(query, COMPARE_AT_SALE_FILTER);
   } else if (safeCategory !== 'all') {
     const categories = await getCategoriesRaw();
     const matchedCategory = categories.find(
@@ -2034,8 +2016,6 @@ export async function getAdminProductsPage({
     const matchingCategoryIds = matchingCategories.map((entry) => entry._id);
     query.$or = [
       { Name: searchRegex },
-      { 'vendors.name': searchRegex },
-      { 'vendors.shopNumber': searchRegex },
     ];
 
     if (matchingCategoryIds.length > 0) {
@@ -2043,7 +2023,7 @@ export async function getAdminProductsPage({
     }
 
     if ('special offers'.includes(safeSearch.toLowerCase()) || 'special-offers'.includes(safeSearch.toLowerCase())) {
-      query.$or.push({ isDiscounted: true });
+      query.$or.push(COMPARE_AT_SALE_FILTER);
     }
   }
 
@@ -2451,39 +2431,13 @@ export async function getOrderById(id) {
     )
   );
 
-  let productLookup = new Map();
-  if (productIdentifiers.length > 0) {
-    const objectIds = productIdentifiers.filter((value) => mongoose.Types.ObjectId.isValid(value));
-    const products = await Product.find({
-      $or: [
-        { slug: { $in: productIdentifiers } },
-        ...(objectIds.length > 0 ? [{ _id: { $in: objectIds } }] : []),
-      ],
-    })
-      .select('slug vendors')
-      .lean();
-
-    productLookup = new Map();
-    products.forEach((product) => {
-      const normalizedVendors = Array.isArray(product.vendors)
-        ? product.vendors.map(normalizeVendorSnapshot).filter(Boolean)
-        : [];
-
-      productLookup.set(product._id.toString(), normalizedVendors);
-      if (product.slug) {
-        productLookup.set(String(product.slug), normalizedVendors);
-      }
-    });
-  }
-
   const normalizedOrder = toOrderSummaryRow(order);
-  normalizedOrder.items = normalizedOrder.items.map((item) => ({
-    ...item,
-    sourcingVendors:
-      Array.isArray(item.sourcingVendors) && item.sourcingVendors.length > 0
-        ? item.sourcingVendors
-        : productLookup.get(String(item.productId || '').trim()) || [],
-  }));
+  if (productIdentifiers.length > 0) {
+    normalizedOrder.items = normalizedOrder.items.map((item) => ({
+      ...item,
+      sourcingVendors: Array.isArray(item.sourcingVendors) ? item.sourcingVendors : [],
+    }));
+  }
 
   return normalizedOrder;
 }
@@ -2695,22 +2649,6 @@ export async function getAdminDashboardData() {
               },
             },
           ],
-          topVendors: [
-            { $match: { showOnStore: true, vendors: { $exists: true, $ne: [] } } },
-            { $unwind: '$vendors' },
-            {
-              $group: {
-                _id: {
-                  vendorId: '$vendors.vendorId',
-                  name: '$vendors.name',
-                  shopNumber: '$vendors.shopNumber',
-                },
-                totalLiveItems: { $sum: 1 },
-              },
-            },
-            { $sort: { totalLiveItems: -1, '_id.name': 1 } },
-            { $limit: 5 },
-          ],
         },
       },
     ]),
@@ -2722,7 +2660,6 @@ export async function getAdminDashboardData() {
   const totals = orderDashboard.totals?.[0] || {};
   const productCounts = productDashboard.counts?.[0] || {};
   const recentOrders = Array.isArray(orderDashboard.recentOrders) ? orderDashboard.recentOrders : [];
-  const topVendorsAgg = Array.isArray(productDashboard.topVendors) ? productDashboard.topVendors : [];
 
   return {
     summary: {
@@ -2740,12 +2677,7 @@ export async function getAdminDashboardData() {
     },
     recentOrders: recentOrders.map(toOrderSummaryRow),
     topProducts: Array.isArray(orderDashboard.topProducts) ? orderDashboard.topProducts : [],
-    topVendors: topVendorsAgg.map((entry) => ({
-      vendorId: entry?._id?.vendorId?.toString?.() || '',
-      name: String(entry?._id?.name || '').trim(),
-      shopNumber: String(entry?._id?.shopNumber || '').trim(),
-      totalLiveItems: Number(entry?.totalLiveItems || 0),
-    })).filter((entry) => entry.name),
+    topVendors: [],
     topCustomers: Array.isArray(orderDashboard.topCustomers) ? orderDashboard.topCustomers : [],
     recentReviews: (recentReviewsAgg || []).map(r => ({
       _id: r._id?.toString(),

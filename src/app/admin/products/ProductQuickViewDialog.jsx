@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { getBlurPlaceholderProps } from "@/lib/imagePlaceholder";
 import { getProductDetailsAction } from "@/app/actions";
+import { getProductUnitPrice, getVisibleCompareAtPrice, getCompareAtOffPercent } from "@/lib/productCommerce";
 
 export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct, categoryOptions }) {
   const [detailProduct, setDetailProduct] = useState(null);
@@ -65,9 +66,9 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
       ? [{ url: product.ImageUrl }]
       : [];
 
-  const displayPrice = product.isDiscounted
-    ? Math.round(product.Price * (1 - product.discountPercentage / 100))
-    : product.Price;
+  const displayPrice = getProductUnitPrice(product);
+  const compareAtPrice = getVisibleCompareAtPrice(product, displayPrice);
+  const offPercent = getCompareAtOffPercent(product, displayPrice);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -177,11 +178,6 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
                         🔥 Best Seller
                       </Badge>
                     )}
-                    {product.isFreeDelivery && (
-                      <Badge className="bg-emerald-50 text-emerald-700 border-emerald-300 text-[10px] sm:text-xs px-2 py-0 flex items-center gap-1 font-semibold">
-                        🚚 Free Delivery
-                      </Badge>
-                    )}
                     {isLoading && (
                       <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
                         <Loader2 className="size-3 animate-spin" /> Loading…
@@ -268,16 +264,18 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
                       <span className="text-sm sm:text-base text-muted-foreground font-medium mr-1">PKR</span>
                       {Number(displayPrice).toLocaleString("en-PK")}
                     </p>
-                    {product.isDiscounted && (
+                    {compareAtPrice ? (
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-muted-foreground line-through">
-                          PKR {Number(product.Price).toLocaleString("en-PK")}
+                          PKR {Number(compareAtPrice).toLocaleString("en-PK")}
                         </span>
-                        <Badge className="bg-rose-100 text-rose-600 border-rose-200 text-[10px] font-bold px-1.5 shadow-none">
-                          -{product.discountPercentage}%
-                        </Badge>
+                        {offPercent > 0 ? (
+                          <Badge className="bg-rose-100 text-rose-600 border-rose-200 text-[10px] font-bold px-1.5 shadow-none">
+                            -{offPercent}%
+                          </Badge>
+                        ) : null}
                       </div>
-                    )}
+                    ) : null}
                   </div>
 
                   {/* Categories card */}

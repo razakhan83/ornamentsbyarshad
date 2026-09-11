@@ -9,30 +9,14 @@ import ProductCardWishlistSlot from "@/components/ProductCardWishlistSlot";
 import { CLOUDINARY_IMAGE_PRESETS, optimizeCloudinaryUrl } from "@/lib/cloudinaryImage";
 import { normalizeProductImages } from "@/lib/productImages";
 import { getBlurPlaceholderProps } from "@/lib/imagePlaceholder";
-import { getProductReviewCount } from "@/lib/productReviewUtils";
+import { getProductReviewCount, getProductRating } from "@/lib/productReviewUtils";
+import { getProductUnitPrice, getVisibleCompareAtPrice, isProductOutOfStock } from "@/lib/productCommerce";
 
 const formatPrice = (raw) => {
   let cleanNumbers = String(raw).replace(/[^\d.]/g, "");
   if (!cleanNumbers) return "Rs. 0";
   return `Rs. ${Number(cleanNumbers).toLocaleString("en-PK")}`;
 };
-
-function getSellingPrice(product) {
-  const productPrice = Number(product.Price || product.price || 0);
-
-  if (product.isDiscounted && product.discountPercentage > 0) {
-    return product.discountedPrice != null
-      ? Number(product.discountedPrice)
-      : Math.round(productPrice * (1 - product.discountPercentage / 100));
-  }
-
-  return productPrice;
-}
-
-function getVisibleCompareAtPrice(product, sellingPrice) {
-  const compareAtPrice = Number(product.compareAtPrice ?? 0);
-  return compareAtPrice > sellingPrice ? compareAtPrice : null;
-}
 
 export default function ProductCard({ product, className = "", priority = false }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -41,13 +25,13 @@ export default function ProductCard({ product, className = "", priority = false 
   const normalizedImages = normalizeProductImages(product?.Images);
   const hasMultipleImages = normalizedImages.length > 1;
 
-  const sellingPrice = getSellingPrice(product);
+  const sellingPrice = getProductUnitPrice(product);
   const compareAtPrice = getVisibleCompareAtPrice(product, sellingPrice);
   const productSlug = product.slug || product._id || product.id;
   const productHref = `/products/${productSlug}`;
-  const isUnavailable = product.StockStatus === "Out of Stock" || product.showOnStore === false;
+  const isUnavailable = isProductOutOfStock(product);
   const reviewCount = getProductReviewCount(product);
-  const rating = product.rating || 5;
+  const rating = getProductRating(product);
 
   const nextImage = (e) => {
     e.preventDefault();
@@ -211,13 +195,13 @@ export default function ProductCard({ product, className = "", priority = false 
                 key={i}
                 className={cn(
                   "size-3",
-                  i < rating ? "fill-current" : "text-neutral-300"
+                  i < Math.round(rating) ? "fill-current" : "text-neutral-300"
                 )}
               />
             ))}
           </div>
           <span className="text-[11px] text-[#737373] font-normal">
-            {reviewCount} {reviewCount === 1 ? "review" : "reviews"}
+            {rating.toFixed(1)} · {reviewCount} {reviewCount === 1 ? "review" : "reviews"}
           </span>
         </div>
 

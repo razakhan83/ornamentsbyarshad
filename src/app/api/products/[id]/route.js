@@ -11,7 +11,34 @@ import { getProductCategories } from '@/lib/productCategories';
 import { normalizeProductImages } from '@/lib/productImages';
 import { ensureProductImagesBlur } from '@/lib/serverImageBlur';
 import { formatSeoKeywords } from '@/lib/seoKeywords';
-import { buildProductVendorSnapshots, normalizeVendorSnapshot } from '@/lib/vendors';
+import { resolveStockStatus } from '@/lib/productCommerce';
+import { getProductRating, normalizeProductRating, seedProductRating } from '@/lib/productReviewUtils';
+
+const PUBLIC_PRODUCT_SELECT = 'Name Description shortDescription seoTitle seoDescription seoKeywords seoCanonicalUrl seoOgTitle seoOgDescription seoOgImage seoOgImageRatio Price compareAtPrice Images Category StockStatus slug showOnStore createdAt updatedAt stockQuantity isNewArrival isBestSelling isFeatured featuredPriority tags primaryTag metalType purity grossWeightGrams certificateNumber size availableSizes availableColors gemstone customReviewCount rating';
+
+function toPublicProductPayload(product) {
+    const {
+        Image,
+        ImageURL,
+        vendors,
+        packOptions,
+        discountPercentage,
+        isDiscounted,
+        discountedPrice,
+        isFreeDelivery,
+        ...safeProduct
+    } = product;
+
+    return {
+        ...safeProduct,
+        _id: safeProduct._id.toString(),
+        id: safeProduct.slug || safeProduct._id.toString(),
+        Category: getProductCategories(safeProduct),
+        Images: normalizeProductImages(safeProduct.Images),
+        rating: getProductRating(safeProduct),
+        stockQuantity: Math.max(0, Number(safeProduct.stockQuantity) || 0),
+    };
+}
 
 export function resolveProductQuery(id) {
     const rawId = String(id || '').trim();
@@ -48,14 +75,14 @@ export async function GET(_request, { params }) {
         const { id } = await params;
         const query = resolveProductQuery(id);
         let product = await Product.findOne(query)
-            .select('Name Description shortDescription seoTitle seoDescription seoKeywords seoCanonicalUrl seoOgTitle seoOgDescription seoOgImage seoOgImageRatio Price compareAtPrice Images Category StockStatus slug showOnStore createdAt updatedAt stockQuantity discountPercentage isDiscounted discountedPrice isNewArrival isBestSelling isFeatured isFreeDelivery featuredPriority vendors packOptions tags primaryTag metalType purity grossWeightGrams certificateNumber size availableSizes availableColors gemstone customReviewCount')
+            .select(PUBLIC_PRODUCT_SELECT)
             .populate({ path: 'Category', select: 'name slug bgColor' })
             .lean();
 
         if (!product && typeof id === 'string' && id.trim()) {
             const escaped = id.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             product = await Product.findOne({ slug: { $regex: new RegExp(`^${escaped}$`, 'i') } })
-                .select('Name Description shortDescription seoTitle seoDescription seoKeywords seoCanonicalUrl seoOgTitle seoOgDescription seoOgImage seoOgImageRatio Price compareAtPrice Images Category StockStatus slug showOnStore createdAt updatedAt stockQuantity discountPercentage isDiscounted discountedPrice isNewArrival isBestSelling isFeatured isFreeDelivery featuredPriority vendors packOptions tags primaryTag metalType purity grossWeightGrams certificateNumber size availableSizes availableColors gemstone customReviewCount')
+                .select(PUBLIC_PRODUCT_SELECT)
                 .populate({ path: 'Category', select: 'name slug bgColor' })
                 .lean();
         }
@@ -64,18 +91,9 @@ export async function GET(_request, { params }) {
             return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
         }
 
-        const { Image, ImageURL, ...safeProduct } = product;
-
         return NextResponse.json({
             success: true,
-            data: {
-                ...safeProduct,
-                _id: safeProduct._id.toString(),
-                id: safeProduct.slug || safeProduct._id.toString(),
-                Category: getProductCategories(safeProduct),
-                Images: normalizeProductImages(safeProduct.Images),
-                vendors: Array.isArray(safeProduct.vendors) ? safeProduct.vendors.map(normalizeVendorSnapshot).filter(Boolean) : [],
-            },
+            data: toPublicProductPayload(product),
         });
     } catch (error) {
         return NextResponse.json({ success: false, error: error.message }, { status: 500 });
@@ -148,7 +166,6 @@ export async function PUT(request, { params }) {
         }
 
         const normalizedImages = await ensureProductImagesBlur(normalizeProductImages(body.Images));
-        const normalizedVendors = await buildProductVendorSnapshots(body.vendors);
         const previousSlug = existingProduct.slug;
         const normalizedCompareAtPrice = body.compareAtPrice === '' || body.compareAtPrice == null
             ? null
@@ -169,28 +186,26 @@ export async function PUT(request, { params }) {
         existingProduct.compareAtPrice = Number.isFinite(normalizedCompareAtPrice) ? normalizedCompareAtPrice : null;
         existingProduct.Images = normalizedImages;
         existingProduct.Category = categoryArray;
-        existingProduct.vendors = normalizedVendors;
-        existingProduct.packOptions = Array.isArray(body.packOptions) ? body.packOptions : [];
         existingProduct.set('tags', Array.isArray(body.tags) ? body.tags : [], { strict: false });
         existingProduct.set('primaryTag', body.primaryTag || '', { strict: false });
-        // existingProduct.StockStatus is intentionally left alone here; handled by the Admin toggle.
         existingProduct.showOnStore = body.showOnStore !== false && body.showOnStore !== 'false';
         
-        // Marketing flags & delivery
         existingProduct.isNewArrival = body.isNewArrival === true || body.isNewArrival === 'true';
         existingProduct.isBestSelling = body.isBestSelling === true || body.isBestSelling === 'true';
         existingProduct.isFeatured = body.isFeatured === true || body.isFeatured === 'true';
-        if (body.isFreeDelivery !== undefined) {
-            existingProduct.isFreeDelivery = body.isFreeDelivery === true || body.isFreeDelivery === 'true';
-        }
         if (body.featuredPriority !== undefined) {
             existingProduct.featuredPriority = Number(body.featuredPriority) || 0;
         }
 
-        // Discount fields
-        const discountPct = Math.min(100, Math.max(0, Number(body.discountPercentage) || 0));
-        existingProduct.discountPercentage = discountPct;
-        existingProduct.isDiscounted = discountPct > 0;
+        if (body.stockQuantity !== undefined) {
+            const nextQuantity = Math.max(0, Number(body.stockQuantity) || 0);
+            existingProduct.stockQuantity = nextQuantity;
+            existingProduct.StockStatus = resolveStockStatus(nextQuantity, body.StockStatus);
+        }
+
+        existingProduct.rating = body.rating !== undefined && body.rating !== '' && body.rating != null
+            ? normalizeProductRating(body.rating, existingProduct)
+            : (existingProduct.rating || seedProductRating(existingProduct));
 
         // Jewelry specifications
         if (body.metalType !== undefined) existingProduct.metalType = typeof body.metalType === 'string' ? body.metalType.trim() : '';
@@ -241,16 +256,7 @@ export async function PUT(request, { params }) {
 
         return NextResponse.json({
             success: true,
-            data: {
-                ...existingProduct.toObject(),
-                _id: existingProduct._id.toString(),
-                id: existingProduct.slug || existingProduct._id.toString(),
-                Category: getProductCategories(existingProduct.toObject()),
-                Images: normalizeProductImages(existingProduct.Images),
-                vendors: Array.isArray(existingProduct.vendors)
-                    ? existingProduct.vendors.map(normalizeVendorSnapshot).filter(Boolean)
-                    : [],
-            },
+            data: toPublicProductPayload(existingProduct.toObject()),
         });
     } catch (error) {
         return NextResponse.json({ success: false, error: error.message }, { status: 500 });
@@ -276,11 +282,7 @@ export async function PATCH(request, { params }) {
 
         if (body.stockQuantity !== undefined) {
             const nextQuantity = Math.max(0, Number(body.stockQuantity) || 0);
-            const nextStatus = body.StockStatus === 'In Stock' || body.StockStatus === 'Out of Stock'
-                ? body.StockStatus
-                : nextQuantity > 0
-                    ? 'In Stock'
-                    : 'Out of Stock';
+            const nextStatus = resolveStockStatus(nextQuantity, body.StockStatus);
 
             const updatedProduct = await Product.findOneAndUpdate(
                 query,
@@ -317,9 +319,15 @@ export async function PATCH(request, { params }) {
 
         // Handle StockStatus toggle
         if (body.StockStatus !== undefined) {
+            const current = await Product.findOne(query).select('stockQuantity').lean();
+            if (!current) {
+                return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
+            }
+            const nextStatus = resolveStockStatus(current.stockQuantity, body.StockStatus);
+
             const updatedProduct = await Product.findOneAndUpdate(
                 query,
-                { $set: { StockStatus: body.StockStatus } },
+                { $set: { StockStatus: nextStatus } },
                 { new: true, runValidators: false, strict: false }
             ).lean();
 
@@ -393,53 +401,48 @@ export async function PATCH(request, { params }) {
             });
         }
 
-        const pct = Math.min(100, Math.max(0, Number(body.discountPercentage) || 0));
+        if (body.compareAtPrice !== undefined) {
+            const nextCompare = body.compareAtPrice === '' || body.compareAtPrice == null
+                ? null
+                : Number(body.compareAtPrice);
+            const compareAtPrice = Number.isFinite(nextCompare) && nextCompare > 0 ? nextCompare : null;
 
-        // We need the current price to compute discountedPrice
-        const existing = await Product.findOne(query).select('Price slug Name').lean();
-        if (!existing) {
-            return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
+            const updatedProduct = await Product.findOneAndUpdate(
+                query,
+                { $set: { compareAtPrice } },
+                { new: true, runValidators: false, strict: false }
+            ).lean();
+
+            if (!updatedProduct) {
+                return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
+            }
+
+            revalidateTag('products');
+            if (updatedProduct.slug) {
+                revalidateTag(`product-${updatedProduct.slug}`);
+                revalidatePath(`/products/${updatedProduct.slug}`);
+            }
+            revalidateTag(`product-${updatedProduct._id.toString()}`);
+            revalidatePath(`/products/${updatedProduct._id.toString()}`);
+            revalidateTag('admin-dashboard');
+            revalidateTag('home-sections');
+            revalidatePath('/admin/products');
+            revalidatePath('/products');
+            revalidatePath('/');
+
+            return NextResponse.json({
+                success: true,
+                data: {
+                    _id: updatedProduct._id.toString(),
+                    compareAtPrice: updatedProduct.compareAtPrice ?? null,
+                    Price: Number(updatedProduct.Price || 0),
+                },
+            });
         }
 
-        const discountedPrice = pct > 0
-            ? Math.round(Number(existing.Price) * (1 - pct / 100))
-            : null;
-
-        const updatedProduct = await Product.findOneAndUpdate(
-            query,
-            { $set: { discountPercentage: pct, isDiscounted: pct > 0, discountedPrice } },
-            { new: true, runValidators: false, strict: false }
-        ).lean();
-
-        if (!updatedProduct) {
-            return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
-        }
-
-        // Hard-flush all caches so the storefront reflects changes immediately
-        revalidateTag('products');
-        if (updatedProduct.slug) {
-            revalidateTag(`product-${updatedProduct.slug}`);
-            revalidatePath(`/products/${updatedProduct.slug}`);
-        }
-        revalidateTag(`product-${updatedProduct._id.toString()}`);
-        revalidatePath(`/products/${updatedProduct._id.toString()}`);
-        revalidateTag('admin-dashboard');
-        revalidateTag('home-sections');
-        revalidatePath('/admin/products');
-        revalidatePath('/products');
-        revalidatePath('/');
-
-        return NextResponse.json({
-            success: true,
-            data: {
-                _id: updatedProduct._id.toString(),
-                discountPercentage: updatedProduct.discountPercentage,
-                isDiscounted: updatedProduct.isDiscounted,
-                discountedPrice: updatedProduct.discountedPrice ?? null,
-            },
-        });
+        return NextResponse.json({ success: false, message: 'Nothing to update' }, { status: 400 });
     } catch (error) {
-        console.error('[PATCH discount] Error:', error);
+        console.error('[PATCH product] Error:', error);
         return NextResponse.json({ success: false, error: error.message }, { status: 500 });
     }
 }
