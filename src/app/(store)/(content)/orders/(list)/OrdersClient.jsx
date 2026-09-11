@@ -786,7 +786,7 @@ const FeedbackModal = ({ order, onRemindLater, onDismissPermanently, onClose, on
       }
       const dataUrl = img.file ? await fileToDataUrl(img.file) : img.preview;
       if (dataUrl) {
-        const uploadResult = await uploadImageDataUrl(dataUrl, 'kifayatly_reviews');
+        const uploadResult = await uploadImageDataUrl(dataUrl, 'ornaments_reviews');
         if (uploadResult?.url) {
           urls.push(uploadResult.url);
         }

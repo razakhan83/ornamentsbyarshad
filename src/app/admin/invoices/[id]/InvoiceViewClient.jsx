@@ -818,8 +818,8 @@ export default function InvoiceViewClient({ invoice }) {
                         <div className="flex items-center gap-3 sm:gap-3.5 justify-start">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
-                            src="/china-unique-logo-cropped.png"
-                            alt="China Unique Logo"
+                            src="/logo.png"
+                            alt="Ornaments by Arshad Logo"
                             className="h-8 sm:h-9 max-h-[38px] w-auto object-contain shrink-0"
                           />
                           <div className="text-[10px] sm:text-[10.5px] text-gray-800 space-y-0 font-sans leading-tight text-left">

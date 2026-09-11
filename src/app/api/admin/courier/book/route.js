@@ -193,7 +193,7 @@ export async function POST(request) {
       : (updatedOrders[0]?.labelUrl || '');
 
     const accountLabel =
-      portalKey === 'portal_2' ? 'Secondary Account (aamsaman)' : 'Main Account (unique items)';
+      portalKey === 'portal_2' ? 'Secondary Account (Portal 2)' : 'Main Account (Portal 1)';
 
     let message = `Successfully booked ${updatedOrders.length} order(s) individually with NOC Express (${accountLabel}).`;
     if (failedOrders.length > 0) {

@@ -107,42 +107,39 @@ export default function ProductsInfiniteGrid({
   // Grid layout class based on toolbar layout toggle
   let gridClassName;
   if (layout === '1col') {
-    gridClassName = 'grid auto-rows-max grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6';
+    gridClassName = 'grid auto-rows-max grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6';
   } else {
-    gridClassName = 'grid auto-rows-max grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4';
+    gridClassName = 'grid auto-rows-max grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5';
   }
 
   if (products.length === 0 && !isLoading) {
     return (
       <div className="products-page-empty relative mt-4 sm:mt-6 w-full">
-        <div className="rounded-2xl border border-border bg-card p-8 sm:p-12 text-center flex flex-col items-center justify-center">
-          <div className="mb-5 flex items-center justify-center">
-            <Image
-              src="/undraw_no-data_ig65.svg"
-              alt="No products found"
-              width={180}
-              height={140}
-              loading="lazy"
-              className="h-auto w-[150px] sm:w-[180px] object-contain opacity-95 select-none"
-            />
-          </div>
-          <h3 className="text-lg font-bold text-foreground mb-1.5">No products found</h3>
-          <p className="text-xs sm:text-sm text-muted-foreground max-w-sm mx-auto leading-relaxed">
-            {search
-              ? `No products matched your search for "${search}".`
-              : 'Try adjusting your search query, filters, or category to explore other items.'}
-          </p>
+        <Empty className="border border-[#E8E5DF] bg-white p-8 sm:p-14 text-center flex flex-col items-center justify-center rounded-none">
+          <EmptyHeader>
+            <div className="mb-4 flex items-center justify-center">
+              <SearchX className="size-10 text-[#A67C52]" strokeWidth={1.5} />
+            </div>
+            <EmptyTitle className="font-serif text-xl sm:text-2xl font-normal text-[#121212] tracking-wide">
+              No Creations Found
+            </EmptyTitle>
+            <EmptyDescription className="text-xs text-[#737373] uppercase tracking-[0.14em] max-w-sm mx-auto leading-relaxed pt-1">
+              {search
+                ? `No jewelry pieces matched your search for "${search}".`
+                : 'Try adjusting your search criteria, price filters, or collection selection.'}
+            </EmptyDescription>
+          </EmptyHeader>
           {search ? (
-            <div className="mt-5">
+            <div className="mt-6">
               <Link
                 href={category && category !== 'all' ? `/products?category=${category}` : '/products'}
-                className="h-10 px-5 inline-flex items-center justify-center rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-xs sm:text-sm shadow-none transition-all active:scale-[0.98]"
+                className="h-11 px-6 inline-flex items-center justify-center rounded-none bg-[#121212] text-white hover:bg-neutral-800 text-xs font-semibold uppercase tracking-[0.18em] transition-all"
               >
-                Clear Search &amp; View All Products
+                Clear Search &amp; View All Collections
               </Link>
             </div>
           ) : null}
-        </div>
+        </Empty>
       </div>
     );
   }

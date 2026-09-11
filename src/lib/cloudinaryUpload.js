@@ -28,7 +28,7 @@ async function uploadViaServerApi(dataUrl, folder) {
   };
 }
 
-export async function uploadImageDataUrl(dataUrl, folder = "kifayatly_products") {
+export async function uploadImageDataUrl(dataUrl, folder = "ornaments_products") {
   // First attempt direct browser-to-Cloudinary signed upload
   try {
     const signRes = await fetch(`/api/cloudinary-sign?folder=${encodeURIComponent(folder)}`);
@@ -98,7 +98,7 @@ export async function uploadImageDataUrl(dataUrl, folder = "kifayatly_products")
   }
 }
 
-export async function uploadVideoFile(file, folder = "kifayatly_videos", ratioType = null) {
+export async function uploadVideoFile(file, folder = "ornaments_videos", ratioType = null) {
   const signRes = await fetch(`/api/cloudinary-sign?folder=${encodeURIComponent(folder)}`);
   const signData = await safeReadJson(signRes);
   if (!signRes.ok) {

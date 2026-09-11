@@ -1516,7 +1516,7 @@ export default function HomePageBuilderClient({ initialSections, availableCatego
 
   async function uploadFromInput(file) {
     const dataUrl = await readFileAsDataUrl(file);
-    return uploadImageDataUrl(dataUrl, 'kifayatly_homepage');
+    return uploadImageDataUrl(dataUrl, 'ornaments_homepage');
   }
 
   async function handleSectionImageUpload(sectionId, fieldName, event, imageIndex = null) {
@@ -1591,7 +1591,7 @@ export default function HomePageBuilderClient({ initialSections, availableCatego
 
     try {
       const ratioType = fieldName === 'pcVideo' ? 'pc' : fieldName === 'mobileVideo' ? 'mobile' : null;
-      const asset = await uploadVideoFile(file, 'kifayatly_homepage_videos', ratioType);
+      const asset = await uploadVideoFile(file, 'ornaments_homepage_videos', ratioType);
       updateSection(sectionId, { [fieldName]: asset });
     } catch (error) {
       toast.error(error.message || 'Failed to upload video.');

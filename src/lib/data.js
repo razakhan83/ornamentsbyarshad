@@ -90,6 +90,9 @@ const PRODUCT_CARD_PROJECTION = [
   'featuredPriority',
   'tags',
   'primaryTag',
+  'customReviewCount',
+  'availableColors',
+  'availableSizes',
 ].join(' ');
 const PRODUCT_DETAIL_PROJECTION = [
   PRODUCT_CARD_PROJECTION,
@@ -104,12 +107,17 @@ const PRODUCT_DETAIL_PROJECTION = [
   'seoOgImageRatio',
   'vendors',
   'packOptions',
+  'metalType',
+  'purity',
+  'size',
+  'availableSizes',
+  'availableColors',
+  'gemstone',
+  'grossWeightGrams',
+  'certificateNumber',
 ].join(' ');
 const PRODUCT_ADMIN_PROJECTION = [
-  PRODUCT_CARD_PROJECTION,
-  'stockQuantity',
-  'vendors',
-  'packOptions',
+  PRODUCT_DETAIL_PROJECTION,
 ].join(' ');
 let hasLoggedSettingsFetchFailure = false;
 const SLOW_DATA_LOG_MS = 700;
@@ -239,6 +247,9 @@ function toProductCardItem(product) {
     discountedPrice: product.discountedPrice != null ? Number(product.discountedPrice) : null,
     tags: Array.isArray(product.tags) ? product.tags : [],
     primaryTag: product.primaryTag || '',
+    customReviewCount: product.customReviewCount != null ? Number(product.customReviewCount) : null,
+    availableColors: Array.isArray(product.availableColors) ? product.availableColors : [],
+    availableSizes: Array.isArray(product.availableSizes) ? product.availableSizes : [],
   };
 }
 
@@ -272,6 +283,27 @@ function toProductDetailView(product) {
     isFeatured: product.isFeatured === true,
     isFreeDelivery: product.isFreeDelivery === true,
     featuredPriority: Number(product.featuredPriority || 0),
+    customReviewCount: product.customReviewCount != null ? Number(product.customReviewCount) : null,
+    metalType: product.metalType || '',
+    purity: product.purity || '',
+    grossWeightGrams: product.grossWeightGrams != null && product.grossWeightGrams !== '' ? Number(product.grossWeightGrams) : null,
+    certificateNumber: product.certificateNumber || '',
+    size: product.size || '',
+    availableSizes: Array.isArray(product.availableSizes) ? product.availableSizes : [],
+    availableColors: Array.isArray(product.availableColors) ? product.availableColors : [],
+    gemstone: product.gemstone && typeof product.gemstone === 'object' ? {
+      gemstoneType: product.gemstone.gemstoneType || '',
+      carat: product.gemstone.carat != null && product.gemstone.carat !== '' ? Number(product.gemstone.carat) : null,
+      cut: product.gemstone.cut || '',
+      clarity: product.gemstone.clarity || '',
+      color: product.gemstone.color || '',
+    } : {
+      gemstoneType: '',
+      carat: null,
+      cut: '',
+      clarity: '',
+      color: '',
+    },
     seoTitle: product.seoTitle || '',
     seoDescription: product.seoDescription || '',
     seoKeywords: product.seoKeywords || '',
@@ -494,7 +526,7 @@ async function getAllProductsRaw() {
 async function getSettingsRaw() {
   const defaultSettings = {
     _id: 'default',
-    storeName: 'China Unique Store',
+    storeName: 'Ornaments by Arshad',
     supportEmail: '',
     businessAddress: '',
     lightLogoUrl: '',
@@ -518,6 +550,13 @@ async function getSettingsRaw() {
     announcementBarMessages: [],
     bankDepositEnabled: false,
     bankDepositAccountDetails: '',
+    asaanPayEnabled: false,
+    asaanPayTitle: 'AsaanPay (Debit/Credit Card, EasyPaisa, JazzCash)',
+    asaanPayEnvironment: 'sandbox',
+    asaanPayMerchantId: '',
+    asaanPayApiKey: '',
+    asaanPayApiSecret: '',
+    asaanPayWebhookSecret: '',
     homepageSectionOrder: [],
     customPages: DEFAULT_CUSTOM_PAGES,
   };
@@ -534,7 +573,7 @@ async function getSettingsRaw() {
 
       return {
         _id: settings._id.toString(),
-        storeName: settings.storeName || 'China Unique Store',
+        storeName: settings.storeName || 'Ornaments by Arshad',
         supportEmail: settings.supportEmail || '',
         businessAddress: settings.businessAddress || '',
         lightLogoUrl: normalizeLogoUrl(settings.lightLogoUrl),
@@ -558,6 +597,13 @@ async function getSettingsRaw() {
         announcementBarMessages: normalizeAnnouncementMessages(settings.announcementBarMessages, settings.announcementBarText),
         bankDepositEnabled: settings.bankDepositEnabled === true,
         bankDepositAccountDetails: settings.bankDepositAccountDetails || '',
+        asaanPayEnabled: settings.asaanPayEnabled === true,
+        asaanPayTitle: settings.asaanPayTitle || 'AsaanPay (Debit/Credit Card, EasyPaisa, JazzCash)',
+        asaanPayEnvironment: settings.asaanPayEnvironment || 'sandbox',
+        asaanPayMerchantId: settings.asaanPayMerchantId || '',
+        asaanPayApiKey: settings.asaanPayApiKey || '',
+        asaanPayApiSecret: settings.asaanPayApiSecret || '',
+        asaanPayWebhookSecret: settings.asaanPayWebhookSecret || '',
         homepageSectionOrder: Array.isArray(settings.homepageSectionOrder) ? settings.homepageSectionOrder : [],
         customPages: mergeCustomPages(settings.customPages),
         guestModeEnabled: settings.guestModeEnabled !== false,
@@ -621,6 +667,8 @@ async function getCategoriesRaw() {
     return dbCategories.map((category) => ({
       _id: category._id.toString(),
       id: category.slug || normalizeCategoryId(category.name),
+      name: category.name,
+      slug: category.slug || normalizeCategoryId(category.name),
       label: category.name,
       image: optimizeCloudinaryUrl(category.image || ''),
       imagePublicId: category.imagePublicId || '',
@@ -1410,18 +1458,16 @@ export async function getProductsList({ category = 'all', search = '', sort = 'n
 
   const query = { showOnStore: true };
 
-  if (price === 'under300' || price === 'under-300' || price === 'dollar-store' || price === 'dollar') {
-    query.Price = { $lte: 300 };
-  } else if (price === 'under500') {
-    query.Price = { $lte: 500 };
-  } else if (price === 'under1000') {
-    query.Price = { $lte: 1000 };
-  } else if (price === '500-1500') {
-    query.Price = { $gte: 500, $lte: 1500 };
-  } else if (price === '1500-5000') {
-    query.Price = { $gte: 1500, $lte: 5000 };
-  } else if (price === 'above5000') {
-    query.Price = { $gt: 5000 };
+  if (price === 'under10k' || price === 'under-10k' || price === 'under300' || price === 'under500' || price === 'under1000') {
+    query.Price = { $lte: 10000 };
+  } else if (price === '10k-30k' || price === '500-1500' || price === '1500-5000') {
+    query.Price = { $gte: 10000, $lte: 30000 };
+  } else if (price === '30k-70k') {
+    query.Price = { $gte: 30000, $lte: 70000 };
+  } else if (price === '70k-150k') {
+    query.Price = { $gte: 70000, $lte: 150000 };
+  } else if (price === 'above150k' || price === 'above5000') {
+    query.Price = { $gt: 150000 };
   }
 
   if (safeCategory === 'featured') {
@@ -1842,7 +1888,7 @@ export async function getCatalogFeed(siteUrlOverride = '') {
       console.warn('[BUILD] MongoDB connection failed while building catalog feed, returning an empty feed.');
       return {
         generatedAt: new Date().toISOString(),
-        storeName: 'China Unique Store',
+        storeName: 'Ornaments by Arshad',
         currency: 'PKR',
         items: [],
       };
@@ -2815,7 +2861,7 @@ export async function getAdminSettings() {
 
   return {
     _id: settings._id.toString(),
-    storeName: settings.storeName || 'China Unique Store',
+    storeName: settings.storeName || 'Ornaments by Arshad',
     supportEmail: settings.supportEmail || '',
     businessAddress: settings.businessAddress || '',
     lightLogoUrl: normalizeLogoUrl(settings.lightLogoUrl),

@@ -81,8 +81,8 @@ const formatPriceLabel = (raw) => `Rs.\u00A0${formatPrice(raw).toLocaleString('e
 const PRIORITY_CITY_KEYS = ['karachi', 'lahore', 'islamabad', 'hyderabad'];
 const INITIAL_CITY_COUNT = PRIORITY_CITY_KEYS.length;
 const SEARCH_RESULTS_LIMIT = 24;
-const CHECKOUT_PROFILE_STORAGE_KEY = 'kifayatly_checkout_profile_v1';
-const CHECKOUT_SUCCESS_STORAGE_KEY = 'kifayatly_checkout_success_v1';
+const CHECKOUT_PROFILE_STORAGE_KEY = 'ornaments_checkout_profile_v1';
+const CHECKOUT_SUCCESS_STORAGE_KEY = 'ornaments_checkout_success_v1';
 
 function createIdempotencyKey() {
   return typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
@@ -1093,26 +1093,24 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
   if (cart.length === 0 && !orderState.orderId) {
     return (
       <section className="flex min-h-[60vh] items-center justify-center px-4">
-        <Empty className="flex w-full max-w-md flex-col items-center justify-center rounded-2xl bg-card py-10">
+        <Empty className="flex w-full max-w-md flex-col items-center justify-center rounded-none border border-[#E8E5DF] bg-white py-12 px-6">
           <EmptyHeader>
-            <div className="mb-2 flex items-center justify-center">
-              <Image
-                src="/undraw_empty-cart_574u.svg"
-                alt="Empty cart illustration"
-                width={150}
-                height={150}
-                className="h-auto w-[150px] select-none"
-                priority={true}
-              />
+            <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-[#F4F2EE] text-[#A67C52]">
+              <ShoppingBag className="size-6 stroke-[1.5]" />
             </div>
-            <EmptyTitle className="text-2xl font-bold text-foreground [text-wrap:balance]">Your cart is empty</EmptyTitle>
-            <EmptyDescription className="max-w-xs text-center [text-wrap:pretty]">
-              Start adding premium kitchenware and decor to build your order.
+            <EmptyTitle className="font-serif text-2xl font-normal uppercase tracking-wide text-[#121212] [text-wrap:balance]">
+              Your Cart Is Empty
+            </EmptyTitle>
+            <EmptyDescription className="max-w-xs text-center text-xs text-[#737373] mt-1 [text-wrap:pretty]">
+              Explore our handcrafted jewelry collections and add your favourite pieces.
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent className="mt-6">
-            <Button onClick={() => router.push('/products')} className="min-h-12 rounded-xl px-6 active:scale-[0.96]">
-              Continue Shopping
+            <Button
+              onClick={() => router.push('/products')}
+              className="min-h-11 rounded-none bg-[#121212] hover:bg-neutral-800 text-white text-xs uppercase tracking-[0.2em] font-medium px-8 transition-colors"
+            >
+              Explore Collection
             </Button>
           </EmptyContent>
         </Empty>
@@ -1601,7 +1599,6 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
             {/* Footer links */}
             <div className={styles.trustLinks}>
               <Link href="/refund-policy" className={styles.trustLink}>Refund policy</Link>
-              <Link href="/shipping-policy" className={styles.trustLink}>Shipping</Link>
               <Link href="/privacy-policy" className={styles.trustLink}>Privacy policy</Link>
               <Link href="/terms-of-service" className={styles.trustLink}>Terms of service</Link>
               <Link href="/contact" className={styles.trustLink}>Contact</Link>

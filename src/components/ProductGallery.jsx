@@ -74,8 +74,8 @@ export default function ProductGallery({ images, primaryTag, product }) {
 
   if (normalizedImages.length === 0) {
     return (
-      <div className="surface-card relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-xl text-muted-foreground" style={{ backgroundColor: '#ffffff' }}>
-        <ImageIcon className="size-16" />
+      <div className="relative flex aspect-[4/5] w-full items-center justify-center overflow-hidden bg-[#FAF9F6] border border-[#E8E5DF] text-neutral-400">
+        <ImageIcon className="size-16 stroke-[1]" />
       </div>
     );
   }
@@ -87,15 +87,14 @@ export default function ProductGallery({ images, primaryTag, product }) {
   const mainTag = primaryTag ? getProductTagById(primaryTag) : null;
 
   return (
-    <div className="flex w-full flex-col gap-3">
-      <div className="surface-card relative aspect-square overflow-hidden rounded-xl" style={{ backgroundColor: '#ffffff' }}>
-        
+    <div className="flex w-full flex-col gap-4">
+      {/* Main Large Image Container */}
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-[#F4F2EE]">
         {mainTag && (
           <div 
-            className={cn("absolute left-3 top-3 z-20 pointer-events-auto flex items-center gap-1.5 rounded-full px-3 py-1.5 shadow-md backdrop-blur-md border border-white/30 text-xs font-semibold", mainTag.bgColor, mainTag.color)}
+            className={cn("absolute left-3 top-3 z-20 pointer-events-auto flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-sans uppercase tracking-[0.16em] font-semibold text-white bg-[#121212] rounded-md")}
             title={mainTag.label}
           >
-            <mainTag.icon className="size-4 drop-shadow-sm" />
             {mainTag.label}
           </div>
         )}
@@ -105,7 +104,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
             <ProductWishlistButton
               product={product}
               mode="detail"
-              className="!bg-transparent !border-transparent !shadow-none text-foreground hover:text-red-500 [&>span]:hidden flex items-center justify-center transition-colors [&_svg]:!size-6 p-0"
+              className="!bg-white/80 backdrop-blur-sm !border-[#E8E5DF] text-[#121212] hover:text-[#A67C52] [&>span]:hidden flex items-center justify-center size-9 p-0 rounded-full shadow-sm"
             />
           </div>
         )}
@@ -121,13 +120,13 @@ export default function ProductGallery({ images, primaryTag, product }) {
               const productName = product?.Name || product?.name || 'Product';
               return (
                 <CarouselItem key={index} className="h-full basis-full pl-0">
-                  <div className="relative h-full min-h-0 w-full">
+                  <div className="relative h-full min-h-0 w-full overflow-hidden group cursor-crosshair">
                     <Image
                       src={optimizeCloudinaryUrl(image.url, CLOUDINARY_IMAGE_PRESETS.productGalleryMain)}
                       alt={`${productName} - View ${index + 1}`}
                       fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 58vw, 42vw"
-                      className="object-cover transition-transform duration-[700ms] ease-[cubic-bezier(0.25,1,0.5,1)] lg:hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 58vw, 50vw"
+                      className="object-cover transition-transform duration-700 ease-out hover:scale-125"
                       {...getBlurPlaceholderProps(image.blurDataURL)}
                       priority={index === 0}
                       fetchPriority={index === 0 ? 'high' : 'auto'}
@@ -140,8 +139,9 @@ export default function ProductGallery({ images, primaryTag, product }) {
           </CarouselContent>
         </Carousel>
 
+        {/* Mobile Swipe Indicators */}
         {hasMultipleImages && (
-          <div className="absolute bottom-3 left-0 right-0 flex justify-center items-center gap-1 md:hidden z-10 pointer-events-none">
+          <div className="absolute bottom-3 left-0 right-0 flex justify-center items-center gap-1.5 md:hidden z-10 pointer-events-none">
             {normalizedImages.map((_, index) => (
               <button
                 key={index}
@@ -149,14 +149,14 @@ export default function ProductGallery({ images, primaryTag, product }) {
                 onClick={() => handleThumbnailClick(index)}
                 aria-label={`Go to slide ${index + 1}`}
                 aria-pressed={index === selectedIndex}
-                className="group relative inline-flex size-7 min-h-[28px] min-w-[28px] items-center justify-center p-0 pointer-events-auto cursor-pointer focus:outline-none"
+                className="pointer-events-auto cursor-pointer p-1"
               >
                 <span
                   className={cn(
-                    'rounded-full transition-all duration-300 pointer-events-none block shadow-xs',
+                    'transition-all duration-300 pointer-events-none block',
                     index === selectedIndex
-                      ? 'w-5 h-2 bg-primary'
-                      : 'size-2 bg-background border-[1.5px] border-primary/60 group-hover:bg-primary/20'
+                      ? 'w-6 h-1 bg-[#121212]'
+                      : 'w-2 h-1 bg-black/20'
                   )}
                 />
               </button>
@@ -165,45 +165,36 @@ export default function ProductGallery({ images, primaryTag, product }) {
         )}
       </div>
 
+      {/* Desktop Thumbnail Strip */}
       {hasMultipleImages ? (
-        <Carousel
-          setApi={setThumbsApi}
-          opts={thumbsOptions}
-          className="hidden w-full md:block"
-        >
-          <CarouselContent className="-ml-3 md:-ml-4">
-            {normalizedImages.map((image, index) => (
-              <CarouselItem
-                key={index}
-                className="basis-[31.25%] pl-3 md:basis-[33.33%] md:pl-4"
-              >
-                <button
-                  type="button"
-                  onClick={() => handleThumbnailClick(index)}
-                  aria-label={`Show product image ${index + 1}`}
-                  aria-pressed={index === selectedIndex}
-                  className={`relative block aspect-square w-full min-w-0 cursor-pointer overflow-hidden rounded-lg border-2 transition-[opacity,transform,border-color,box-shadow] duration-300 ease-out ${
-                    index === selectedIndex
-                      ? 'border-primary shadow-sm shadow-primary/30 opacity-100'
-                      : 'border-transparent opacity-60 hover:scale-[1.02] hover:opacity-100'
-                  }`}
-                >
-                  <div className="absolute inset-0" style={{ backgroundColor: '#ffffff' }} />
-                  <Image
-                    src={optimizeCloudinaryUrl(image.url, CLOUDINARY_IMAGE_PRESETS.productGalleryThumb)}
-                    alt={`${product?.Name || product?.name || 'Product'} thumbnail ${index + 1}`}
-                    fill
-                    sizes="(max-width: 768px) 31vw, 12vw"
-                    loading="lazy"
-                    className="object-cover"
-                    {...getBlurPlaceholderProps(image.blurDataURL)}
-                  />
-                </button>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+        <div className="hidden md:grid grid-cols-5 gap-3 w-full">
+          {normalizedImages.map((image, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => handleThumbnailClick(index)}
+              aria-label={`Show product image ${index + 1}`}
+              aria-pressed={index === selectedIndex}
+              className={`relative aspect-square w-full cursor-pointer overflow-hidden bg-[#F4F2EE] border transition-all duration-300 ${
+                index === selectedIndex
+                  ? 'border-[#121212] opacity-100 ring-1 ring-[#121212]'
+                  : 'border-transparent opacity-70 hover:opacity-100'
+              }`}
+            >
+              <Image
+                src={optimizeCloudinaryUrl(image.url, CLOUDINARY_IMAGE_PRESETS.productGalleryThumb)}
+                alt={`Thumbnail ${index + 1}`}
+                fill
+                sizes="120px"
+                className="object-cover p-1"
+                {...getBlurPlaceholderProps(image.blurDataURL)}
+                loading="lazy"
+              />
+            </button>
+          ))}
+        </div>
       ) : null}
     </div>
   );
 }
+

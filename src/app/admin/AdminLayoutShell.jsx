@@ -73,7 +73,6 @@ const primaryNavItems = [
 const productNavItems = [
   { href: '/admin/products', label: 'Product List', icon: Box, match: (pathname) => pathname.startsWith('/admin/products') },
   { href: '/admin/restock-requests', label: 'Restock Requests', icon: Bell, match: (pathname) => pathname.startsWith('/admin/restock-requests') },
-  { href: '/admin/vendors', label: 'Vendors', icon: Store, match: (pathname) => pathname.startsWith('/admin/vendors') },
   { href: '/admin/categories', label: 'Categories', icon: LayoutGrid, match: (pathname) => pathname.startsWith('/admin/categories') },
   { href: '/admin/reviews', label: 'Reviews', icon: MessageSquare, match: (pathname) => pathname.startsWith('/admin/reviews') },
 ];
@@ -82,8 +81,6 @@ const productNavItems = [
 const ordersNavItems = [
   { href: '/admin/orders', label: 'View All Orders', icon: ShoppingCart, match: (pathname) => pathname.startsWith('/admin/orders') },
   { href: '/admin/abandoned-carts', label: 'Abandoned Carts', icon: ShoppingBag, match: (pathname) => pathname.startsWith('/admin/abandoned-carts') },
-  { href: '/admin/invoices', label: 'Invoices', icon: FileText, match: (pathname) => pathname.startsWith('/admin/invoices') },
-  { href: '/admin/payments', label: 'Payments Received', icon: CreditCard, match: (pathname) => pathname.startsWith('/admin/payments') },
 ];
 
 // 4. Customers
@@ -106,7 +103,6 @@ const websiteNavItems = [
   { href: '/admin/website/general', label: 'General Information', icon: FileText, match: (pathname) => pathname.startsWith('/admin/website/general') },
   { href: '/admin/home-page', label: 'Home Layout Settings', icon: LayoutGrid, match: (pathname) => pathname.startsWith('/admin/home-page') },
   { href: '/admin/store-setup', label: 'Store Setup', icon: Store, match: (pathname) => pathname.startsWith('/admin/store-setup') },
-  { href: '/admin/cover-photos', label: 'Cover photo/Banner', icon: Images, match: (pathname) => pathname.startsWith('/admin/cover-photos') },
 ];
 
 // 8. Pages Management
@@ -270,13 +266,13 @@ export default function AdminLayoutShell({ children, sessionUser }) {
         className={cn(
           'flex min-h-8 items-center gap-2 rounded-lg px-2.5 py-1.5 text-[12px] font-medium transition-[background-color,color,transform] duration-200 active:scale-[0.98]',
           active
-            ? 'bg-[#D0FAE5] text-emerald-950 font-semibold'
+            ? 'bg-[#F5EFE6] text-[#121212] font-semibold'
             : 'text-foreground/70 hover:bg-muted/70 hover:text-foreground',
           collapsed && 'justify-center px-0'
         )}
         title={collapsed ? label : undefined}
       >
-        <Icon className={cn('size-3.5 shrink-0', active ? 'text-emerald-900' : '')} />
+        <Icon className={cn('size-3.5 shrink-0', active ? 'text-[#A67C52]' : '')} />
         <span className={cn('truncate', collapsed && 'hidden')}>{label}</span>
       </Link>
     );
@@ -293,12 +289,12 @@ export default function AdminLayoutShell({ children, sessionUser }) {
         className={cn(
           'group flex min-h-7 items-center gap-1.5 rounded-md px-2 py-1 text-[11px] transition-[background-color,color,transform] duration-200 active:scale-[0.98]',
           active
-            ? 'bg-[#ECFDF5] text-emerald-950 font-semibold'
+            ? 'bg-[#F5EFE6] text-[#121212] font-semibold'
             : 'text-foreground/80 hover:bg-muted/60 hover:text-foreground'
         )}
       >
-        <Icon className={cn('size-3 shrink-0 transition-opacity', active ? 'text-emerald-800 opacity-100' : 'opacity-60 group-hover:opacity-85')} />
-        <span className={cn('truncate', active ? 'font-semibold text-emerald-950' : 'font-normal')}>{label}</span>
+        <Icon className={cn('size-3 shrink-0 transition-opacity', active ? 'text-[#A67C52] opacity-100' : 'opacity-60 group-hover:opacity-85')} />
+        <span className={cn('truncate', active ? 'font-semibold text-[#121212]' : 'font-normal')}>{label}</span>
       </Link>
     );
   }
@@ -307,6 +303,7 @@ export default function AdminLayoutShell({ children, sessionUser }) {
     let active = false;
     if (value === 'products') active = productNavItems.some((item) => item.match(pathname));
     else if (value === 'orders') active = ordersNavItems.some((item) => item.match(pathname));
+    else if (value === 'customers') active = customersNavItems.some((item) => item.match(pathname));
     else if (value === 'marketing') active = marketingNavItems.some((item) => item.match(pathname));
     else if (value === 'website') active = websiteNavItems.some((item) => item.match(pathname));
     else if (value === 'pages') active = pagesNavItems.some((item) => item.match(pathname));
@@ -318,13 +315,13 @@ export default function AdminLayoutShell({ children, sessionUser }) {
         className={cn(
           'min-h-8 rounded-lg border-0 px-2.5 py-1.5 text-[12px] font-medium hover:no-underline transition-colors',
           active
-            ? 'bg-[#D0FAE5] text-emerald-950 font-semibold'
+            ? 'bg-[#F5EFE6] text-[#121212] font-semibold'
             : 'bg-transparent text-foreground/70 hover:bg-muted/60 hover:text-foreground'
         )}
       >
         <div className="flex items-center gap-2">
-          <Icon className={cn('size-3.5 shrink-0', active ? 'text-emerald-900' : 'text-foreground/85')} />
-          <span className={cn('text-[12px]', active ? 'font-semibold text-emerald-950' : 'font-medium text-foreground/85')}>{label}</span>
+          <Icon className={cn('size-3.5 shrink-0', active ? 'text-[#A67C52]' : 'text-foreground/85')} />
+          <span className={cn('text-[12px]', active ? 'font-semibold text-[#121212]' : 'font-medium text-foreground/85')}>{label}</span>
         </div>
       </AccordionTrigger>
     );
@@ -337,8 +334,8 @@ export default function AdminLayoutShell({ children, sessionUser }) {
           <PanelsTopLeft className="size-3.5 text-foreground" />
         </div>
         <div className={cn('min-w-0', desktopSidebarCollapsed && 'hidden')}>
-          <p className="truncate text-[13px] font-bold tracking-[0.06em] text-foreground">Admin Panel</p>
-          <p className="truncate text-[10px] tracking-wider text-muted-foreground">Store Code: CUS786</p>
+          <p className="truncate text-[13px] font-bold tracking-[0.06em] text-foreground">Ornaments by Arshad</p>
+          <p className="truncate text-[10px] tracking-wider text-muted-foreground">Admin Portal</p>
         </div>
       </div>
 

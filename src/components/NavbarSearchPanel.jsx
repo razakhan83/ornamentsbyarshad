@@ -143,9 +143,10 @@ export default function NavbarSearchPanel({ open, onOpenChange, placeholder = 'S
         setSearchTerm('');
         setDebouncedSearch('');
         setSuggestions([]);
-        setIsFocused(true);
+        setIsFocused(false);
       }}
       onFocus={() => setIsFocused(true)}
+      onClose={() => setIsFocused(false)}
       isFocused={isFocused}
       suggestions={suggestions}
       categories={categories}

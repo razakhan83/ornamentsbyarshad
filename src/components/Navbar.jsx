@@ -218,6 +218,7 @@ function NavbarContent({
   } = useCartActions() || {};
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isAccountDrawerOpen, setIsAccountDrawerOpen] = useState(false);
@@ -450,234 +451,271 @@ function NavbarContent({
   return (
     <>
       <div className={cn(
-        "navbar-shell sticky top-0 z-[200] overflow-visible bg-card shadow-[0_1px_0_color-mix(in_oklab,var(--color-border)_72%,white)] transition-transform duration-300 ease-[cubic-bezier(0.2,0,0,1)] will-change-transform",
+        "navbar-shell sticky top-0 z-[200] overflow-visible bg-[#F7F3EE] border-b border-[#E8E5DF] transition-transform duration-300 ease-[cubic-bezier(0.2,0,0,1)] will-change-transform shadow-[0_1px_3px_rgba(0,0,0,0.03)]",
         isNavbarHidden ? '-translate-y-full' : 'translate-y-0'
       )}>
-      {showAnnouncementBar ? (
-        <div className="relative flex min-h-8 md:min-h-9 items-center bg-primary py-1.5 md:py-2 text-primary-foreground shadow-[inset_0_-1px_0_rgba(255,255,255,0.08)] before:absolute before:-top-px before:left-0 before:right-0 before:h-px before:bg-primary before:content-['']">
-          <AnnouncementMarquee items={announcementItems} />
-        </div>
-      ) : null}
 
       <div className="relative z-50">
-          <header className="relative z-[60] mx-auto flex h-16 md:h-20 w-full max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 xl:px-10">
-            <div className="flex items-center gap-4 lg:gap-8 shrink-0">
-              <Button variant="ghost" size="icon" onClick={() => isSidebarOpen ? setIsSidebarOpen(false) : handleSidebarOpen()} aria-label={isSidebarOpen ? "Close menu" : "Open menu"} className="md:hidden relative">
-                <span className="relative flex size-6 items-center justify-center">
+          {/* Tier 1: Main Header Row */}
+          <header className="relative mx-auto flex h-16 sm:h-18 md:h-20 max-w-[1440px] items-center justify-between px-4 sm:px-6 xl:px-10">
+            {/* Left Zone: Mobile Hamburger & PC Left-Aligned Logo */}
+            <div className="flex items-center gap-4">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => isSidebarOpen ? setIsSidebarOpen(false) : handleSidebarOpen()} 
+                aria-label={isSidebarOpen ? "Close menu" : "Open menu"} 
+                className="lg:hidden relative rounded-none hover:bg-black/5 text-[#121212] size-11"
+              >
+                <span className="relative flex size-7 items-center justify-center">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={cn('absolute inset-0 size-full transition-all duration-300', isSidebarOpen ? 'opacity-0 scale-50 rotate-90' : 'opacity-100 scale-100 rotate-0')}>
-                    <line x1="4" y1="6" x2="16" y2="6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-                    <line x1="4" y1="12" x2="20" y2="12" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-                    <line x1="4" y1="18" x2="18" y2="18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+                    <line x1="3.5" y1="7" x2="20.5" y2="7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="3.5" y1="12" x2="20.5" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="3.5" y1="17" x2="20.5" y2="17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                   </svg>
-                  <X strokeWidth={2.2} className={cn('absolute inset-0 size-full transition-all duration-300', isSidebarOpen ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-50 -rotate-90')} />
+                  <X strokeWidth={2} className={cn('absolute inset-0 size-full transition-all duration-300', isSidebarOpen ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-50 -rotate-90')} />
                 </span>
               </Button>
 
+              {/* Desktop Left-Aligned Logo */}
+              <div className="hidden lg:flex items-center">
+                <StoreLogo
+                  storeName={storeName}
+                  lightLogoUrl={lightLogoUrl}
+                  darkLogoUrl={darkLogoUrl}
+                  logoScalePercent={logoScalePercent * 1.15}
+                  variant="light-surface"
+                  priority
+                  onClick={(event) => {
+                    event.preventDefault();
+                    handleDesktopNavigate('/');
+                  }}
+                  className="transition-transform duration-300 hover:scale-[1.01] cursor-pointer"
+                  isLink={false}
+                />
+              </div>
+            </div>
+
+            {/* Mobile Center Logo */}
+            <div className="lg:hidden absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
               <StoreLogo
                 storeName={storeName}
                 lightLogoUrl={lightLogoUrl}
                 darkLogoUrl={darkLogoUrl}
-                logoScalePercent={logoScalePercent * 1.35}
+                logoScalePercent={logoScalePercent * 1.15}
                 variant="light-surface"
                 priority
                 onClick={(event) => {
                   event.preventDefault();
                   handleDesktopNavigate('/');
                 }}
-                className="absolute left-1/2 -translate-x-1/2 md:static md:left-auto md:translate-x-0 transition-transform duration-300 hover:scale-[1.02] cursor-pointer"
+                className="transition-transform duration-300 hover:scale-[1.01] cursor-pointer"
                 isLink={false}
               />
             </div>
 
-            {/* Center Zone: Search (Desktop only) */}
-            <div className="hidden md:block flex-1 w-full mx-6 xl:mx-10">
+            {/* PC Center Open Search Bar with live suggestions & collections */}
+            <div className="hidden lg:flex flex-1 max-w-lg xl:max-w-xl mx-6 xl:mx-10 relative">
               <NavbarSearchPanel
                 open={true}
                 onOpenChange={() => {}}
-                placeholder="Search products"
+                placeholder="Search rings, necklaces, bracelets, gold..."
+                inlineSuggestions={false}
               />
             </div>
 
-            {/* Right Zone: Actions */}
-            <div className="flex items-center gap-2 md:gap-4 shrink-0">
-              {/* Combined Cart Button */}
+            {/* Right Zone: Wishlist, Account, Cart */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {/* Wishlist Button (Desktop) */}
+              <Link 
+                href="/wishlist" 
+                className="hidden sm:inline-flex items-center justify-center size-9 rounded-none hover:bg-black/5 text-[#121212] transition-colors select-none"
+                title="Wishlist"
+              >
+                <Heart className={cn("size-4.5", pathname === '/wishlist' && "fill-current text-[#A67C52]")} strokeWidth={1.8} />
+              </Link>
+
+              {/* Desktop Account Control */}
+              <NavbarDesktopAccountControl navActionButtonClass="rounded-none hover:bg-black/5 text-[#121212]" />
+
+              {/* Cart Drawer Trigger Button */}
               <Button
                 id="nav-cart-button"
                 data-cart-target="true"
                 type="button"
                 variant="ghost"
-                size="icon-lg"
+                size="icon"
                 onClick={() => isCartOpen ? setIsCartOpen(false) : openCart()}
                 className={cn(
-                  'nav-cart-button overflow-visible rounded-full transition-transform duration-300',
-                  navActionButtonClass,
-                  isCartBumping && 'animate-cart-bump',
-                  'hover:!bg-[#E3FCEF] hover:!text-[#015347] hover:!border-[#E3FCEF] hover:!shadow-[0_8px_25px_rgba(227,252,239,0.9)]'
+                  'relative rounded-none hover:bg-black/5 text-[#121212] size-9 transition-transform duration-200 select-none cursor-pointer',
+                  isCartBumping && 'scale-110'
                 )}
-                aria-label="Open cart"
-                title="Cart"
+                aria-label={isCartOpen ? "Close cart" : "Open cart"}
+                title={isCartOpen ? "Close Cart" : "Cart"}
               >
-                <span className="relative flex size-6 md:size-[1.65rem] items-center justify-center">
-                  <ShoppingBag strokeWidth={1.5} className={cn('absolute inset-0 size-full transition-all duration-300', isCartOpen ? 'opacity-0 scale-50 rotate-90' : 'opacity-100 scale-100 rotate-0')} />
-                  <X strokeWidth={1.5} className={cn('absolute inset-0 size-full transition-all duration-300', isCartOpen ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-50 -rotate-90')} />
-                </span>
-                {isCartInitialized ? (
-                  cartCount > 0 ? (
-                    <span className={cn(
-                      "absolute -right-2 -top-2 inline-flex size-5 items-center justify-center rounded-full bg-[#015347] text-[11px] font-bold leading-none text-white transition-transform duration-200",
-                      isCartBumping && "scale-125"
-                    )}>
-                      {cartCount}
-                    </span>
-                  ) : null
+                {isCartOpen ? (
+                  <X strokeWidth={1.8} className="size-4.5 transition-transform duration-200 rotate-0" />
                 ) : (
-                  <span className="absolute -right-2 -top-2 inline-flex size-5 items-center justify-center rounded-full bg-[#015347] text-[11px] font-bold leading-none text-white">
-                    <span className="h-2.5 w-2.5 rounded-full bg-white/70" />
-                  </span>
+                  <ShoppingBag strokeWidth={1.8} className="size-4.5 transition-transform duration-200" />
                 )}
+                {isCartInitialized && cartCount > 0 && !isCartOpen ? (
+                  <span className={cn(
+                    "absolute top-0.5 right-0.5 inline-flex size-4 items-center justify-center rounded-full bg-[#A67C52] text-[9.5px] font-sans font-bold leading-none text-white pointer-events-none transition-transform",
+                    isCartBumping && "scale-125"
+                  )}>
+                    {cartCount}
+                  </span>
+                ) : null}
               </Button>
-
-              <NavbarDesktopAccountControl navActionButtonClass={navActionButtonClass} />
             </div>
           </header>
+
+          {/* Tier 2: Sub-Navbar for PC Navigation Links */}
+          <div className="hidden lg:block border-t border-[#E8E5DF] bg-[#F7F3EE]">
+            <nav className="mx-auto flex h-9 max-w-[1440px] items-center justify-center gap-4 sm:gap-6 xl:gap-8 px-4 text-[10px] sm:text-[10.5px] font-sans uppercase tracking-[0.16em]">
+              <Link 
+                href="/" 
+                className={cn(
+                  "px-2 py-1 font-medium text-[#121212]/80 hover:text-[#A67C52] transition-colors",
+                  pathname === '/' && "text-[#121212] font-bold border-b-2 border-[#A67C52]"
+                )}
+              >
+                Home
+              </Link>
+
+              <Link 
+                href="/products" 
+                className={cn(
+                  "px-2 py-1 font-medium text-[#121212]/80 hover:text-[#A67C52] transition-colors",
+                  pathname === '/products' && "text-[#121212] font-bold border-b-2 border-[#A67C52]"
+                )}
+              >
+                All Jewelry
+              </Link>
+
+              {/* Collections Hover Dropdown */}
+              <div 
+                className="group relative py-1"
+                onMouseEnter={() => {
+                  if (closeCategoriesTimeoutRef.current) clearTimeout(closeCategoriesTimeoutRef.current);
+                  setIsCategoriesOpen(true);
+                }}
+                onMouseLeave={() => {
+                  closeCategoriesTimeoutRef.current = setTimeout(() => {
+                    setIsCategoriesOpen(false);
+                  }, 180);
+                }}
+              >
+                <Link
+                  href="/categories"
+                  className={cn(
+                    "inline-flex items-center gap-1 px-2 py-1 font-medium text-[#121212]/80 group-hover:text-[#A67C52] hover:text-[#A67C52] transition-colors outline-none cursor-pointer uppercase",
+                    (pathname?.includes('/categories') || isCategoriesOpen) && "text-[#121212] font-bold border-b-2 border-[#A67C52]"
+                  )}
+                >
+                  <span>Collections</span>
+                  <ChevronDown className={cn("size-3 transition-transform duration-200 opacity-60 group-hover:rotate-180 group-hover:text-[#A67C52]", isCategoriesOpen && "rotate-180 text-[#A67C52]")} />
+                </Link>
+
+                {/* Dropdown Menu with Hover Bridge */}
+                <div 
+                  className={cn(
+                    "absolute top-full left-1/2 -translate-x-1/2 z-[300] min-w-64 pt-1 transition-all duration-150",
+                    "before:content-[''] before:absolute before:-top-2 before:inset-x-0 before:h-3",
+                    isCategoriesOpen ? "opacity-100 visible pointer-events-auto" : "opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto"
+                  )}
+                  onMouseEnter={() => {
+                    if (closeCategoriesTimeoutRef.current) clearTimeout(closeCategoriesTimeoutRef.current);
+                    setIsCategoriesOpen(true);
+                  }}
+                  onMouseLeave={() => {
+                    closeCategoriesTimeoutRef.current = setTimeout(() => {
+                      setIsCategoriesOpen(false);
+                    }, 180);
+                  }}
+                >
+                  <div className="bg-[#FAF9F6] border border-[#E8E5DF] shadow-[0_16px_36px_rgba(0,0,0,0.12)] p-2 animate-in fade-in-0 zoom-in-95 duration-150">
+                    <Link 
+                      href="/categories" 
+                      onClick={() => setIsCategoriesOpen(false)}
+                      className="w-full flex items-center justify-between font-bold text-[#121212] px-3 py-2 text-[10.5px] hover:bg-black/5 hover:text-[#A67C52] transition-colors border-b border-[#E8E5DF]"
+                    >
+                      <span>Explore All Collections</span>
+                      <ArrowRight className="size-3" />
+                    </Link>
+
+                    <div className="flex flex-col py-1 max-h-[70vh] overflow-y-auto overscroll-contain divide-y divide-[#E8E5DF]/40">
+                      {Array.isArray(categories) && categories.length > 0 ? (
+                        categories.map((cat) => {
+                          const categoryTitle = cat.name || cat.label || '';
+                          const categoryHref = cat.slug 
+                            ? `/products?category=${encodeURIComponent(cat.slug)}` 
+                            : `/products?category=${encodeURIComponent(cat.id || cat._id || '')}`;
+
+                          if (!categoryTitle) return null;
+
+                          return (
+                            <Link
+                              key={cat._id || cat.id || cat.slug || categoryTitle}
+                              href={categoryHref}
+                              onClick={() => setIsCategoriesOpen(false)}
+                              className="px-3 py-2 text-xs font-medium text-[#121212]/85 hover:bg-black/5 hover:text-[#A67C52] transition-colors normal-case tracking-normal flex items-center justify-between"
+                            >
+                              <span>{categoryTitle}</span>
+                              <ChevronDown className="size-3 -rotate-90 opacity-40" />
+                            </Link>
+                          );
+                        })
+                      ) : (
+                        <>
+                          <Link href="/products?category=necklace-sets" onClick={() => setIsCategoriesOpen(false)} className="px-3 py-2 text-xs font-medium text-[#121212]/85 hover:bg-black/5 hover:text-[#A67C52] transition-colors normal-case tracking-normal">Necklace Sets</Link>
+                          <Link href="/products?category=bracelets" onClick={() => setIsCategoriesOpen(false)} className="px-3 py-2 text-xs font-medium text-[#121212]/85 hover:bg-black/5 hover:text-[#A67C52] transition-colors normal-case tracking-normal">Bracelets & Bangles</Link>
+                          <Link href="/products?category=rings" onClick={() => setIsCategoriesOpen(false)} className="px-3 py-2 text-xs font-medium text-[#121212]/85 hover:bg-black/5 hover:text-[#A67C52] transition-colors normal-case tracking-normal">Diamond & Gold Rings</Link>
+                          <Link href="/products?category=earrings" onClick={() => setIsCategoriesOpen(false)} className="px-3 py-2 text-xs font-medium text-[#121212]/85 hover:bg-black/5 hover:text-[#A67C52] transition-colors normal-case tracking-normal">Earrings</Link>
+                          <Link href="/products?category=bridal-sets" onClick={() => setIsCategoriesOpen(false)} className="px-3 py-2 text-xs font-medium text-[#121212]/85 hover:bg-black/5 hover:text-[#A67C52] transition-colors normal-case tracking-normal">Bridal Sets</Link>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Link 
+                href="/about-us" 
+                className={cn(
+                  "px-2 py-1 font-medium text-[#121212]/80 hover:text-[#A67C52] transition-colors",
+                  pathname === '/about-us' && "text-[#121212] font-bold border-b-2 border-[#A67C52]"
+                )}
+              >
+                About Us
+              </Link>
+
+              <Link 
+                href="/contact-us" 
+                className={cn(
+                  "px-2 py-1 font-medium text-[#121212]/80 hover:text-[#A67C52] transition-colors",
+                  (pathname === '/contact-us' || pathname === '/contact') && "text-[#121212] font-bold border-b-2 border-[#A67C52]"
+                )}
+              >
+                Contact Us
+              </Link>
+
+              <Link 
+                href="/track-order" 
+                className={cn(
+                  "px-2 py-1 font-medium text-[#121212]/80 hover:text-[#A67C52] transition-colors",
+                  (pathname === '/track-order' || pathname === '/orders') && "text-[#121212] font-bold border-b-2 border-[#A67C52]"
+                )}
+              >
+                Track Your Order
+              </Link>
+            </nav>
+          </div>
 
           <MobileSearchOverlay 
             open={isSearchOpen}
             onOpenChange={setIsSearchOpen}
           />
-
-          {/* Top Secondary Navbar (now below header) */}
-          <div className="hidden md:flex relative z-40 bg-muted/30 py-1.5 border-y border-border/50">
-            <div className="mx-auto flex w-full max-w-[1440px] items-center justify-center px-4 sm:px-6 xl:px-10 text-[13px] font-semibold text-foreground/85">
-              <div className="flex flex-wrap items-center justify-center gap-1.5 xl:gap-2.5">
-                {/* Home Link */}
-                <Link 
-                  href="/" 
-                  className={cn(
-                    "inline-flex relative z-50 items-center justify-center h-[32px] gap-1.5 px-3 rounded-full transition-all duration-200 ease-out group active:scale-95 active:translate-y-0 select-none hover:bg-[#E3FCEF] hover:text-[#015347] hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_3px_12px_rgba(227,252,239,0.6)]",
-                    pathname === '/' ? "font-bold text-[#015347]" : "font-semibold text-foreground/85"
-                  )}
-                >
-                  <Home className="size-3.5 transition-transform duration-200 ease-out group-hover:scale-105" strokeWidth={pathname === '/' ? 2.5 : 2.2} /> Home
-                </Link>
-
-                {/* Categories Dropdown & Direct Link */}
-                <DropdownMenu open={isCategoriesOpen} onOpenChange={setIsCategoriesOpen}>
-                  <div
-                    onPointerEnter={() => {
-                      cancelCategoriesClose();
-                      setIsCategoriesOpen(true);
-                    }}
-                    onPointerLeave={scheduleCategoriesClose}
-                  >
-                    <DropdownMenuTrigger
-                      onClick={() => {
-                        setIsCategoriesOpen(false);
-                        router.push('/categories');
-                      }}
-                      className={cn(
-                        "group/button flex items-center justify-center h-[32px] gap-1.5 px-3 rounded-full transition-all duration-200 ease-out outline-none select-none active:scale-95 active:translate-y-0 hover:bg-[#E3FCEF] hover:text-[#015347] hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_3px_12px_rgba(227,252,239,0.6)] cursor-pointer",
-                        pathname?.startsWith('/categories') ? "font-bold text-[#015347]" : "font-semibold text-foreground/85"
-                      )}
-                    >
-                      <LayoutGrid className="size-3.5 transition-transform duration-200 ease-out group-hover/button:scale-105" strokeWidth={pathname?.startsWith('/categories') ? 2.5 : 2.2} /> Categories
-                      <ChevronDown className={cn('size-3 transition-transform duration-200 ease-out', isCategoriesOpen && 'rotate-180')} />
-                    </DropdownMenuTrigger>
-                  </div>
-                  <DropdownMenuContent
-                    className="w-60 p-1 rounded-2xl bg-white border border-gray-200 shadow-xl"
-                    align="start"
-                    sideOffset={8}
-                    onPointerEnter={cancelCategoriesClose}
-                    onPointerLeave={scheduleCategoriesClose}
-                  >
-                    {categories.map((category) => (
-                      <DropdownMenuItem
-                        key={category.id || category._id}
-                        className="rounded-xl cursor-pointer hover:bg-muted text-gray-900"
-                        onClick={() => {
-                          setIsCategoriesOpen(false);
-                          router.push(`/products?category=${category.slug || category.id || category._id}`);
-                        }}
-                      >
-                        <Tag className="text-muted-foreground size-4" />
-                        <span>{category.label || category.name}</span>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-
-                {/* All Products */}
-                <Link 
-                  href="/products" 
-                  className={cn(
-                    "flex items-center justify-center h-[32px] gap-1.5 px-3 rounded-full transition-all duration-200 ease-out group active:scale-95 active:translate-y-0 select-none hover:bg-[#E3FCEF] hover:text-[#015347] hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_3px_12px_rgba(227,252,239,0.6)]",
-                    pathname === '/products' ? "font-bold text-[#015347]" : "font-semibold text-foreground/85"
-                  )}
-                >
-                  <ShoppingBag className="size-3.5 transition-transform duration-200 ease-out group-hover:scale-105" strokeWidth={pathname === '/products' ? 2.5 : 2.2} /> All Products
-                </Link>
-
-                {/* Orders / Track Order */}
-                {mounted && session ? (
-                  <Link 
-                    href="/orders" 
-                    className={cn(
-                      "flex items-center justify-center h-[32px] gap-1.5 px-3 rounded-full transition-all duration-200 ease-out group active:scale-95 active:translate-y-0 select-none hover:bg-[#E3FCEF] hover:text-[#015347] hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_3px_12px_rgba(227,252,239,0.6)]",
-                      pathname?.startsWith('/orders') ? "font-bold text-[#015347]" : "font-semibold text-foreground/85"
-                    )}
-                  >
-                    <Package className="size-3.5 transition-transform duration-200 ease-out group-hover:scale-105" strokeWidth={pathname?.startsWith('/orders') ? 2.5 : 2.2} /> My Orders
-                  </Link>
-                ) : (
-                  <Link 
-                    href="/orders" 
-                    className={cn(
-                      "flex items-center justify-center h-[32px] gap-1.5 px-3 rounded-full transition-all duration-200 ease-out group active:scale-95 active:translate-y-0 select-none hover:bg-[#E3FCEF] hover:text-[#015347] hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_3px_12px_rgba(227,252,239,0.6)]",
-                      pathname?.startsWith('/orders') ? "font-bold text-[#015347]" : "font-semibold text-foreground/85"
-                    )}
-                  >
-                    <MapPin className="size-3.5 transition-transform duration-200 ease-out group-hover:scale-105" strokeWidth={pathname?.startsWith('/orders') ? 2.5 : 2.2} /> Track Order
-                  </Link>
-                )}
-
-                {/* Wishlist */}
-                <Link 
-                  href="/wishlist" 
-                  className={cn(
-                    "flex items-center justify-center h-[32px] gap-1.5 px-3 rounded-full transition-all duration-200 ease-out group active:scale-95 active:translate-y-0 select-none hover:bg-[#E3FCEF] hover:text-[#015347] hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_3px_12px_rgba(227,252,239,0.6)]",
-                    pathname?.startsWith('/wishlist') ? "font-bold text-[#015347]" : "font-semibold text-foreground/85"
-                  )}
-                >
-                  <Heart className="size-3.5 transition-transform duration-200 ease-out group-hover:scale-105" strokeWidth={pathname?.startsWith('/wishlist') ? 2.5 : 2.2} /> Wishlist
-                </Link>
-
-                {/* Dollar Store */}
-                <Link 
-                  href="/products?price=under300" 
-                  className={cn(
-                    "flex items-center justify-center h-[32px] gap-1.5 px-3 rounded-full transition-all duration-200 ease-out group active:scale-95 active:translate-y-0 select-none hover:bg-[#E3FCEF] hover:text-[#015347] hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_3px_12px_rgba(227,252,239,0.6)]",
-                    "font-semibold text-foreground/85"
-                  )}
-                >
-                  <Tag className="size-3.5 transition-transform duration-200 ease-out group-hover:scale-105" strokeWidth={2.2} /> Dollar Store
-                </Link>
-
-                {/* Contact Us */}
-                <Link 
-                  href="/contact" 
-                  className={cn(
-                    "flex items-center justify-center h-[32px] gap-1.5 px-3 rounded-full transition-all duration-200 ease-out group active:scale-95 active:translate-y-0 select-none hover:bg-[#E3FCEF] hover:text-[#015347] hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_3px_12px_rgba(227,252,239,0.6)]",
-                    pathname === '/contact' || pathname === '/about-us' || pathname === '/faq'
-                      ? "font-bold text-[#015347]" 
-                      : "font-semibold text-foreground/85"
-                  )}
-                >
-                  <Phone className="size-3.5 transition-transform duration-200 ease-out group-hover:scale-105" strokeWidth={pathname === '/contact' ? 2.5 : 2.2} /> Contact Us
-                </Link>
-              </div>
-            </div>
-          </div>
         </div>
 
       <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
@@ -730,20 +768,9 @@ export function NavbarStaticShell({
   lightLogoUrl = '',
   darkLogoUrl = '',
   logoScalePercent = 100,
-  announcementBarEnabled = true,
-  announcementBarText = '',
-  announcementBarMessages = [],
 }) {
-  const announcementItems = normalizeAnnouncementItems(announcementBarMessages, announcementBarText);
-  const showAnnouncementBar = announcementBarEnabled && announcementItems.length > 0;
-
   return (
-    <div className="navbar-shell sticky top-0 z-[200] overflow-visible bg-card shadow-[0_1px_0_color-mix(in_oklab,var(--color-border)_72%,white)]">
-      {showAnnouncementBar ? (
-        <div className="relative flex min-h-8 md:min-h-9 items-center bg-primary py-1.5 md:py-2 text-primary-foreground shadow-[inset_0_-1px_0_rgba(255,255,255,0.08)]">
-          <AnnouncementMarquee items={announcementItems} />
-        </div>
-      ) : null}
+    <div className="navbar-shell sticky top-0 z-[200] overflow-visible bg-[#F7F3EE] border-b border-[#E8E5DF] shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
       <div className="relative z-50">
         <header className="relative z-[60] mx-auto flex h-16 md:h-20 w-full max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 xl:px-10">
           <div className="flex items-center gap-4 lg:gap-8 shrink-0">
@@ -751,75 +778,61 @@ export function NavbarStaticShell({
               storeName={storeName}
               lightLogoUrl={lightLogoUrl}
               darkLogoUrl={darkLogoUrl}
-              logoScalePercent={logoScalePercent * 1.35}
+              logoScalePercent={logoScalePercent * 1.15}
               variant="light-surface"
               priority
               isLink={false}
-              className="absolute left-1/2 -translate-x-1/2 md:static md:left-auto md:translate-x-0 cursor-pointer"
+              className="absolute left-1/2 -translate-x-1/2 lg:static lg:left-auto lg:translate-x-0 cursor-pointer"
             />
           </div>
 
-          <div className="hidden md:block flex-1 w-full mx-6 xl:mx-10">
-            <div className="relative flex h-12 w-full items-center rounded-2xl border border-border/70 bg-background/80 px-4 text-sm text-muted-foreground shadow-sm">
-              <Search className="mr-2.5 size-4 text-muted-foreground/80" />
-              <span>Search products...</span>
+          <div className="hidden lg:block flex-1 max-w-md mx-8">
+            <div className="relative flex h-10 w-full items-center border border-[#E8E5DF] bg-white/80 px-4 text-xs font-sans text-neutral-400">
+              <Search className="mr-2.5 size-4 text-neutral-400" />
+              <span>Search rings, necklaces, bracelets...</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 md:gap-4 shrink-0">
+          <div className="flex items-center gap-2 md:gap-3 shrink-0">
             <Button
               type="button"
               variant="ghost"
-              size="icon-lg"
-              className="relative rounded-full md:border border-transparent md:border-border/60 bg-transparent md:bg-background p-0 text-foreground"
+              size="icon"
+              className="relative rounded-none text-[#121212] size-10"
+              aria-label="Wishlist"
+            >
+              <Heart strokeWidth={1.8} className="size-4.5" />
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="relative rounded-none text-[#121212] size-10"
+              aria-label="Account"
+            >
+              <User strokeWidth={1.8} className="size-4.5" />
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="relative rounded-none text-[#121212] size-10"
               aria-label="Cart"
             >
-              <span className="relative flex size-6 md:size-[1.65rem] items-center justify-center">
-                <ShoppingBag strokeWidth={1.5} className="size-full" />
-              </span>
+              <ShoppingBag strokeWidth={1.8} className="size-5" />
             </Button>
-
-            <div className="hidden md:block">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-lg"
-                className="relative rounded-full md:border border-transparent md:border-border/60 bg-transparent md:bg-background p-0 text-foreground"
-                aria-label="Account"
-              >
-                <span className="relative flex size-6 items-center justify-center">
-                  <User strokeWidth={1.5} className="size-[1.45rem]" />
-                </span>
-              </Button>
-            </div>
           </div>
         </header>
 
-        <div className="hidden md:flex relative z-40 bg-muted/30 py-2.5 border-y border-border/50">
-          <div className="mx-auto flex w-full max-w-[1440px] items-center justify-center px-4 sm:px-6 xl:px-10 text-[14px] font-semibold text-foreground/85">
-            <div className="flex flex-wrap items-center justify-center gap-2 xl:gap-4">
-              <Link href="/" className="inline-flex relative z-50 items-center justify-center h-[38px] gap-1.5 px-4 rounded-full font-semibold text-foreground/85 hover:bg-[#E3FCEF] hover:text-[#015347]">
-                <Home className="size-4" strokeWidth={2.2} /> Home
-              </Link>
-              <Link href="/categories" className="inline-flex items-center justify-center h-[38px] gap-1.5 px-4 rounded-full font-semibold text-foreground/85 hover:bg-[#E3FCEF] hover:text-[#015347]">
-                <LayoutGrid className="size-4" strokeWidth={2.2} /> Categories
-                <ChevronDown className="size-3.5" />
-              </Link>
-              <Link href="/products" className="flex items-center justify-center h-[38px] gap-1.5 px-4 rounded-full font-semibold text-foreground/85 hover:bg-[#E3FCEF] hover:text-[#015347]">
-                <ShoppingBag className="size-4" strokeWidth={2.2} /> All Products
-              </Link>
-              <Link href="/orders" className="flex items-center justify-center h-[38px] gap-1.5 px-4 rounded-full font-semibold text-foreground/85 hover:bg-[#E3FCEF] hover:text-[#015347]">
-                <MapPin className="size-4" strokeWidth={2.2} /> Track Order
-              </Link>
-              <Link href="/wishlist" className="flex items-center justify-center h-[38px] gap-1.5 px-4 rounded-full font-semibold text-foreground/85 hover:bg-[#E3FCEF] hover:text-[#015347]">
-                <Heart className="size-4" strokeWidth={2.2} /> Wishlist
-              </Link>
-              <Link href="/products?price=under300" className="flex items-center justify-center h-[38px] gap-1.5 px-4 rounded-full font-semibold text-foreground/85 hover:bg-[#E3FCEF] hover:text-[#015347]">
-                <Tag className="size-4" strokeWidth={2.2} /> Dollar Store
-              </Link>
-              <Link href="/contact" className="flex items-center justify-center h-[38px] gap-1.5 px-4 rounded-full font-semibold text-foreground/85 hover:bg-[#E3FCEF] hover:text-[#015347]">
-                <Phone className="size-4" strokeWidth={2.2} /> Contact Us
-              </Link>
+        <div className="hidden lg:flex relative z-40 bg-[#F7F3EE] py-2 border-t border-[#E8E5DF]">
+          <div className="mx-auto flex w-full max-w-[1440px] items-center justify-center px-4 text-[11.5px] font-sans uppercase tracking-[0.2em] text-[#121212]/75">
+            <div className="flex items-center justify-center gap-8 xl:gap-12">
+              <span className="py-1">Home</span>
+              <span className="py-1">All Jewelry</span>
+              <span className="py-1">Collections</span>
+              <span className="py-1">About Us</span>
+              <span className="py-1">Contact Us</span>
+              <span className="py-1">Track Your Order</span>
             </div>
           </div>
         </div>

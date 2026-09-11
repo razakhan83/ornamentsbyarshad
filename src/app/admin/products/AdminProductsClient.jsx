@@ -912,7 +912,6 @@ export default function AdminProductsClient({
                 <th className="px-3 py-3">Product</th>
                 <th className="px-3 py-3">Price</th>
                 <th className="px-3 py-3">Category</th>
-                <th className="px-3 py-3">Vendor</th>
                 <th className="px-3 py-3 text-center">Stock Status</th>
                 <th className="px-3 py-3 text-center">Quantity</th>
                 <th className="px-3 py-3 text-center">Visibility</th>
@@ -922,7 +921,7 @@ export default function AdminProductsClient({
             <tbody className="divide-y divide-border">
               {products.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-6 py-20 text-center text-sm font-medium text-muted-foreground">
+                  <td colSpan={8} className="px-6 py-20 text-center text-sm font-medium text-muted-foreground">
                     No products found for the selected criteria.
                   </td>
                 </tr>
@@ -1021,15 +1020,6 @@ export default function AdminProductsClient({
                         </div>
                       </td>
 
-                      {/* Vendor */}
-                      <td className="px-3 py-2.5 text-muted-foreground whitespace-nowrap">
-                        {Array.isArray(product.vendors) && product.vendors.length > 0 ? (
-                          <span className="font-medium text-foreground text-[12px]">{product.vendors[0]?.name || "Assigned"}</span>
-                        ) : (
-                          <span className="text-muted-foreground/60 text-xs">No vendor</span>
-                        )}
-                      </td>
-
                       {/* 1-Click Interactive Stock Status Button */}
                       <td className="px-3 py-2.5 text-center whitespace-nowrap">
                         <ProductStockButton
@@ -1086,16 +1076,7 @@ export default function AdminProductsClient({
                                   </Link>
                                 </DropdownMenuItem>
 
-                                {/* 2. View Vendor */}
-                                <DropdownMenuItem
-                                  className="cursor-pointer text-xs"
-                                  onClick={() => setVendorsModal({ open: true, product })}
-                                >
-                                  <Store className="mr-2 size-3.5" />
-                                  View Vendor
-                                </DropdownMenuItem>
-
-                                {/* 3. Adjust Quantity */}
+                                {/* 2. Adjust Quantity */}
                                 <DropdownMenuItem
                                   className="cursor-pointer text-xs"
                                   onClick={() => openStockDialog(product)}
@@ -1205,13 +1186,6 @@ export default function AdminProductsClient({
                             <Pencil className="mr-2 size-3.5" />
                             Edit Product
                           </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="cursor-pointer text-xs"
-                          onClick={() => setVendorsModal({ open: true, product })}
-                        >
-                          <Store className="mr-2 size-3.5" />
-                          View Vendor
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="cursor-pointer text-xs"

@@ -213,6 +213,36 @@ const SettingsSchema = new mongoose.Schema(
             type: String,
             default: '',
         },
+        // AsaanPay Gateway Integration
+        asaanPayEnabled: {
+            type: Boolean,
+            default: false,
+        },
+        asaanPayTitle: {
+            type: String,
+            default: 'AsaanPay (Debit/Credit Card, EasyPaisa, JazzCash)',
+        },
+        asaanPayEnvironment: {
+            type: String,
+            enum: ['sandbox', 'live'],
+            default: 'sandbox',
+        },
+        asaanPayMerchantId: {
+            type: String,
+            default: '',
+        },
+        asaanPayApiKey: {
+            type: String,
+            default: '',
+        },
+        asaanPayApiSecret: {
+            type: String,
+            default: '',
+        },
+        asaanPayWebhookSecret: {
+            type: String,
+            default: '',
+        },
 
         // Dynamically managed admin emails (in addition to ADMIN_EMAIL / ADMIN_EMAILS env vars)
         adminEmails: {

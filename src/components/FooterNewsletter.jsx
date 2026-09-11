@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { toast } from 'sonner';
+import { ArrowRight, Check } from 'lucide-react';
 
-export default function FooterNewsletter() {
+export default function FooterNewsletter({ inline = true }) {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,59 +20,45 @@ export default function FooterNewsletter() {
     setTimeout(() => {
       setIsLoading(false);
       setIsSubscribed(true);
-      toast.success('Thank you for subscribing!');
+      toast.success('Welcome to the Ornaments by Arshad Private Circle.');
       setEmail('');
-    }, 300);
+    }, 400);
   };
 
-  return (
-    <div className="mb-10 rounded-2xl border border-border bg-card p-4 sm:p-8">
-      <div className="flex flex-col items-center justify-between gap-4 sm:gap-6 md:flex-row md:gap-8">
-        <div className="w-full min-w-0 flex-1 text-center md:max-w-lg md:text-left">
-          <h2 className="text-base font-bold tracking-tight text-foreground sm:text-xl md:text-2xl text-balance">
-            Subscribe for discounts &amp; new arrivals
-          </h2>
-          
-          <p className="mt-1 text-xs leading-relaxed text-muted-foreground sm:text-sm">
-            Get updates on exclusive discounts and new arrivals.
-          </p>
-
-          {isSubscribed ? (
-            <div className="mt-4 inline-block rounded-lg bg-muted px-4 py-2 text-xs sm:text-sm font-semibold text-foreground">
-              Thank you for subscribing!
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="mt-4 flex w-full flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:max-w-md mx-auto md:mx-0">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address"
-                required
-                disabled={isLoading}
-                className="h-11 w-full min-w-0 rounded-xl border border-border bg-background px-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-foreground focus:outline-none transition-colors"
-              />
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="h-11 px-5 w-full sm:w-auto rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-sm shadow-none transition-all active:scale-[0.98] shrink-0 cursor-pointer"
-              >
-                {isLoading ? 'Subscribing...' : 'Subscribe'}
-              </button>
-            </form>
-          )}
-        </div>
-
-        <div className="hidden min-[400px]:flex shrink-0 items-center justify-center select-none">
-          <Image
-            src="/undraw_subscribe_w8sz.svg"
-            alt="Subscribe"
-            width={160}
-            height={110}
-            className="h-auto w-[88px] sm:w-[150px] object-contain"
-          />
-        </div>
+  if (isSubscribed) {
+    return (
+      <div className="border border-[#A67C52]/30 bg-[#FAF9F6] p-3 text-xs uppercase tracking-wider font-semibold text-[#A67C52] flex items-center gap-2">
+        <Check className="size-4" />
+        <span>Welcome to our private circle</span>
       </div>
-    </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-full max-w-sm">
+      <div className="relative flex items-center">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Your email address..."
+          required
+          disabled={isLoading}
+          className="h-10 w-full rounded-none border border-[#E8E5DF] bg-white px-3 text-xs text-[#121212] placeholder:text-[#888888] focus:border-[#121212] focus:outline-none transition-colors pr-10"
+        />
+        <button
+          type="submit"
+          disabled={isLoading}
+          aria-label="Subscribe to newsletter"
+          className="absolute right-0 h-10 w-10 flex items-center justify-center bg-[#121212] text-white hover:bg-[#A67C52] transition-colors cursor-pointer disabled:opacity-50"
+        >
+          {isLoading ? (
+            <span className="text-[10px]">...</span>
+          ) : (
+            <ArrowRight className="size-3.5" />
+          )}
+        </button>
+      </div>
+    </form>
   );
 }

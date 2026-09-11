@@ -6,6 +6,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { Heart, LayoutGrid, LogOut, Settings, ShoppingBag, User, Package, X } from 'lucide-react';
 
 import AuthModal from '@/components/AuthModal';
+import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -41,27 +42,22 @@ export default function NavbarDesktopAccountControl({ navActionButtonClass = '' 
   const [isNavigating, setIsNavigating] = useState(false);
 
 
-  const avatarSrc = session?.user?.image || '';
-  const isAvatarLoaded = !avatarSrc || loadedAvatarSrc === avatarSrc;
-
   if (!mounted || status === 'loading' || !session) {
     return (
       <div className="hidden md:block">
         <Button
           variant="ghost"
-          size="icon-lg"
+          size="icon"
           disabled={isNavigating}
           onClick={() => {
             if (!mounted || session || isNavigating) return;
             setIsNavigating(true);
             setIsAuthModalOpen(true);
           }}
-          className={`nav-profile-button overflow-hidden ${navActionButtonClass}`}
-          title="Account"
+          className={cn("size-9 rounded-none text-[#121212] hover:bg-black/5 transition-colors", navActionButtonClass)}
+          title="Sign In / Account"
         >
-          <span className="relative flex size-6 items-center justify-center">
-            {isNavigating ? <Spinner className="size-5" /> : <User strokeWidth={1.5} className="size-[1.45rem]" />}
-          </span>
+          {isNavigating ? <Spinner className="size-4" /> : <User strokeWidth={1.8} className="size-4.5" />}
         </Button>
         {mounted && isAuthModalOpen ? <AuthModal open={isAuthModalOpen} onOpenChange={setIsAuthModalOpen} /> : null}
       </div>
@@ -71,22 +67,17 @@ export default function NavbarDesktopAccountControl({ navActionButtonClass = '' 
   return (
     <div className="hidden md:block">
       <DropdownMenu>
-        <DropdownMenuTrigger title="Account" className="group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground">
-
-            <Avatar className="size-10">
-              {!isAvatarLoaded ? <Skeleton className="absolute inset-0 rounded-full" /> : null}
-              <AvatarImage
-                src={avatarSrc}
-                alt={session.user?.name || 'User'}
-                className={isAvatarLoaded ? 'opacity-100' : 'opacity-0'}
-                onLoad={() => setLoadedAvatarSrc(avatarSrc)}
-                onError={() => setLoadedAvatarSrc(avatarSrc)}
-              />
-              <AvatarFallback>{(session.user?.name || 'U').charAt(0)}</AvatarFallback>
-            </Avatar>
-          
-</DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56" align="end" sideOffset={8}>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className={cn("size-9 rounded-none text-[#121212] hover:bg-black/5 transition-colors", navActionButtonClass)}
+            title={`Account (${session.user?.name || 'User'})`}
+          >
+            <User strokeWidth={1.8} className="size-4.5" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56 bg-[#FAF9F6] border border-[#E8E5DF] shadow-lg rounded-none" align="end" sideOffset={8}>
           <DropdownMenuGroup>
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
@@ -95,9 +86,9 @@ export default function NavbarDesktopAccountControl({ navActionButtonClass = '' 
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => router.push('/orders')}>
-              <Package className="mr-2 h-4 w-4" />
-              <span>My Orders</span>
+            <DropdownMenuItem onClick={() => router.push('/track-order')}>
+              <Package className="mr-2 h-4 w-4 text-[#A67C52]" />
+              <span>Track Your Order</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => router.push('/wishlist')}>
               <Heart className="mr-2 h-4 w-4" />

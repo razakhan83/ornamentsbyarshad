@@ -9,22 +9,18 @@ import { cn } from '@/lib/utils';
 
 function BrandFallback({ storeName = 'Ornaments by Arshad', invert = false, compact = false }) {
   const title = String(storeName || 'Ornaments by Arshad').trim();
-  const iconClass = invert ? 'bg-white/10 text-white border border-white/20' : 'bg-[#a67c52]/10 text-[#a67c52] border border-[#a67c52]/20';
-  const titleClass = invert ? 'text-white' : 'text-foreground';
+  const titleClass = invert ? 'text-white' : 'text-[#121212]';
   const subtitleClass = invert ? 'text-white/70' : 'text-[#a67c52]';
 
   return (
-    <>
-      <div className={cn('flex items-center justify-center rounded-lg shadow-sm', compact ? 'size-10' : 'size-9', iconClass)}>
-        <Sparkles className="size-4" />
-      </div>
-      <div className="min-w-0 flex flex-col justify-center">
-        <p className={cn('truncate font-serif font-semibold tracking-[0.05em]', compact ? 'text-base' : 'text-sm sm:text-base', titleClass)}>
-          {title}
-        </p>
-        <p className={cn('truncate text-[10px] font-medium tracking-[0.14em] uppercase', subtitleClass)}>Timeless Luxury</p>
-      </div>
-    </>
+    <div className="flex flex-col items-center justify-center text-center select-none py-0.5">
+      <p className={cn('font-serif font-medium tracking-[0.22em] uppercase leading-tight', compact ? 'text-sm sm:text-base' : 'text-base sm:text-lg md:text-xl', titleClass)}>
+        {title}
+      </p>
+      <span className={cn('text-[9px] sm:text-[10px] font-sans font-medium tracking-[0.24em] uppercase mt-0.5', subtitleClass)}>
+        Fine Jewelry
+      </span>
+    </div>
   );
 }
 
@@ -46,28 +42,28 @@ export default function StoreLogo({
   const prefersLightLogo = variant === 'dark-surface';
   const preferredLogoUrl = prefersLightLogo ? lightLogoUrl : darkLogoUrl;
   const fallbackLogoUrl = prefersLightLogo ? darkLogoUrl : lightLogoUrl;
-  const logoUrl = String(preferredLogoUrl || '').trim() || String(fallbackLogoUrl || '').trim();
+  const logoUrl = String(preferredLogoUrl || '').trim() || String(fallbackLogoUrl || '').trim() || '/logo.png';
   const hasLogo = Boolean(String(logoUrl || '').trim()) && !imageError;
-  const baseHeight = compact ? 52 : 48;
-  const safeScalePercent = Math.min(200, Math.max(60, Number(logoScalePercent) || 100));
+  const baseHeight = compact ? 44 : 52;
+  const safeScalePercent = Math.min(220, Math.max(60, Number(logoScalePercent) || 100));
   const logoScale = 1 + ((safeScalePercent - 100) / 100) * 1.9;
 
   const innerContent = (
     <>
       {hasLogo ? (
         <div
-          className="flex shrink-0 items-center overflow-visible"
+          className="flex shrink-0 items-center justify-center overflow-visible"
           style={{ height: `${baseHeight}px` }}
         >
           <Image
             src={logoUrl}
-            alt={storeName || 'Store logo'}
-            width={264}
-            height={80}
+            alt={storeName || 'Ornaments by Arshad'}
+            width={280}
+            height={70}
             priority={priority}
-            sizes={compact ? '208px' : '192px'}
-            className="h-auto w-auto object-contain origin-left-center pointer-events-none"
-            style={{ height: `${baseHeight}px`, transform: `translateY(3px) scale(${logoScale})` }}
+            sizes={compact ? '190px' : '260px'}
+            className="h-full w-auto max-h-full object-contain pointer-events-none"
+            style={{ maxHeight: `${baseHeight}px` }}
             onError={() => setImageError(true)}
           />
         </div>

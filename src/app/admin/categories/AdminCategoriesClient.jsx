@@ -365,21 +365,21 @@ export default function AdminCategoriesClient() {
       let uploadedTertiaryBlurDataURL = "";
 
       if (newImage) {
-        const upload = await uploadImageDataUrl(newImage, "kifayatly_categories");
+        const upload = await uploadImageDataUrl(newImage, "ornaments_categories");
         uploadedImage = upload.url;
         uploadedPublicId = upload.publicId;
         uploadedBlurDataURL = upload.blurDataURL;
       }
 
       if (newSecondaryImage) {
-        const upload2 = await uploadImageDataUrl(newSecondaryImage, "kifayatly_categories");
+        const upload2 = await uploadImageDataUrl(newSecondaryImage, "ornaments_categories");
         uploadedSecondaryImage = upload2.url;
         uploadedSecondaryPublicId = upload2.publicId;
         uploadedSecondaryBlurDataURL = upload2.blurDataURL;
       }
 
       if (newTertiaryImage) {
-        const upload3 = await uploadImageDataUrl(newTertiaryImage, "kifayatly_categories");
+        const upload3 = await uploadImageDataUrl(newTertiaryImage, "ornaments_categories");
         uploadedTertiaryImage = upload3.url;
         uploadedTertiaryPublicId = upload3.publicId;
         uploadedTertiaryBlurDataURL = upload3.blurDataURL;
@@ -479,21 +479,21 @@ export default function AdminCategoriesClient() {
       const isNewImage3 = editTertiaryImage && editTertiaryImage !== editModal.category.tertiaryImage && editTertiaryImage.startsWith("data:");
 
       if (isNewImage1) {
-        const upload = await uploadImageDataUrl(editImage, "kifayatly_categories");
+        const upload = await uploadImageDataUrl(editImage, "ornaments_categories");
         uploadedImage = upload.url;
         uploadedPublicId = upload.publicId;
         uploadedBlurDataURL = upload.blurDataURL;
       }
 
       if (isNewImage2) {
-        const upload2 = await uploadImageDataUrl(editSecondaryImage, "kifayatly_categories");
+        const upload2 = await uploadImageDataUrl(editSecondaryImage, "ornaments_categories");
         uploadedSecondaryImage = upload2.url;
         uploadedSecondaryPublicId = upload2.publicId;
         uploadedSecondaryBlurDataURL = upload2.blurDataURL;
       }
 
       if (isNewImage3) {
-        const upload3 = await uploadImageDataUrl(editTertiaryImage, "kifayatly_categories");
+        const upload3 = await uploadImageDataUrl(editTertiaryImage, "ornaments_categories");
         uploadedTertiaryImage = upload3.url;
         uploadedTertiaryPublicId = upload3.publicId;
         uploadedTertiaryBlurDataURL = upload3.blurDataURL;

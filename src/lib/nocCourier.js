@@ -7,8 +7,8 @@
 const BASE_URL = 'http://api.shipnoc.com/api';
 
 export const NOC_PORTALS = [
-  { id: 'portal_1', name: 'Main Account (unique items)' },
-  { id: 'portal_2', name: 'Secondary Account (aamsaman)' },
+  { id: 'portal_1', name: 'Main Account (Portal 1)' },
+  { id: 'portal_2', name: 'Secondary Account (Portal 2)' },
 ];
 
 /**

@@ -187,13 +187,13 @@ const ProductSchema = new mongoose.Schema(
         // Jewelry Specific Specifications
         metalType: {
             type: String,
-            enum: ['Yellow Gold', 'White Gold', 'Rose Gold', '925 Sterling Silver', 'Platinum', 'Two-Tone Gold', ''],
             default: '',
+            trim: true,
         },
         purity: {
             type: String,
-            enum: ['18K', '21K', '22K', '24K', '925 Silver', 'Platinum 950', ''],
             default: '',
+            trim: true,
         },
         size: {
             type: String,
@@ -204,12 +204,16 @@ const ProductSchema = new mongoose.Schema(
             type: [String],
             default: [],
         },
+        availableColors: {
+            type: [String],
+            default: [],
+        },
         gemstone: {
-            cut: { type: String, default: '' },
+            cut: { type: String, default: '', trim: true },
             carat: { type: Number, default: null },
-            clarity: { type: String, default: '' },
-            color: { type: String, default: '' },
-            gemstoneType: { type: String, default: '' },
+            clarity: { type: String, default: '', trim: true },
+            color: { type: String, default: '', trim: true },
+            gemstoneType: { type: String, default: '', trim: true },
         },
         grossWeightGrams: {
             type: Number,
@@ -245,6 +249,11 @@ const ProductSchema = new mongoose.Schema(
             default: 0,
             min: 0,
             max: 100,
+        },
+        customReviewCount: {
+            type: Number,
+            default: null,
+            min: 0,
         },
         isDiscounted: {
             type: Boolean,
@@ -319,7 +328,8 @@ if (
         !cachedProduct.schema.path('primaryTag') ||
         !cachedProduct.schema.path('isFeatured') ||
         !cachedProduct.schema.path('isFreeDelivery') ||
-        !cachedProduct.schema.path('featuredPriority')
+        !cachedProduct.schema.path('featuredPriority') ||
+        !cachedProduct.schema.path('availableColors')
     )
 ) {
     delete mongoose.models.Product;

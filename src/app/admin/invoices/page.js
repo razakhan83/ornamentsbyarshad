@@ -3,7 +3,7 @@ import AdminInvoicesClient from './AdminInvoicesClient';
 import { requireAdmin } from '@/lib/requireAdmin';
 
 export const metadata = {
-  title: 'Invoices | China Unique Admin',
+  title: 'Invoices | Ornaments by Arshad Admin',
 };
 
 export default async function AdminInvoicesPage() {

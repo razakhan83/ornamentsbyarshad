@@ -1118,7 +1118,7 @@ export default function OrderDetailView({
                 </div>
 
                 <div className="flex items-center justify-between pt-1 text-xs text-muted-foreground">
-                  <span>Account: {order.nocAccountId === 'portal_2' ? 'Aamsaman (Secondary)' : 'Unique Items (Main)'}</span>
+                  <span>Account: {order.nocAccountId === 'portal_2' ? 'Portal 2 (Secondary)' : 'Portal 1 (Main)'}</span>
                   {effectiveTracking && (
                     <button
                       type="button"
@@ -1479,7 +1479,7 @@ export default function OrderDetailView({
               <div className="p-3.5 rounded-lg bg-muted/40 border border-border text-sm flex items-center justify-between">
                 <span className="font-semibold text-foreground">Courier Account:</span>
                 <span className="font-bold text-foreground bg-background px-3 py-1 rounded-md border border-border text-xs">
-                  Unique Items (Main)
+                  Main Account (Portal 1)
                 </span>
               </div>
             )}
@@ -1598,8 +1598,8 @@ export default function OrderDetailView({
                 <span className="text-[11px] font-medium text-muted-foreground mr-1">Account:</span>
                 {[
                   { id: 'all', label: 'All Accounts' },
-                  { id: 'portal_1', label: 'Main (unique items)' },
-                  { id: 'portal_2', label: 'Secondary (aamsaman)' },
+                  { id: 'portal_1', label: 'Main (Portal 1)' },
+                  { id: 'portal_2', label: 'Secondary (Portal 2)' },
                 ].map((p) => (
                   <button
                     key={p.id}

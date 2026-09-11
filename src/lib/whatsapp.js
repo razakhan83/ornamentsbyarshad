@@ -14,10 +14,20 @@ export function createWhatsAppUrl(number, message = '') {
     : `https://wa.me/${normalizedNumber}`;
 }
 
-export function buildProductWhatsAppMessage({ productName, productUrl, storeName = 'Ornaments by Arshad' }) {
+export function buildProductWhatsAppMessage({ productName, productUrl, storeName = 'Ornaments by Arshad', color = '', size = '', metal = '' }) {
   const lines = [
     `Hi ${storeName}, I'm interested in ${productName || 'this piece'}.`,
   ];
+
+  if (color) {
+    lines.push(`• Selected Color: ${color}`);
+  }
+  if (size) {
+    lines.push(`• Selected Size: ${size}`);
+  }
+  if (metal) {
+    lines.push(`• Metal: ${metal}`);
+  }
 
   if (productUrl) {
     lines.push(productUrl);

@@ -9,6 +9,8 @@ import {
   Truck,
   Wallet,
   ShieldCheck,
+  Sparkles,
+  Heart,
   ChevronRight,
   HelpCircle,
 } from 'lucide-react';
@@ -23,6 +25,8 @@ const ICON_MAP = {
   Truck: Truck,
   Wallet: Wallet,
   ShieldCheck: ShieldCheck,
+  Sparkles: Sparkles,
+  Heart: Heart,
   HelpCircle: HelpCircle,
 };
 
@@ -59,27 +63,18 @@ export default function FaqPageClient({ whatsappNumber, storeName, pageTitle, pa
         </nav>
 
         {/* ── Hero Header: Minimal, Clean & Optically Aligned ── */}
-        <div className="mb-8 flex flex-col-reverse items-center justify-between gap-6 sm:flex-row sm:gap-8 border-b border-border/60 pb-8">
-          <div className="w-full text-center sm:text-left sm:max-w-lg space-y-2">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-primary">
+        <div className="mb-8 md:mb-12 border-b border-[#E8E5DF] pb-6">
+          <div className="max-w-2xl">
+            <span className="block text-[11px] font-sans uppercase tracking-[0.24em] text-[#A67C52] font-semibold mb-1">
+              Assistance & Guidance
+            </span>
+            <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl tracking-wide font-normal text-[#121212] uppercase">
               {pageTitle || 'Frequently Asked Questions'}
             </h1>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#737373] mt-2 leading-relaxed">
               {pageDescription ||
-                'Find quick answers regarding shipping times, delivery charges, replacements, and order tracking.'}
+                'Find answers regarding jewelry care, delivery timelines, bespoke creations, and order tracking.'}
             </p>
-          </div>
-
-          <div className="shrink-0 flex items-center justify-center">
-            <div className="relative w-28 sm:w-36 md:w-44 aspect-[4/3]">
-              <Image
-                src="/undraw_questions_52ic.svg"
-                alt="Frequently Asked Questions"
-                fill
-                className="object-contain select-none"
-                priority
-              />
-            </div>
           </div>
         </div>
 

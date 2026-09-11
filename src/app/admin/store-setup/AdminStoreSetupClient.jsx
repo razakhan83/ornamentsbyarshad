@@ -59,7 +59,7 @@ export default function AdminStoreSetupClient({ initialSettings }) {
       const dataUrl = await readFileAsDataUrl(file);
       if (!dataUrl) return;
 
-      const image = await uploadImageDataUrl(dataUrl, 'kifayatly_branding');
+      const image = await uploadImageDataUrl(dataUrl, 'ornaments_branding');
       handleChange(field, image.url);
       toast.success(
         field === 'lightLogoUrl'

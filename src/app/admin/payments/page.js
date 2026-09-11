@@ -2,7 +2,7 @@ import AdminPaymentsClient from './AdminPaymentsClient';
 import { requireAdmin } from '@/lib/requireAdmin';
 
 export const metadata = {
-  title: 'Payments Received | China Unique Admin',
+  title: 'Payments Received | Ornaments by Arshad Admin',
 };
 
 export default async function PaymentsPage() {

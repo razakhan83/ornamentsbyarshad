@@ -66,6 +66,19 @@ export default function AddProduct() {
   const [packOptions, setPackOptions] = useState([{ label: "1 pcs", price: "" }]);
   const [stockQuantity, setStockQuantity] = useState("1");
   const [stockStatus, setStockStatus] = useState("In Stock");
+  const [customReviewCount, setCustomReviewCount] = useState("");
+  const [metalType, setMetalType] = useState("");
+  const [purity, setPurity] = useState("");
+  const [grossWeightGrams, setGrossWeightGrams] = useState("");
+  const [certificateNumber, setCertificateNumber] = useState("");
+  const [size, setSize] = useState("");
+  const [availableSizes, setAvailableSizes] = useState("");
+  const [availableColors, setAvailableColors] = useState("");
+  const [gemstoneType, setGemstoneType] = useState("");
+  const [gemstoneCarat, setGemstoneCarat] = useState("");
+  const [gemstoneCut, setGemstoneCut] = useState("");
+  const [gemstoneClarity, setGemstoneClarity] = useState("");
+  const [gemstoneColor, setGemstoneColor] = useState("");
   const [Categories, setCategories] = useState([]);
   const [vendorAssignments, setVendorAssignments] = useState([]);
   const [images, setImages] = useState([]);
@@ -120,6 +133,19 @@ export default function AddProduct() {
     setPrice("");
     setCompareAtPrice("");
     setDiscountPercentage("");
+    setCustomReviewCount("");
+    setMetalType("");
+    setPurity("");
+    setGrossWeightGrams("");
+    setCertificateNumber("");
+    setSize("");
+    setAvailableSizes("");
+    setAvailableColors("");
+    setGemstoneType("");
+    setGemstoneCarat("");
+    setGemstoneCut("");
+    setGemstoneClarity("");
+    setGemstoneColor("");
     setPackOptions([{ label: "1 pcs", price: "" }]);
     setStockQuantity("1");
     setStockStatus("In Stock");
@@ -175,7 +201,7 @@ export default function AddProduct() {
       if (newCatImage) {
         const uploaded = await uploadImageDataUrl(
           newCatImage,
-          "kifayatly_categories"
+          "ornaments_categories"
         );
         uploadedCategoryImage = uploaded.url;
         uploadedCategoryImagePublicId = uploaded.publicId;
@@ -231,7 +257,7 @@ export default function AddProduct() {
         const dataUrl = ev.target?.result;
         if (!dataUrl) return;
         try {
-          const uploaded = await uploadImageDataUrl(dataUrl, "kifayatly_social_og");
+          const uploaded = await uploadImageDataUrl(dataUrl, "ornaments_social_og");
           if (uploaded?.url) {
             setSeoOgImage(uploaded.url);
             toast.success("Custom social preview image uploaded successfully!");
@@ -323,7 +349,7 @@ export default function AddProduct() {
       for (const img of images) {
         const uploaded = await uploadImageDataUrl(
           img.url,
-          "kifayatly_products"
+          "ornaments_products"
         );
         finalImages.push(uploaded);
       }
@@ -354,12 +380,25 @@ export default function AddProduct() {
           Price: Number(Price),
           compareAtPrice: compareAtPrice === "" ? null : Number(compareAtPrice),
           discountPercentage: Number(discountPercentage) || 0,
+          customReviewCount: customReviewCount === "" ? null : Number(customReviewCount),
           stockQuantity: Math.max(0, Number(stockQuantity) || 0),
           StockStatus: stockStatus,
           Images: finalImages,
           Category: Categories,
-          vendors: vendorAssignments,
-          packOptions: packOptions.filter(p => p.label && p.price),
+          metalType,
+          purity,
+          grossWeightGrams: grossWeightGrams === '' ? null : Number(grossWeightGrams),
+          certificateNumber,
+          size,
+          availableSizes: availableSizes ? availableSizes.split(',').map(s => s.trim()).filter(Boolean) : [],
+          availableColors: availableColors ? availableColors.split(',').map(s => s.trim()).filter(Boolean) : [],
+          gemstone: {
+            gemstoneType,
+            carat: gemstoneCarat === '' ? null : Number(gemstoneCarat),
+            cut: gemstoneCut,
+            clarity: gemstoneClarity,
+            color: gemstoneColor,
+          },
           showOnStore,
           isNewArrival,
           isBestSelling,
@@ -455,8 +494,8 @@ export default function AddProduct() {
   const socialPreviewDescription =
     seoOgDescription.trim() ||
     (Price
-      ? `Price: Rs. ${Number(Price).toLocaleString("en-PK")}. ${trimmedSeoDescription || plainDescription || "Buy online from China Unique Store."}`
-      : trimmedSeoDescription || plainDescription || "Buy online from China Unique Store.");
+      ? `Price: Rs. ${Number(Price).toLocaleString("en-PK")}. ${trimmedSeoDescription || plainDescription || "Buy online from Ornaments by Arshad."}`
+      : trimmedSeoDescription || plainDescription || "Buy online from Ornaments by Arshad.");
   const socialPreviewImage = getProductSocialShareImage(
     seoOgImage.trim() || images?.[0]?.url || "/opengraph-image.png",
     seoOgImageRatio,
@@ -822,23 +861,210 @@ export default function AddProduct() {
             </div>
           </div>
 
-          <Accordion type="multiple" className="w-full space-y-4">
+          <Accordion type="multiple" defaultValue={["jewelry-specs"]} className="w-full space-y-4">
           
-          <AccordionItem value="vendor" className="rounded-xl border border-border bg-background shadow-sm px-4">
+          {/* Jewelry Specifications */}
+          <AccordionItem value="jewelry-specs" className="rounded-xl border border-border bg-background shadow-sm px-4">
             <AccordionTrigger className="hover:no-underline py-4">
               <div className="flex flex-col items-start text-left">
-                <span className="text-sm font-semibold text-foreground">Vendor Assignments</span>
-                <span className="text-xs font-normal text-muted-foreground mt-0.5">Assign this product to specific vendors and storefronts.</span>
+                <span className="text-sm font-semibold text-foreground">Jewelry Specifications</span>
+                <span className="text-xs font-normal text-muted-foreground mt-0.5">Metal purity, gross weight, gemstones, hallmark, and sizing.</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pb-4">
-              <div className="pt-2">
-            <VendorAssignmentsEditor
-              vendors={allVendors}
-              value={vendorAssignments}
-              onChange={setVendorAssignments}
-            />
-          </div>
+              <div className="space-y-4 pt-1">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <Label className="mb-2">Metal Type</Label>
+                    <Input
+                      type="text"
+                      value={metalType}
+                      onChange={(e) => setMetalType(e.target.value)}
+                      className="h-11 px-4"
+                      placeholder="e.g., 18K Yellow Gold, 22K Gold, 925 Silver, Kundan"
+                    />
+                    <div className="mt-1.5 flex flex-wrap gap-1">
+                      {['18K Yellow Gold', '22K Gold', '24K Pure Gold', 'Rose Gold', 'White Gold', '925 Sterling Silver', 'Kundan'].map((preset) => (
+                        <button
+                          key={preset}
+                          type="button"
+                          onClick={() => setMetalType(preset)}
+                          className="text-[10.5px] px-2 py-0.5 rounded bg-muted hover:bg-foreground hover:text-background transition-colors"
+                        >
+                          {preset}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label className="mb-2">Gold Purity / Karat</Label>
+                    <Input
+                      type="text"
+                      value={purity}
+                      onChange={(e) => setPurity(e.target.value)}
+                      className="h-11 px-4"
+                      placeholder="e.g., 18K, 21K, 22K, 24K, 925 Silver, Hallmarked"
+                    />
+                    <div className="mt-1.5 flex flex-wrap gap-1">
+                      {['18K', '21K', '22K', '24K', '925 Silver', 'Platinum 950'].map((preset) => (
+                        <button
+                          key={preset}
+                          type="button"
+                          onClick={() => setPurity(preset)}
+                          className="text-[10.5px] px-2 py-0.5 rounded bg-muted hover:bg-foreground hover:text-background transition-colors"
+                        >
+                          {preset}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <Label className="mb-2">Gross Weight (Grams)</Label>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value={grossWeightGrams}
+                      onChange={(e) => setGrossWeightGrams(e.target.value)}
+                      className="h-11 px-4"
+                      placeholder="e.g., 12.5"
+                    />
+                  </div>
+
+                  <div>
+                    <Label className="mb-2">Certificate / Hallmark Number</Label>
+                    <Input
+                      type="text"
+                      value={certificateNumber}
+                      onChange={(e) => setCertificateNumber(e.target.value)}
+                      className="h-11 px-4"
+                      placeholder="e.g., OA-9921-G / Hallmarked"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <Label className="mb-2">Default Size / Length</Label>
+                    <Input
+                      type="text"
+                      value={size}
+                      onChange={(e) => setSize(e.target.value)}
+                      className="h-11 px-4"
+                      placeholder="e.g., US 7 / 18 Inches / Standard"
+                    />
+                  </div>
+
+                  <div>
+                    <Label className="mb-2">Available Sizes (Comma-separated)</Label>
+                    <Input
+                      type="text"
+                      value={availableSizes}
+                      onChange={(e) => setAvailableSizes(e.target.value)}
+                      className="h-11 px-4"
+                      placeholder="e.g., US 6, US 7, US 8, Standard, Adjustable"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label className="mb-2">Available Colors / Shades (Comma-separated)</Label>
+                  <Input
+                    type="text"
+                    value={availableColors}
+                    onChange={(e) => setAvailableColors(e.target.value)}
+                    className="h-11 px-4"
+                    placeholder="e.g., Yellow Gold, Rose Gold, White Gold, Golden Ruby, Emerald Green"
+                  />
+                  <div className="mt-1.5 flex flex-wrap gap-1">
+                    {['Yellow Gold', 'Rose Gold', 'White Gold', 'Silver', 'Golden Ruby', 'Golden Green', 'Golden Pearl', 'Emerald Green', 'Ruby Red', 'Champagne Gold'].map((preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => {
+                          setAvailableColors((prev) => {
+                            const trimmed = prev.trim();
+                            if (!trimmed) return preset;
+                            const parts = trimmed.split(',').map(s => s.trim()).filter(Boolean);
+                            if (parts.includes(preset)) return trimmed;
+                            return `${trimmed}, ${preset}`;
+                          });
+                        }}
+                        className="text-[10.5px] px-2 py-0.5 rounded bg-muted hover:bg-foreground hover:text-background transition-colors"
+                      >
+                        + {preset}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    Jitne colors yahan add karenge, product page par utne hi selectable options show honge. (Khali chorenge to color section hide ho jayega).
+                  </p>
+                </div>
+
+                <div className="border-t border-border/70 pt-3">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Gemstone & Diamond Details (Optional)</p>
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    <div>
+                      <Label className="mb-1 text-xs">Gemstone Type</Label>
+                      <Input
+                        type="text"
+                        value={gemstoneType}
+                        onChange={(e) => setGemstoneType(e.target.value)}
+                        className="h-9 px-3 text-xs"
+                        placeholder="Emerald, Ruby, Polki, Moissanite"
+                      />
+                    </div>
+                    <div>
+                      <Label className="mb-1 text-xs">Carat Weight</Label>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={gemstoneCarat}
+                        onChange={(e) => setGemstoneCarat(e.target.value)}
+                        className="h-9 px-3 text-xs"
+                        placeholder="e.g. 1.25"
+                      />
+                    </div>
+                    <div>
+                      <Label className="mb-1 text-xs">Cut / Shape</Label>
+                      <Input
+                        type="text"
+                        value={gemstoneCut}
+                        onChange={(e) => setGemstoneCut(e.target.value)}
+                        className="h-9 px-3 text-xs"
+                        placeholder="Round Brilliant, Princess, Oval"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2 mt-2">
+                    <div>
+                      <Label className="mb-1 text-xs">Clarity</Label>
+                      <Input
+                        type="text"
+                        value={gemstoneClarity}
+                        onChange={(e) => setGemstoneClarity(e.target.value)}
+                        className="h-9 px-3 text-xs"
+                        placeholder="VVS1, VS1, Eye-Clean"
+                      />
+                    </div>
+                    <div>
+                      <Label className="mb-1 text-xs">Color Grade</Label>
+                      <Input
+                        type="text"
+                        value={gemstoneColor}
+                        onChange={(e) => setGemstoneColor(e.target.value)}
+                        className="h-9 px-3 text-xs"
+                        placeholder="D-F Colorless, Deep Green, Royal Red"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </AccordionContent>
           </AccordionItem>
 
@@ -849,7 +1075,7 @@ export default function AddProduct() {
                 Set launch stock and storefront availability before publishing.
               </p>
             </div>
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-4 md:grid-cols-3">
               <div>
                 <Label className="mb-2">Stock Quantity</Label>
                 <Input
@@ -873,6 +1099,18 @@ export default function AddProduct() {
                     <SelectItem value="Out of Stock">Out of Stock</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div>
+                <Label className="mb-2">Reviews Count (Optional)</Label>
+                <Input
+                  type="number"
+                  min="0"
+                  step="1"
+                  value={customReviewCount}
+                  onChange={(e) => setCustomReviewCount(e.target.value)}
+                  className="h-11 px-4"
+                  placeholder="e.g. 12 (auto 2-20 if empty)"
+                />
               </div>
             </div>
           </div>
@@ -1422,8 +1660,8 @@ export default function AddProduct() {
                       {socialPreviewDescription}
                     </p>
                     <div className="pt-2 mt-1 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-emerald-300/80">
-                      <span>chinauniquestore.com</span>
-                      <span className="font-medium text-emerald-400">China Unique Store</span>
+                      <span>ornamentsbyarshad.com</span>
+                      <span className="font-medium text-emerald-400">Ornaments by Arshad</span>
                     </div>
                   </div>
                 </div>

@@ -398,7 +398,7 @@ export default function InvoiceFormClient({
 
   // Invoice fields
   const [invoiceNumber, setInvoiceNumber] = useState(initialInvoice?.invoiceNumber || '');
-  const [location, setLocation] = useState(initialInvoice?.location || 'Unique Items Collection');
+  const [location, setLocation] = useState(initialInvoice?.location || 'Ornaments by Arshad Atelier');
   const [invoiceDate, setInvoiceDate] = useState(
     initialInvoice?.invoiceDate
       ? new Date(initialInvoice.invoiceDate).toISOString().split('T')[0]
@@ -765,8 +765,8 @@ export default function InvoiceFormClient({
               onChange={(e) => setLocation(e.target.value)}
               className="w-full h-8 px-2.5 rounded-lg border border-zinc-300 text-xs outline-none focus:border-emerald-500 bg-white"
             >
-              <option value="Unique Items Collection">Unique Items Collection (Saddar)</option>
-              <option value="Online Warehouse">Online Warehouse</option>
+              <option value="Ornaments by Arshad Atelier">Ornaments by Arshad Atelier (Karachi)</option>
+              <option value="Online Vault">Online Vault</option>
             </select>
           </div>
           <div>

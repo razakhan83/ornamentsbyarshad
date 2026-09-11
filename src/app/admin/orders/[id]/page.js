@@ -9,7 +9,7 @@ import OrderDetailView from './OrderDetailView';
 export async function generateMetadata({ params }) {
   const { id } = await params;
   return {
-    title: `Order Details - Admin | China Unique`,
+    title: `Order Details - Admin | Ornaments by Arshad`,
   };
 }
 

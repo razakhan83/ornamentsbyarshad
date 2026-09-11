@@ -180,19 +180,6 @@ export default async function StoreCustomPage({ page, storeName = 'Ornaments by 
               </p>
             ) : null}
           </div>
-
-          {page?.slug === 'about-us' && (
-            <div className="shrink-0 flex items-center justify-start sm:justify-end">
-              <Image
-                src="/undraw_plants_md5c.svg"
-                alt="About Ornaments by Arshad"
-                width={150}
-                height={115}
-                className="h-auto w-[130px] sm:w-[150px] object-contain opacity-95 select-none"
-                priority
-              />
-            </div>
-          )}
         </div>
 
         {/* ── Thin rule ── */}

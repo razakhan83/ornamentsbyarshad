@@ -81,6 +81,13 @@ function serializeSettings(settings) {
         announcementBarText: settings.announcementBarText || '',
         bankDepositEnabled: settings.bankDepositEnabled === true,
         bankDepositAccountDetails: settings.bankDepositAccountDetails || '',
+        asaanPayEnabled: settings.asaanPayEnabled === true,
+        asaanPayTitle: settings.asaanPayTitle || 'AsaanPay (Debit/Credit Card, EasyPaisa, JazzCash)',
+        asaanPayEnvironment: settings.asaanPayEnvironment || 'sandbox',
+        asaanPayMerchantId: settings.asaanPayMerchantId || '',
+        asaanPayApiKey: settings.asaanPayApiKey || '',
+        asaanPayApiSecret: settings.asaanPayApiSecret || '',
+        asaanPayWebhookSecret: settings.asaanPayWebhookSecret || '',
         enableSecondaryNoc: settings.enableSecondaryNoc === true,
         announcementBarMessages: normalizeAnnouncementMessages(
             settings.announcementBarMessages,
@@ -97,6 +104,9 @@ function serializeAdminSettings(settings) {
         facebookConversionsApiToken: settings.facebookConversionsApiToken || '',
         facebookTestEventCode: settings.facebookTestEventCode || '',
         tiktokAccessToken: settings.tiktokAccessToken || '',
+        asaanPayApiKey: settings.asaanPayApiKey || '',
+        asaanPayApiSecret: settings.asaanPayApiSecret || '',
+        asaanPayWebhookSecret: settings.asaanPayWebhookSecret || '',
     };
 }
 
@@ -163,6 +173,13 @@ export async function PUT(req) {
             'announcementBarMessages',
             'bankDepositEnabled',
             'bankDepositAccountDetails',
+            'asaanPayEnabled',
+            'asaanPayTitle',
+            'asaanPayEnvironment',
+            'asaanPayMerchantId',
+            'asaanPayApiKey',
+            'asaanPayApiSecret',
+            'asaanPayWebhookSecret',
             'homepageSectionOrder',
             'customPages',
             'enableSecondaryNoc',

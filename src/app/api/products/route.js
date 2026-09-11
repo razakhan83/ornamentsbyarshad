@@ -119,6 +119,7 @@ export async function POST(req) {
             packOptions,
             tags,
             primaryTag,
+            customReviewCount,
         } = body;
 
         if (!Name || !Price || !categoryInput) {
@@ -183,6 +184,7 @@ export async function POST(req) {
             seoOgImageRatio: body.seoOgImageRatio === '1:1' ? '1:1' : '1.91:1',
             Price: normalizedPrice,
             compareAtPrice: Number.isFinite(normalizedCompareAtPrice) ? normalizedCompareAtPrice : null,
+            customReviewCount: customReviewCount !== '' && customReviewCount != null ? Math.max(0, Number(customReviewCount)) : null,
             Images: normalizedImages,
             cloudinary_id,
             Category: categoryArray,
@@ -198,10 +200,23 @@ export async function POST(req) {
             isBestSelling: isBestSelling === true || isBestSelling === 'true',
             isFeatured: isFeatured === true || isFeatured === 'true',
             isFreeDelivery: isFreeDelivery === true || isFreeDelivery === 'true',
-            featuredPriority: Number(featuredPriority) || 0,
             packOptions: Array.isArray(packOptions) ? packOptions : [],
             tags: Array.isArray(tags) ? tags : [],
             primaryTag: primaryTag || '',
+            metalType: typeof body.metalType === 'string' ? body.metalType.trim() : '',
+            purity: typeof body.purity === 'string' ? body.purity.trim() : '',
+            size: typeof body.size === 'string' ? body.size.trim() : '',
+            availableSizes: Array.isArray(body.availableSizes) ? body.availableSizes : [],
+            availableColors: Array.isArray(body.availableColors) ? body.availableColors : [],
+            gemstone: {
+                cut: typeof body.gemstone?.cut === 'string' ? body.gemstone.cut.trim() : '',
+                carat: body.gemstone?.carat !== '' && body.gemstone?.carat != null ? Number(body.gemstone.carat) : null,
+                clarity: typeof body.gemstone?.clarity === 'string' ? body.gemstone.clarity.trim() : '',
+                color: typeof body.gemstone?.color === 'string' ? body.gemstone.color.trim() : '',
+                gemstoneType: typeof body.gemstone?.gemstoneType === 'string' ? body.gemstone.gemstoneType.trim() : '',
+            },
+            grossWeightGrams: body.grossWeightGrams !== '' && body.grossWeightGrams != null ? Number(body.grossWeightGrams) : null,
+            certificateNumber: typeof body.certificateNumber === 'string' ? body.certificateNumber.trim() : '',
         });
 
         revalidateTag('products');

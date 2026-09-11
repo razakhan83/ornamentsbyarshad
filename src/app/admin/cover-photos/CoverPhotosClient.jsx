@@ -310,7 +310,7 @@ export default function CoverPhotosClient({ initialSlides }) {
       const dataUrl = await readFileAsDataUrl(file);
       if (!dataUrl) return;
 
-      const image = await uploadImageDataUrl(dataUrl, 'kifayatly_covers');
+      const image = await uploadImageDataUrl(dataUrl, 'ornaments_covers');
       setSlides((current) =>
         current.map((slide) =>
           slide.id === slideId

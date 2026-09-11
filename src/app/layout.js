@@ -1,5 +1,4 @@
-import { Suspense } from "react";
-import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { Montserrat, Tenor_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { getMetadataBase, getSiteUrl } from "@/lib/siteUrl";
@@ -8,17 +7,19 @@ import AuthProvider from "@/components/AuthProvider";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import VisitorTracker from "@/components/VisitorTracker";
 
-const fontSans = Plus_Jakarta_Sans({
+const fontSans = Montserrat({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
   preload: true,
 });
 
-const fontSerif = Playfair_Display({
+const fontSerif = Tenor_Sans({
   variable: "--font-serif",
   subsets: ["latin"],
   display: "swap",
+  weight: "400",
   preload: true,
 });
 

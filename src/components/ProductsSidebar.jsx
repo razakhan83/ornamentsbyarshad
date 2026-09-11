@@ -42,19 +42,21 @@ export default function ProductsSidebar({ categories = [], activeCategory = 'all
   return (
     <aside className="hidden md:flex flex-col w-[240px] lg:w-[260px] shrink-0 gap-6 py-2 sticky top-[100px] max-h-[calc(100vh-120px)] overflow-y-auto hide-scrollbar pr-4">
       {/* Categories */}
-      <div className="space-y-2.5">
-        <h3 className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground px-1">Categories</h3>
-        <div className="flex flex-col space-y-0.5">
+      <div className="space-y-3">
+        <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#121212] px-1 border-b border-[#E8E5DF] pb-2">
+          Collections
+        </h3>
+        <div className="flex flex-col space-y-1">
           <button
             onClick={() => handleCategoryClick('all')}
             className={cn(
-              "flex items-center justify-between px-3 py-2 text-sm rounded-md transition-colors text-left w-full cursor-pointer",
+              "flex items-center justify-between px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors text-left w-full cursor-pointer rounded-none",
               activeCategory === 'all' 
-                ? "bg-primary/10 text-primary font-bold" 
-                : "text-foreground hover:bg-muted font-medium"
+                ? "bg-[#121212] text-white font-semibold" 
+                : "text-[#737373] hover:text-[#121212] hover:bg-neutral-100 font-medium"
             )}
           >
-            <span>All Products</span>
+            <span>All Creations</span>
             {isPending && pendingCategoryId === 'all' && <Loader2 className="size-3.5 animate-spin opacity-70" />}
           </button>
           
@@ -67,10 +69,10 @@ export default function ProductsSidebar({ categories = [], activeCategory = 'all
                 key={category.id || category._id}
                 onClick={() => handleCategoryClick(catKey)}
                 className={cn(
-                  "flex items-center justify-between px-3 py-2 text-sm rounded-md transition-colors text-left w-full cursor-pointer",
+                  "flex items-center justify-between px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors text-left w-full cursor-pointer rounded-none",
                   isActive 
-                    ? "bg-primary/10 text-primary font-bold" 
-                    : "text-foreground hover:bg-muted font-medium"
+                    ? "bg-[#121212] text-white font-semibold" 
+                    : "text-[#737373] hover:text-[#121212] hover:bg-neutral-100 font-medium"
                 )}
               >
                 <span className="truncate pr-2">{category.label}</span>

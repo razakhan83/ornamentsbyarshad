@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { requireAdmin } from '@/lib/requireAdmin';
 
 export const metadata = {
-  title: 'Edit Invoice | China Unique Admin',
+  title: 'Edit Invoice | Ornaments by Arshad Admin',
 };
 
 export default async function EditInvoicePage({ params }) {

@@ -8,7 +8,7 @@ export async function generateMetadata({ params }) {
   const { id } = await params;
   const invoice = await getInvoiceByIdAction(id);
   if (!invoice) return { title: 'Invoice Not Found' };
-  return { title: `Invoice ${invoice.invoiceNumber} | China Unique Admin` };
+  return { title: `Invoice ${invoice.invoiceNumber} | Ornaments by Arshad Admin` };
 }
 
 export default async function InvoiceDetailPage({ params }) {

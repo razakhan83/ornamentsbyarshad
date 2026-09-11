@@ -200,17 +200,59 @@ export default function HeroSlider({ slides = [] }) {
     };
   }, [resolvedSlides.length, safeActiveIndex]);
 
-  if (resolvedSlides.length === 0) return null;
+  if (resolvedSlides.length === 0) {
+    return (
+      <section className="relative w-full overflow-hidden bg-transparent px-3 sm:px-5 md:px-6 lg:px-8 pt-2.5 sm:pt-3.5 md:pt-4 pb-2">
+        <div className="relative min-h-[500px] md:min-h-[600px] lg:min-h-[680px] w-full flex items-center justify-center overflow-hidden rounded-xl sm:rounded-2xl bg-[#121212] border border-[#E8E5DF]/70">
+          <Image
+            src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1920&q=85"
+            alt="Ornaments by Arshad Luxury High Jewelry"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-60 scale-105 transition-transform duration-1000 ease-out"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
+          <div className="relative z-10 mx-auto max-w-4xl px-6 text-center text-white space-y-5 sm:space-y-6">
+            <span className="inline-block text-[11px] sm:text-xs font-sans uppercase tracking-[0.28em] text-[#e8dfd5] font-semibold">
+              Exquisite High Jewelry
+            </span>
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl tracking-wide font-normal leading-[1.15] text-white">
+              Handcrafted Elegance, <br className="hidden sm:inline" />
+              <span className="italic font-light text-[#faf8f5]">Timeless Legacy</span>
+            </h1>
+            <p className="mx-auto max-w-xl text-xs sm:text-sm text-neutral-300 font-sans tracking-wide leading-relaxed">
+              Discover certified diamond creations, 22K pure gold heirlooms, and bespoke bridal masterworks crafted with generational perfection.
+            </p>
+            <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+              <Link
+                href="/products"
+                className="w-full sm:w-auto inline-flex items-center justify-center bg-white text-[#121212] px-8 py-3.5 sm:py-4 text-xs font-sans uppercase tracking-[0.2em] font-semibold rounded-none hover:bg-[#a67c52] hover:text-white transition-all duration-300 active:scale-[0.98]"
+              >
+                Explore Collection
+              </Link>
+              <Link
+                href="/about-us"
+                className="w-full sm:w-auto inline-flex items-center justify-center bg-transparent border border-white/60 text-white px-8 py-3.5 sm:py-4 text-xs font-sans uppercase tracking-[0.2em] font-semibold rounded-none hover:bg-white/10 transition-all duration-300 active:scale-[0.98]"
+              >
+                Our Heritage
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
       ref={containerRef}
       data-testid="hero-main-slider"
-      className="relative w-full overflow-hidden bg-muted/40"
+      className="relative w-full overflow-hidden bg-transparent px-3 sm:px-5 md:px-6 lg:px-8 pt-2.5 sm:pt-3.5 md:pt-4 pb-2"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="relative h-[54vh] min-h-[320px] w-full overflow-hidden bg-muted/40 md:h-[460px] lg:h-[560px]">
+      <div className="relative h-[58vh] min-h-[400px] w-full overflow-hidden rounded-xl sm:rounded-2xl md:h-[540px] lg:h-[680px] border border-[#E8E5DF]/70 bg-[#121212]">
         {resolvedSlides.map((slide, index) => {
           const isActive = safeActiveIndex === index;
           return (

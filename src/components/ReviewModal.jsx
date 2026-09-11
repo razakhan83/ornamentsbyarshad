@@ -154,15 +154,6 @@ export default function ReviewModal({ isOpen, onOpenChange, order, onComplete, o
             >
               Close All
             </button>
-            <div className="hidden sm:flex shrink-0 items-center justify-center">
-              <Image
-                src="/undraw_leave-a-review_uj9v.svg"
-                alt="Leave a review illustration"
-                width={70}
-                height={50}
-                className="h-auto w-[65px] object-contain opacity-95 select-none"
-              />
-            </div>
           </div>
         </DialogHeader>
 

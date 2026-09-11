@@ -12,7 +12,7 @@ import { pageMetadata } from '@/lib/siteSeo';
 
 export const metadata = pageMetadata({
   title: 'Contact Us',
-  description: 'Contact China Unique customer support on WhatsApp, phone, or email for order assistance and inquiries.',
+  description: 'Contact Ornaments by Arshad customer concierge on WhatsApp, phone, or email for bespoke jewelry assistance and inquiries.',
 });
 
 function PhoneSvg({ className = 'size-5' }) {
@@ -102,27 +102,17 @@ export default async function ContactUsPage() {
         </nav>
 
         {/* Page Header with SVG Illustration on Right */}
-        <div className="mb-8 md:mb-10 flex items-center justify-between gap-4 sm:gap-6">
+        <div className="mb-8 md:mb-12 border-b border-[#E8E5DF] pb-6">
           <div className="max-w-xl">
-            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary uppercase tracking-wider mb-1.5 sm:mb-2">
-              Customer Care
+            <span className="block text-[11px] font-sans uppercase tracking-[0.24em] text-[#A67C52] font-semibold mb-1">
+              Concierge & Client Support
             </span>
-            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
+            <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl tracking-wide font-normal text-[#121212] uppercase">
               We&apos;re Here to Help
             </h1>
-            <p className="text-xs sm:text-base text-muted-foreground mt-1.5 sm:mt-2 leading-relaxed">
-              Have questions about products, delivery, or an existing order? Get in touch with our friendly support team.
+            <p className="text-xs sm:text-sm text-[#737373] mt-2 leading-relaxed">
+              Have questions regarding our jewelry collections, bespoke orders, or order tracking? Contact our dedicated advisors.
             </p>
-          </div>
-          <div className="shrink-0">
-            <Image
-              src="/undraw_online-chat_qx4x.svg"
-              alt="Customer Support"
-              width={160}
-              height={130}
-              priority
-              className="w-20 min-[400px]:w-24 sm:w-32 md:w-44 h-auto object-contain"
-            />
           </div>
         </div>
 

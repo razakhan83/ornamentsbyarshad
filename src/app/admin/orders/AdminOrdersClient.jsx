@@ -1499,7 +1499,7 @@ export default function AdminOrdersClient({
     }
   };
 
-  const handlePrintSourcingSlip = async ({ moveToNextStep = true } = {}) => {
+  const handlePrintSourcingSlip = async ({ moveToNextStep = false } = {}) => {
     const ordersToPrint = validateSelectedOrders('Order Confirmed', 'Print Sourcing Slip');
     if (!ordersToPrint) return;
 
@@ -1534,7 +1534,7 @@ export default function AdminOrdersClient({
     }
   };
 
-  const handleGeneratePackingSlip = async ({ moveToNextStep = true } = {}) => {
+  const handleGeneratePackingSlip = async ({ moveToNextStep = false } = {}) => {
     const selectedRecords = validateSelectedOrders('In Process', 'Generate Packing Slip');
     if (!selectedRecords) return;
 
@@ -1637,7 +1637,7 @@ export default function AdminOrdersClient({
     }
   };
 
-  const handlePrintPackingSlip = async ({ moveToNextStep = true } = {}) => {
+  const handlePrintPackingSlip = async ({ moveToNextStep = false } = {}) => {
     const selectedRecords = validateSelectedOrders('In Process', 'Print Packing Slip');
     if (!selectedRecords) return;
 
@@ -2346,12 +2346,12 @@ export default function AdminOrdersClient({
               <Button
                 type="button"
                 size="sm"
-                onClick={() => handlePrintSourcingSlip({ moveToNextStep: true })}
+                onClick={() => handlePrintSourcingSlip({ moveToNextStep: false })}
                 disabled={pendingWorkflowAction !== '' || isBulkUpdating}
                 className="h-7.5 px-2.5 text-xs bg-yellow-200 text-yellow-900 hover:bg-yellow-300 rounded-lg font-medium shadow-xs"
               >
-                {pendingWorkflowAction === 'sourcing-print-move' ? <Spinner data-icon="inline-start" /> : <Printer data-icon="inline-start" />}
-                Print & Move
+                {pendingWorkflowAction === 'sourcing-print' ? <Spinner data-icon="inline-start" /> : <Printer data-icon="inline-start" />}
+                Print Sourcing Slip
               </Button>
             )}
 
@@ -2359,12 +2359,12 @@ export default function AdminOrdersClient({
               <Button
                 type="button"
                 size="sm"
-                onClick={() => handlePrintPackingSlip({ moveToNextStep: true })}
+                onClick={() => handlePrintPackingSlip({ moveToNextStep: false })}
                 disabled={pendingWorkflowAction !== '' || isBulkUpdating}
                 className="h-7.5 px-2.5 text-xs bg-yellow-200 text-yellow-900 hover:bg-yellow-300 rounded-lg font-medium shadow-xs"
               >
-                {pendingWorkflowAction === 'packing-print-move' ? <Spinner data-icon="inline-start" /> : <Printer data-icon="inline-start" />}
-                Print & Move
+                {pendingWorkflowAction === 'packing-print' ? <Spinner data-icon="inline-start" /> : <Printer data-icon="inline-start" />}
+                Print Packing Slip
               </Button>
             )}
 
@@ -3993,7 +3993,7 @@ export default function AdminOrdersClient({
               <div className="p-3 rounded-xl bg-sky-50 border border-sky-200 text-xs flex items-center justify-between">
                 <span className="font-semibold text-sky-900">Courier Account:</span>
                 <span className="font-bold text-sky-800 bg-white px-2.5 py-1 rounded-md border border-sky-300 text-[11px]">
-                  Unique Items (Main)
+                  Main Account (Portal 1)
                 </span>
               </div>
             )}
@@ -4064,7 +4064,7 @@ export default function AdminOrdersClient({
             <div className="flex items-center justify-between p-3 rounded-xl bg-sky-50 border border-sky-200 text-xs">
               <span className="font-semibold text-gray-700">Account Used:</span>
               <span className="font-bold text-sky-900 bg-sky-100 px-3 py-1 rounded-full border border-sky-300">
-                {nocPrintResult?.portalKey === 'portal_2' ? 'Secondary Account (aamsaman)' : 'Main Account (unique items)'}
+                {nocPrintResult?.portalKey === 'portal_2' ? 'Secondary Account (Portal 2)' : 'Main Account (Portal 1)'}
               </span>
             </div>
 
@@ -4165,7 +4165,7 @@ export default function AdminOrdersClient({
             {/* Main Account Option */}
             <div className="p-3.5 rounded-xl bg-sky-50/80 border border-sky-200 flex items-center justify-between">
               <div>
-                <span className="text-xs font-bold text-sky-900 block">Main Account (unique items)</span>
+                <span className="text-xs font-bold text-sky-900 block">Main Account (Portal 1)</span>
                 <span className="text-[11px] text-sky-700">{nocPrintAccountModal?.p1Count || 0} order slip(s) ready</span>
               </div>
               <Button
@@ -4184,7 +4184,7 @@ export default function AdminOrdersClient({
             {/* Secondary Account Option */}
             <div className="p-3.5 rounded-xl bg-purple-50/80 border border-purple-200 flex items-center justify-between">
               <div>
-                <span className="text-xs font-bold text-purple-900 block">Secondary Account (aamsaman)</span>
+                <span className="text-xs font-bold text-purple-900 block">Secondary Account (Portal 2)</span>
                 <span className="text-[11px] text-purple-700">{nocPrintAccountModal?.p2Count || 0} order slip(s) ready</span>
               </div>
               <Button

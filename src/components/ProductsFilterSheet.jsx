@@ -19,11 +19,11 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 
 const PRICE_BUCKETS = [
-  { value: 'under300', label: 'Under Rs. 300 (Dollar Store)' },
-  { value: 'under500', label: 'Under Rs. 500' },
-  { value: '500-1500', label: 'Rs. 500 – 1,500' },
-  { value: '1500-5000', label: 'Rs. 1,500 – 5,000' },
-  { value: 'above5000', label: 'Above Rs. 5,000' },
+  { value: 'under10k', label: 'Under Rs. 10,000' },
+  { value: '10k-30k', label: 'Rs. 10,000 – 30,000' },
+  { value: '30k-70k', label: 'Rs. 30,000 – 70,000' },
+  { value: '70k-150k', label: 'Rs. 70,000 – 150,000' },
+  { value: 'above150k', label: 'Above Rs. 150,000' },
 ];
 
 export default function ProductsFilterSheet({ activeCategory = 'all', currentSort = 'newest' }) {
@@ -75,19 +75,19 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
   return (
     <Sheet>
       <SheetTrigger
-        className="relative inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-lg border border-border/80 bg-background px-3 text-xs font-semibold shadow-2xs transition-all outline-none hover:bg-muted hover:text-foreground cursor-pointer"
+        className="relative inline-flex h-8.5 shrink-0 items-center justify-center gap-1.5 rounded-none border border-[#121212]/30 bg-white px-3 text-xs uppercase tracking-wider font-semibold shadow-none transition-all outline-none hover:bg-[#121212] hover:text-white cursor-pointer select-none"
         aria-label="Open filters"
       >
-        <SlidersHorizontal className="size-3.5 text-primary" />
+        <SlidersHorizontal className="size-3.5" />
         <span>Filters</span>
         {activeFilterCount > 0 ? (
-          <span className="flex size-4.5 min-w-4.5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground leading-none shadow-xs">
+          <span className="flex size-4.5 min-w-4.5 items-center justify-center rounded-full bg-[#A67C52] px-1 text-[10px] font-bold text-white leading-none shadow-xs">
             {activeFilterCount}
           </span>
         ) : null}
       </SheetTrigger>
 
-      <SheetContent side="bottom" className="rounded-t-2xl px-0 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-0 md:side-right md:rounded-l-2xl md:rounded-t-none">
+      <SheetContent side="bottom" className="rounded-t-none border-t border-[#E8E5DF] bg-[#FAF9F6] px-0 pb-[calc(env(safe-area-inset-bottom)+5.5rem)] pt-0 md:side-right md:rounded-none">
         <SheetHeader className="flex flex-row items-center justify-between border-b border-border px-5 py-3.5 pr-14">
           <SheetTitle className="text-base font-bold flex items-center gap-2">
             Filter Products

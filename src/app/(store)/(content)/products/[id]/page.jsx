@@ -53,7 +53,7 @@ function getProductDescription(product) {
   return (
     product.seoDescription ||
     stripHtmlTags(product.Description) ||
-    `Buy ${product.Name} from China Unique Store.`
+    `Discover ${product.Name} handcrafted by Ornaments by Arshad - Timeless Luxury & Handcrafted Elegance.`
   );
 }
 
@@ -115,7 +115,7 @@ function getProductJsonLd({ product, reviewSummary = null }) {
     keywords: keywords.join(', '),
     brand: {
       '@type': 'Brand',
-      name: 'China Unique Store',
+      name: 'Ornaments by Arshad',
     },
     offers: {
       '@type': 'Offer',
@@ -263,7 +263,7 @@ export async function generateMetadata({ params }) {
       description: shareDescription,
       type: 'website',
       url: productUrl,
-      siteName: 'China Unique Store',
+      siteName: 'Ornaments by Arshad',
       images: [
         {
           url: productImage,
@@ -310,7 +310,7 @@ export default async function ProductPage({ params }) {
   const isOutOfStock = product.StockStatus === 'Out of Stock' || product.showOnStore === false;
 
   return (
-    <div className="product-detail-shell min-h-screen bg-gray-50">
+    <div className="product-detail-shell min-h-screen bg-[#FAF9F6]">
       <ProductPageScrollReset />
 
       <script
@@ -318,22 +318,22 @@ export default async function ProductPage({ params }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
 
-      <div className="container mx-auto max-w-7xl px-4 pb-0 pt-1 md:pt-7">
-        <div className="flex items-center justify-between md:hidden">
+      <div className="container mx-auto max-w-7xl px-4 pb-0 pt-3 md:pt-8">
+        <div className="flex items-center justify-between md:hidden pb-2">
           <MobileBackButton className="-ml-2 bg-transparent border-transparent shadow-none" />
           <ProductMobileStockTag isOutOfStock={isOutOfStock} />
         </div>
-        <div className="hidden md:block pb-1">
+        <div className="hidden md:block pb-3">
           <ProductBreadcrumb product={product} primaryCategory={primaryCategory} />
         </div>
       </div>
 
-      <div className="container mx-auto max-w-7xl px-4 pb-[calc(env(safe-area-inset-bottom)+var(--mobile-bottom-nav-offset)+3.5rem)] pt-0 md:pb-8 md:pt-4">
+      <div className="container mx-auto max-w-7xl px-4 pb-[calc(env(safe-area-inset-bottom)+var(--mobile-bottom-nav-offset)+3.5rem)] pt-0 md:pb-16 md:pt-2">
         <ProductHeroSection
           product={product}
           settings={settings}
           reviewSummary={reviewSummary}
-          categoryLabel={primaryCategory?.name || ''}
+          categoryLabel={primaryCategory?.name || 'Fine Jewelry'}
         />
 
         <ProductTabsWrapper product={product} reviewSummary={reviewSummary} />
@@ -349,12 +349,12 @@ export default async function ProductPage({ params }) {
 
 function ProductMobileStockTag({ isOutOfStock }) {
   return isOutOfStock ? (
-    <div className="rounded-md border border-destructive/20 bg-destructive/10 px-2.5 py-1 text-[11px] font-bold text-destructive">
+    <div className="rounded-none border border-destructive/20 bg-destructive/10 px-2.5 py-1 text-[11px] uppercase tracking-wider font-semibold text-destructive">
       Out of Stock
     </div>
   ) : (
-    <div className="flex items-center rounded-md border border-emerald-500/20 bg-emerald-50 px-2.5 py-1 text-[11px] font-bold tracking-wide text-emerald-600">
-      <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+    <div className="flex items-center rounded-none border border-[#A67C52]/30 bg-[#A67C52]/10 px-2.5 py-1 text-[11px] uppercase tracking-wider font-semibold text-[#A67C52]">
+      <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-[#A67C52]"></span>
       In Stock
     </div>
   );
@@ -362,20 +362,20 @@ function ProductMobileStockTag({ isOutOfStock }) {
 
 function ProductBreadcrumb({ product, primaryCategory }) {
   return (
-    <Breadcrumb className="overflow-x-auto">
+    <Breadcrumb className="overflow-x-auto text-xs uppercase tracking-[0.18em] text-[#737373]">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          <BreadcrumbLink href="/" className="hover:text-[#121212] transition-colors">Home</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink href="/products">Products</BreadcrumbLink>
+          <BreadcrumbLink href="/products" className="hover:text-[#121212] transition-colors">Collections</BreadcrumbLink>
         </BreadcrumbItem>
         {primaryCategory ? (
           <>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href={`/products?category=${primaryCategory.id}`}>
+              <BreadcrumbLink href={`/products?category=${primaryCategory.id}`} className="hover:text-[#121212] transition-colors">
                 {primaryCategory.name}
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -383,7 +383,7 @@ function ProductBreadcrumb({ product, primaryCategory }) {
         ) : null}
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage>{product.Name}</BreadcrumbPage>
+          <BreadcrumbPage className="text-[#121212] font-medium truncate max-w-[240px]">{product.Name}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
@@ -408,20 +408,24 @@ function ProductHeroSection({ product, settings, reviewSummary, categoryLabel })
         tiktokPixelId={settings.tiktokPixelId}
         productId={product.slug || product._id}
         name={product.Name}
-        category={categoryLabel || 'Product'}
+        category={categoryLabel || 'Fine Jewelry'}
         value={price}
       />
 
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:gap-8 lg:gap-10">
-        <div className="w-full md:w-[45%] lg:w-[42%]">
+      <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-10 lg:gap-14">
+        <div className="w-full md:w-[48%] lg:w-[46%]">
           <ProductGallery images={product.Images} primaryTag={product.primaryTag} product={product} />
         </div>
 
-        <div className="w-full md:w-[55%] lg:w-[58%]">
-          <div className="flex flex-col gap-4 md:sticky md:top-[164px] md:gap-6">
-            <div className="space-y-2 md:space-y-4">
-              <div className="mt-2 flex items-start justify-between gap-4">
-                <h1 className="text-lg font-bold leading-tight tracking-tight text-foreground sm:text-2xl sm:leading-tight md:text-4xl md:leading-tight">
+        <div className="w-full md:w-[52%] lg:w-[54%]">
+          <div className="flex flex-col gap-4 md:sticky md:top-[140px] md:gap-6">
+            <div className="space-y-2">
+              <span className="text-[11px] font-sans font-medium uppercase tracking-[0.22em] text-[#A67C52] block">
+                {categoryLabel || 'Fine Jewelry Haute Joaillerie'}
+              </span>
+
+              <div className="flex items-start justify-between gap-4">
+                <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal leading-[1.2] tracking-wide text-[#121212]">
                   {product.Name}
                 </h1>
                 <ProductSocialActions product={product} className="mt-0.5 shrink-0 md:hidden" />
@@ -430,14 +434,14 @@ function ProductHeroSection({ product, settings, reviewSummary, categoryLabel })
               {reviewSummary.reviewCount > 0 && (
                 <a 
                   href="#product-reviews"
-                  className="group -mt-1 flex w-fit items-center gap-2"
+                  className="group flex w-fit items-center gap-2 pt-1"
                 >
-                   <div className="flex items-center text-amber-400">
+                   <div className="flex items-center text-[#A67C52]">
                       {Array.from({ length: 5 }).map((_, i) => (
-                        <Star key={i} className={`size-4 ${i < Math.round(reviewSummary.averageRating || 0) ? 'fill-current' : 'text-muted-foreground/30'}`} />
+                        <Star key={i} className={`size-3.5 ${i < Math.round(reviewSummary.averageRating || 0) ? 'fill-current' : 'text-neutral-300'}`} />
                       ))}
                    </div>
-                   <span className="text-sm font-medium text-muted-foreground transition-colors group-hover:text-primary">
+                   <span className="text-xs font-sans tracking-wide text-[#737373] transition-colors group-hover:text-[#121212]">
                      ({reviewSummary.reviewCount} {reviewSummary.reviewCount === 1 ? 'review' : 'reviews'})
                    </span>
                 </a>
@@ -456,18 +460,10 @@ function ProductHeroSection({ product, settings, reviewSummary, categoryLabel })
 
             {product.shortDescription ? (
               <div
-                className="mt-6 border-t border-border pt-6 text-base leading-relaxed text-muted-foreground [&_a]:text-primary [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:my-2 [&_ul]:list-disc [&_ul]:pl-5"
+                className="mt-4 border-t border-[#E8E5DF] pt-5 text-sm leading-relaxed text-[#737373] [&_a]:text-[#121212] [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:my-2 [&_ul]:list-disc [&_ul]:pl-5"
                 dangerouslySetInnerHTML={{ __html: product.shortDescription }}
               />
-            ) : <Separator className="my-6" />}
-
-            <div className="mt-4">
-              <ProductWhatsAppOrderButton 
-                product={product} 
-                whatsappNumber={settings.whatsappNumber} 
-                storeName={settings.storeName} 
-              />
-            </div>
+            ) : null}
           </div>
         </div>
       </div>
@@ -478,13 +474,87 @@ function ProductHeroSection({ product, settings, reviewSummary, categoryLabel })
 function ProductTabsWrapper({ product, reviewSummary }) {
   const descriptionHtml =
     formatRichTextDescriptionHtml(product.Description) ||
-    'Discover the perfect addition to your collection. This premium item from China Unique Store is crafted with quality and elegance in mind.';
+    'Crafted with utmost precision and artistic dedication, this exquisite piece from Ornaments by Arshad showcases timeless elegance, masterfully finished in authentic precious metals.';
+
+  const hasSpecs = Boolean(
+    product.metalType ||
+    product.purity ||
+    product.grossWeightGrams ||
+    product.size ||
+    product.availableSizes?.length ||
+    product.availableColors?.length ||
+    product.certificateNumber ||
+    product.gemstone?.gemstoneType ||
+    product.gemstone?.carat
+  );
+
+  const gemstoneText = [
+    product.gemstone?.gemstoneType,
+    product.gemstone?.carat ? `${product.gemstone.carat} ct` : null,
+    product.gemstone?.cut ? `Cut: ${product.gemstone.cut}` : null,
+    product.gemstone?.clarity ? `Clarity: ${product.gemstone.clarity}` : null,
+    product.gemstone?.color ? `Color: ${product.gemstone.color}` : null,
+  ].filter(Boolean).join(' • ');
+
+  const specsContent = hasSpecs ? (
+    <div className="overflow-hidden rounded-xl border border-[#E8E5DF] bg-[#FAF9F6]">
+      <dl className="divide-y divide-[#E8E5DF] text-xs sm:text-sm">
+        {product.metalType && (
+          <div className="grid grid-cols-3 p-3">
+            <dt className="text-[#737373] font-medium">Metal Type</dt>
+            <dd className="col-span-2 text-[#121212] font-semibold">{product.metalType}</dd>
+          </div>
+        )}
+        {product.purity && (
+          <div className="grid grid-cols-3 p-3">
+            <dt className="text-[#737373] font-medium">Gold Purity / Karat</dt>
+            <dd className="col-span-2 text-[#121212] font-semibold">{product.purity}</dd>
+          </div>
+        )}
+        {product.grossWeightGrams != null && product.grossWeightGrams !== '' && (
+          <div className="grid grid-cols-3 p-3">
+            <dt className="text-[#737373] font-medium">Gross Weight</dt>
+            <dd className="col-span-2 text-[#121212] font-semibold">{product.grossWeightGrams} Grams</dd>
+          </div>
+        )}
+        {(product.size || (product.availableSizes?.length > 0)) && (
+          <div className="grid grid-cols-3 p-3">
+            <dt className="text-[#737373] font-medium">Available Sizes</dt>
+            <dd className="col-span-2 text-[#121212] font-semibold">
+              {product.availableSizes?.length > 0 ? product.availableSizes.join(', ') : product.size}
+            </dd>
+          </div>
+        )}
+        {product.availableColors?.length > 0 && (
+          <div className="grid grid-cols-3 p-3">
+            <dt className="text-[#737373] font-medium">Available Colors</dt>
+            <dd className="col-span-2 text-[#121212] font-semibold">
+              {product.availableColors.join(', ')}
+            </dd>
+          </div>
+        )}
+        {gemstoneText && (
+          <div className="grid grid-cols-3 p-3">
+            <dt className="text-[#737373] font-medium">Gemstones & Diamonds</dt>
+            <dd className="col-span-2 text-[#121212] font-semibold">{gemstoneText}</dd>
+          </div>
+        )}
+        {product.certificateNumber && (
+          <div className="grid grid-cols-3 p-3">
+            <dt className="text-[#737373] font-medium">Certificate / Hallmark</dt>
+            <dd className="col-span-2 text-[#121212] font-semibold">{product.certificateNumber}</dd>
+          </div>
+        )}
+      </dl>
+    </div>
+  ) : null;
 
   return (
-    <div id="product-reviews" className="scroll-mt-24 md:scroll-mt-32">
+    <div id="product-reviews" className="scroll-mt-24 md:scroll-mt-32 mt-12 md:mt-20">
       <ProductDetailsTabs
         reviewCount={reviewSummary.reviewCount}
         descriptionContent={<ProductDescription html={descriptionHtml} />}
+        specsContent={specsContent}
         reviewsContent={<ProductReviews productId={product._id} productName={product.Name} />}
       />
     </div>

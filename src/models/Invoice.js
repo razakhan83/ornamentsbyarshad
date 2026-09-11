@@ -57,7 +57,7 @@ const InvoiceSchema = new mongoose.Schema(
     },
     location: {
       type: String,
-      default: 'Unique Items Collection',
+      default: 'Ornaments by Arshad Atelier',
       trim: true,
     },
     invoiceDate: {

@@ -1,15 +1,15 @@
+'use client';
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Star, Truck } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import ProductCardAddToCartButton from "@/components/ProductCardAddToCartButton";
 import ProductCardWishlistSlot from "@/components/ProductCardWishlistSlot";
 import { CLOUDINARY_IMAGE_PRESETS, optimizeCloudinaryUrl } from "@/lib/cloudinaryImage";
 import { normalizeProductImages } from "@/lib/productImages";
 import { getBlurPlaceholderProps } from "@/lib/imagePlaceholder";
-import { getProductTagById } from "@/lib/productTags";
+import { getProductReviewCount } from "@/lib/productReviewUtils";
 
 const formatPrice = (raw) => {
   let cleanNumbers = String(raw).replace(/[^\d.]/g, "");
@@ -34,234 +34,206 @@ function getVisibleCompareAtPrice(product, sellingPrice) {
   return compareAtPrice > sellingPrice ? compareAtPrice : null;
 }
 
-function getDiscountBadge(product) {
-  if (product.isDiscounted && product.discountPercentage > 0) {
-    return `${product.discountPercentage}% OFF`;
-  }
-  return null;
-}
+export default function ProductCard({ product, className = "", priority = false }) {
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-function getFeatureBadge(product) {
-  if (product.isBestSelling) {
-    return {
-      label: "Best Seller",
-      className:
-        "pointer-events-auto rounded-full border border-border bg-secondary px-2.5 py-1 text-[11px] font-semibold text-secondary-foreground uppercase tracking-[0.08em]",
-    };
-  }
-
-  return null;
-}
-
-import { getProductCategories } from "@/lib/productCategories";
-import { getCategoryColor } from "@/lib/categoryColors";
-
-export default function ProductCard({ product, className = "", imageBg, isPreviewMode = false, priority = false }) {
-  const categories = getProductCategories(product);
-  const primaryCategory = categories[0];
-  const primaryCategoryName = primaryCategory?.name || primaryCategory?.label || "";
-  const resolvedBg = imageBg || '#f4f4f5';
-
-  const productName = product.Name || product.name || "Unknown";
+  const productName = product.Name || product.name || "Fine Jewelry Piece";
   const normalizedImages = normalizeProductImages(product?.Images);
-  const primaryImage = normalizedImages[0] || null;
-  const secondaryImage = normalizedImages[1] || null;
+  const hasMultipleImages = normalizedImages.length > 1;
 
-  const primaryImageSrc = primaryImage?.url
-    ? optimizeCloudinaryUrl(primaryImage.url, CLOUDINARY_IMAGE_PRESETS.productCard)
-    : "";
-  const secondaryImageSrc = secondaryImage?.url
-    ? optimizeCloudinaryUrl(secondaryImage.url, CLOUDINARY_IMAGE_PRESETS.productCard)
-    : "";
-  const productPrice = product.Price || product.price || 0;
   const sellingPrice = getSellingPrice(product);
   const compareAtPrice = getVisibleCompareAtPrice(product, sellingPrice);
   const productSlug = product.slug || product._id || product.id;
   const productHref = `/products/${productSlug}`;
-
-  const discountLabel = getDiscountBadge(product);
-  const featureBadge = getFeatureBadge(product);
-  const reviewCount = Number(product.reviewCount || 0);
-  const averageRating = Number(product.averageRating || 0);
-  const ratingLabel = reviewCount > 0 && averageRating > 0 ? averageRating.toFixed(1) : "";
   const isUnavailable = product.StockStatus === "Out of Stock" || product.showOnStore === false;
-  
-  const primaryTag = product.primaryTag ? getProductTagById(product.primaryTag) : null;
+  const reviewCount = getProductReviewCount(product);
+  const rating = product.rating || 5;
+
+  const nextImage = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setActiveImageIndex((prev) => (prev + 1) % normalizedImages.length);
+  };
+
+  const prevImage = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setActiveImageIndex((prev) => (prev - 1 + normalizedImages.length) % normalizedImages.length);
+  };
+
+  const currentImage = normalizedImages[activeImageIndex] || normalizedImages[0] || null;
+  const currentImageSrc = currentImage?.url
+    ? optimizeCloudinaryUrl(currentImage.url, CLOUDINARY_IMAGE_PRESETS.productCard)
+    : "";
 
   return (
-    <Card
+    <div
       className={cn(
-        "@container product-card-surface group relative flex flex-col h-full gap-0 overflow-hidden rounded-xl border-none ring-0 bg-card shadow-none [@media(hover:hover)]:hover:-translate-y-0.5 transition-transform duration-150 ease-out",
-        "py-0",
+        "group relative flex flex-col w-full bg-transparent border-0 shadow-none select-none",
         className
       )}
-      draggable={false}
     >
-      <div className="relative">
-        <div className="pointer-events-none absolute left-2.5 top-2.5 z-10 flex flex-col items-start gap-1.5">
-          {ratingLabel ? (
-            <Badge
-              className={cn(
-                "pointer-events-auto rounded-full border border-border bg-card px-2.5 py-1 text-[11px] font-semibold text-amber-700 tabular-nums"
-              )}
-            >
-              <Star className="mr-1 size-3.5 fill-current" />
-              {ratingLabel}
-            </Badge>
-          ) : null}
-
-          {primaryTag && (
-            <div 
-              className={cn("pointer-events-auto flex items-center justify-center rounded-full p-1.5 shadow-sm backdrop-blur-md border border-white/20", primaryTag.bgColor, primaryTag.color)}
-              title={primaryTag.label}
-            >
-              <primaryTag.icon className="size-4 drop-shadow-sm" />
-            </div>
-          )}
-
-          {featureBadge && (
-            <Badge className={cn(featureBadge.className)}>
-              {featureBadge.label}
-            </Badge>
-          )}
-
-          {discountLabel && (
-            <Badge
-              className={cn(
-                "pointer-events-auto rounded border-none bg-primary px-2 py-1 text-[11px] font-bold text-primary-foreground tracking-wide shadow-sm"
-              )}
-            >
-              {discountLabel}
-            </Badge>
-          )}
-
-          {product.isFreeDelivery && primaryTag?.id !== 'free-shipping' && (
-            <Badge
-              className={cn(
-                "pointer-events-auto rounded border-none bg-emerald-600 dark:bg-emerald-500 px-2 py-0.5 text-[10px] font-bold text-white tracking-wide shadow-sm flex items-center gap-1"
-              )}
-            >
-              <Truck className="size-3" />
-              Free Delivery
-            </Badge>
-          )}
-
-
-        </div>
-
+      {/* Product Image Area with Light Gray Background & Rounded-2xl */}
+      <div 
+        className="relative w-full aspect-[4/5] overflow-hidden rounded-2xl bg-[#F4F2EE] transition-all duration-300"
+      >
         <ProductCardWishlistSlot product={product} />
 
+        {/* Small Previous/Next Chevrons for Cycling Images (Subtle Frosted Glass on Mobile) */}
+        {hasMultipleImages && (
+          <>
+            <button
+              type="button"
+              onClick={prevImage}
+              aria-label="Previous image"
+              className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/50 sm:bg-white/85 hover:bg-white/80 sm:hover:bg-white text-[#121212] flex items-center justify-center shadow-xs backdrop-blur-[2px] border border-white/30 opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 cursor-pointer active:scale-90"
+            >
+              <ChevronLeft className="size-3.5 sm:size-4" />
+            </button>
+            <button
+              type="button"
+              onClick={nextImage}
+              aria-label="Next image"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/50 sm:bg-white/85 hover:bg-white/80 sm:hover:bg-white text-[#121212] flex items-center justify-center shadow-xs backdrop-blur-[2px] border border-white/30 opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 cursor-pointer active:scale-90"
+            >
+              <ChevronRight className="size-3.5 sm:size-4" />
+            </button>
+          </>
+        )}
+
+        {/* Main Product Link & Image Slider */}
         <Link
           href={productHref}
           prefetch={false}
           scroll={true}
-          className="relative block aspect-square w-full overflow-hidden rounded-t-[11px]"
-          style={{ backgroundColor: resolvedBg }}
+          className="relative block size-full"
           draggable={false}
         >
-          {primaryImageSrc ? (
-            <>
-              <Image
-                src={primaryImageSrc}
-                alt={productName}
-                fill
-                draggable={false}
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                priority={priority}
-                fetchPriority={priority ? "high" : "auto"}
-                loading={priority ? "eager" : "lazy"}
-                className={cn(
-                  "object-cover transition-transform duration-500 ease-out",
-                  "md:group-hover:scale-105",
-                  isUnavailable && "scale-[1.01] grayscale-[30%] opacity-75",
-                  (secondaryImageSrc && !isUnavailable) && "md:group-hover:opacity-0"
-                )}
-                {...getBlurPlaceholderProps(primaryImage.blurDataURL)}
-              />
-              {secondaryImageSrc && !isUnavailable && (
-                <div className="hidden md:block">
+          {normalizedImages.length > 0 ? (
+            normalizedImages.map((img, idx) => {
+              const src = img?.url
+                ? optimizeCloudinaryUrl(img.url, CLOUDINARY_IMAGE_PRESETS.productCard)
+                : "";
+              if (!src) return null;
+              const isCurrent = idx === activeImageIndex;
+              return (
+                <div
+                  key={idx}
+                  className={cn(
+                    "absolute inset-0 size-full transition-opacity duration-300 ease-out",
+                    isCurrent ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+                  )}
+                >
                   <Image
-                    src={secondaryImageSrc}
-                    alt={`${productName} alternate view`}
+                    src={src}
+                    alt={`${productName} - view ${idx + 1}`}
                     fill
                     draggable={false}
-                    sizes="(max-width: 1024px) 33vw, 25vw"
-                    loading="lazy"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    priority={priority && idx === 0}
+                    loading={priority && idx === 0 ? "eager" : "lazy"}
                     className={cn(
-                      "object-cover transition-opacity duration-500 ease-out absolute inset-0 opacity-0",
-                      "md:group-hover:opacity-100 md:group-hover:scale-105",
-                      isUnavailable && "scale-[1.01] grayscale-[30%] opacity-75"
+                      "object-cover transition-transform duration-700 ease-out",
+                      "md:group-hover:scale-105",
+                      isUnavailable && "grayscale-[30%] opacity-75"
                     )}
-                    {...getBlurPlaceholderProps(secondaryImage.blurDataURL)}
+                    {...getBlurPlaceholderProps(img?.blurDataURL)}
                   />
                 </div>
-              )}
-            </>
+              );
+            })
           ) : (
-              <div className="flex size-full items-center justify-center" style={{ backgroundColor: resolvedBg }}>
-              <ShoppingCart className="size-10 text-muted-foreground/30" />
+            <div className="flex size-full items-center justify-center bg-[#F4F2EE] text-[#A67C52]">
+              <span className="text-xs uppercase tracking-wider font-serif">Ornaments</span>
             </div>
           )}
 
           {isUnavailable && (
-            <div className="absolute bottom-2.5 right-2.5 z-20 pointer-events-none">
-              <div className="rounded-md border border-destructive/20 bg-destructive/5 text-destructive px-2.5 py-1 text-[11px] font-bold shadow-sm backdrop-blur-md">
-                Out of Stock
-              </div>
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/30 pointer-events-none">
+              <span className="bg-[#121212] text-white px-3 py-1 text-[10px] font-sans font-medium uppercase tracking-[0.2em] rounded-sm">
+                Sold Out
+              </span>
             </div>
           )}
         </Link>
+
+        {/* Image Slider Pagination Dots on Image Bottom */}
+        {hasMultipleImages && (
+          <div className="absolute bottom-3 left-0 right-0 z-10 flex items-center justify-center gap-1 pointer-events-auto">
+            {normalizedImages.slice(0, 5).map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setActiveImageIndex(idx);
+                }}
+                aria-label={`View image ${idx + 1}`}
+                className="p-1 cursor-pointer focus:outline-none"
+              >
+                <span
+                  className={cn(
+                    "block rounded-full transition-all duration-300",
+                    idx === activeImageIndex
+                      ? "size-1.5 bg-[#121212]"
+                      : "size-1.5 bg-[#121212]/30 hover:bg-[#121212]/60"
+                  )}
+                />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
-      <CardContent className="flex flex-1 flex-col gap-2 bg-card px-3 pb-3 pt-3 @max-[220px]:p-2.5 @max-[220px]:gap-1.5 sm:p-4">
-          <>
-            <Link
-              href={productHref}
-              prefetch={false}
-              scroll={true}
-              className="block text-left"
-              draggable={false}
-            >
-              <h3
-                className="line-clamp-2 text-[13px] font-medium leading-[1.3] text-foreground/90 @min-[260px]:text-[14px] sm:text-[15px]"
-                draggable={false}
-              >
-                {productName}
-              </h3>
-            </Link>
+      {/* Info Area: Title, Star Rating, Price */}
+      <div className="pt-3 pb-1 text-left flex flex-col items-start px-0.5">
+        <Link
+          href={productHref}
+          prefetch={false}
+          scroll={true}
+          className="block w-full"
+          draggable={false}
+        >
+          <h3
+            className="text-xs sm:text-[13.5px] font-medium text-[#121212] leading-snug line-clamp-2 hover:text-[#A67C52] transition-colors"
+            title={productName}
+          >
+            {productName}
+          </h3>
+        </Link>
 
-            <div className="mt-auto flex flex-row items-end justify-between gap-3 pt-3 sm:pt-4">
-              {!isPreviewMode && (
-                <>
-                  <div className="flex flex-col items-start gap-1 sm:gap-1.5 flex-1 min-w-0">
-                    <p
-                      className="text-[15px] font-bold leading-none text-foreground tabular-nums @min-[260px]:text-[16px] sm:text-[18px]"
-                      draggable={false}
-                    >
-                      {formatPrice(sellingPrice)}
-                    </p>
-                    {compareAtPrice ? (
-                      <div className="flex items-center gap-1.5 flex-wrap">
-                        <p
-                          className="text-[13px] font-normal leading-none text-muted-foreground/60 line-through @min-[260px]:text-[14px] sm:text-[15px]"
-                          draggable={false}
-                        >
-                          {formatPrice(compareAtPrice)}
-                        </p>
-                        <Badge className="pointer-events-auto w-fit rounded bg-success/10 px-1.5 py-0.5 text-[11px] font-medium text-success tracking-normal border-none shadow-none h-[22px] inline-flex items-center whitespace-nowrap sm:px-2 sm:text-[12px] sm:h-[24px]">
-                          Save {formatPrice(compareAtPrice - sellingPrice)}
-                        </Badge>
-                      </div>
-                    ) : null}
-                  </div>
-                  <div className="shrink-0 mb-0.5">
-                    <ProductCardAddToCartButton product={product} isOutOfStock={isUnavailable} mode="icon" />
-                  </div>
-                </>
-              )}
-            </div>
-          </>
-      </CardContent>
-    </Card>
+        {/* Star Rating */}
+        <div className="mt-1 flex items-center gap-1.5">
+          <div className="flex text-[#D97706]">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star
+                key={i}
+                className={cn(
+                  "size-3",
+                  i < rating ? "fill-current" : "text-neutral-300"
+                )}
+              />
+            ))}
+          </div>
+          <span className="text-[11px] text-[#737373] font-normal">
+            {reviewCount} {reviewCount === 1 ? "review" : "reviews"}
+          </span>
+        </div>
+
+        {/* Price Display */}
+        <div className="mt-1.5 flex items-center gap-2">
+          <p className="text-xs sm:text-sm font-semibold text-[#121212] tabular-nums">
+            {formatPrice(sellingPrice)}
+          </p>
+          {compareAtPrice ? (
+            <p className="text-[11px] font-normal text-neutral-400 line-through tabular-nums">
+              {formatPrice(compareAtPrice)}
+            </p>
+          ) : null}
+        </div>
+      </div>
+    </div>
   );
 }
+

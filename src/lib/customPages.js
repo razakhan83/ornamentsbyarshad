@@ -59,8 +59,8 @@ Each parcel is packed in our signature luxury presentation box with authenticity
 Tracking information is provided upon dispatch. For high-value custom orders, scheduled hand-delivery or direct collection can be arranged.`,
     seoTitle: 'Shipping Policy | Ornaments by Arshad',
     seoDescription: 'Find insured delivery, packaging, and dispatch information for Ornaments by Arshad.',
-    isEnabled: true,
-    showInFooter: true,
+    isEnabled: false,
+    showInFooter: false,
     sortOrder: 3,
   },
   {

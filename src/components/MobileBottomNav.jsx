@@ -43,19 +43,19 @@ function MobileNavButton({
       <span
         className={cn(
           'transition-transform duration-300 ease-out flex items-center justify-center',
-          active ? 'scale-110 text-primary' : 'scale-100 text-muted-foreground'
+          active ? 'scale-110 text-[#A67C52]' : 'scale-100 text-[#121212]/60 hover:text-[#121212]'
         )}
       >
         {iconSwap ? (
           iconSwap
         ) : (
-          <Icon className={cn('w-6 h-6 transition-all duration-300', active ? 'stroke-[2.2]' : 'stroke-[1.5]')} />
+          <Icon className={cn('w-5.5 h-5.5 transition-all duration-300', active ? 'stroke-[2.2] text-[#A67C52]' : 'stroke-[1.6] text-[#121212]/65')} />
         )}
       </span>
       <span
         className={cn(
-          'text-[10px] font-medium transition-colors duration-200',
-          active ? 'text-primary font-bold' : 'text-muted-foreground'
+          'text-[10px] font-medium font-sans uppercase tracking-wider transition-colors duration-200',
+          active ? 'text-[#A67C52] font-bold' : 'text-[#121212]/65'
         )}
       >
         {label}
@@ -147,7 +147,7 @@ export default function MobileBottomNav({
 
   useEffect(() => {
     if (session?.user?.email) {
-      router.prefetch('/orders');
+      router.prefetch('/track-order');
       router.prefetch('/auth/signin');
     } else {
       router.prefetch('/auth/signin');
@@ -195,7 +195,7 @@ export default function MobileBottomNav({
     <>
       <div
         className={cn(
-          "fixed inset-x-0 bottom-0 md:hidden bg-background border-t border-border/70 shadow-[0_-8px_22px_rgba(0,0,0,0.05)] transition-all duration-300 ease-in-out",
+          "fixed inset-x-0 bottom-0 md:hidden bg-[#F7F3EE] border-t border-[#E8E5DF] shadow-[0_-4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 ease-in-out",
           isHidden ? "translate-y-full opacity-0 pointer-events-none" : "translate-y-0 opacity-100 pointer-events-auto"
         )}
         style={{ zIndex: 350 }}
@@ -231,13 +231,13 @@ export default function MobileBottomNav({
               iconSwap={isSearchOpen ? <X className="size-5" strokeWidth={2.5} /> : undefined}
             />
             <MobileNavButton
-              icon={session ? Package : MapPin}
-              label={session ? "My Orders" : "Track Order"}
+              icon={ShoppingBag}
+              label="Shop"
+              href="/products"
               onClick={() => {
                 closeMobilePanels();
-                onNavigate?.('/orders');
               }}
-              active={pathname.startsWith('/orders')}
+              active={pathname === '/products' || pathname.startsWith('/products')}
             />
             <MobileNavButton
               icon={User}
@@ -251,7 +251,7 @@ export default function MobileBottomNav({
                 closeMobilePanels();
                 openAccountPanel();
               }}
-              active={accountPanelOpen || pathname.startsWith('/settings')}
+              active={accountPanelOpen || pathname.startsWith('/settings') || pathname.startsWith('/orders')}
               iconSwap={
                 accountLoading && !session
                   ? <Spinner className="size-5" />
@@ -309,8 +309,8 @@ export default function MobileBottomNav({
                       />
                       <AccountMenuButton
                         icon={Package}
-                        label="My Orders"
-                        onClick={() => onNavigate('/orders')}
+                        label="Track Your Order"
+                        onClick={() => onNavigate('/track-order')}
                       />
                       <AccountMenuButton
                         icon={Heart}

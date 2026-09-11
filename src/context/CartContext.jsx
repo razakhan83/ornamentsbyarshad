@@ -6,7 +6,8 @@ import { CheckCircle2, ShoppingCart } from 'lucide-react';
 
 import { trackAddToCartEvent } from '@/lib/clientTracking';
 
-const CART_STORAGE_KEY = 'kifayatly_cart_v2';
+const CART_STORAGE_KEY = 'ornaments_cart_v1';
+const LEGACY_CART_STORAGE_KEY = 'kifayatly_cart_v2';
 
 const CartItemsContext = createContext(null);
 const CartUiContext = createContext(null);
@@ -89,7 +90,7 @@ function CartProviderContent({ children }) {
 
   useEffect(() => {
     try {
-      const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+      const savedCart = localStorage.getItem(CART_STORAGE_KEY) || localStorage.getItem(LEGACY_CART_STORAGE_KEY);
       if (savedCart) {
         const parsed = JSON.parse(savedCart);
         const nextCart = Array.isArray(parsed?.items) ? parsed.items.map(normalizeCartItem) : [];

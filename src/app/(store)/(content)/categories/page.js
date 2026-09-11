@@ -5,8 +5,8 @@ import Product from '@/models/Product';
 import CategoriesClientPage from './CategoriesClientPage';
 
 export const metadata = {
-  title: 'Categories | China Unique Store',
-  description: 'Explore all product categories at China Unique Store. Browse kitchen accessories, home decor, electronics, health & beauty, toys, and more.',
+  title: 'Luxury Collections | Ornaments by Arshad',
+  description: 'Explore fine jewelry collections at Ornaments by Arshad. Browse handcrafted bridal sets, necklace sets, diamond rings, bracelets, and heirloom earrings.',
 };
 
 async function getCategoriesData() {

@@ -192,6 +192,34 @@ export async function PUT(request, { params }) {
         existingProduct.discountPercentage = discountPct;
         existingProduct.isDiscounted = discountPct > 0;
 
+        // Jewelry specifications
+        if (body.metalType !== undefined) existingProduct.metalType = typeof body.metalType === 'string' ? body.metalType.trim() : '';
+        if (body.purity !== undefined) existingProduct.purity = typeof body.purity === 'string' ? body.purity.trim() : '';
+        if (body.size !== undefined) existingProduct.size = typeof body.size === 'string' ? body.size.trim() : '';
+        if (body.availableSizes !== undefined) existingProduct.availableSizes = Array.isArray(body.availableSizes) ? body.availableSizes : [];
+        if (body.availableColors !== undefined) existingProduct.availableColors = Array.isArray(body.availableColors) ? body.availableColors : [];
+        if (body.gemstone !== undefined) {
+            existingProduct.gemstone = {
+                cut: typeof body.gemstone?.cut === 'string' ? body.gemstone.cut.trim() : '',
+                carat: body.gemstone?.carat !== '' && body.gemstone?.carat != null ? Number(body.gemstone.carat) : null,
+                clarity: typeof body.gemstone?.clarity === 'string' ? body.gemstone.clarity.trim() : '',
+                color: typeof body.gemstone?.color === 'string' ? body.gemstone.color.trim() : '',
+                gemstoneType: typeof body.gemstone?.gemstoneType === 'string' ? body.gemstone.gemstoneType.trim() : '',
+            };
+        }
+        if (body.grossWeightGrams !== undefined) {
+            existingProduct.grossWeightGrams = body.grossWeightGrams !== '' && body.grossWeightGrams != null ? Number(body.grossWeightGrams) : null;
+        }
+        if (body.certificateNumber !== undefined) {
+            existingProduct.certificateNumber = typeof body.certificateNumber === 'string' ? body.certificateNumber.trim() : '';
+        }
+
+        if (body.customReviewCount !== undefined) {
+            existingProduct.customReviewCount = body.customReviewCount !== '' && body.customReviewCount != null
+                ? Math.max(0, Number(body.customReviewCount))
+                : null;
+        }
+
         await existingProduct.save();
         await existingProduct.populate({ path: 'Category', select: 'name slug bgColor' });
         revalidateTag('products');

@@ -147,7 +147,7 @@ export async function createInvoiceAction(formData) {
     customerEmail,
     customerAddress,
     customerCity,
-    location = 'Unique Items Collection',
+    location = 'Ornaments by Arshad Atelier',
     invoiceDate,
     dueDate,
     terms = 'Due on Receipt',

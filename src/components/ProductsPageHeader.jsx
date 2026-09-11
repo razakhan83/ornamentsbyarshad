@@ -16,29 +16,29 @@ import { useProductsNavigationFeedback } from "@/components/ProductsNavigationFe
 import { cn } from "@/lib/utils";
 
 const categoryPillClassName =
-  "inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full border transition-[color,background-color,border-color,box-shadow,transform] outline-none active:scale-[0.97] h-8 px-3 text-xs md:h-[40px] md:px-5 md:text-sm font-semibold";
+  "inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-none border transition-[color,background-color,border-color,box-shadow,transform] outline-none active:scale-[0.97] h-9 px-3.5 text-xs md:h-10 md:px-5 md:text-xs uppercase tracking-[0.16em] font-semibold";
 
 function getCategoryPillClassName(isActive) {
   if (isActive) {
       return cn(
       categoryPillClassName,
-      "border-primary bg-primary text-primary-foreground shadow-sm hover:bg-primary/92"
+      "border-[#121212] bg-[#121212] text-white shadow-none"
     );
   }
 
   return cn(
     categoryPillClassName,
-    "border-border/70 bg-card text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] hover:border-border hover:bg-muted/70"
+    "border-[#E8E5DF] bg-white text-[#121212] hover:border-[#121212]/60"
   );
 }
 
 function buildTitle(activeCategory, categories, searchTerm) {
   if (activeCategory === "new-arrivals") return "New Arrivals";
   if (activeCategory && activeCategory !== "all") {
-    return categories.find((category) => category.id === activeCategory || category.slug === activeCategory || category._id === activeCategory)?.label || "Products";
+    return categories.find((category) => category.id === activeCategory || category.slug === activeCategory || category._id === activeCategory)?.label || "Fine Jewelry";
   }
   if (searchTerm) return "Search Results";
-  return "All Products";
+  return "All Creations";
 }
 
 function buildCategoryHref(categoryId, searchTerm, sort) {
@@ -234,92 +234,30 @@ export default function ProductsPageHeader({
   }
 
   return (
-    <div>
-      <div
-        className={cn(
-          "products-page-bar fixed inset-x-0 top-[96px] z-30 border-b border-border/50 bg-background/86 backdrop-blur-xl transition-transform duration-300 ease-[cubic-bezier(0.2,0,0,1)] will-change-transform md:hidden",
-          isProductsBarHidden ? "-translate-y-[96px]" : "translate-y-0"
-        )}
-      >
-        <div className="relative mx-auto w-full max-w-[1600px] px-4 sm:px-6 md:px-8 lg:px-10 xl:px-14">
-          <div className="pointer-events-none absolute inset-y-0 left-4 z-10 hidden items-center md:flex">
-            <button
-              type="button"
-              aria-label="Scroll categories left"
-              onClick={() => scrollCategories("left")}
-              disabled={!canScrollPrev}
-              className="pointer-events-auto inline-flex h-7 w-7 items-center justify-center rounded-full border border-border/60 bg-background/92 text-muted-foreground transition-[color,background-color,border-color,opacity] hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-0"
-            >
-              <ChevronLeft className="size-3.5" />
-            </button>
-          </div>
-          <div className="pointer-events-none absolute inset-y-0 right-4 z-10 hidden items-center md:flex">
-            <button
-              type="button"
-              aria-label="Scroll categories right"
-              onClick={() => scrollCategories("right")}
-              disabled={!canScrollNext}
-              className="pointer-events-auto inline-flex h-7 w-7 items-center justify-center rounded-full border border-border/60 bg-background/92 text-muted-foreground transition-[color,background-color,border-color,opacity] hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-0"
-            >
-              <ChevronRight className="size-3.5" />
-            </button>
-          </div>
-          <div
-            ref={categoryNavRef}
-            className="relative flex gap-1.5 overflow-x-auto py-3 hide-scrollbar md:px-8"
-          >
-            {categoryButtons.map((category) => {
-              const Icon = category.icon;
-              const isActive = effectiveActiveCategory === category.id;
-              const isLoading = isPending && pendingCategoryId === category.id;
-              const href = buildCategoryHref(category.id, searchTerm, sort);
-              return (
-                <button
-                  key={category.id}
-                  type="button"
-                  data-active={isActive}
-                  aria-pressed={isActive}
-                  disabled={isLoading}
-                  onClick={(event) => handleCategoryClick(category.id, href, event)}
-                  className={cn(
-                    getCategoryPillClassName(isActive),
-                    "shrink-0 select-none",
-                    !isActive && "active:border-border active:bg-muted/80"
-                  )}
-                >
-                  {isLoading ? (
-                    <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-                  ) : null}
-                  {category.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+    <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 md:px-8 lg:px-10 xl:px-14 pt-3 sm:pt-4 md:pt-6">
+      {/* Breadcrumbs - Minimal Clean Luxury */}
+      <Breadcrumb className="products-page-meta mb-1.5 text-[10.5px] uppercase tracking-[0.2em] text-[#737373] select-none">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/" className="hover:text-[#121212] transition-colors">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="text-[#121212] font-medium">{pageTitle}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
-      <div className="h-[70px] md:hidden" aria-hidden="true" />
-
-      <div className="mx-auto w-full max-w-[1600px] mb-2 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-14 pt-3 md:pt-1">
-        <Breadcrumb className="products-page-meta mb-2">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{pageTitle}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-        <h1 className="products-page-heading text-[1.8rem] font-bold tracking-tight text-foreground [text-wrap:balance] md:text-3xl">
+      {/* Page Heading */}
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-3">
+        <h1 className="products-page-heading font-serif text-2xl sm:text-3xl lg:text-4xl font-normal tracking-wide text-[#121212] uppercase [text-wrap:balance]">
           {pageTitle}
         </h1>
 
         {searchTerm ? (
-          <div className="mt-3 inline-flex items-center gap-2.5 rounded-xl border border-border bg-card px-3.5 py-1.5 text-xs sm:text-sm text-foreground">
+          <div className="inline-flex items-center gap-2 border border-[#E8E5DF] bg-white px-3 py-1 text-xs text-[#121212]">
             <span>
-              Search active: <strong className="font-bold text-primary">&ldquo;{searchTerm}&rdquo;</strong>
+              Search: <strong className="font-semibold text-[#A67C52]">&ldquo;{searchTerm}&rdquo;</strong>
             </span>
             <button
               type="button"
@@ -334,14 +272,49 @@ export default function ProductsPageHeader({
                 const qs = params.toString();
                 router.push(qs ? `/products?${qs}` : "/products");
               }}
-              className="inline-flex items-center gap-1 rounded-md bg-muted hover:bg-muted/80 px-2 py-0.5 text-xs font-semibold text-foreground transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1 bg-[#FAF9F6] hover:bg-neutral-200 px-1.5 py-0.5 text-[10px] uppercase font-semibold text-[#121212] transition-colors cursor-pointer select-none"
               title="Clear search"
             >
               <span>Clear</span>
-              <X className="size-3.5" />
+              <X className="size-3" />
             </button>
           </div>
         ) : null}
+      </div>
+
+      {/* Mobile Horizontal Category Pills Bar - In-flow and cleanly spaced */}
+      <div className="md:hidden relative border-y border-[#E8E5DF]/70 bg-[#FAF9F6] -mx-4 px-4 py-2 my-2">
+        <div
+          ref={categoryNavRef}
+          className="flex gap-1.5 overflow-x-auto hide-scrollbar py-0.5"
+        >
+          {categoryButtons.map((category) => {
+            const isActive = effectiveActiveCategory === category.id;
+            const isLoading = isPending && pendingCategoryId === category.id;
+            const href = buildCategoryHref(category.id, searchTerm, sort);
+            return (
+              <button
+                key={category.id}
+                type="button"
+                data-active={isActive}
+                aria-pressed={isActive}
+                disabled={isLoading}
+                onClick={(event) => handleCategoryClick(category.id, href, event)}
+                className={cn(
+                  "inline-flex items-center justify-center whitespace-nowrap rounded-none border transition-all outline-none active:scale-[0.97] h-8 px-3 text-[11px] uppercase tracking-[0.16em] font-medium shrink-0 select-none",
+                  isActive
+                    ? "border-[#121212] bg-[#121212] text-white"
+                    : "border-[#E8E5DF] bg-white text-[#121212]/80 hover:border-[#121212]/50"
+                )}
+              >
+                {isLoading ? (
+                  <Loader2 className="size-3.5 animate-spin mr-1.5" aria-hidden="true" />
+                ) : null}
+                {category.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

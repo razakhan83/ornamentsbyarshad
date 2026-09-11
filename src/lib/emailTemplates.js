@@ -799,7 +799,7 @@ export function generateOrderEmailHtml(order, brandingInput = {}) {
           <tr>
             <td align="center" style="padding: 14px 16px; background-color: #E3FCEF;">
               <div style="font-size: 10.5px; font-weight: 700; color: #064e3b;">
-                ${esc(branding.businessAddress || 'China Unique Store HQ, Karachi, Sindh, Pakistan')}
+                ${esc(branding.businessAddress || 'Ornaments by Arshad Atelier, Karachi, Sindh, Pakistan')}
               </div>
             </td>
           </tr>

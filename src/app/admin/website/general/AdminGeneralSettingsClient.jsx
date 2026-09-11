@@ -85,7 +85,7 @@ export default function AdminGeneralSettingsClient({ initialSettings }) {
               <Input
                 value={form.storeName || ''}
                 onChange={(event) => handleChange('storeName', event.target.value)}
-                placeholder="China Unique Store"
+                placeholder="Ornaments by Arshad"
               />
             </Field>
             <Field>

@@ -322,43 +322,10 @@ async function DashboardContent({ session }) {
         </div>
       </section>
 
-      {/* Row 3: Mini Performance Chart & Top Vendors */}
-      <section className="grid grid-cols-1 gap-4 lg:grid-cols-[1.6fr_1.4fr] mb-4">
-        <div className="flex flex-col gap-4">
-          <div className="admin-surface flex flex-col rounded-[0.5rem] p-4 h-full">
-            <DashboardChart initialData={chartData} initialPeriod="monthly" />
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="admin-surface rounded-[0.5rem] p-4 flex-1 h-full">
-            <div className="mb-4 flex items-center gap-2">
-              <Store className="size-4 text-muted-foreground" />
-              <h2 className="text-[13px] font-semibold text-foreground">Top Vendors</h2>
-            </div>
-            {topVendors.length > 0 ? (
-              <div className="flex flex-col divide-y divide-border/60">
-                {topVendors.map((vendor) => (
-                  <div key={`${vendor.vendorId || vendor.name}`} className="flex items-center justify-between py-2">
-                    <p className="text-[13px] font-medium text-foreground">{vendor.name}</p>
-                    <p className="text-[12px] text-muted-foreground">
-                       <span className="font-medium text-foreground">{vendor.totalLiveItems}</span> Items
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="py-2 text-center text-[12px] text-muted-foreground">
-                No vendors yet.
-              </div>
-            )}
-            {topVendors?.length > 0 && (
-              <Link href="/admin/vendors" className="mt-3 flex items-center justify-center gap-1.5 rounded-md border border-border/60 bg-muted/20 px-3 py-2 text-[12px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
-                View All Vendors
-                <ArrowRight className="size-3" />
-              </Link>
-            )}
-          </div>
+      {/* Row 3: Performance Chart */}
+      <section className="mb-4">
+        <div className="admin-surface flex flex-col rounded-[0.5rem] p-4 h-full">
+          <DashboardChart initialData={chartData} initialPeriod="monthly" />
         </div>
       </section>
 

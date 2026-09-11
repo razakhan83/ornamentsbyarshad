@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata = {
@@ -8,38 +7,31 @@ export const metadata = {
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center bg-background px-4 py-12 text-center">
-      <div className="mb-5 flex items-center justify-center select-none">
-        <Image
-          src="/undraw_page-not-found_6wni (1).svg"
-          alt="Page not found"
-          width={240}
-          height={170}
-          className="h-auto w-[180px] sm:w-[240px] object-contain"
-          priority
-        />
-      </div>
+    <div className="flex min-h-[70vh] flex-col items-center justify-center bg-[#FAF9F6] px-4 py-16 text-center">
+      <span className="font-serif text-6xl sm:text-8xl font-light text-[#A67C52] tracking-widest block mb-2">
+        404
+      </span>
 
-      <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-        Page Not Found
+      <h1 className="font-serif text-2xl sm:text-3xl font-normal tracking-wide text-[#121212] uppercase">
+        Piece or Page Not Found
       </h1>
 
-      <p className="mt-2 text-xs sm:text-sm text-muted-foreground max-w-sm mx-auto">
-        The page you are looking for doesn&apos;t exist or has been moved.
+      <p className="mt-3 text-xs uppercase tracking-[0.16em] text-[#737373] max-w-md mx-auto leading-relaxed">
+        The creation or salon you are looking for does not exist or has been archived by our atelier.
       </p>
 
-      <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
         <Link
           href="/"
-          className="h-10 px-5 inline-flex items-center justify-center rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-xs sm:text-sm shadow-none transition-all active:scale-[0.98]"
+          className="h-12 px-8 inline-flex items-center justify-center rounded-none bg-[#121212] text-white hover:bg-neutral-800 font-semibold text-xs uppercase tracking-[0.18em] transition-all"
         >
-          Back to Home
+          Return to Home
         </Link>
         <Link
           href="/products"
-          className="h-10 px-5 inline-flex items-center justify-center rounded-xl border border-border bg-card hover:bg-muted/60 text-foreground font-bold text-xs sm:text-sm shadow-none transition-all active:scale-[0.98]"
+          className="h-12 px-8 inline-flex items-center justify-center rounded-none border border-[#121212] bg-white hover:bg-[#FAF9F6] text-[#121212] font-semibold text-xs uppercase tracking-[0.18em] transition-all"
         >
-          Explore Catalog
+          Explore Creations
         </Link>
       </div>
     </div>

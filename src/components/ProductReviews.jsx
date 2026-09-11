@@ -1,5 +1,4 @@
-import Image from 'next/image';
-import { Star } from 'lucide-react';
+import { Star, MessageSquare } from 'lucide-react';
 
 import ProductReviewsClient from '@/components/ProductReviewsClient';
 import ProductReviewsList from '@/components/ProductReviewsList';
@@ -10,18 +9,13 @@ export default async function ProductReviews({ productId, productName }) {
   const reviews = await getApprovedReviews(productId);
   if (reviews.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-6 md:py-8 px-4 text-center">
-        <div className="relative mb-3.5 w-36 h-28 sm:w-44 sm:h-32">
-          <Image
-            src="/undraw_leave-a-review_uj9v.svg"
-            alt="No reviews yet"
-            fill
-            className="object-contain"
-          />
+      <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
+        <div className="size-14 rounded-full bg-[#F4F2EE] flex items-center justify-center text-[#A67C52] mb-3">
+          <MessageSquare className="size-6 stroke-[1.5]" />
         </div>
-        <h4 className="text-base font-semibold text-foreground">No reviews yet</h4>
-        <p className="mt-1 mb-4 text-sm text-muted-foreground max-w-sm">
-          Be the first to review this product and share your experience!
+        <h4 className="font-serif text-lg font-normal uppercase tracking-wide text-[#121212]">No Reviews Yet</h4>
+        <p className="mt-1 mb-5 text-xs text-[#737373] max-w-sm">
+          Be the first to review this handcrafted piece and share your experience.
         </p>
         <ProductReviewsClient productId={productId} productName={productName} reviewCount={0} />
       </div>

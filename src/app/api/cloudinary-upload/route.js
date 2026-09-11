@@ -17,7 +17,7 @@ export const maxDuration = 60; // Allow up to 60s for high-res uploads
 export async function POST(req) {
   try {
     const session = await getServerSession(authOptions);
-    const { file, folder = "kifayatly_products" } = await req.json();
+    const { file, folder = "ornaments_products" } = await req.json();
     const resolved = resolveCloudinaryFolder(folder, session);
 
     if (resolved.error) {

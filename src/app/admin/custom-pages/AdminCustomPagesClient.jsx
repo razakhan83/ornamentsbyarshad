@@ -571,7 +571,7 @@ export default function AdminCustomPagesClient({ initialPages }) {
                     <Input
                       value={selectedPage.seoTitle}
                       onChange={(event) => updatePage(selectedIndex, 'seoTitle', event.target.value)}
-                      placeholder="About Us | China Unique Store"
+                      placeholder="About Us | Ornaments by Arshad"
                     />
                   </Field>
 

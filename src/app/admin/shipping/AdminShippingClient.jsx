@@ -79,11 +79,11 @@ export default function AdminShippingClient({ initialSettings }) {
               <div className="flex items-center gap-2">
                 <span className="text-sm font-semibold text-foreground">Enable Secondary NOC Account</span>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-muted text-muted-foreground border border-border">
-                  portal_2: Aam Samaan
+                  portal_2: Secondary Account
                 </span>
               </div>
               <p className="text-xs text-muted-foreground max-w-xl">
-                When enabled, allows choosing between Primary (Unique Items) and Secondary (Aam Samaan) courier accounts when booking parcels and printing slips in Order Management. When disabled, defaults exclusively to the primary account.
+                When enabled, allows choosing between Primary (Portal 1) and Secondary (Portal 2) courier accounts when booking parcels and printing slips in Order Management. When disabled, defaults exclusively to the primary account.
               </p>
             </div>
             <Switch

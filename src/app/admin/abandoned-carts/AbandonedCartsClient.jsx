@@ -86,7 +86,7 @@ export default function AbandonedCartsClient({ initialCarts = [] }) {
     const message = [
       `Assalam-o-Alaikum ${cart.name || 'Customer'}!`,
       '',
-      `We noticed you left items in your cart at *China Unique Store*:`,
+      `We noticed you left items in your cart at *Ornaments by Arshad*:`,
       itemList,
       '',
       `*Total Value:* Rs. ${Number(cart.totalAmount || 0).toLocaleString('en-PK')}`,

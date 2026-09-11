@@ -1,156 +1,146 @@
 /**
  * Official FAQs for Ornaments by Arshad
- * Accurate, reassuring, and concise fine jewelry policies.
+ * Accurate, reassuring, and authentic fine jewelry policies.
  */
 
 export const HOME_FAQS = [
   {
     id: 'h1',
-    question: 'How long does delivery take across Pakistan?',
+    question: 'Are your gold and silver pieces 100% pure and hallmarked?',
     answer:
-      'Orders are processed and dispatched within 24 hours. Major hubs (Karachi, Lahore, Islamabad) receive deliveries in 2 to 3 business days, while other cities take 3 to 5 business days.',
+      'Yes, all our gold jewelry is stamped and hallmarked for purity (18K, 21K, and 22K), and our sterling silver pieces are certified 925 stamped. Each piece comes with an official certificate of authenticity specifying its exact gold weight and karat purity.',
   },
   {
     id: 'h2',
-    question: 'What if the item arrives broken or defective?',
+    question: 'Are the diamonds and gemstones certified authentic?',
     answer:
-      'Simply record a quick unboxing video or take clear photos and share them with us on WhatsApp within 3 to 5 days. Once verified, we will dispatch a brand-new replacement unit at zero extra charge.',
+      'Every gemstone and diamond used in our collections is ethically sourced, genuine, and inspected by certified gemologists. Fine diamond sets include authenticity and carat grading documentation.',
   },
   {
     id: 'h3',
-    question: 'Do I need an account to place an order?',
+    question: 'Can I customize ring sizes, bangle sizes, or bespoke designs?',
     answer:
-      'No. We offer a 1-click guest checkout. Simply add your product to the cart, provide your contact number and shipping address, and confirm your order instantly.',
+      'Yes, we offer complimentary ring resizing on standard designs and custom sizing for bangles and bridal sets. For custom bespoke jewelry commissions, you can connect directly with our master jewelry consultant via WhatsApp.',
   },
   {
     id: 'h4',
-    question: 'Will I receive the exact same product shown on the website?',
+    question: 'How is high-value jewelry shipped securely across Pakistan?',
     answer:
-      'Absolutely. All product images and specifications reflect the actual physical stock we dispatch. What you see on the store is exactly what arrives at your doorstep.',
+      'All jewelry shipments are dispatched in discreet, tamper-proof, insured packaging via top-tier courier networks (TCS, Leopards, PostEx). Real-time tracking is provided, and every parcel requires receiver verification upon delivery.',
   },
   {
     id: 'h5',
-    question: 'How can I track my parcel once ordered?',
+    question: 'Do you offer jewelry care, cleaning, and lifetime polishing?',
     answer:
-      'As soon as your parcel is handed over to the courier, an automated tracking ID and link are sent to your WhatsApp/SMS for real-time tracking. Furthermore, by simply signing in to your account on our website, you can view your complete order history, live parcel statuses, and past invoices in one place.',
+      'Yes, all Ornaments by Arshad jewelry includes lifetime basic cleaning and inspection guidance. We also offer professional re-polishing and rhodium replating services upon request to ensure your heirloom remains radiant forever.',
   },
 ];
 
 export const CATEGORIES = [
-  { id: 'delivery', label: 'Shipping & Delivery', icon: 'Truck' },
-  { id: 'orders', label: 'Orders & Payments', icon: 'Wallet' },
-  { id: 'returns', label: 'Returns & Support', icon: 'ShieldCheck' },
+  { id: 'authenticity', label: 'Gold Purity & Stones', icon: 'ShieldCheck' },
+  { id: 'customization', label: 'Sizing & Custom Design', icon: 'Sparkles' },
+  { id: 'delivery', label: 'Insured Shipping & Delivery', icon: 'Truck' },
+  { id: 'care', label: 'Care, Warranty & Polish', icon: 'Heart' },
 ];
 
 export const FULL_FAQS = [
-  // ── 1. Shipping & Delivery ──
+  // ── 1. Gold Purity & Stones ──
   {
     id: 'f1',
-    categoryId: 'delivery',
-    question: 'How long does delivery take across Pakistan?',
+    categoryId: 'authenticity',
+    question: 'Are your gold and silver pieces 100% pure and hallmarked?',
     answer:
-      'Orders are processed and dispatched within 24 hours. Major hubs (Karachi, Lahore, Islamabad) receive deliveries in 2 to 3 business days, while other cities take 3 to 5 business days.',
+      'Yes, all our gold jewelry is stamped and hallmarked for purity (18K, 21K, and 22K), and our sterling silver pieces are certified 925 stamped. Each piece comes with an official certificate of authenticity specifying its exact gold weight and karat purity.',
   },
   {
     id: 'f2',
-    categoryId: 'delivery',
-    question: 'What are your delivery charges across Pakistan?',
+    categoryId: 'authenticity',
+    question: 'Are the diamonds and gemstones certified authentic?',
     answer:
-      'We offer standard flat-rate delivery nationwide. Any ongoing free shipping promotions or promotional discount codes will be applied automatically at checkout.',
+      'Every gemstone, pearl, and diamond used in our collections is ethically sourced, genuine, and inspected by certified gemologists. Fine diamond pieces include authenticity and carat grading documentation.',
   },
   {
     id: 'f3',
-    categoryId: 'delivery',
-    question: 'Which courier services do you use?',
+    categoryId: 'authenticity',
+    question: 'Will I receive the exact same jewelry piece shown on the website?',
     answer:
-      'We partner with Pakistan’s leading logistics networks (including TCS, Leopards, and PostEx) to ensure fast and secure parcel transit.',
+      'Absolutely. All product photography is shot under balanced lighting with our physical inventory. The intricate filigree, gemstone cuts, and gold luster you see reflect the exact piece crafted for you.',
   },
   {
     id: 'f4',
-    categoryId: 'delivery',
-    question: 'How do I track my order once it is shipped?',
+    categoryId: 'authenticity',
+    question: 'How do you calculate gold prices and making charges?',
     answer:
-      'As soon as your parcel is handed over to the courier, an automated tracking ID and link are sent to your WhatsApp/SMS for real-time tracking. Furthermore, by simply signing in to your account on our website, you can view your complete order history, live parcel statuses, and past invoices in one place.',
-  },
-  {
-    id: 'f5',
-    categoryId: 'delivery',
-    question: 'What happens if I miss my delivery call?',
-    answer:
-      'Courier riders attempt delivery up to two times. If you miss the first attempt, the rider will contact you again on the next working day. You can also message our support team to reschedule the delivery time.',
+      'Our pricing is transparent and based on current gold market rates, certified metal weight, gemstone weight, and artisanal crafting labor (ujrat). Full breakdowns are provided with your official invoice.',
   },
 
-  // ── 2. Orders & Payments ──
+  // ── 2. Sizing & Custom Design ──
+  {
+    id: 'f5',
+    categoryId: 'customization',
+    question: 'How do I determine my correct ring or bangle size?',
+    answer:
+      'You can refer to our online sizing guide or contact our WhatsApp concierge. We can guide you with printable ring sizers, mm measurements, or send a sizing ring gauge before placing a custom order.',
+  },
   {
     id: 'f6',
-    categoryId: 'orders',
-    question: 'Do I need an account to place an order?',
+    categoryId: 'customization',
+    question: 'Can I order custom bespoke bridal jewelry?',
     answer:
-      'No. We offer a 1-click guest checkout. Simply add your product to the cart, provide your contact number and shipping address, and confirm your order instantly.',
+      'Yes, we specialize in bespoke bridal sets, engagement rings, and heirloom restorations. You can share your design sketches or reference pictures with our design team via WhatsApp for 3D CAD modeling and custom quotes.',
   },
   {
     id: 'f7',
-    categoryId: 'orders',
-    question: 'Do you confirm orders before dispatch?',
+    categoryId: 'customization',
+    question: 'Can you engrave names, dates, or initials on rings?',
     answer:
-      'Yes. To prevent fake bookings and wrong addresses, our support team contacts every customer via WhatsApp or phone call for quick verbal/text confirmation before releasing the shipment.',
+      'We offer complimentary precision laser engraving on the inner band of select engagement rings, wedding bands, and solid gold pendants.',
   },
+
+  // ── 3. Insured Shipping & Delivery ──
   {
     id: 'f8',
-    categoryId: 'orders',
-    question: 'Can I cancel or edit my order details?',
+    categoryId: 'delivery',
+    question: 'How is high-value jewelry shipped securely across Pakistan?',
     answer:
-      'You can modify your delivery address, phone number, or cancel your order anytime before dispatch by reaching out to our WhatsApp customer team with your Order ID.',
+      'All shipments are dispatched in discreet, tamper-proof, insured packaging via top-tier courier networks (TCS, Leopards, PostEx). Real-time tracking is provided, and every parcel requires receiver verification upon delivery.',
   },
   {
     id: 'f9',
-    categoryId: 'orders',
-    question: 'Are there any hidden taxes or advance charges?',
+    categoryId: 'delivery',
+    question: 'How long does delivery take for jewelry orders?',
     answer:
-      'None. The total amount displayed on your checkout invoice is the exact final price you hand over to the delivery rider.',
+      'In-stock ready-to-wear pieces are dispatched within 24 hours (2-3 business days delivery for major cities). Custom-sized or bespoke bridal pieces take 7 to 14 working days for artisanal crafting and hallmarking.',
   },
   {
     id: 'f10',
-    categoryId: 'orders',
-    question: 'Will I receive the exact same product shown on the website?',
+    categoryId: 'delivery',
+    question: 'Is Cash on Delivery (COD) available for fine jewelry?',
     answer:
-      'Absolutely. All product images and specifications reflect the actual physical stock we dispatch. What you see on the store is exactly what arrives at your doorstep.',
+      'Cash on Delivery is available for orders within standard limits. High-value bridal sets may require a secure advance token via Bank Transfer or online payment gateway to initiate certified insurance coverage.',
   },
 
-  // ── 3. Returns, Replacements & Support ──
+  // ── 4. Care, Warranty & Polish ──
   {
     id: 'f11',
-    categoryId: 'returns',
-    question: 'What if the item arrives broken or defective?',
+    categoryId: 'care',
+    question: 'Do you offer jewelry care, cleaning, and lifetime polishing?',
     answer:
-      'Simply record a quick unboxing video or take clear photos and share them with us on WhatsApp within 3 to 5 days. Once verified, we will dispatch a brand-new replacement unit at zero extra charge.',
+      'Yes, all Ornaments by Arshad jewelry includes lifetime basic cleaning and inspection guidance. We also offer professional re-polishing and rhodium replating services upon request to ensure your heirloom remains radiant forever.',
   },
   {
     id: 'f12',
-    categoryId: 'returns',
-    question: 'What is your claim window for damaged products?',
+    categoryId: 'care',
+    question: 'How should I store and maintain my fine jewelry at home?',
     answer:
-      'You must report any transit defect, crack, or missing part within 3 to 5 days of delivery along with photographic or video proof.',
+      'Keep your pieces in our signature velvet boxes away from moisture, perfumes, and direct chemicals. Store necklaces flat and rings in dedicated soft slots to prevent scratch contact.',
   },
   {
     id: 'f13',
-    categoryId: 'returns',
-    question: 'What qualifies as valid proof for a replacement?',
+    categoryId: 'care',
+    question: 'What if a stone comes loose or an item is damaged during transit?',
     answer:
-      'A short video showing the parcel unboxing or clear photographs highlighting the flaw alongside the packaging box.',
-  },
-  {
-    id: 'f14',
-    categoryId: 'returns',
-    question: 'Can I get a cash refund instead of a replacement?',
-    answer:
-      'Our standard procedure is a direct replacement. If the exact product is out of stock or permanently unavailable, we issue a monetary refund directly to your Bank Account, JazzCash, or Easypaisa within 3 to 5 working days.',
-  },
-  {
-    id: 'f15',
-    categoryId: 'returns',
-    question: 'How do I contact customer support?',
-    answer:
-      'Our team is active Monday through Saturday via WhatsApp. You can message our official WhatsApp line directly for instant order tracking and claim inquiries.',
+      'Inspect your package upon arrival. If any manufacturing defect or transit issue occurs, contact our concierge within 3 to 5 days with photos/video for immediate complimentary repair or replacement under warranty.',
   },
 ];
+

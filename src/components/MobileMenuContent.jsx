@@ -49,15 +49,15 @@ export default function MobileMenuContent({
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
   return (
-    <Tabs defaultValue="menu" className="flex h-full min-h-0 w-full flex-col overflow-hidden bg-background">
+    <Tabs defaultValue="menu" className="flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#FAF9F6]">
       {/* Header Tabs */}
-      <div className="flex w-full shrink-0 items-center p-3.5 pb-2">
-        <TabsList className="grid h-10 w-full grid-cols-2 rounded-xl bg-muted/70 p-1">
-          <TabsTrigger value="menu" className="text-xs sm:text-sm font-semibold rounded-lg data-[state=active]:shadow-xs">
+      <div className="flex w-full shrink-0 items-center p-4 pb-2 border-b border-[#E8E5DF]">
+        <TabsList className="grid h-9 w-full grid-cols-2 rounded-none bg-[#F4F2EE] p-1">
+          <TabsTrigger value="menu" className="text-[11px] font-sans uppercase tracking-[0.2em] font-medium rounded-none data-[state=active]:bg-[#121212] data-[state=active]:text-white data-[state=active]:shadow-xs">
             Menu
           </TabsTrigger>
-          <TabsTrigger value="categories" className="text-xs sm:text-sm font-semibold rounded-lg data-[state=active]:shadow-xs">
-            Categories
+          <TabsTrigger value="categories" className="text-[11px] font-sans uppercase tracking-[0.2em] font-medium rounded-none data-[state=active]:bg-[#121212] data-[state=active]:text-white data-[state=active]:shadow-xs">
+            Collections
           </TabsTrigger>
         </TabsList>
       </div>
@@ -67,83 +67,104 @@ export default function MobileMenuContent({
         {/* Menu Tab */}
         <TabsContent
           value="menu"
-          className="m-0 h-full overflow-y-auto overscroll-contain py-2 px-3.5 focus-visible:outline-none data-[state=inactive]:hidden data-[state=active]:animate-in data-[state=active]:fade-in-50 data-[state=active]:slide-in-from-left-4 duration-200 ease-out"
+          className="m-0 h-full overflow-y-auto overscroll-contain py-4 px-4 focus-visible:outline-none data-[state=inactive]:hidden data-[state=active]:animate-in data-[state=active]:fade-in-50 data-[state=active]:slide-in-from-left-4 duration-200 ease-out"
         >
-          <SidebarMenu className="gap-1.5">
+          <SidebarMenu className="gap-1">
             <SidebarMenuItem>
               <SidebarMenuButton
                 isActive={pathname === '/'}
-                className={`gap-3.5 rounded-xl px-3 py-2 h-10 transition-all duration-200 active:scale-[0.98] text-foreground ${
+                className={`rounded-none px-3 py-2.5 h-auto transition-all duration-200 text-[#121212] ${
                   pathname === '/'
-                    ? 'bg-primary/10 text-primary font-bold shadow-xs'
-                    : 'bg-muted/40 hover:bg-muted font-medium'
+                    ? 'bg-[#121212] text-white font-medium'
+                    : 'hover:bg-[#F4F2EE] font-normal'
                 }`}
                 render={<Link href="/" onClick={() => setIsSidebarOpen(false)} />}
               >
-                <Store className="size-4 shrink-0" />
-                <span className="text-[13px] sm:text-sm tracking-tight">Home</span>
+                <span className="font-sans text-xs tracking-[0.2em] uppercase">Home</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
               <SidebarMenuButton
                 isActive={pathname === '/products'}
-                className={`gap-3.5 rounded-xl px-3 py-2 h-10 transition-all duration-200 active:scale-[0.98] text-foreground ${
+                className={`rounded-none px-3 py-2.5 h-auto transition-all duration-200 text-[#121212] ${
                   pathname === '/products'
-                    ? 'bg-primary/10 text-primary font-bold shadow-xs'
-                    : 'bg-muted/40 hover:bg-muted font-medium'
+                    ? 'bg-[#121212] text-white font-medium'
+                    : 'hover:bg-[#F4F2EE] font-normal'
                 }`}
                 render={<Link href="/products" onClick={() => setIsSidebarOpen(false)} />}
               >
-                <LayoutGrid className="size-4 shrink-0" />
-                <span className="text-[13px] sm:text-sm tracking-tight">All Products</span>
+                <span className="font-sans text-xs tracking-[0.2em] uppercase">All Jewelry</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
               <SidebarMenuButton
-                className="gap-3.5 rounded-xl px-3 py-2 h-10 transition-all duration-200 active:scale-[0.98] text-foreground bg-muted/40 hover:bg-muted font-medium"
-                render={<Link href="/products?price=under300" onClick={() => setIsSidebarOpen(false)} />}
+                isActive={pathname === '/categories'}
+                className={`rounded-none px-3 py-2.5 h-auto transition-all duration-200 text-[#121212] ${
+                  pathname === '/categories'
+                    ? 'bg-[#121212] text-white font-medium'
+                    : 'hover:bg-[#F4F2EE] font-normal'
+                }`}
+                render={<Link href="/categories" onClick={() => setIsSidebarOpen(false)} />}
               >
-                <Tag className="size-4 shrink-0" />
-                <span className="text-[13px] sm:text-sm tracking-tight">Dollar Store</span>
+                <span className="font-sans text-xs tracking-[0.2em] uppercase">Collections</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
-            <SidebarMenuItem className="flex items-center">
-              <MyOrdersButton
-                isMobile
-                className={`gap-3.5 rounded-xl px-3 py-2 h-10 w-full transition-all duration-200 active:scale-[0.98] text-foreground ${
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                isActive={pathname.startsWith('/orders')}
+                className={`rounded-none px-3 py-2.5 h-auto transition-all duration-200 text-[#121212] ${
                   pathname.startsWith('/orders')
-                    ? 'bg-primary/10 text-primary font-bold shadow-xs'
-                    : 'bg-muted/40 hover:bg-muted font-medium'
+                    ? 'bg-[#121212] text-white font-medium'
+                    : 'hover:bg-[#F4F2EE] font-normal'
                 }`}
-              />
-            </SidebarMenuItem>
-
-            <SidebarMenuItem className="flex items-center">
-              <MyWishlistButton
-                isMobile
-                className={`gap-3.5 rounded-xl px-3 py-2 h-10 w-full transition-all duration-200 active:scale-[0.98] text-foreground ${
-                  pathname.startsWith('/wishlist')
-                    ? 'bg-primary/10 text-primary font-bold shadow-xs'
-                    : 'bg-muted/40 hover:bg-muted font-medium'
-                }`}
-              />
+                render={<Link href="/orders" onClick={() => setIsSidebarOpen(false)} />}
+              >
+                <span className="font-sans text-xs tracking-[0.2em] uppercase">Track Your Order</span>
+              </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
               <SidebarMenuButton
-                isActive={pathname === '/contact'}
-                className={`gap-3.5 rounded-xl px-3 py-2 h-10 transition-all duration-200 active:scale-[0.98] text-foreground ${
-                  pathname === '/contact'
-                    ? 'bg-primary/10 text-primary font-bold shadow-xs'
-                    : 'bg-muted/40 hover:bg-muted font-medium'
+                isActive={pathname.startsWith('/wishlist')}
+                className={`rounded-none px-3 py-2.5 h-auto transition-all duration-200 text-[#121212] ${
+                  pathname.startsWith('/wishlist')
+                    ? 'bg-[#121212] text-white font-medium'
+                    : 'hover:bg-[#F4F2EE] font-normal'
                 }`}
-                render={<Link href="/contact" onClick={() => setIsSidebarOpen(false)} />}
+                render={<Link href="/wishlist" onClick={() => setIsSidebarOpen(false)} />}
               >
-                <Phone className="size-4 shrink-0" />
-                <span className="text-[13px] sm:text-sm tracking-tight">Contact Us</span>
+                <span className="font-sans text-xs tracking-[0.2em] uppercase">Wishlist</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                isActive={pathname === '/about-us'}
+                className={`rounded-none px-3 py-2.5 h-auto transition-all duration-200 text-[#121212] ${
+                  pathname === '/about-us'
+                    ? 'bg-[#121212] text-white font-medium'
+                    : 'hover:bg-[#F4F2EE] font-normal'
+                }`}
+                render={<Link href="/about-us" onClick={() => setIsSidebarOpen(false)} />}
+              >
+                <span className="font-sans text-xs tracking-[0.2em] uppercase">Our Story</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                isActive={pathname === '/contact' || pathname === '/contact-us'}
+                className={`rounded-none px-3 py-2.5 h-auto transition-all duration-200 text-[#121212] ${
+                  pathname === '/contact' || pathname === '/contact-us'
+                    ? 'bg-[#121212] text-white font-medium'
+                    : 'hover:bg-[#F4F2EE] font-normal'
+                }`}
+                render={<Link href="/contact-us" onClick={() => setIsSidebarOpen(false)} />}
+              >
+                <span className="font-sans text-xs tracking-[0.2em] uppercase">Contact Us</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -152,22 +173,21 @@ export default function MobileMenuContent({
         {/* Categories Tab */}
         <TabsContent
           value="categories"
-          className="m-0 h-full overflow-y-auto overscroll-contain py-2 px-3.5 focus-visible:outline-none data-[state=inactive]:hidden data-[state=active]:animate-in data-[state=active]:fade-in-50 data-[state=active]:slide-in-from-right-4 duration-200 ease-out"
+          className="m-0 h-full overflow-y-auto overscroll-contain py-4 px-4 focus-visible:outline-none data-[state=inactive]:hidden data-[state=active]:animate-in data-[state=active]:fade-in-50 data-[state=active]:slide-in-from-right-4 duration-200 ease-out"
         >
-          <SidebarMenu className="gap-1.5">
+          <SidebarMenu className="gap-1">
             {categories.map((category) => (
               <SidebarMenuItem key={category.id}>
                 <SidebarMenuButton
                   isActive={activeCategory === category.id}
                   onClick={() => handleCategoryClick(category.id)}
-                  className={`gap-3.5 rounded-xl px-3 py-2 h-10 transition-all duration-200 active:scale-[0.98] text-foreground ${
+                  className={`rounded-none px-3 py-2.5 h-auto transition-all duration-200 text-[#121212] ${
                     activeCategory === category.id
-                      ? 'bg-primary/10 text-primary font-bold shadow-xs'
-                      : 'bg-muted/40 hover:bg-muted font-medium'
+                      ? 'bg-[#121212] text-white font-medium'
+                      : 'hover:bg-[#F4F2EE]'
                   }`}
                 >
-                  <Tag className="size-4 shrink-0 text-muted-foreground" />
-                  <span className="text-[13px] sm:text-sm tracking-tight">{category.label}</span>
+                  <span className="font-sans text-xs tracking-[0.2em] uppercase">{category.label || category.name}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
@@ -176,13 +196,13 @@ export default function MobileMenuContent({
       </div>
 
       {/* Persistent Bottom Footer: Auth / Logout & Social Icons */}
-      <div className="shrink-0 flex flex-col gap-2.5 border-t border-border/80 p-3 pb-[calc(env(safe-area-inset-bottom,0.75rem)+0.75rem)] bg-card/90 backdrop-blur-sm">
+      <div className="shrink-0 flex flex-col gap-3 border-t border-[#E8E5DF] p-4 pb-[calc(env(safe-area-inset-bottom,0.75rem)+0.75rem)] bg-[#FAF9F6]">
         {/* Auth / Logout Button */}
         {!session ? (
           <Link href="/auth/signin" onClick={() => setIsSidebarOpen(false)} className="w-full">
-            <Button className="w-full bg-[#006B5F] hover:bg-[#00554c] text-white rounded-lg h-9 text-xs font-semibold shadow-xs transition-all active:scale-[0.98] gap-2">
+            <Button className="w-full bg-[#121212] hover:bg-neutral-800 text-white rounded-none h-11 text-xs font-sans uppercase tracking-[0.18em] transition-all active:scale-[0.98] gap-2">
               <User className="size-3.5" />
-              Sign In / Register
+              Sign In / Client Account
             </Button>
           </Link>
         ) : (
