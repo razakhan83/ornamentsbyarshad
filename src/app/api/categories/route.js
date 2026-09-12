@@ -16,6 +16,7 @@ import Product from "@/models/Product";
 
 async function getCategoryProductCountMap() {
   const counts = await Product.aggregate([
+    { $match: { showOnStore: { $ne: false } } },
     { $unwind: "$Category" },
     {
       $group: {

@@ -19,6 +19,7 @@ async function getCategoriesData() {
 
     // Get count of active products for each category
     const counts = await Product.aggregate([
+      { $match: { showOnStore: { $ne: false } } },
       { $unwind: "$Category" },
       {
         $group: {

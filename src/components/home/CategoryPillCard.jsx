@@ -20,7 +20,8 @@ export default function CategoryPillCard({ category, index = 0, href, className 
   const fallbackImg = FALLBACK_CATEGORY_IMAGES[index % FALLBACK_CATEGORY_IMAGES.length];
   const categoryImage = imgError || !initialImage ? fallbackImg : initialImage;
   const categoryTitle = category.name || category.label || 'Collection';
-  const productCount = category.productCount || (index === 0 ? 456 : index === 1 ? 297 : index === 2 ? 312 : 180);
+  const rawCount = category.productCount ?? category.count;
+  const productCount = typeof rawCount === 'number' ? rawCount : 0;
 
   return (
     <Link
@@ -54,7 +55,7 @@ export default function CategoryPillCard({ category, index = 0, href, className 
         {/* Bottom Text Overlay */}
         <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 z-10 text-center flex flex-col items-center">
           <span className="text-[10px] sm:text-[11px] font-sans text-white/80 font-normal tracking-wider mb-0.5">
-            {productCount} products
+            {productCount} {productCount === 1 ? 'product' : 'products'}
           </span>
           <h3 className="font-sans text-xs sm:text-sm md:text-base font-semibold tracking-wider text-white uppercase text-balance leading-tight drop-shadow-sm">
             {categoryTitle}

@@ -651,8 +651,24 @@ async function getCoverPhotosRaw() {
 async function getCategoriesRaw() {
   await mongooseConnect();
 
-  const dbCategories = await Category.find({}).sort({ sortOrder: 1, name: 1 }).lean();
-  let mappedCategories = [];
+  const [dbCategories, productCounts] = await Promise.all([
+    Category.find({}).sort({ sortOrder: 1, name: 1 }).lean(),
+    Product.aggregate([
+      { $match: { showOnStore: { $ne: false } } },
+      { $unwind: '$Category' },
+      {
+        $group: {
+          _id: '$Category',
+          productCount: { $sum: 1 },
+        },
+      },
+    ]),
+  ]);
+
+  const countMap = new Map(
+    productCounts.map((entry) => [String(entry._id), Number(entry.productCount || 0)])
+  );
+
   if (dbCategories.length > 0) {
     return dbCategories.map((category) => ({
       _id: category._id.toString(),
@@ -670,6 +686,11 @@ async function getCategoriesRaw() {
       tertiaryImagePublicId: category.tertiaryImagePublicId || '',
       tertiaryBlurDataURL: category.tertiaryBlurDataURL || '',
       bgColor: category.bgColor || '',
+      productCount:
+        countMap.get(String(category._id)) ||
+        countMap.get(String(category.slug)) ||
+        countMap.get(String(category.name)) ||
+        0,
       sortOrder: category.sortOrder ?? 0,
       isEnabled: category.isEnabled !== false,
       showOnHome: category.showOnHome !== false,
