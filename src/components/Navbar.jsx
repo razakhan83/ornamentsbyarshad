@@ -731,7 +731,7 @@ function NavbarContent({
             side="left"
             showCloseButton={false}
             className={cn(
-              "w-full sm:!w-[340px] md:!w-[360px] max-w-full sm:max-w-[360px] border-r border-[#E8E5DF] bg-[#FAF9F6] p-0 text-[#121212] flex flex-col h-full max-h-[100dvh] overflow-hidden data-[state=closed]:duration-300 data-[state=open]:duration-300 shadow-2xl z-[150]",
+              "w-full sm:!w-[340px] md:!w-[360px] max-w-full sm:max-w-[360px] border-r border-[#E8E5DF] bg-[#FAF9F6] p-0 text-[#121212] flex flex-col h-full max-h-[100dvh] overflow-hidden data-[state=closed]:duration-300 data-[state=open]:duration-300 shadow-2xl z-[500]",
               showAnnouncementBar ? "pt-[96px]" : "pt-[64px]"
             )}
           >
