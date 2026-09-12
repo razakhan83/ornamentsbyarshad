@@ -87,9 +87,13 @@ function getShareDescription(product) {
 }
 
 function getPrimaryImage(product) {
-  const rawUrl = product.seoOgImage?.trim() || product.Images?.[0]?.url;
-  if (!rawUrl) return `${siteUrl}/opengraph-image.png`;
-  return getProductSocialShareImage(rawUrl, product.seoOgImageRatio === '1:1' ? '1:1' : '1.91:1');
+  const rawUrl = product.seoOgImage?.trim();
+  const validOgUrl = rawUrl && !rawUrl.startsWith('data:') && rawUrl.length < 2000 ? rawUrl : '';
+  const candidateUrl = validOgUrl || product.Images?.[0]?.url;
+  if (!candidateUrl || candidateUrl.startsWith('data:')) {
+    return `${siteUrl}/opengraph-image.png`;
+  }
+  return getProductSocialShareImage(candidateUrl, product.seoOgImageRatio === '1:1' ? '1:1' : '1.91:1');
 }
 
 function getProductJsonLd({ product, reviewSummary = null }) {

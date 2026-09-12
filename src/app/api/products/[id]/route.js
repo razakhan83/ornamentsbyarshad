@@ -180,7 +180,7 @@ export async function PUT(request, { params }) {
         existingProduct.seoCanonicalUrl = typeof body.seoCanonicalUrl === 'string' ? body.seoCanonicalUrl.trim() : '';
         existingProduct.seoOgTitle = typeof body.seoOgTitle === 'string' ? body.seoOgTitle.trim() : '';
         existingProduct.seoOgDescription = typeof body.seoOgDescription === 'string' ? body.seoOgDescription.trim() : '';
-        existingProduct.seoOgImage = typeof body.seoOgImage === 'string' ? body.seoOgImage.trim() : '';
+        existingProduct.seoOgImage = typeof body.seoOgImage === 'string' && !body.seoOgImage.startsWith('data:') && body.seoOgImage.length < 2000 ? body.seoOgImage.trim() : '';
         existingProduct.seoOgImageRatio = body.seoOgImageRatio === '1:1' ? '1:1' : '1.91:1';
         existingProduct.Price = Number(body.Price);
         existingProduct.compareAtPrice = Number.isFinite(normalizedCompareAtPrice) ? normalizedCompareAtPrice : null;

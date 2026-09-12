@@ -310,7 +310,7 @@ function toProductDetailView(product) {
     seoCanonicalUrl: product.seoCanonicalUrl || '',
     seoOgTitle: product.seoOgTitle || '',
     seoOgDescription: product.seoOgDescription || '',
-    seoOgImage: product.seoOgImage || '',
+    seoOgImage: typeof product.seoOgImage === 'string' && !product.seoOgImage.startsWith('data:') && product.seoOgImage.length < 2000 ? product.seoOgImage.trim() : '',
     seoOgImageRatio: product.seoOgImageRatio || '1.91:1',
   };
 }
