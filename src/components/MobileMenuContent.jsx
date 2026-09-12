@@ -15,6 +15,7 @@ import {
   Package,
   Sparkles,
   ChevronRight,
+  Menu as MenuIcon,
 } from 'lucide-react';
 
 import {
@@ -55,24 +56,43 @@ export default function MobileMenuContent({
   ];
 
   return (
-    <Tabs defaultValue="menu" className="flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#FAF9F6]">
-      {/* Header Tabs */}
-      <div className="flex w-full shrink-0 items-center px-4 pt-3 pb-2.5 border-b border-[#E8E5DF]">
-        <TabsList className="grid h-9 w-full grid-cols-2 rounded-lg bg-[#EFECE6] p-1">
-          <TabsTrigger 
-            value="menu" 
-            className="text-[11px] font-sans uppercase tracking-[0.16em] font-semibold rounded-md transition-all data-[state=active]:bg-white data-[state=active]:text-[#121212] data-[state=active]:shadow-xs text-[#737373]"
-          >
+    <div className="flex flex-col h-full w-full min-w-0 bg-[#FAF9F6] text-[#121212] overflow-hidden">
+      {/* Top Header Bar (Matching Cart Drawer) */}
+      <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-[#E8E5DF] bg-white shrink-0">
+        <div className="flex items-center gap-2.5">
+          <MenuIcon className="size-4.5 text-[#A67C52]" />
+          <h2 className="font-serif text-base sm:text-lg font-normal tracking-wide text-[#121212] uppercase">
             Menu
-          </TabsTrigger>
-          <TabsTrigger 
-            value="categories" 
-            className="text-[11px] font-sans uppercase tracking-[0.16em] font-semibold rounded-md transition-all data-[state=active]:bg-white data-[state=active]:text-[#121212] data-[state=active]:shadow-xs text-[#737373]"
-          >
-            Collections
-          </TabsTrigger>
-        </TabsList>
+          </h2>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsSidebarOpen(false)}
+          className="size-8.5 rounded-full flex items-center justify-center text-[#737373] hover:text-[#121212] hover:bg-neutral-100 transition-colors cursor-pointer"
+          aria-label="Close menu"
+        >
+          <X className="size-4.5" />
+        </button>
       </div>
+
+      <Tabs defaultValue="menu" className="flex flex-1 min-h-0 w-full flex-col overflow-hidden bg-[#FAF9F6]">
+        {/* Header Tabs */}
+        <div className="flex w-full shrink-0 items-center px-4 pt-3 pb-2.5 border-b border-[#E8E5DF]">
+          <TabsList className="grid h-9 w-full grid-cols-2 rounded-lg bg-[#EFECE6] p-1">
+            <TabsTrigger 
+              value="menu" 
+              className="text-[11px] font-sans uppercase tracking-[0.16em] font-semibold rounded-md transition-all data-[state=active]:bg-white data-[state=active]:text-[#121212] data-[state=active]:shadow-xs text-[#737373]"
+            >
+              Menu
+            </TabsTrigger>
+            <TabsTrigger 
+              value="categories" 
+              className="text-[11px] font-sans uppercase tracking-[0.16em] font-semibold rounded-md transition-all data-[state=active]:bg-white data-[state=active]:text-[#121212] data-[state=active]:shadow-xs text-[#737373]"
+            >
+              Collections
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
       {/* Main Tab Content Area */}
       <div className="flex-1 min-h-0 relative overflow-hidden">
@@ -293,6 +313,7 @@ export default function MobileMenuContent({
         </AlertDialogContent>
       </AlertDialog>
     </Tabs>
+    </div>
   );
 }
 
