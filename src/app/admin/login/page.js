@@ -1,95 +1,64 @@
-import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, ShieldCheck, X } from 'lucide-react';
 import { Suspense } from 'react';
+import { ArrowLeft, Shield } from 'lucide-react';
 
 import StoreLogo from '@/components/StoreLogo';
 import { getStoreSettings } from '@/lib/data';
 import AdminLoginFormClient from './AdminLoginFormClient';
 
 export const metadata = {
-  title: 'Admin Login',
+  title: 'Admin Access | Ornaments by Arshad',
+  description: 'Sign in with authorized administrator credentials to access the management portal.',
 };
 
 export default async function AdminLoginPage() {
   const settings = await getStoreSettings();
-  const guestModeEnabled = settings?.guestModeEnabled !== false;
 
   return (
-    <div className="relative flex h-[100dvh] w-full flex-col items-center justify-center bg-background p-0 sm:p-4 lg:p-8 overflow-hidden">
-      <div className="relative z-10 mx-auto flex w-full h-full max-h-[100dvh] sm:max-h-[700px] flex-col overflow-hidden sm:rounded-xl border sm:border border-border bg-card lg:flex-row lg:max-w-[1100px] lg:h-[680px] shadow-xs">
-        
-        {/* Mobile: Top / PC: Left - SVG Image */}
-        <div className="relative flex w-full shrink-0 flex-col items-center justify-center bg-primary/5 p-4 sm:p-6 lg:w-1/2 lg:p-16">
-          
-          {/* Back Button Inside Card */}
-          <div className="absolute top-4 left-4 lg:top-8 lg:left-8 z-20">
-            <Link href="/" className="group inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-              <ArrowLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-1" />
-              Back
-            </Link>
-          </div>
-
-          <div className="relative z-10 flex w-full flex-col items-center text-center">
-            <div className="mb-0 lg:hidden">
-              <StoreLogo
-                  storeName={settings.storeName}
-                  lightLogoUrl={settings.lightLogoUrl}
-                  darkLogoUrl={settings.darkLogoUrl}
-                  logoScalePercent={settings.logoScalePercent}
-                  variant="dark-surface"
-                />
-            </div>
-            
-            <div className="hidden lg:block mb-8">
-               <StoreLogo
-                  storeName={settings.storeName}
-                  lightLogoUrl={settings.lightLogoUrl}
-                  darkLogoUrl={settings.darkLogoUrl}
-                  logoScalePercent={settings.logoScalePercent}
-                  variant="dark-surface"
-                />
-            </div>
-            
-            <div className="w-full max-w-[180px] mt-1 sm:max-w-[220px] lg:mt-12 lg:max-w-[480px]">
-              <Image 
-                src="/work-time-amico.svg" 
-                alt="Admin Workspace Illustration" 
-                width={500}
-                height={500}
-                className="mx-auto w-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-700 hover:scale-105"
-                priority
-              />
-            </div>
-          </div>
+    <div className="relative min-h-[100dvh] w-full bg-[#FAF9F6] text-[#121212] flex flex-col justify-between p-4 sm:p-6 md:p-8">
+      {/* ── Top Header: Brand Logo & Back to Store Button ── */}
+      <header className="w-full max-w-6xl mx-auto flex items-center justify-between gap-4 py-2">
+        <div className="flex items-center">
+          <StoreLogo
+            storeName={settings.storeName || "Ornaments by Arshad"}
+            lightLogoUrl={settings.lightLogoUrl}
+            darkLogoUrl={settings.darkLogoUrl}
+            logoScalePercent={settings.logoScalePercent}
+            variant="light-surface"
+          />
         </div>
 
-        {/* Mobile: Bottom / PC: Right - Form Data */}
-        <div className="flex w-full flex-1 flex-col justify-start pt-6 sm:pt-8 sm:justify-center overflow-hidden p-4 sm:p-8 lg:w-1/2 lg:p-20">
-          <div className="mx-auto w-full max-w-[380px]">
-            <div className="mb-2 sm:mb-8 flex flex-col items-center justify-center text-center lg:items-start lg:text-left">
-              <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl xl:text-5xl">Admin Access</h1>
-              <p className="mt-0.5 text-[10px] text-foreground/70 sm:text-sm lg:mt-3 lg:text-base">
-                Sign in with authorized credentials.
-              </p>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-[#737373] hover:text-[#121212] transition-colors py-1.5 px-3 rounded-lg hover:bg-[#F2EFE9]"
+        >
+          <ArrowLeft className="size-4" />
+          <span>Back to store</span>
+        </Link>
+      </header>
+
+      {/* ── Center Content: Minimalist Admin Card ── */}
+      <main className="flex-1 flex items-center justify-center my-6">
+        <div className="w-full max-w-[440px] bg-white border border-[#E8E5DF] rounded-2xl shadow-[0_4px_25px_-5px_rgba(0,0,0,0.05)] p-7 sm:p-9">
+          <Suspense fallback={
+            <div className="space-y-4 py-8 animate-pulse">
+              <div className="h-4 w-32 bg-[#F2EFE9] rounded" />
+              <div className="h-8 w-48 bg-[#F2EFE9] rounded" />
+              <div className="h-11 w-full bg-[#F2EFE9] rounded-xl mt-6" />
+              <div className="h-11 w-full bg-[#F2EFE9] rounded-xl" />
+              <div className="h-11 w-full bg-[#121212]/10 rounded-xl mt-4" />
             </div>
-
-            <Suspense fallback={
-              <div className="flex flex-col gap-3 sm:gap-4 lg:gap-5">
-                <div className="h-12 sm:h-14 lg:h-14 w-full animate-pulse rounded-md bg-muted/60" />
-                <div className="h-12 sm:h-14 lg:h-14 w-full animate-pulse rounded-md bg-muted/60" />
-                <div className="h-12 sm:h-14 lg:h-14 w-full animate-pulse rounded-md bg-muted/80 mt-2 sm:mt-4 lg:mt-4" />
-              </div>
-            }>
-              <AdminLoginFormClient guestModeEnabled={guestModeEnabled} />
-            </Suspense>
-
-            <p className="mt-3 sm:mt-8 lg:mt-10 text-center text-[9px] sm:text-[11px] font-medium text-foreground/70 lg:text-sm">
-              Authorized personnel only
-            </p>
-          </div>
+          }>
+            <AdminLoginFormClient />
+          </Suspense>
         </div>
-      </div>
+      </main>
+
+      {/* ── Footer: Authorized Personnel Only ── */}
+      <footer className="w-full max-w-md mx-auto py-3 text-center text-xs text-[#8C8C8C] flex items-center justify-center gap-2">
+        <Shield className="size-3.5 text-[#A67C52]" />
+        <span>Authorized Personnel Only</span>
+      </footer>
     </div>
   );
 }

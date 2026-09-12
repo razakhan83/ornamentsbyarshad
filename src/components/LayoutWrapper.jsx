@@ -58,14 +58,13 @@ export default function LayoutWrapper({ children, categories, settings }) {
               {/* ── Main Footer Columns ── */}
               <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                 <div>
-                  <div className="mb-4 w-fit origin-left scale-100 sm:scale-105">
+                  <div className="mb-5 w-fit origin-left">
                     <StoreLogo
                       storeName={settings.storeName || "Ornaments by Arshad"}
                       lightLogoUrl={settings.lightLogoUrl}
                       darkLogoUrl={settings.darkLogoUrl}
-                      logoScalePercent={settings.logoScalePercent}
+                      logoScalePercent={(settings.logoScalePercent || 100) * 1.85}
                       variant="light-surface"
-                      compact
                     />
                   </div>
                   <p className="max-w-sm text-xs leading-relaxed text-[#737373]">

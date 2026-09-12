@@ -21,6 +21,9 @@ export const CLOUDINARY_IMAGE_PRESETS = {
   // Product detail gallery — main image (Next.js srcset handles DPR; keep master modest)
   productGalleryMain: { width: 960, height: 960, crop: 'fill', gravity: 'auto', format: 'avif', quality: 80 },
 
+  // Product detail gallery — high resolution zoom lens
+  productGalleryZoom: { width: 1600, height: 1600, crop: 'fill', gravity: 'auto', format: 'avif', quality: 85 },
+
   // Home / category banners (below-fold; Next optimizer + sizes do the rest)
   storeBanner: { width: 960, crop: 'fill', gravity: 'auto', format: 'avif', quality: 75 },
 

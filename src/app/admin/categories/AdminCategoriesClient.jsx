@@ -263,8 +263,6 @@ export default function AdminCategoriesClient() {
   const [adding, setAdding] = useState(false);
   const [newName, setNewName] = useState("");
   const [newImage, setNewImage] = useState("");
-  const [newSecondaryImage, setNewSecondaryImage] = useState("");
-  const [newTertiaryImage, setNewTertiaryImage] = useState("");
   const [newBgColor, setNewBgColor] = useState("");
   const [deleteModal, setDeleteModal] = useState({ open: false, category: null });
   const [showcaseModal, setShowcaseModal] = useState({ open: false, category: null });
@@ -274,8 +272,6 @@ export default function AdminCategoriesClient() {
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState("");
   const [editImage, setEditImage] = useState("");
-  const [editSecondaryImage, setEditSecondaryImage] = useState("");
-  const [editTertiaryImage, setEditTertiaryImage] = useState("");
   const [editIsEnabled, setEditIsEnabled] = useState(true);
   const [editBgColor, setEditBgColor] = useState("");
 
@@ -292,9 +288,19 @@ export default function AdminCategoriesClient() {
     () => categories.reduce((total, category) => total + Number(category.productCount || 0), 0),
     [categories],
   );
+  const PRESET_BG_COLORS = [
+    "#f4f4f5", // Light Gray (Default)
+    "#fef3ee", // Warm Peach
+    "#edf7f2", // Mint Green
+    "#f3f0fb", // Soft Lavender
+    "#eaf4fb", // Powder Blue
+    "#fefce8", // Soft Lemon
+    "#edfafa", // Light Teal
+    "#fff0f4", // Rose Blush
+  ];
 
   const usedColors = useMemo(() => {
-    const colors = new Set();
+    const colors = new Set(PRESET_BG_COLORS);
     categories.forEach((cat, index) => {
       const color = cat.bgColor || getCategoryColorByIndex(index).hex;
       if (color && color !== "#ffffff") {
@@ -331,16 +337,14 @@ export default function AdminCategoriesClient() {
     }
   }
 
-  function handleImageSelect(event, slot = 1) {
+  function handleImageSelect(event) {
     const file = event.target.files?.[0];
     if (!file || !file.type.startsWith("image/")) return;
 
     const reader = new FileReader();
     reader.onload = (loadEvent) => {
       const result = /** @type {string} */ (loadEvent.target?.result) || "";
-      if (slot === 1) setNewImage(result);
-      if (slot === 2) setNewSecondaryImage(result);
-      if (slot === 3) setNewTertiaryImage(result);
+      setNewImage(result);
     };
     reader.readAsDataURL(file);
     event.target.value = "";
@@ -356,33 +360,11 @@ export default function AdminCategoriesClient() {
       let uploadedPublicId = "";
       let uploadedBlurDataURL = "";
 
-      let uploadedSecondaryImage = "";
-      let uploadedSecondaryPublicId = "";
-      let uploadedSecondaryBlurDataURL = "";
-
-      let uploadedTertiaryImage = "";
-      let uploadedTertiaryPublicId = "";
-      let uploadedTertiaryBlurDataURL = "";
-
       if (newImage) {
         const upload = await uploadImageDataUrl(newImage, "ornaments_categories");
         uploadedImage = upload.url;
         uploadedPublicId = upload.publicId;
         uploadedBlurDataURL = upload.blurDataURL;
-      }
-
-      if (newSecondaryImage) {
-        const upload2 = await uploadImageDataUrl(newSecondaryImage, "ornaments_categories");
-        uploadedSecondaryImage = upload2.url;
-        uploadedSecondaryPublicId = upload2.publicId;
-        uploadedSecondaryBlurDataURL = upload2.blurDataURL;
-      }
-
-      if (newTertiaryImage) {
-        const upload3 = await uploadImageDataUrl(newTertiaryImage, "ornaments_categories");
-        uploadedTertiaryImage = upload3.url;
-        uploadedTertiaryPublicId = upload3.publicId;
-        uploadedTertiaryBlurDataURL = upload3.blurDataURL;
       }
 
       const response = await fetch("/api/categories", {
@@ -395,14 +377,6 @@ export default function AdminCategoriesClient() {
           imagePublicId: uploadedPublicId,
           blurDataURL: uploadedBlurDataURL,
           imageDataUrl: newImage || "",
-          secondaryImage: uploadedSecondaryImage,
-          secondaryImagePublicId: uploadedSecondaryPublicId,
-          secondaryBlurDataURL: uploadedSecondaryBlurDataURL,
-          secondaryImageDataUrl: newSecondaryImage || "",
-          tertiaryImage: uploadedTertiaryImage,
-          tertiaryImagePublicId: uploadedTertiaryPublicId,
-          tertiaryBlurDataURL: uploadedTertiaryBlurDataURL,
-          tertiaryImageDataUrl: newTertiaryImage || "",
         }),
       });
 
@@ -415,8 +389,6 @@ export default function AdminCategoriesClient() {
       setNewName("");
       setNewBgColor("");
       setNewImage("");
-      setNewSecondaryImage("");
-      setNewTertiaryImage("");
       setCategories((current) => [
         ...current,
         mapCategory({ ...data.data, productCount: 0 }, current.length),
@@ -429,16 +401,14 @@ export default function AdminCategoriesClient() {
     }
   }
 
-  function handleEditImageSelect(event, slot = 1) {
+  function handleEditImageSelect(event) {
     const file = event.target.files?.[0];
     if (!file || !file.type.startsWith("image/")) return;
 
     const reader = new FileReader();
     reader.onload = (loadEvent) => {
       const result = /** @type {string} */ (loadEvent.target?.result) || "";
-      if (slot === 1) setEditImage(result);
-      if (slot === 2) setEditSecondaryImage(result);
-      if (slot === 3) setEditTertiaryImage(result);
+      setEditImage(result);
     };
     reader.readAsDataURL(file);
     event.target.value = "";
@@ -449,16 +419,13 @@ export default function AdminCategoriesClient() {
     const fallbackColor = originalIndex !== -1 ? getCategoryColorByIndex(originalIndex).hex : "";
     setEditName(category.name);
     setEditImage(category.image || "");
-    setEditSecondaryImage(category.secondaryImage || "");
-    setEditTertiaryImage(category.tertiaryImage || "");
     setEditBgColor(category.bgColor || fallbackColor);
     setEditIsEnabled(category.isEnabled !== false);
     setEditModal({ open: true, category });
   }
 
-  async function handleEditCategory(event) {
-    event.preventDefault();
-    if (!editName.trim() || !editModal.category) return;
+  async function handleEditCategory() {
+    if (!editModal.category || !editName.trim()) return;
 
     setEditing(true);
     try {
@@ -466,37 +433,13 @@ export default function AdminCategoriesClient() {
       let uploadedPublicId = editModal.category.imagePublicId || "";
       let uploadedBlurDataURL = editModal.category.blurDataURL || "";
 
-      let uploadedSecondaryImage = editSecondaryImage;
-      let uploadedSecondaryPublicId = editModal.category.secondaryImagePublicId || "";
-      let uploadedSecondaryBlurDataURL = editModal.category.secondaryBlurDataURL || "";
-
-      let uploadedTertiaryImage = editTertiaryImage;
-      let uploadedTertiaryPublicId = editModal.category.tertiaryImagePublicId || "";
-      let uploadedTertiaryBlurDataURL = editModal.category.tertiaryBlurDataURL || "";
-
       const isNewImage1 = editImage && editImage !== editModal.category.image && editImage.startsWith("data:");
-      const isNewImage2 = editSecondaryImage && editSecondaryImage !== editModal.category.secondaryImage && editSecondaryImage.startsWith("data:");
-      const isNewImage3 = editTertiaryImage && editTertiaryImage !== editModal.category.tertiaryImage && editTertiaryImage.startsWith("data:");
 
       if (isNewImage1) {
         const upload = await uploadImageDataUrl(editImage, "ornaments_categories");
         uploadedImage = upload.url;
         uploadedPublicId = upload.publicId;
         uploadedBlurDataURL = upload.blurDataURL;
-      }
-
-      if (isNewImage2) {
-        const upload2 = await uploadImageDataUrl(editSecondaryImage, "ornaments_categories");
-        uploadedSecondaryImage = upload2.url;
-        uploadedSecondaryPublicId = upload2.publicId;
-        uploadedSecondaryBlurDataURL = upload2.blurDataURL;
-      }
-
-      if (isNewImage3) {
-        const upload3 = await uploadImageDataUrl(editTertiaryImage, "ornaments_categories");
-        uploadedTertiaryImage = upload3.url;
-        uploadedTertiaryPublicId = upload3.publicId;
-        uploadedTertiaryBlurDataURL = upload3.blurDataURL;
       }
 
       const response = await fetch(`/api/categories/${editModal.category._id}`, {
@@ -508,16 +451,8 @@ export default function AdminCategoriesClient() {
           image: uploadedImage,
           imagePublicId: uploadedImage ? uploadedPublicId : "",
           blurDataURL: uploadedImage ? uploadedBlurDataURL : "",
-          secondaryImage: uploadedSecondaryImage,
-          secondaryImagePublicId: uploadedSecondaryImage ? uploadedSecondaryPublicId : "",
-          secondaryBlurDataURL: uploadedSecondaryImage ? uploadedSecondaryBlurDataURL : "",
-          tertiaryImage: uploadedTertiaryImage,
-          tertiaryImagePublicId: uploadedTertiaryImage ? uploadedTertiaryPublicId : "",
-          tertiaryBlurDataURL: uploadedTertiaryImage ? uploadedTertiaryBlurDataURL : "",
           isEnabled: editIsEnabled,
           ...(isNewImage1 && { imageDataUrl: editImage }),
-          ...(isNewImage2 && { secondaryImageDataUrl: editSecondaryImage }),
-          ...(isNewImage3 && { tertiaryImageDataUrl: editTertiaryImage }),
         }),
       });
 
@@ -540,8 +475,6 @@ export default function AdminCategoriesClient() {
       setEditModal({ open: false, category: null });
       setEditName("");
       setEditImage("");
-      setEditSecondaryImage("");
-      setEditTertiaryImage("");
       setEditBgColor("");
       setEditIsEnabled(true);
     } catch (error) {
@@ -672,11 +605,11 @@ export default function AdminCategoriesClient() {
       </div>
 
       <AlertDialog open={addModalOpen} onOpenChange={setAddModalOpen}>
-        <AlertDialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-2xl md:max-w-4xl lg:max-w-5xl">
+        <AlertDialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-2xl md:max-w-3xl lg:max-w-4xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Add New Category</AlertDialogTitle>
             <AlertDialogDescription>
-              Create a new category, select colors, and upload up to 3 images for the petal bloom layout.
+              Add a category name, image, and optional background color.
             </AlertDialogDescription>
           </AlertDialogHeader>
 
@@ -741,110 +674,52 @@ export default function AdminCategoriesClient() {
                   </div>
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <div>
-                    <Label className="mb-2 block text-xs font-semibold text-muted-foreground">Image 1 (Front Center)</Label>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted">
-                        <Upload className="size-3.5" />
-                        Upload 1
-                        <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageSelect(e, 1)} />
-                      </label>
-                      {newImage ? (
-                        <div className="relative size-12 shrink-0 overflow-hidden rounded-2xl border border-border group">
-                          <Image
-                            src={newImage}
-                            alt="Image 1 preview"
-                            fill
-                            sizes="48px"
-                            className="object-cover"
-                            {...getBlurPlaceholderProps()}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setNewImage("")}
-                            className="absolute right-0.5 top-0.5 flex size-4 items-center justify-center rounded-full bg-destructive text-white shadow-md hover:bg-destructive/90"
-                            title="Clear Image 1"
-                          >
-                            <X className="size-2.5" />
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="flex size-12 items-center justify-center rounded-2xl border border-dashed border-border bg-muted/25 text-muted-foreground">
-                          <ImageIcon className="size-4" />
-                        </div>
-                      )}
-                    </div>
+                <div>
+                  <div className="mb-2 flex items-center justify-between">
+                    <Label className="text-xs font-semibold text-muted-foreground">Category Image</Label>
+                    {newImage && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setNewImage("")}
+                        className="h-6 px-1.5 text-[11px] text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      >
+                        <X className="mr-0.5 size-3" />
+                        Clear
+                      </Button>
+                    )}
                   </div>
-
-                  <div>
-                    <Label className="mb-2 block text-xs font-semibold text-muted-foreground">Image 2 (Left Petal)</Label>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted">
-                        <Upload className="size-3.5" />
-                        Upload 2
-                        <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageSelect(e, 2)} />
-                      </label>
-                      {newSecondaryImage ? (
-                        <div className="relative size-12 shrink-0 overflow-hidden rounded-2xl border border-border group">
-                          <Image
-                            src={newSecondaryImage}
-                            alt="Image 2 preview"
-                            fill
-                            sizes="48px"
-                            className="object-cover"
-                            {...getBlurPlaceholderProps()}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setNewSecondaryImage("")}
-                            className="absolute right-0.5 top-0.5 flex size-4 items-center justify-center rounded-full bg-destructive text-white shadow-md hover:bg-destructive/90"
-                            title="Clear Image 2"
-                          >
-                            <X className="size-2.5" />
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="flex size-12 items-center justify-center rounded-2xl border border-dashed border-border bg-muted/25 text-muted-foreground">
-                          <ImageIcon className="size-4" />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="mb-2 block text-xs font-semibold text-muted-foreground">Image 3 (Right Petal)</Label>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted">
-                        <Upload className="size-3.5" />
-                        Upload 3
-                        <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageSelect(e, 3)} />
-                      </label>
-                      {newTertiaryImage ? (
-                        <div className="relative size-12 shrink-0 overflow-hidden rounded-2xl border border-border group">
-                          <Image
-                            src={newTertiaryImage}
-                            alt="Image 3 preview"
-                            fill
-                            sizes="48px"
-                            className="object-cover"
-                            {...getBlurPlaceholderProps()}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setNewTertiaryImage("")}
-                            className="absolute right-0.5 top-0.5 flex size-4 items-center justify-center rounded-full bg-destructive text-white shadow-md hover:bg-destructive/90"
-                            title="Clear Image 3"
-                          >
-                            <X className="size-2.5" />
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="flex size-12 items-center justify-center rounded-2xl border border-dashed border-border bg-muted/25 text-muted-foreground">
-                          <ImageIcon className="size-4" />
-                        </div>
-                      )}
-                    </div>
+                  <div className="flex items-center gap-3">
+                    <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-border bg-background px-4 py-2.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted shadow-2xs">
+                      <Upload className="size-3.5" />
+                      Upload Image
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageSelect(e, 1)} />
+                    </label>
+                    {newImage ? (
+                      <div className="relative size-14 shrink-0 overflow-hidden rounded-2xl border border-border group shadow-2xs">
+                        <Image
+                          src={newImage}
+                          alt="Image preview"
+                          fill
+                          sizes="56px"
+                          className="object-cover"
+                          {...getBlurPlaceholderProps()}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setNewImage("")}
+                          className="absolute right-0.5 top-0.5 flex size-4 items-center justify-center rounded-full bg-destructive text-white shadow-md hover:bg-destructive/90"
+                          title="Clear Image"
+                        >
+                          <X className="size-2.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex size-14 items-center justify-center rounded-2xl border border-dashed border-border bg-muted/25 text-muted-foreground">
+                        <ImageIcon className="size-5" />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -862,8 +737,6 @@ export default function AdminCategoriesClient() {
                         label: newName.trim() || "Preview Category",
                         bgColor: newBgColor,
                         image: newImage,
-                        secondaryImage: newSecondaryImage,
-                        tertiaryImage: newTertiaryImage,
                       }}
                       index={0}
                     />
@@ -959,18 +832,16 @@ export default function AdminCategoriesClient() {
           if (!open) {
             setEditName("");
             setEditImage("");
-            setEditSecondaryImage("");
-            setEditTertiaryImage("");
             setEditBgColor("");
             setEditIsEnabled(true);
           }
         }}
       >
-        <AlertDialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-2xl md:max-w-4xl lg:max-w-5xl">
+        <AlertDialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-2xl md:max-w-3xl lg:max-w-4xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Edit Category</AlertDialogTitle>
             <AlertDialogDescription>
-              Update name, upload up to 3 images (Flower Petal Bloom), clean images, or adjust visibility.
+              Update category name, cover image, and background color.
             </AlertDialogDescription>
           </AlertDialogHeader>
 
@@ -986,178 +857,94 @@ export default function AdminCategoriesClient() {
                   />
                 </div>
 
-            <div className="mt-1">
-              <Label className="mb-2 block">Background Color</Label>
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-3">
-                  <input
-                    type="color"
-                    value={editBgColor || "#ffffff"}
-                    onChange={(e) => setEditBgColor(e.target.value)}
-                    className="h-9 w-14 cursor-pointer rounded bg-transparent p-0 border-0"
-                  />
-                  <Input
-                    value={editBgColor}
-                    onChange={(e) => setEditBgColor(e.target.value)}
-                    placeholder="#HexColor (optional)"
-                    className="w-40 font-mono text-sm"
-                  />
-                  {editBgColor && (
-                    <Button type="button" variant="ghost" size="sm" onClick={() => setEditBgColor("")} className="text-destructive">
-                      Clear
-                    </Button>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {usedColors.map(color => (
-                    <button
-                      key={color}
-                      type="button"
-                      onClick={() => setEditBgColor(color)}
-                      className={cn(
-                        "flex size-8 items-center justify-center rounded-full transition-all hover:scale-110",
-                        editBgColor?.toLowerCase() === color.toLowerCase() 
-                          ? "ring-2 ring-emerald-600 ring-offset-2 scale-110 border-transparent shadow-sm" 
-                          : "border border-border shadow-sm"
+                <div className="mt-1">
+                  <Label className="mb-2 block">Background Color</Label>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="color"
+                        value={editBgColor || "#ffffff"}
+                        onChange={(e) => setEditBgColor(e.target.value)}
+                        className="h-9 w-14 cursor-pointer rounded bg-transparent p-0 border-0"
+                      />
+                      <Input
+                        value={editBgColor}
+                        onChange={(e) => setEditBgColor(e.target.value)}
+                        placeholder="#HexColor (optional)"
+                        className="w-40 font-mono text-sm"
+                      />
+                      {editBgColor && (
+                        <Button type="button" variant="ghost" size="sm" onClick={() => setEditBgColor("")} className="text-destructive">
+                          Clear
+                        </Button>
                       )}
-                      style={{ backgroundColor: color }}
-                      title={`Select ${color}`}
-                    >
-                      {editBgColor?.toLowerCase() === color.toLowerCase() && (
-                        <Check className="size-4 text-emerald-700" />
-                      )}
-                    </button>
-                  ))}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {usedColors.map(color => (
+                        <button
+                          key={color}
+                          type="button"
+                          onClick={() => setEditBgColor(color)}
+                          className={cn(
+                            "flex size-8 items-center justify-center rounded-full transition-all hover:scale-110",
+                            editBgColor?.toLowerCase() === color.toLowerCase() 
+                              ? "ring-2 ring-emerald-600 ring-offset-2 scale-110 border-transparent shadow-sm" 
+                              : "border border-border shadow-sm"
+                          )}
+                          style={{ backgroundColor: color }}
+                          title={`Select ${color}`}
+                        >
+                          {editBgColor?.toLowerCase() === color.toLowerCase() && (
+                            <Check className="size-4 text-emerald-700" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div>
-                <div className="mb-2 flex items-center justify-between">
-                  <Label className="text-xs font-semibold text-muted-foreground">Image 1 (Front)</Label>
-                  {editImage && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setEditImage("")}
-                      className="h-6 px-1.5 text-[11px] text-destructive hover:bg-destructive/10 hover:text-destructive"
-                    >
-                      <X className="mr-0.5 size-3" />
-                      Clear
-                    </Button>
-                  )}
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted">
-                    <Upload className="size-3.5" />
-                    Upload 1
-                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleEditImageSelect(e, 1)} />
-                  </label>
-                  {editImage ? (
-                    <div className="relative size-12 shrink-0 overflow-hidden rounded-2xl border border-border">
-                      <Image
-                        src={editImage}
-                        alt="Image 1 preview"
-                        fill
-                        sizes="48px"
-                        className="object-cover"
-                        {...getBlurPlaceholderProps()}
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex size-12 items-center justify-center rounded-2xl border border-dashed border-border bg-muted/25 text-muted-foreground">
-                      <ImageIcon className="size-4" />
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <div className="mb-2 flex items-center justify-between">
-                  <Label className="text-xs font-semibold text-muted-foreground">Image 2 (Left)</Label>
-                  {editSecondaryImage && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setEditSecondaryImage("")}
-                      className="h-6 px-1.5 text-[11px] text-destructive hover:bg-destructive/10 hover:text-destructive"
-                    >
-                      <X className="mr-0.5 size-3" />
-                      Clear
-                    </Button>
-                  )}
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted">
-                    <Upload className="size-3.5" />
-                    Upload 2
-                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleEditImageSelect(e, 2)} />
-                  </label>
-                  {editSecondaryImage ? (
-                    <div className="relative size-12 shrink-0 overflow-hidden rounded-2xl border border-border">
-                      <Image
-                        src={editSecondaryImage}
-                        alt="Image 2 preview"
-                        fill
-                        sizes="48px"
-                        className="object-cover"
-                        {...getBlurPlaceholderProps()}
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex size-12 items-center justify-center rounded-2xl border border-dashed border-border bg-muted/25 text-muted-foreground">
-                      <ImageIcon className="size-4" />
-                    </div>
-                  )}
+                <div>
+                  <div className="mb-2 flex items-center justify-between">
+                    <Label className="text-xs font-semibold text-muted-foreground">Category Image</Label>
+                    {editImage && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setEditImage("")}
+                        className="h-6 px-1.5 text-[11px] text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      >
+                        <X className="mr-0.5 size-3" />
+                        Clear
+                      </Button>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-border bg-background px-4 py-2.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted shadow-2xs">
+                      <Upload className="size-3.5" />
+                      Upload Image
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => handleEditImageSelect(e, 1)} />
+                    </label>
+                    {editImage ? (
+                      <div className="relative size-14 shrink-0 overflow-hidden rounded-2xl border border-border shadow-2xs">
+                        <Image
+                          src={editImage}
+                          alt="Image preview"
+                          fill
+                          sizes="56px"
+                          className="object-cover"
+                          {...getBlurPlaceholderProps()}
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex size-14 items-center justify-center rounded-2xl border border-dashed border-border bg-muted/25 text-muted-foreground">
+                        <ImageIcon className="size-5" />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-
-              <div>
-                <div className="mb-2 flex items-center justify-between">
-                  <Label className="text-xs font-semibold text-muted-foreground">Image 3 (Right)</Label>
-                  {editTertiaryImage && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setEditTertiaryImage("")}
-                      className="h-6 px-1.5 text-[11px] text-destructive hover:bg-destructive/10 hover:text-destructive"
-                    >
-                      <X className="mr-0.5 size-3" />
-                      Clear
-                    </Button>
-                  )}
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted">
-                    <Upload className="size-3.5" />
-                    Upload 3
-                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleEditImageSelect(e, 3)} />
-                  </label>
-                  {editTertiaryImage ? (
-                    <div className="relative size-12 shrink-0 overflow-hidden rounded-2xl border border-border">
-                      <Image
-                        src={editTertiaryImage}
-                        alt="Image 3 preview"
-                        fill
-                        sizes="48px"
-                        className="object-cover"
-                        {...getBlurPlaceholderProps()}
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex size-12 items-center justify-center rounded-2xl border border-dashed border-border bg-muted/25 text-muted-foreground">
-                      <ImageIcon className="size-4" />
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* End of first column */}
+              {/* End of first column */}
 
               <div className="flex flex-col gap-4 min-w-[200px]">
                 <div className="flex flex-col items-center justify-center rounded-2xl border border-border/80 bg-muted/20 p-4">
@@ -1173,8 +960,6 @@ export default function AdminCategoriesClient() {
                           label: editName.trim() || "Preview Category",
                           bgColor: editBgColor,
                           image: editImage,
-                          secondaryImage: editSecondaryImage,
-                          tertiaryImage: editTertiaryImage,
                         }}
                         index={0}
                       />

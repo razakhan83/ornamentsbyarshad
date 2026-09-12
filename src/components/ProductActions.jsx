@@ -15,6 +15,7 @@ import { buildProductWhatsAppMessage, createWhatsAppUrl } from '@/lib/whatsapp';
 import { flyToCart } from '@/lib/flyToCart';
 import { useActionLock } from '@/hooks/useActionLock';
 import { getAvailableStock, isProductOutOfStock } from '@/lib/productCommerce';
+import { Spinner } from '@/components/ui/spinner';
 
 export function ProductSocialActions({ product, className = '' }) {
     const handleShare = async () => {
@@ -268,6 +269,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
     const hasJewelrySpecs = Boolean(
         product?.metalType ||
         product?.purity ||
+        product?.plating ||
         product?.grossWeightGrams ||
         product?.size ||
         product?.certificateNumber ||
@@ -307,7 +309,11 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
             <div className="flex items-center gap-2">
               <span className={cn("size-2.5 rounded-full", isOutOfStock ? "bg-red-500 animate-pulse" : "bg-emerald-500")} />
               <span className="text-xs font-medium text-[#121212]">
-                {isOutOfStock ? "Out of Stock" : `${availableStock} ${availableStock === 1 ? "item" : "items"} in stock`}
+                {product?.isUnlimitedStock 
+                  ? "In Stock • Handcrafted to Order"
+                  : isOutOfStock 
+                    ? "Out of Stock" 
+                    : `${availableStock} ${availableStock === 1 ? "item" : "items"} in stock`}
               </span>
             </div>
 
@@ -402,6 +408,12 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                                     <div className="grid grid-cols-3 p-2.5">
                                         <dt className="text-[#737373] font-medium">Gold Purity</dt>
                                         <dd className="col-span-2 text-[#121212] font-semibold">{product.purity}</dd>
+                                    </div>
+                                )}
+                                {product.plating && (
+                                    <div className="grid grid-cols-3 p-2.5">
+                                        <dt className="text-[#737373] font-medium">Plating / Polish</dt>
+                                        <dd className="col-span-2 text-[#121212] font-semibold">{product.plating}</dd>
                                     </div>
                                 )}
                                 {product.grossWeightGrams != null && product.grossWeightGrams !== '' && (
@@ -547,28 +559,28 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                 </div>
             </div>
 
-            {/* Luxury Guarantees & Authenticity Badges */}
-            <div className="border-t border-[#E8E5DF] pt-5 mt-3 space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                    <div className="flex items-center gap-2.5 p-2.5 bg-white border border-[#E8E5DF] rounded-[8px]">
-                        <Award className="size-4 text-[#A67C52] shrink-0" />
-                        <div className="text-left">
-                            <p className="text-[10px] font-sans font-bold uppercase tracking-wider text-[#121212]">Authenticity</p>
-                            <p className="text-[9.5px] text-[#737373] leading-none mt-0.5">Certified Precious Metals</p>
+            {/* Minimal Luxury Guarantees & Authenticity Strip */}
+            <div className="border-t border-[#E8E5DF] pt-3 mt-1.5">
+                <div className="grid grid-cols-3 gap-1.5 py-2 px-2 bg-[#FAF9F6] border border-[#E8E5DF] rounded-lg">
+                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 py-0.5">
+                        <Award className="size-3.5 text-[#A67C52] shrink-0" />
+                        <div className="min-w-0">
+                            <p className="text-[9px] sm:text-[10.5px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Authentic</p>
+                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">Certified Metals</p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2.5 p-2.5 bg-white border border-[#E8E5DF] rounded-[8px]">
-                        <Truck className="size-4 text-[#A67C52] shrink-0" />
-                        <div className="text-left">
-                            <p className="text-[10px] font-sans font-bold uppercase tracking-wider text-[#121212]">Insured Delivery</p>
-                            <p className="text-[9.5px] text-[#737373] leading-none mt-0.5">Tracked & Tamper-Proof</p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 border-x border-[#E8E5DF] py-0.5">
+                        <Truck className="size-3.5 text-[#A67C52] shrink-0" />
+                        <div className="min-w-0">
+                            <p className="text-[9px] sm:text-[10.5px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Insured</p>
+                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">Tracked Delivery</p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2.5 p-2.5 bg-white border border-[#E8E5DF] rounded-[8px]">
-                        <ShieldCheck className="size-4 text-[#A67C52] shrink-0" />
-                        <div className="text-left">
-                            <p className="text-[10px] font-sans font-bold uppercase tracking-wider text-[#121212]">Secure Payment</p>
-                            <p className="text-[9.5px] text-[#737373] leading-none mt-0.5">Cash on Delivery & Bank</p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 py-0.5">
+                        <ShieldCheck className="size-3.5 text-[#A67C52] shrink-0" />
+                        <div className="min-w-0">
+                            <p className="text-[9px] sm:text-[10.5px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Secure</p>
+                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">100% Encrypted</p>
                         </div>
                     </div>
                 </div>

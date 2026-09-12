@@ -669,55 +669,6 @@ export default function OrderDetailView({
             </Button>
           )}
 
-          {/* NOC Sync Button */}
-          {hasNocTracking && (
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={handleSyncStatus}
-              disabled={isSyncing}
-              className="h-9 px-3.5 rounded-lg gap-2 text-xs font-medium text-foreground hover:bg-muted cursor-pointer"
-            >
-              <RotateCw className={`size-3.5 ${isSyncing ? 'animate-spin text-muted-foreground' : ''}`} />
-              <span>{isSyncing ? 'Syncing...' : 'Sync Courier'}</span>
-            </Button>
-          )}
-
-          {/* Live Track Modal Button */}
-          {hasNocTracking && (
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setTrackingModalOpen(true)}
-              className="h-9 px-3.5 rounded-lg gap-2 text-xs font-medium text-foreground hover:bg-muted cursor-pointer"
-            >
-              <Truck className="size-3.5 text-muted-foreground" />
-              <span>Live Tracking</span>
-            </Button>
-          )}
-
-          {/* Print Airway Slip */}
-          {Boolean(order.nocLabelUrl || order.nocParcelNo || order.trackingNumber) && (
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                if (order.nocLabelUrl) {
-                  window.open(order.nocLabelUrl, '_blank');
-                } else {
-                  window.open(`https://shipnoc.com/UserDashboard.aspx`, '_blank');
-                }
-              }}
-              className="h-9 px-3.5 rounded-lg gap-2 text-xs font-medium text-foreground hover:bg-muted cursor-pointer"
-            >
-              <Printer className="size-3.5 text-muted-foreground" />
-              <span>NOC Slip</span>
-            </Button>
-          )}
-
           {/* Print Customer Invoice */}
           <Button
             type="button"
@@ -729,19 +680,6 @@ export default function OrderDetailView({
             <FileText className="size-3.5 text-muted-foreground" />
             <span>Invoice</span>
           </Button>
-
-          {/* Book NOC Parcel (If not booked) */}
-          {!hasNocTracking && (
-            <Button
-              type="button"
-              size="sm"
-              onClick={() => setBookingModalOpen(true)}
-              className="h-9 px-4 rounded-lg gap-2 text-xs font-semibold cursor-pointer"
-            >
-              <Send className="size-3.5" />
-              <span>Book Courier</span>
-            </Button>
-          )}
 
           {/* Delete / Move to Trash */}
           <Button

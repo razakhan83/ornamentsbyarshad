@@ -76,7 +76,7 @@ export async function POST(request) {
       const emailVal =
         emailRaw && emailRaw.includes('@') && emailRaw.includes('.')
           ? emailRaw
-          : 'customer@chinaunique.pk';
+          : 'customer@ornamentsbyarshad.pk';
 
       const singleParcelPayload = [
         {

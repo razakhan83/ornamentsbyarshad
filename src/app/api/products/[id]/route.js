@@ -14,7 +14,7 @@ import { formatSeoKeywords } from '@/lib/seoKeywords';
 import { resolveStockStatus } from '@/lib/productCommerce';
 import { getProductRating, normalizeProductRating, seedProductRating } from '@/lib/productReviewUtils';
 
-const PUBLIC_PRODUCT_SELECT = 'Name Description shortDescription seoTitle seoDescription seoKeywords seoCanonicalUrl seoOgTitle seoOgDescription seoOgImage seoOgImageRatio Price compareAtPrice Images Category StockStatus slug showOnStore createdAt updatedAt stockQuantity isNewArrival isBestSelling isFeatured featuredPriority tags primaryTag metalType purity grossWeightGrams certificateNumber size availableSizes availableColors gemstone customReviewCount rating';
+const PUBLIC_PRODUCT_SELECT = 'Name Description shortDescription seoTitle seoDescription seoKeywords seoCanonicalUrl seoOgTitle seoOgDescription seoOgImage seoOgImageRatio Price compareAtPrice Images Category StockStatus slug showOnStore createdAt updatedAt stockQuantity isUnlimitedStock isNewArrival isBestSelling isFeatured featuredPriority tags primaryTag metalType purity plating grossWeightGrams certificateNumber size availableSizes availableColors gemstone customReviewCount rating';
 
 function toPublicProductPayload(product) {
     const {
@@ -197,7 +197,15 @@ export async function PUT(request, { params }) {
             existingProduct.featuredPriority = Number(body.featuredPriority) || 0;
         }
 
-        if (body.stockQuantity !== undefined) {
+        if (body.isUnlimitedStock !== undefined) {
+            existingProduct.isUnlimitedStock = Boolean(body.isUnlimitedStock);
+            if (existingProduct.isUnlimitedStock) {
+                existingProduct.stockQuantity = 9999;
+                existingProduct.StockStatus = 'In Stock';
+            }
+        }
+
+        if (body.stockQuantity !== undefined && !existingProduct.isUnlimitedStock) {
             const nextQuantity = Math.max(0, Number(body.stockQuantity) || 0);
             existingProduct.stockQuantity = nextQuantity;
             existingProduct.StockStatus = resolveStockStatus(nextQuantity, body.StockStatus);
@@ -210,6 +218,7 @@ export async function PUT(request, { params }) {
         // Jewelry specifications
         if (body.metalType !== undefined) existingProduct.metalType = typeof body.metalType === 'string' ? body.metalType.trim() : '';
         if (body.purity !== undefined) existingProduct.purity = typeof body.purity === 'string' ? body.purity.trim() : '';
+        if (body.plating !== undefined) existingProduct.plating = typeof body.plating === 'string' ? body.plating.trim() : '';
         if (body.size !== undefined) existingProduct.size = typeof body.size === 'string' ? body.size.trim() : '';
         if (body.availableSizes !== undefined) existingProduct.availableSizes = Array.isArray(body.availableSizes) ? body.availableSizes : [];
         if (body.availableColors !== undefined) existingProduct.availableColors = Array.isArray(body.availableColors) ? body.availableColors : [];

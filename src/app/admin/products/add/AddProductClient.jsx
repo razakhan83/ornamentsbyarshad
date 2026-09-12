@@ -13,6 +13,7 @@ import {
   Share2,
   Trash2,
   Truck,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -20,7 +21,15 @@ import ProductCard from "@/components/ProductCard";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
@@ -67,6 +76,8 @@ export default function AddProduct() {
   const [rating, setRating] = useState("4.6");
   const [metalType, setMetalType] = useState("");
   const [purity, setPurity] = useState("");
+  const [plating, setPlating] = useState("");
+  const [isUnlimitedStock, setIsUnlimitedStock] = useState(false);
   const [grossWeightGrams, setGrossWeightGrams] = useState("");
   const [certificateNumber, setCertificateNumber] = useState("");
   const [size, setSize] = useState("");
@@ -120,6 +131,8 @@ export default function AddProduct() {
     setRating("4.6");
     setMetalType("");
     setPurity("");
+    setPlating("");
+    setIsUnlimitedStock(false);
     setGrossWeightGrams("");
     setCertificateNumber("");
     setSize("");
@@ -354,12 +367,14 @@ export default function AddProduct() {
           compareAtPrice: compareAtPrice === "" ? null : Number(compareAtPrice),
           customReviewCount: customReviewCount === "" ? null : Number(customReviewCount),
           rating: rating === "" ? null : Number(rating),
-          stockQuantity: Math.max(0, Number(stockQuantity) || 0),
-          StockStatus: stockStatus,
+          stockQuantity: isUnlimitedStock ? 9999 : Math.max(0, Number(stockQuantity) || 0),
+          StockStatus: isUnlimitedStock ? "In Stock" : stockStatus,
           Images: finalImages,
           Category: Categories,
           metalType,
           purity,
+          plating,
+          isUnlimitedStock,
           grossWeightGrams: grossWeightGrams === '' ? null : Number(grossWeightGrams),
           certificateNumber,
           size,
@@ -546,35 +561,34 @@ export default function AddProduct() {
             />
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          {/* Price, Reviews & Stock */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <Label className="mb-2">Price (Rs)</Label>
+              <Label className="mb-2 text-xs font-semibold">Price (Rs) *</Label>
               <Input
                 type="number"
                 value={Price}
                 onChange={(e) => setPrice(e.target.value)}
-                className="h-11 px-4"
+                className="h-10 px-3 text-xs"
                 placeholder="0.00"
                 step="0.01"
                 required
               />
             </div>
-
             <div>
-              <Label className="mb-2">Compare at Price (Rs)</Label>
+              <Label className="mb-2 text-xs font-semibold">Compare at Price (Rs)</Label>
               <Input
                 type="number"
                 min="0"
                 value={compareAtPrice}
                 onChange={(e) => setCompareAtPrice(e.target.value)}
-                className="h-11 px-4"
+                className="h-10 px-3 text-xs"
                 placeholder="0.00"
                 step="0.01"
               />
             </div>
-
             <div>
-              <Label className="mb-2">Storefront Rating</Label>
+              <Label className="mb-2 text-xs font-semibold">Rating (1.0–5.0)</Label>
               <Input
                 type="number"
                 min="1"
@@ -582,20 +596,93 @@ export default function AddProduct() {
                 step="0.1"
                 value={rating}
                 onChange={(e) => setRating(e.target.value)}
-                className="h-11 px-4"
-                placeholder="4.6"
+                className="h-10 px-3 text-xs"
+                placeholder="4.8"
               />
-              <p className="mt-1 text-xs text-muted-foreground">Editable storefront rating (1.0–5.0). Empty on create seeds 4.2–4.9.</p>
+            </div>
+            <div>
+              <Label className="mb-2 text-xs font-semibold">Reviews Count</Label>
+              <Input
+                type="number"
+                min="0"
+                step="1"
+                value={customReviewCount}
+                onChange={(e) => setCustomReviewCount(e.target.value)}
+                className="h-10 px-3 text-xs"
+                placeholder="e.g. 15"
+              />
             </div>
           </div>
 
-          <div>
-            <Label className="mb-2">Short Description</Label>
-            <ProductRichTextEditor
-              value={shortDescription}
-              onChange={setShortDescription}
-              placeholder="A brief summary displayed right below the price on the product page..."
-            />
+          {/* Stock & Availability Card */}
+          <div className="rounded-xl border border-border bg-background p-4 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border/60 pb-3">
+              <div>
+                <Label className="text-sm font-semibold text-foreground">Stock & Availability</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Label htmlFor="toggle-unlimited-stock-add" className="text-xs font-semibold cursor-pointer">
+                  Unlimited Stock (Made to order)
+                </Label>
+                <Switch
+                  id="toggle-unlimited-stock-add"
+                  checked={isUnlimitedStock}
+                  onCheckedChange={setIsUnlimitedStock}
+                />
+              </div>
+            </div>
+
+            {isUnlimitedStock ? (
+              <div className="mt-3 flex items-center gap-2.5 text-xs text-muted-foreground bg-muted/50 p-3 rounded-lg border border-border">
+                <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-foreground/10 text-foreground">
+                  <Check className="size-3.5" />
+                </div>
+                <span>Unlimited Stock active — product remains &quot;In Stock&quot; and available for immediate ordering.</span>
+              </div>
+            ) : (
+              <div className="mt-3 grid gap-4 sm:grid-cols-2">
+                <div>
+                  <Label className="mb-1.5 text-xs">Stock Quantity</Label>
+                  <Input
+                    type="number"
+                    min="0"
+                    value={stockQuantity}
+                    onChange={(e) => setStockQuantity(e.target.value)}
+                    className="h-10 px-3 text-xs"
+                    placeholder="e.g., 10"
+                  />
+                </div>
+                <div>
+                  <Label className="mb-1.5 text-xs">Stock Status</Label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setStockStatus('In Stock')}
+                      className={cn(
+                        "h-10 rounded-lg border text-xs font-semibold transition-colors cursor-pointer",
+                        stockStatus === 'In Stock'
+                          ? "bg-foreground text-background border-border"
+                          : "bg-muted text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      In Stock
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setStockStatus('Out of Stock')}
+                      className={cn(
+                        "h-10 rounded-lg border text-xs font-semibold transition-colors cursor-pointer",
+                        stockStatus === 'Out of Stock'
+                          ? "bg-red-600 text-white border-red-600"
+                          : "bg-muted text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      Out of Stock
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div>
@@ -759,247 +846,546 @@ export default function AddProduct() {
                     Drag & Drop Images Here
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    or click to browse multiple files
-                  </p>
-                  <p className="mt-1 text-[10px] text-muted-foreground">
-                    PNG, JPG up to 10MB each. Use &quot;Set Main&quot; to control the hero image.
+                    or click to browse multiple files (PNG, JPG up to 10MB)
                   </p>
                 </div>
               </div>
             </div>
           </div>
-
           <Accordion type="multiple" defaultValue={["jewelry-specs"]} className="w-full space-y-4">
           
-          {/* Jewelry Specifications */}
+          {/* 1. Jewelry Specifications */}
           <AccordionItem value="jewelry-specs" className="rounded-xl border border-border bg-background shadow-sm px-4">
             <AccordionTrigger className="hover:no-underline py-4">
               <div className="flex flex-col items-start text-left">
                 <span className="text-sm font-semibold text-foreground">Jewelry Specifications</span>
-                <span className="text-xs font-normal text-muted-foreground mt-0.5">Metal purity, gross weight, gemstones, hallmark, and sizing.</span>
+                <span className="text-xs font-normal text-muted-foreground mt-0.5">Metal, plating, gemstones, weight, sizing, and hallmarking.</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pb-4">
               <div className="space-y-4 pt-1">
+                {/* Metal Selection & Purity */}
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <Label className="mb-2 font-semibold flex items-center justify-between">
-                      <span>Metal Category (Gold / Silver)</span>
-                      <span className="text-xs font-normal text-muted-foreground">Select one</span>
-                    </Label>
-                    <div className="grid grid-cols-2 gap-3 mb-2.5">
-                      <button
-                        type="button"
-                        onClick={() => setMetalType(metalType?.toLowerCase()?.includes('gold') ? '' : '22K Gold')}
-                        className={cn(
-                          "h-12 px-4 rounded-xl border flex items-center justify-center gap-2 font-bold text-xs sm:text-sm tracking-wider uppercase transition-all cursor-pointer",
-                          metalType?.toLowerCase()?.includes('gold')
-                            ? "bg-amber-50 border-amber-500 text-amber-900 ring-2 ring-amber-500/20 shadow-sm"
-                            : "bg-background border-border text-muted-foreground hover:bg-muted/40"
-                        )}
+                    <Label className="mb-1.5 font-semibold text-xs">Metal Category</Label>
+                    <div className="flex gap-2">
+                      <Select
+                        value={metalType || ""}
+                        onValueChange={(val) => setMetalType(val)}
                       >
-                        <span>GOLD</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setMetalType(metalType?.toLowerCase()?.includes('silver') ? '' : '925 Sterling Silver')}
-                        className={cn(
-                          "h-12 px-4 rounded-xl border flex items-center justify-center gap-2 font-bold text-xs sm:text-sm tracking-wider uppercase transition-all cursor-pointer",
-                          metalType?.toLowerCase()?.includes('silver')
-                            ? "bg-slate-100 border-slate-500 text-slate-900 ring-2 ring-slate-500/20 shadow-sm"
-                            : "bg-background border-border text-muted-foreground hover:bg-muted/40"
-                        )}
-                      >
-                        <span>SILVER</span>
-                      </button>
-                    </div>
-
-                    <Input
-                      type="text"
-                      value={metalType}
-                      onChange={(e) => setMetalType(e.target.value)}
-                      className="h-10 px-4 text-xs"
-                      placeholder="e.g., 18K Yellow Gold, 22K Gold, 925 Sterling Silver"
-                    />
-                    <div className="mt-1.5 flex flex-wrap gap-1">
-                      {['18K Yellow Gold', '22K Gold', '24K Pure Gold', 'Rose Gold', 'White Gold', '925 Sterling Silver', 'Kundan'].map((preset) => (
-                        <button
-                          key={preset}
-                          type="button"
-                          onClick={() => setMetalType(preset)}
-                          className="text-[10.5px] px-2 py-0.5 rounded bg-muted hover:bg-foreground hover:text-background transition-colors"
-                        >
-                          {preset}
-                        </button>
-                      ))}
+                        <SelectTrigger className="h-10 text-xs w-[140px] sm:w-[160px] shrink-0 bg-background">
+                          <SelectValue placeholder="Pick Metal" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Gold</SelectLabel>
+                            <SelectItem value="24K Pure Gold">24K Pure Gold</SelectItem>
+                            <SelectItem value="22K Gold">22K Gold</SelectItem>
+                            <SelectItem value="18K Yellow Gold">18K Yellow Gold</SelectItem>
+                            <SelectItem value="18K White Gold">18K White Gold</SelectItem>
+                            <SelectItem value="18K Rose Gold">18K Rose Gold</SelectItem>
+                            <SelectItem value="14K Gold">14K Gold</SelectItem>
+                          </SelectGroup>
+                          <SelectGroup>
+                            <SelectLabel>Silver</SelectLabel>
+                            <SelectItem value="925 Sterling Silver">925 Sterling Silver</SelectItem>
+                            <SelectItem value="Pure Silver">Pure Silver</SelectItem>
+                          </SelectGroup>
+                          <SelectGroup>
+                            <SelectLabel>Artificial & Fashion</SelectLabel>
+                            <SelectItem value="Artificial / Alloy">Artificial / Alloy</SelectItem>
+                            <SelectItem value="Brass">Brass</SelectItem>
+                            <SelectItem value="Copper">Copper</SelectItem>
+                            <SelectItem value="Kundan">Kundan</SelectItem>
+                            <SelectItem value="Stainless Steel">Stainless Steel</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <Input
+                        type="text"
+                        value={metalType}
+                        onChange={(e) => setMetalType(e.target.value)}
+                        className="h-10 px-3 text-xs flex-1"
+                        placeholder="e.g. 22K Gold, 925 Silver"
+                      />
                     </div>
                   </div>
 
                   <div>
-                    <Label className="mb-2">Gold Purity / Karat</Label>
-                    <Input
-                      type="text"
-                      value={purity}
-                      onChange={(e) => setPurity(e.target.value)}
-                      className="h-11 px-4"
-                      placeholder="e.g., 18K, 21K, 22K, 24K, 925 Silver, Hallmarked"
-                    />
-                    <div className="mt-1.5 flex flex-wrap gap-1">
-                      {['18K', '21K', '22K', '24K', '925 Silver', 'Platinum 950'].map((preset) => (
-                        <button
-                          key={preset}
-                          type="button"
-                          onClick={() => setPurity(preset)}
-                          className="text-[10.5px] px-2 py-0.5 rounded bg-muted hover:bg-foreground hover:text-background transition-colors"
-                        >
-                          {preset}
-                        </button>
-                      ))}
+                    <Label className="mb-1.5 font-semibold text-xs">Gold Purity / Karat</Label>
+                    <div className="flex gap-2">
+                      <Select
+                        value={purity || ""}
+                        onValueChange={(val) => setPurity(val)}
+                      >
+                        <SelectTrigger className="h-10 text-xs w-[140px] sm:w-[160px] shrink-0 bg-background">
+                          <SelectValue placeholder="Pick Karat" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="24K (99.9%)">24K (99.9%)</SelectItem>
+                          <SelectItem value="22K (91.6%)">22K (91.6%)</SelectItem>
+                          <SelectItem value="21K (87.5%)">21K (87.5%)</SelectItem>
+                          <SelectItem value="18K (75.0%)">18K (75.0%)</SelectItem>
+                          <SelectItem value="14K (58.5%)">14K (58.5%)</SelectItem>
+                          <SelectItem value="925 Silver">925 Silver</SelectItem>
+                          <SelectItem value="Platinum 950">Platinum 950</SelectItem>
+                          <SelectItem value="Artificial (No Karat)">Artificial (No Karat)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Input
+                        type="text"
+                        value={purity}
+                        onChange={(e) => setPurity(e.target.value)}
+                        className="h-10 px-3 text-xs flex-1"
+                        placeholder="e.g. 22K, 925 Silver"
+                      />
                     </div>
                   </div>
                 </div>
 
+                {/* Plating & Gross Weight */}
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <Label className="mb-2">Gross Weight (Grams)</Label>
+                    <Label className="mb-1.5 font-semibold text-xs">Plating / Polish</Label>
+                    <div className="flex gap-2">
+                      <Select
+                        value={plating || ""}
+                        onValueChange={(val) => setPlating(val)}
+                      >
+                        <SelectTrigger className="h-10 text-xs w-[140px] sm:w-[160px] shrink-0 bg-background">
+                          <SelectValue placeholder="Pick Plating" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Gold Plating">Gold Plating</SelectItem>
+                          <SelectItem value="18K Micron Gold Plating">18K Micron Gold Plating</SelectItem>
+                          <SelectItem value="Silver Plating">Silver Plating</SelectItem>
+                          <SelectItem value="Rose Gold Plating">Rose Gold Plating</SelectItem>
+                          <SelectItem value="Rhodium Plating">Rhodium Plating</SelectItem>
+                          <SelectItem value="Antique Polish">Antique Polish</SelectItem>
+                          <SelectItem value="High Polish">High Polish</SelectItem>
+                          <SelectItem value="None / Plain">None / Plain</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Input
+                        type="text"
+                        value={plating}
+                        onChange={(e) => setPlating(e.target.value)}
+                        className="h-10 px-3 text-xs flex-1"
+                        placeholder="e.g. 18K Micron Gold Plating"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label className="mb-1.5 font-semibold text-xs">Gross Weight (Grams)</Label>
                     <Input
                       type="number"
                       step="0.01"
                       min="0"
                       value={grossWeightGrams}
                       onChange={(e) => setGrossWeightGrams(e.target.value)}
-                      className="h-11 px-4"
+                      className="h-10 px-3 text-xs"
                       placeholder="e.g., 12.5"
                     />
                   </div>
+                </div>
+
+                {/* Default Size & Certificate/Hallmark */}
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <Label className="mb-1.5 font-semibold text-xs">Default Size / Length</Label>
+                    <div className="flex gap-2">
+                      <Select
+                        value={size || ""}
+                        onValueChange={(val) => setSize(val)}
+                      >
+                        <SelectTrigger className="h-10 text-xs w-[140px] sm:w-[160px] shrink-0 bg-background">
+                          <SelectValue placeholder="Pick Size" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Free Size">Free Size</SelectItem>
+                          <SelectItem value="Adjustable">Adjustable</SelectItem>
+                          <SelectItem value="Standard">Standard</SelectItem>
+                          <SelectGroup>
+                            <SelectLabel>Ring Sizes</SelectLabel>
+                            <SelectItem value="US 5">US 5</SelectItem>
+                            <SelectItem value="US 6">US 6</SelectItem>
+                            <SelectItem value="US 7">US 7</SelectItem>
+                            <SelectItem value="US 8">US 8</SelectItem>
+                            <SelectItem value="US 9">US 9</SelectItem>
+                            <SelectItem value="US 10">US 10</SelectItem>
+                          </SelectGroup>
+                          <SelectGroup>
+                            <SelectLabel>Necklaces & Chains</SelectLabel>
+                            <SelectItem value="14 Inches">14 Inches</SelectItem>
+                            <SelectItem value="16 Inches">16 Inches</SelectItem>
+                            <SelectItem value="18 Inches">18 Inches</SelectItem>
+                            <SelectItem value="20 Inches">20 Inches</SelectItem>
+                            <SelectItem value="22 Inches">22 Inches</SelectItem>
+                            <SelectItem value="24 Inches">24 Inches</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <Input
+                        type="text"
+                        value={size}
+                        onChange={(e) => setSize(e.target.value)}
+                        className="h-10 px-3 text-xs flex-1"
+                        placeholder="e.g. Free Size, US 7"
+                      />
+                    </div>
+                  </div>
 
                   <div>
-                    <Label className="mb-2">Certificate / Hallmark Number</Label>
+                    <Label className="mb-1.5 font-semibold text-xs">Certificate / Hallmark Number</Label>
                     <Input
                       type="text"
                       value={certificateNumber}
                       onChange={(e) => setCertificateNumber(e.target.value)}
-                      className="h-11 px-4"
+                      className="h-10 px-3 text-xs"
                       placeholder="e.g., OA-9921-G / Hallmarked"
                     />
                   </div>
                 </div>
 
+                {/* Available Sizes & Available Colors */}
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <Label className="mb-2">Default Size / Length</Label>
-                    <Input
-                      type="text"
-                      value={size}
-                      onChange={(e) => setSize(e.target.value)}
-                      className="h-11 px-4"
-                      placeholder="e.g., US 7 / 18 Inches / Standard"
-                    />
+                    <Label className="mb-1.5 font-semibold text-xs">Available Sizes</Label>
+                    <div className="flex gap-2">
+                      <Select
+                        value=""
+                        onValueChange={(val) => {
+                          if (!val) return;
+                          setAvailableSizes((prev) => {
+                            const trimmed = prev.trim();
+                            if (!trimmed) return val;
+                            const parts = trimmed.split(',').map(s => s.trim()).filter(Boolean);
+                            if (parts.includes(val)) return trimmed;
+                            return `${trimmed}, ${val}`;
+                          });
+                        }}
+                      >
+                        <SelectTrigger className="h-10 text-xs w-[140px] sm:w-[160px] shrink-0 bg-background">
+                          <SelectValue placeholder="+ Add Size" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Free Size">Free Size</SelectItem>
+                          <SelectItem value="Adjustable">Adjustable</SelectItem>
+                          <SelectItem value="Standard">Standard</SelectItem>
+                          <SelectGroup>
+                            <SelectLabel>Ring Sizes</SelectLabel>
+                            <SelectItem value="US 5">US 5</SelectItem>
+                            <SelectItem value="US 6">US 6</SelectItem>
+                            <SelectItem value="US 7">US 7</SelectItem>
+                            <SelectItem value="US 8">US 8</SelectItem>
+                            <SelectItem value="US 9">US 9</SelectItem>
+                            <SelectItem value="US 10">US 10</SelectItem>
+                          </SelectGroup>
+                          <SelectGroup>
+                            <SelectLabel>Necklace Lengths</SelectLabel>
+                            <SelectItem value="14 Inches">14 Inches</SelectItem>
+                            <SelectItem value="16 Inches">16 Inches</SelectItem>
+                            <SelectItem value="18 Inches">18 Inches</SelectItem>
+                            <SelectItem value="20 Inches">20 Inches</SelectItem>
+                            <SelectItem value="22 Inches">22 Inches</SelectItem>
+                            <SelectItem value="24 Inches">24 Inches</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <Input
+                        type="text"
+                        value={availableSizes}
+                        onChange={(e) => setAvailableSizes(e.target.value)}
+                        className="h-10 px-3 text-xs flex-1"
+                        placeholder="e.g. Free Size, US 6, US 7"
+                      />
+                    </div>
+                    {availableSizes && availableSizes.trim().length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {availableSizes.split(',').map(s => s.trim()).filter(Boolean).map((sz, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-foreground border border-border/80"
+                          >
+                            <span>{sz}</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = availableSizes
+                                  .split(',')
+                                  .map(s => s.trim())
+                                  .filter(Boolean)
+                                  .filter(s => s.toLowerCase() !== sz.toLowerCase())
+                                  .join(', ');
+                                setAvailableSizes(updated);
+                              }}
+                              className="text-muted-foreground hover:text-foreground ml-0.5 rounded-full p-0.5 hover:bg-background transition-colors"
+                              title={`Remove ${sz}`}
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <div>
-                    <Label className="mb-2">Available Sizes (Comma-separated)</Label>
-                    <Input
-                      type="text"
-                      value={availableSizes}
-                      onChange={(e) => setAvailableSizes(e.target.value)}
-                      className="h-11 px-4"
-                      placeholder="e.g., US 6, US 7, US 8, Standard, Adjustable"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label className="mb-2">Available Colors / Shades (Comma-separated)</Label>
-                  <Input
-                    type="text"
-                    value={availableColors}
-                    onChange={(e) => setAvailableColors(e.target.value)}
-                    className="h-11 px-4"
-                    placeholder="e.g., Yellow Gold, Rose Gold, White Gold, Golden Ruby, Emerald Green"
-                  />
-                  <div className="mt-1.5 flex flex-wrap gap-1">
-                    {['Yellow Gold', 'Rose Gold', 'White Gold', 'Silver', 'Golden Ruby', 'Golden Green', 'Golden Pearl', 'Emerald Green', 'Ruby Red', 'Champagne Gold'].map((preset) => (
-                      <button
-                        key={preset}
-                        type="button"
-                        onClick={() => {
+                    <Label className="mb-1.5 font-semibold text-xs">Available Colors / Shades</Label>
+                    <div className="flex gap-2">
+                      <Select
+                        value=""
+                        onValueChange={(val) => {
+                          if (!val) return;
                           setAvailableColors((prev) => {
                             const trimmed = prev.trim();
-                            if (!trimmed) return preset;
+                            if (!trimmed) return val;
                             const parts = trimmed.split(',').map(s => s.trim()).filter(Boolean);
-                            if (parts.includes(preset)) return trimmed;
-                            return `${trimmed}, ${preset}`;
+                            if (parts.includes(val)) return trimmed;
+                            return `${trimmed}, ${val}`;
                           });
                         }}
-                        className="text-[10.5px] px-2 py-0.5 rounded bg-muted hover:bg-foreground hover:text-background transition-colors"
                       >
-                        + {preset}
-                      </button>
-                    ))}
+                        <SelectTrigger className="h-10 text-xs w-[140px] sm:w-[160px] shrink-0 bg-background">
+                          <SelectValue placeholder="+ Add Color" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Yellow Gold">Yellow Gold</SelectItem>
+                          <SelectItem value="Rose Gold">Rose Gold</SelectItem>
+                          <SelectItem value="White Gold">White Gold</SelectItem>
+                          <SelectItem value="Silver">Silver</SelectItem>
+                          <SelectItem value="Golden Ruby">Golden Ruby</SelectItem>
+                          <SelectItem value="Golden Green">Golden Green</SelectItem>
+                          <SelectItem value="Golden Pearl">Golden Pearl</SelectItem>
+                          <SelectItem value="Emerald Green">Emerald Green</SelectItem>
+                          <SelectItem value="Ruby Red">Ruby Red</SelectItem>
+                          <SelectItem value="Champagne Gold">Champagne Gold</SelectItem>
+                          <SelectItem value="Black Rhodium">Black Rhodium</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Input
+                        type="text"
+                        value={availableColors}
+                        onChange={(e) => setAvailableColors(e.target.value)}
+                        className="h-10 px-3 text-xs flex-1"
+                        placeholder="e.g. Yellow Gold, Rose Gold"
+                      />
+                    </div>
+                    {availableColors && availableColors.trim().length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {availableColors.split(',').map(s => s.trim()).filter(Boolean).map((col, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-foreground border border-border/80"
+                          >
+                            <span>{col}</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = availableColors
+                                  .split(',')
+                                  .map(s => s.trim())
+                                  .filter(Boolean)
+                                  .filter(s => s.toLowerCase() !== col.toLowerCase())
+                                  .join(', ');
+                                setAvailableColors(updated);
+                              }}
+                              className="text-muted-foreground hover:text-foreground ml-0.5 rounded-full p-0.5 hover:bg-background transition-colors"
+                              title={`Remove ${col}`}
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <p className="mt-1 text-[11px] text-muted-foreground">
-                    Jitne colors yahan add karenge, product page par utne hi selectable options show honge. (Khali chorenge to color section hide ho jayega).
-                  </p>
                 </div>
 
-                <div className="border-t border-border/70 pt-3">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Gemstone & Diamond Details (Optional)</p>
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    <div>
-                      <Label className="mb-1 text-xs">Gemstone Type</Label>
+                {/* Gemstone & Diamond Details */}
+                <div className="border-t border-border/70 pt-4 mt-2">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Gemstone & Stone Details (Optional)</p>
+                  <div>
+                    <Label className="mb-1.5 text-xs font-semibold">Stone / Gemstone Type (Multi-select)</Label>
+                    <div className="flex gap-2">
+                      <Select
+                        value=""
+                        onValueChange={(val) => {
+                          if (!val) return;
+                          if (val === 'None / Plain') {
+                            setGemstoneType('');
+                            return;
+                          }
+                          setGemstoneType((prev) => {
+                            const trimmed = (prev || '').trim();
+                            if (!trimmed) return val;
+                            const parts = trimmed.split(',').map(s => s.trim()).filter(Boolean);
+                            if (parts.includes(val)) return trimmed;
+                            return `${trimmed}, ${val}`;
+                          });
+                        }}
+                      >
+                        <SelectTrigger className="h-10 text-xs w-[140px] sm:w-[160px] shrink-0 bg-background">
+                          <SelectValue placeholder="+ Add Stone" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="None / Plain">None / Plain (Clear)</SelectItem>
+                          <SelectItem value="Emerald">Emerald</SelectItem>
+                          <SelectItem value="Ruby">Ruby</SelectItem>
+                          <SelectItem value="Sapphire">Sapphire</SelectItem>
+                          <SelectItem value="Zircon">Zircon</SelectItem>
+                          <SelectItem value="Cubic Zirconia (CZ)">Cubic Zirconia (CZ)</SelectItem>
+                          <SelectItem value="Moissanite">Moissanite</SelectItem>
+                          <SelectItem value="Polki">Polki</SelectItem>
+                          <SelectItem value="Kundan">Kundan</SelectItem>
+                          <SelectItem value="Natural Diamond">Natural Diamond</SelectItem>
+                          <SelectItem value="Lab Grown Diamond">Lab Grown Diamond</SelectItem>
+                          <SelectItem value="Pearl">Pearl</SelectItem>
+                          <SelectItem value="Turquoise / Feroza">Turquoise / Feroza</SelectItem>
+                          <SelectItem value="Topaz">Topaz</SelectItem>
+                          <SelectItem value="Opal">Opal</SelectItem>
+                        </SelectContent>
+                      </Select>
                       <Input
                         type="text"
                         value={gemstoneType}
                         onChange={(e) => setGemstoneType(e.target.value)}
-                        className="h-9 px-3 text-xs"
-                        placeholder="Emerald, Ruby, Polki, Moissanite"
+                        className="h-10 px-3 text-xs flex-1"
+                        placeholder="e.g. Emerald, Ruby, Polki, Moissanite"
                       />
                     </div>
+                    {gemstoneType && gemstoneType.trim().length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {gemstoneType.split(',').map(s => s.trim()).filter(Boolean).map((stone, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-foreground border border-border/80"
+                          >
+                            <span>{stone}</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = gemstoneType
+                                  .split(',')
+                                  .map(s => s.trim())
+                                  .filter(Boolean)
+                                  .filter(s => s.toLowerCase() !== stone.toLowerCase())
+                                  .join(', ');
+                                setGemstoneType(updated);
+                              }}
+                              className="text-muted-foreground hover:text-foreground ml-0.5 rounded-full p-0.5 hover:bg-background transition-colors"
+                              title={`Remove ${stone}`}
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-2 mt-3">
                     <div>
-                      <Label className="mb-1 text-xs">Carat Weight</Label>
+                      <Label className="mb-1.5 text-xs font-semibold">Carat Weight</Label>
                       <Input
                         type="number"
                         step="0.01"
                         min="0"
                         value={gemstoneCarat}
                         onChange={(e) => setGemstoneCarat(e.target.value)}
-                        className="h-9 px-3 text-xs"
+                        className="h-10 px-3 text-xs"
                         placeholder="e.g. 1.25"
                       />
                     </div>
                     <div>
-                      <Label className="mb-1 text-xs">Cut / Shape</Label>
-                      <Input
-                        type="text"
-                        value={gemstoneCut}
-                        onChange={(e) => setGemstoneCut(e.target.value)}
-                        className="h-9 px-3 text-xs"
-                        placeholder="Round Brilliant, Princess, Oval"
-                      />
+                      <Label className="mb-1.5 text-xs font-semibold">Cut / Shape</Label>
+                      <div className="flex gap-2">
+                        <Select
+                          value={gemstoneCut || ""}
+                          onValueChange={(val) => setGemstoneCut(val)}
+                        >
+                          <SelectTrigger className="h-10 text-xs w-[140px] sm:w-[160px] shrink-0 bg-background">
+                            <SelectValue placeholder="Pick Cut" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Round Brilliant">Round Brilliant</SelectItem>
+                            <SelectItem value="Princess Cut">Princess Cut</SelectItem>
+                            <SelectItem value="Oval Cut">Oval Cut</SelectItem>
+                            <SelectItem value="Emerald Cut">Emerald Cut</SelectItem>
+                            <SelectItem value="Cushion Cut">Cushion Cut</SelectItem>
+                            <SelectItem value="Pear Cut">Pear Cut</SelectItem>
+                            <SelectItem value="Marquise Cut">Marquise Cut</SelectItem>
+                            <SelectItem value="Heart Cut">Heart Cut</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <Input
+                          type="text"
+                          value={gemstoneCut}
+                          onChange={(e) => setGemstoneCut(e.target.value)}
+                          className="h-10 px-3 text-xs flex-1"
+                          placeholder="e.g. Round Brilliant"
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="grid gap-3 sm:grid-cols-2 mt-2">
+
+                  <div className="grid gap-4 sm:grid-cols-2 mt-3">
                     <div>
-                      <Label className="mb-1 text-xs">Clarity</Label>
-                      <Input
-                        type="text"
-                        value={gemstoneClarity}
-                        onChange={(e) => setGemstoneClarity(e.target.value)}
-                        className="h-9 px-3 text-xs"
-                        placeholder="VVS1, VS1, Eye-Clean"
-                      />
+                      <Label className="mb-1.5 text-xs font-semibold">Clarity</Label>
+                      <div className="flex gap-2">
+                        <Select
+                          value={gemstoneClarity || ""}
+                          onValueChange={(val) => setGemstoneClarity(val)}
+                        >
+                          <SelectTrigger className="h-10 text-xs w-[140px] sm:w-[160px] shrink-0 bg-background">
+                            <SelectValue placeholder="Pick Clarity" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="FL / IF (Flawless)">FL / IF (Flawless)</SelectItem>
+                            <SelectItem value="VVS1 - VVS2">VVS1 - VVS2</SelectItem>
+                            <SelectItem value="VS1 - VS2">VS1 - VS2</SelectItem>
+                            <SelectItem value="SI1 - SI2">SI1 - SI2</SelectItem>
+                            <SelectItem value="Eye-Clean">Eye-Clean</SelectItem>
+                            <SelectItem value="AAA Grade">AAA Grade</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <Input
+                          type="text"
+                          value={gemstoneClarity}
+                          onChange={(e) => setGemstoneClarity(e.target.value)}
+                          className="h-10 px-3 text-xs flex-1"
+                          placeholder="e.g. VVS1, VS1"
+                        />
+                      </div>
                     </div>
                     <div>
-                      <Label className="mb-1 text-xs">Color Grade</Label>
-                      <Input
-                        type="text"
-                        value={gemstoneColor}
-                        onChange={(e) => setGemstoneColor(e.target.value)}
-                        className="h-9 px-3 text-xs"
-                        placeholder="D-F Colorless, Deep Green, Royal Red"
-                      />
+                      <Label className="mb-1.5 text-xs font-semibold">Color Grade</Label>
+                      <div className="flex gap-2">
+                        <Select
+                          value={gemstoneColor || ""}
+                          onValueChange={(val) => setGemstoneColor(val)}
+                        >
+                          <SelectTrigger className="h-10 text-xs w-[140px] sm:w-[160px] shrink-0 bg-background">
+                            <SelectValue placeholder="Pick Color" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="D-F (Colorless)">D-F (Colorless)</SelectItem>
+                            <SelectItem value="G-H (Near Colorless)">G-H (Near Colorless)</SelectItem>
+                            <SelectItem value="I-J (Slightly Tinted)">I-J (Slightly Tinted)</SelectItem>
+                            <SelectItem value="Deep Emerald Green">Deep Emerald Green</SelectItem>
+                            <SelectItem value="Royal Ruby Red">Royal Ruby Red</SelectItem>
+                            <SelectItem value="Sapphire Blue">Sapphire Blue</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <Input
+                          type="text"
+                          value={gemstoneColor}
+                          onChange={(e) => setGemstoneColor(e.target.value)}
+                          className="h-10 px-3 text-xs flex-1"
+                          placeholder="e.g. D-F Colorless"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1007,205 +1393,170 @@ export default function AddProduct() {
             </AccordionContent>
           </AccordionItem>
 
-          <div className="rounded-xl border border-border bg-muted/35 p-4 space-y-4">
-            <div>
-              <p className="text-sm font-semibold text-foreground">Inventory</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                Set launch stock and storefront availability before publishing.
-              </p>
-            </div>
-            <div className="grid gap-4 md:grid-cols-3">
-              <div>
-                <Label className="mb-2">Stock Quantity</Label>
-                <Input
-                  type="number"
-                  min="0"
-                  step="1"
-                  value={stockQuantity}
-                  onChange={(e) => setStockQuantity(e.target.value)}
-                  className="h-11 px-4"
-                  placeholder="0"
-                />
-              </div>
-              <div>
-                <Label className="mb-2">Stock Status</Label>
-                <Select value={stockStatus} onValueChange={setStockStatus}>
-                  <SelectTrigger className="h-11 w-full px-4">
-                    <SelectValue placeholder="Select stock status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="In Stock">In Stock</SelectItem>
-                    <SelectItem value="Out of Stock">Out of Stock</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label className="mb-2">Reviews Count (Optional)</Label>
-                <Input
-                  type="number"
-                  min="0"
-                  step="1"
-                  value={customReviewCount}
-                  onChange={(e) => setCustomReviewCount(e.target.value)}
-                  className="h-11 px-4"
-                  placeholder="e.g. 12 (auto 2-20 if empty)"
-                />
-              </div>
-            </div>
-          </div>
-
-          
-
-          <AccordionItem value="marketing" className="rounded-xl border border-border bg-background shadow-sm px-4">
+          {/* 2. Short Description */}
+          <AccordionItem value="short-description" className="rounded-xl border border-border bg-background shadow-sm px-4">
             <AccordionTrigger className="hover:no-underline py-4">
               <div className="flex flex-col items-start text-left">
-                <span className="text-sm font-semibold text-foreground">Marketing Flags & Badges</span>
-                <span className="text-xs font-normal text-muted-foreground mt-0.5">Set product as New Arrival, Best Selling, and configure badges.</span>
+                <span className="text-sm font-semibold text-foreground">Short Description</span>
+                <span className="text-xs font-normal text-muted-foreground mt-0.5">Brief summary displayed right below the price.</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pb-4">
-              <div className="pt-2">
-            <p className="text-sm font-semibold text-foreground">Marketing Flags</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-4 sm:border-0 sm:pb-0">
-                <Label
-                  className="mr-2 cursor-pointer text-xs text-muted-foreground"
-                  htmlFor="toggle-featured"
-                >
-                  Featured (Ads)
-                </Label>
-                <Switch id="toggle-featured" checked={isFeatured} onCheckedChange={setIsFeatured} />
+              <div>
+                <ProductRichTextEditor
+                  value={shortDescription}
+                  onChange={setShortDescription}
+                  placeholder="A brief summary displayed right below the price on the product page..."
+                />
               </div>
-              <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-4 sm:border-0 sm:pb-0">
-                <Label
-                  className="mr-2 cursor-pointer text-xs text-muted-foreground"
-                  htmlFor="toggle-new"
-                >
-                  New Arrival
-                </Label>
-                <Switch id="toggle-new" checked={isNewArrival} onCheckedChange={setIsNewArrival} />
-              </div>
-              <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-4 sm:border-0 sm:pb-0">
-                <Label
-                  className="mr-2 cursor-pointer text-xs text-muted-foreground"
-                  htmlFor="toggle-best"
-                >
-                  Best Selling
-                </Label>
-                <Switch id="toggle-best" checked={isBestSelling} onCheckedChange={setIsBestSelling} />
-              </div>
-            </div>
-            
-            <div className="pt-4 border-t border-border/50">
-              <p className="text-sm font-semibold text-foreground mb-1">Main Picture Badge (Home Page)</p>
-              <p className="text-xs text-muted-foreground mb-3">Select one icon to display over the product image on the home page.</p>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => setPrimaryTag("")}
-                  className={cn(
-                    "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors",
-                    primaryTag === ""
-                      ? `border-border bg-foreground text-background shadow-sm`
-                      : "border-border bg-background text-muted-foreground hover:border-border hover:bg-muted"
-                  )}
-                >
-                  None
-                </button>
-                {PRODUCT_TAGS.map((tag) => {
-                  const isSelected = primaryTag === tag.id;
-                  const Icon = tag.icon;
-                  return (
-                    <button
-                      key={`primary-${tag.id}`}
-                      type="button"
-                      onClick={() => setPrimaryTag(tag.id)}
-                      className={cn(
-                        "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors",
-                        isSelected
-                          ? `border-border ${tag.bgColor} ${tag.color} shadow-sm`
-                          : "border-border bg-background text-muted-foreground hover:border-border hover:bg-muted"
-                      )}
-                    >
-                      <Icon className="size-3.5" />
-                      {tag.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-border/50">
-              <p className="text-sm font-semibold text-foreground mb-1">Detail Page Badges</p>
-              <p className="text-xs text-muted-foreground mb-3">Select multiple tags to display below the product name.</p>
-              <div className="flex flex-wrap gap-2">
-                {PRODUCT_TAGS.map((tag) => {
-                  const isSelected = tags.includes(tag.id);
-                  const Icon = tag.icon;
-                  return (
-                    <button
-                      key={tag.id}
-                      type="button"
-                      onClick={() => {
-                        setTags((prev) =>
-                          prev.includes(tag.id) ? prev.filter((t) => t !== tag.id) : [...prev, tag.id]
-                        );
-                      }}
-                      className={cn(
-                        "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors",
-                        isSelected
-                          ? `border-border ${tag.bgColor} ${tag.color} shadow-sm`
-                          : "border-border bg-background text-muted-foreground hover:border-border hover:bg-muted"
-                      )}
-                    >
-                      <Icon className="size-3.5" />
-                      {tag.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
             </AccordionContent>
           </AccordionItem>
 
-
-
-          
+          {/* 3. Product Description (Long Description) */}
           <AccordionItem value="description" className="rounded-xl border border-border bg-background shadow-sm px-4">
             <AccordionTrigger className="hover:no-underline py-4">
               <div className="flex flex-col items-start text-left">
                 <span className="text-sm font-semibold text-foreground">Product Description</span>
-                <span className="text-xs font-normal text-muted-foreground mt-0.5">Add formatted text, images, and HTML for the main product details.</span>
+                <span className="text-xs font-normal text-muted-foreground mt-0.5">Detailed description with formatting, images, and specifications.</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pb-4">
               <div>
-            <Label className="mb-2">Description</Label>
-            <ProductRichTextEditor
-              value={Description}
-              onChange={setDescription}
-              placeholder="Create a polished product description with formatting, images, videos, and HTML."
-            />
-          </div>
+                <ProductRichTextEditor
+                  value={Description}
+                  onChange={setDescription}
+                  placeholder="Create a polished product description with formatting, images, videos, and HTML."
+                />
+              </div>
             </AccordionContent>
           </AccordionItem>
 
-          
-          <AccordionItem value="seo" className="rounded-xl border border-border bg-background shadow-sm px-4">
+          {/* 4. Marketing Flags & Badges */}
+          <AccordionItem value="marketing" className="rounded-xl border border-border bg-background shadow-sm px-4">
             <AccordionTrigger className="hover:no-underline py-4">
               <div className="flex flex-col items-start text-left">
-                <span className="text-sm font-semibold text-foreground">SEO & Metadata</span>
-                <span className="text-xs font-normal text-muted-foreground mt-0.5">Optimize search titles, descriptions, and keywords.</span>
+                <span className="text-sm font-semibold text-foreground">Marketing Flags & Badges</span>
+                <span className="text-xs font-normal text-muted-foreground mt-0.5">Configure promotional tags and storefront badges.</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pb-4">
               <div className="pt-2">
-            <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-              <div className="min-w-0 flex-1">
-                <h2 className="text-sm font-semibold text-foreground">SEO & Metadata</h2>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  Set search-facing copy during creation so each product launches ready for discovery.
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Storefront Flags</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-3 sm:border-0 sm:pb-0">
+                    <Label
+                      className="cursor-pointer text-xs font-medium text-foreground"
+                      htmlFor="toggle-featured"
+                    >
+                      Featured (Ads)
+                    </Label>
+                    <Switch id="toggle-featured" checked={isFeatured} onCheckedChange={setIsFeatured} />
+                  </div>
+                  <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-3 sm:border-0 sm:pb-0">
+                    <Label
+                      className="cursor-pointer text-xs font-medium text-foreground"
+                      htmlFor="toggle-new"
+                    >
+                      New Arrival
+                    </Label>
+                    <Switch id="toggle-new" checked={isNewArrival} onCheckedChange={setIsNewArrival} />
+                  </div>
+                  <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-3 sm:border-0 sm:pb-0">
+                    <Label
+                      className="cursor-pointer text-xs font-medium text-foreground"
+                      htmlFor="toggle-best"
+                    >
+                      Best Selling
+                    </Label>
+                    <Switch id="toggle-best" checked={isBestSelling} onCheckedChange={setIsBestSelling} />
+                  </div>
+                </div>
+                
+                <div className="pt-4 mt-3 border-t border-border/50">
+                  <p className="text-xs font-semibold text-foreground mb-2">Main Picture Badge (Card Corner)</p>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setPrimaryTag("")}
+                      className={cn(
+                        "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer",
+                        primaryTag === ""
+                          ? `border-border bg-foreground text-background shadow-sm`
+                          : "border-border bg-background text-muted-foreground hover:border-border hover:bg-muted"
+                      )}
+                    >
+                      None
+                    </button>
+                    {PRODUCT_TAGS.map((tag) => {
+                      const isSelected = primaryTag === tag.id;
+                      const Icon = tag.icon;
+                      return (
+                        <button
+                          key={`primary-${tag.id}`}
+                          type="button"
+                          onClick={() => setPrimaryTag(tag.id)}
+                          className={cn(
+                            "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer",
+                            isSelected
+                              ? `border-border ${tag.bgColor} ${tag.color} shadow-sm`
+                              : "border-border bg-background text-muted-foreground hover:border-border hover:bg-muted"
+                          )}
+                        >
+                          <Icon className="size-3.5" />
+                          {tag.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="pt-4 mt-3 border-t border-border/50">
+                  <p className="text-xs font-semibold text-foreground mb-2">Detail Page Badges</p>
+                  <div className="flex flex-wrap gap-2">
+                    {PRODUCT_TAGS.map((tag) => {
+                      const isSelected = tags.includes(tag.id);
+                      const Icon = tag.icon;
+                      return (
+                        <button
+                          key={tag.id}
+                          type="button"
+                          onClick={() => {
+                            setTags((prev) =>
+                              prev.includes(tag.id) ? prev.filter((t) => t !== tag.id) : [...prev, tag.id]
+                            );
+                          }}
+                          className={cn(
+                            "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer",
+                            isSelected
+                              ? `border-border ${tag.bgColor} ${tag.color} shadow-sm`
+                              : "border-border bg-background text-muted-foreground hover:border-border hover:bg-muted"
+                          )}
+                        >
+                          <Icon className="size-3.5" />
+                          {tag.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* 5. SEO & Metadata */}
+          <AccordionItem value="seo" className="rounded-xl border border-border bg-background shadow-sm px-4">
+            <AccordionTrigger className="hover:no-underline py-4">
+              <div className="flex flex-col items-start text-left">
+                <span className="text-sm font-semibold text-foreground">SEO & Metadata</span>
+                <span className="text-xs font-normal text-muted-foreground mt-0.5">Search title, description, and social share preview.</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="pb-4">
+              <div className="pt-2">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-border/60 mb-4">
+              <div>
+                <p className="text-xs text-muted-foreground">
+                  Automate or customize search ranking and OpenGraph metadata.
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap">
@@ -1215,11 +1566,11 @@ export default function AddProduct() {
                   size="sm"
                   disabled={isGeneratingSeo}
                   onClick={handleGenerateSeo}
-                  className="rounded-full shadow-sm"
+                  className="rounded-lg shadow-sm text-xs font-semibold h-8"
                 >
                   {isGeneratingSeo ? (
                     <>
-                      <Loader2 className="mr-2 size-4 animate-spin" />
+                      <Loader2 className="mr-1.5 size-3.5 animate-spin" />
                       Generating...
                     </>
                   ) : (
@@ -1228,33 +1579,30 @@ export default function AddProduct() {
                 </Button>
                 <div
                   className={cn(
-                    "inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1 text-[11px] sm:text-xs font-semibold",
+                    "inline-flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[11px] font-semibold h-8",
                     seoReady
                       ? "border-border bg-muted text-foreground"
-                      : "border-border bg-muted/60 text-foreground"
+                      : "border-border bg-muted/60 text-muted-foreground"
                   )}
                 >
                   <Check
-                    className={cn(
-                      "size-3.5",
-                      "text-foreground"
-                    )}
+                    className="size-3 text-foreground"
                   />
                   {seoReady
-                    ? "SEO basics complete"
-                    : `${seoCompleteCount}/${seoChecks.length} SEO basics complete`}
+                    ? "SEO Complete"
+                    : `${seoCompleteCount}/${seoChecks.length} Set`}
                 </div>
               </div>
             </div>
 
             <div className="grid gap-4">
               <div>
-                <Label className="mb-2">SEO Title</Label>
+                <Label className="mb-2 text-xs font-semibold">SEO Title</Label>
                 <Input
                   type="text"
                   value={seoTitle}
                   onChange={(e) => setSeoTitle(e.target.value)}
-                  className="h-11 px-4"
+                  className="h-10 px-3 text-xs"
                   placeholder="Custom search title for this product"
                   maxLength={70}
                 />
@@ -1264,11 +1612,11 @@ export default function AddProduct() {
               </div>
 
               <div>
-                <Label className="mb-2">Meta Description</Label>
+                <Label className="mb-2 text-xs font-semibold">Meta Description</Label>
                 <Textarea
                   value={seoDescription}
                   onChange={(e) => setSeoDescription(e.target.value)}
-                  className="min-h-24 resize-none px-4 py-3"
+                  className="min-h-20 resize-none px-3 py-2 text-xs"
                   placeholder="Short product summary for search engines and social previews"
                   rows="3"
                   maxLength={320}
@@ -1279,29 +1627,29 @@ export default function AddProduct() {
               </div>
 
               <div>
-                <Label className="mb-2">Keywords</Label>
+                <Label className="mb-2 text-xs font-semibold">Keywords</Label>
                 <Input
                   type="text"
                   value={seoKeywords}
                   onChange={(e) => setSeoKeywords(formatSeoKeywords(e.target.value))}
-                  className="h-11 px-4"
-                  placeholder="e.g., tea set, chinese tea cups, luxury gift"
+                  className="h-10 px-3 text-xs"
+                  placeholder="e.g., gold necklace, pure silver earrings, bridal jewelry"
                 />
               </div>
 
               <div>
-                <Label className="mb-2">Canonical URL</Label>
+                <Label className="mb-2 text-xs font-semibold">Canonical URL</Label>
                 <Input
                   type="url"
                   value={seoCanonicalUrl}
                   onChange={(e) => setSeoCanonicalUrl(e.target.value)}
-                  className="h-11 px-4"
-                  placeholder="https://www.chinauniquestore.com/products/your-product"
+                  className="h-10 px-3 text-xs"
+                  placeholder="https://ornamentsbyarshad.com/products/your-product"
                 />
               </div>
             </div>
 
-            <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+            <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr] mt-4">
               <div className="min-w-0 rounded-xl border border-border bg-background p-4 shadow-sm">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                   Search Preview
@@ -1351,42 +1699,33 @@ export default function AddProduct() {
             </div>
 
             {/* Social Share & OpenGraph Controls */}
-            <div className="mt-8 pt-6 border-t border-border space-y-4">
+            <div className="mt-6 pt-5 border-t border-border space-y-4">
               <div className="flex items-center gap-2">
-                <Share2 className="size-4 text-emerald-600 dark:text-emerald-400" />
-                <h3 className="text-sm font-semibold text-foreground">Social Share & OpenGraph (WhatsApp, Facebook & Twitter)</h3>
+                <Share2 className="size-4 text-foreground" />
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground">Social Share (WhatsApp & Facebook)</h3>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Customize the headline, description, and preview image that appear when this product link is shared on WhatsApp, Facebook, Instagram, and Twitter.
-              </p>
 
-              <div className="grid gap-4 pt-2">
+              <div className="grid gap-4 pt-1">
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <Label>OG / Social Title</Label>
-                    <span className="text-[11px] text-muted-foreground">Optional (Defaults to SEO Title)</span>
-                  </div>
+                  <Label className="mb-1.5 text-xs font-semibold">Social Headline / Title</Label>
                   <Input
                     type="text"
                     value={seoOgTitle}
                     onChange={(e) => setSeoOgTitle(e.target.value)}
-                    className="h-11 px-4"
-                    placeholder="e.g., 🔥 50% OFF - Multifunctional Yogurt Filter with Strainer"
+                    className="h-10 px-3 text-xs"
+                    placeholder="e.g., 22K Gold Plated Emerald Bridal Necklace Set"
                     maxLength={100}
                   />
                   <p className="mt-1 text-[11px] text-muted-foreground">{seoOgTitle.length}/100 characters</p>
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <Label>OG / Social Description</Label>
-                    <span className="text-[11px] text-muted-foreground">Optional (Defaults to Price & Meta Description)</span>
-                  </div>
+                  <Label className="mb-1.5 text-xs font-semibold">Social Description</Label>
                   <Textarea
                     value={seoOgDescription}
                     onChange={(e) => setSeoOgDescription(e.target.value)}
-                    className="min-h-20 resize-none px-4 py-2.5"
-                    placeholder="e.g., Premium Greek yogurt strainer & whey separator box. Fast cash on delivery all across Pakistan. Click to order now!"
+                    className="min-h-16 resize-none px-3 py-2 text-xs"
+                    placeholder="e.g., Handcrafted pure silver necklace with sparkling emerald gemstones. Free insured delivery across Pakistan."
                     rows="2"
                     maxLength={350}
                   />
@@ -1394,10 +1733,7 @@ export default function AddProduct() {
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <Label>OG / Social Image</Label>
-                    <span className="text-[11px] text-muted-foreground">Upload custom banner or select from photos</span>
-                  </div>
+                  <Label className="mb-1.5 text-xs font-semibold">Social Banner Image</Label>
 
                   {/* Upload button & Quick Pickers */}
                   <div className="space-y-3 rounded-xl border border-border bg-muted/30 p-3.5">
@@ -1415,17 +1751,17 @@ export default function AddProduct() {
                         size="sm"
                         disabled={isUploadingOgImage}
                         onClick={() => ogImageFileInputRef.current?.click()}
-                        className="rounded-lg shadow-sm text-xs font-semibold gap-2 border border-border"
+                        className="rounded-lg shadow-sm text-xs font-semibold gap-2 border border-border h-8"
                       >
                         {isUploadingOgImage ? (
                           <>
                             <Loader2 className="size-3.5 animate-spin" />
-                            Uploading Image...
+                            Uploading...
                           </>
                         ) : (
                           <>
-                            <CloudUpload className="size-3.5 text-emerald-600" />
-                            Upload Custom Social Image
+                            <CloudUpload className="size-3.5 text-foreground" />
+                            Upload Custom Banner
                           </>
                         )}
                       </Button>
@@ -1445,7 +1781,7 @@ export default function AddProduct() {
 
                     {images.length > 0 && (
                       <div className="space-y-1.5 pt-1">
-                        <p className="text-[11px] font-medium text-muted-foreground">Or pick from uploaded product photos:</p>
+                        <p className="text-[11px] font-medium text-muted-foreground">Or pick from product photos:</p>
                         <div className="flex flex-wrap gap-2">
                           {images.map((img, idx) => {
                             const isSelected = (seoOgImage ? seoOgImage === img.url : idx === 0);
@@ -1455,16 +1791,16 @@ export default function AddProduct() {
                                 type="button"
                                 onClick={() => setSeoOgImage(img.url)}
                                 className={cn(
-                                  "relative size-12 rounded-lg overflow-hidden border-2 transition-all p-0.5 bg-background",
+                                  "relative size-11 rounded-lg overflow-hidden border-2 transition-all p-0.5 bg-background",
                                   isSelected
-                                    ? "border-emerald-600 ring-2 ring-emerald-600/30 scale-105"
+                                    ? "border-foreground ring-2 ring-foreground/20 scale-105"
                                     : "border-border hover:border-muted-foreground/50 opacity-70 hover:opacity-100"
                                 )}
                                 title={isSelected ? "Active Social Image" : `Use Photo #${idx + 1}`}
                               >
                                 <img src={img.url} alt={`Photo ${idx + 1}`} className="size-full object-cover rounded" />
                                 {isSelected && (
-                                  <span className="absolute bottom-0 right-0 bg-emerald-600 text-white rounded-tl-sm p-0.5">
+                                  <span className="absolute bottom-0 right-0 bg-foreground text-background rounded-tl-sm p-0.5">
                                     <Check className="size-2.5" />
                                   </span>
                                 )}
@@ -1481,7 +1817,7 @@ export default function AddProduct() {
                         value={seoOgImage}
                         onChange={(e) => setSeoOgImage(e.target.value)}
                         className="h-9 px-3 text-xs font-mono bg-background"
-                        placeholder="Or paste Cloudinary image URL directly..."
+                        placeholder="Or paste image URL directly..."
                       />
                     </div>
                   </div>
@@ -1489,11 +1825,11 @@ export default function AddProduct() {
               </div>
 
               {/* Live WhatsApp / Social Card Preview */}
-              <div className="mt-5 rounded-xl border border-border bg-muted/20 p-4 space-y-3">
+              <div className="mt-4 rounded-xl border border-border bg-muted/20 p-3.5 space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground flex items-center gap-1.5">
-                    <Share2 className="size-3.5 text-emerald-600" />
-                    Live Social Share Card Preview (WhatsApp / Facebook)
+                  <p className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
+                    <Share2 className="size-3.5 text-foreground" />
+                    Share Card Preview (WhatsApp / Facebook)
                   </p>
                   
                   {/* Preview Controls */}
@@ -1503,23 +1839,21 @@ export default function AddProduct() {
                         type="button"
                         onClick={() => setOgPreviewFit('cover')}
                         className={cn(
-                          "px-2 py-1 rounded text-[11px] font-medium transition-colors",
-                          ogPreviewFit === 'cover' ? "bg-emerald-600 text-white" : "text-muted-foreground hover:text-foreground"
+                          "px-2 py-0.5 rounded text-[11px] font-medium transition-colors",
+                          ogPreviewFit === 'cover' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
                         )}
-                        title="Edge-to-edge fill (No white borders)"
                       >
-                        Full Cover (No Borders)
+                        Cover
                       </button>
                       <button
                         type="button"
                         onClick={() => setOgPreviewFit('contain')}
                         className={cn(
-                          "px-2 py-1 rounded text-[11px] font-medium transition-colors",
-                          ogPreviewFit === 'contain' ? "bg-emerald-600 text-white" : "text-muted-foreground hover:text-foreground"
+                          "px-2 py-0.5 rounded text-[11px] font-medium transition-colors",
+                          ogPreviewFit === 'contain' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
                         )}
-                        title="Padded canvas for transparent PNGs"
                       >
-                        Padded Canvas (For PNGs)
+                        Padded
                       </button>
                     </div>
 
@@ -1528,10 +1862,9 @@ export default function AddProduct() {
                         type="button"
                         onClick={() => setSeoOgImageRatio('1.91:1')}
                         className={cn(
-                          "px-2.5 py-1 rounded text-[11px] font-semibold transition-all",
-                          seoOgImageRatio === '1.91:1' ? "bg-emerald-600 text-white shadow-xs" : "text-muted-foreground hover:text-foreground"
+                          "px-2 py-0.5 rounded text-[11px] font-semibold transition-all",
+                          seoOgImageRatio === '1.91:1' ? "bg-foreground text-background shadow-xs" : "text-muted-foreground hover:text-foreground"
                         )}
-                        title="1.91:1 Landscape Banner (1200 × 630 px)"
                       >
                         1.91:1
                       </button>
@@ -1539,10 +1872,9 @@ export default function AddProduct() {
                         type="button"
                         onClick={() => setSeoOgImageRatio('1:1')}
                         className={cn(
-                          "px-2.5 py-1 rounded text-[11px] font-semibold transition-all",
-                          seoOgImageRatio === '1:1' ? "bg-emerald-600 text-white shadow-xs" : "text-muted-foreground hover:text-foreground"
+                          "px-2 py-0.5 rounded text-[11px] font-semibold transition-all",
+                          seoOgImageRatio === '1:1' ? "bg-foreground text-background shadow-xs" : "text-muted-foreground hover:text-foreground"
                         )}
-                        title="1:1 Square Card (1080 × 1080 px)"
                       >
                         1:1
                       </button>
@@ -1550,10 +1882,10 @@ export default function AddProduct() {
                   </div>
                 </div>
 
-                <div className="max-w-md mx-auto rounded-xl overflow-hidden border border-emerald-950/20 dark:border-emerald-900/50 shadow-md bg-[#0b2b24] text-white">
+                <div className="max-w-md mx-auto rounded-xl overflow-hidden border border-border shadow-md bg-neutral-900 text-white">
                   <div
                     className={cn(
-                    "relative w-full overflow-hidden border-b border-emerald-900/20",
+                    "relative w-full overflow-hidden border-b border-neutral-800",
                     isSquarePreview ? "aspect-square" : "aspect-[1.91/1]",
                     ogPreviewFit === 'contain' ? "bg-white p-3 flex items-center justify-center" : "bg-neutral-900"
                   )}
@@ -1578,16 +1910,16 @@ export default function AddProduct() {
                       {isSquarePreview ? '1080 × 1080' : '1200 × 630'}
                     </span>
                   </div>
-                  <div className="p-3 space-y-1 bg-[#0b2b24]">
+                  <div className="p-3 space-y-1 bg-neutral-950">
                     <p className="font-semibold text-sm line-clamp-2 text-white leading-snug">
                       {socialPreviewTitle}
                     </p>
-                    <p className="text-xs line-clamp-3 text-emerald-100/80 leading-relaxed">
+                    <p className="text-xs line-clamp-2 text-neutral-300 leading-relaxed">
                       {socialPreviewDescription}
                     </p>
-                    <div className="pt-2 mt-1 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-emerald-300/80">
+                    <div className="pt-2 mt-1 border-t border-neutral-800 flex items-center justify-between text-[11px] text-neutral-400">
                       <span>ornamentsbyarshad.com</span>
-                      <span className="font-medium text-emerald-400">Ornaments by Arshad</span>
+                      <span className="font-medium text-neutral-200">Ornaments by Arshad</span>
                     </div>
                   </div>
                 </div>

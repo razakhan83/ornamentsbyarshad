@@ -3,17 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import {
-  Loader2,
-  Save,
-  Landmark,
-  CreditCard,
-  Copy,
-  Check,
-  ExternalLink,
-  ShieldCheck,
-  Zap,
-} from 'lucide-react';
+import { Loader2, Save, CreditCard, Landmark, Copy, Check } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -21,7 +11,8 @@ import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function AdminPaymentSettingsClient({ initialSettings }) {
   const router = useRouter();
@@ -57,7 +48,7 @@ export default function AdminPaymentSettingsClient({ initialSettings }) {
     if (typeof navigator !== 'undefined') {
       navigator.clipboard.writeText(webhookUrl);
       setCopiedWebhook(true);
-      toast.success('Webhook URL copied to clipboard!');
+      toast.success('Webhook URL copied to clipboard');
       setTimeout(() => setCopiedWebhook(false), 2000);
     }
   };
@@ -86,7 +77,7 @@ export default function AdminPaymentSettingsClient({ initialSettings }) {
         throw new Error(data.error || data.message || 'Failed to save settings');
       }
 
-      toast.success('Payment settings and AsaanPay credentials saved successfully.');
+      toast.success('Payment settings saved successfully.');
       router.refresh();
     } catch (error) {
       toast.error(error.message || 'Failed to save payment settings.');
@@ -96,249 +87,239 @@ export default function AdminPaymentSettingsClient({ initialSettings }) {
   };
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6 pb-24">
+    <div className="mx-auto max-w-4xl space-y-6 pb-20 admin-page-stack">
       {/* Header */}
-      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-foreground">Payment Gateways & Methods</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Configure AsaanPay online gateway and offline bank transfer options without touching any code.
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+            Payment Methods
+          </h1>
+          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+            Configure AsaanPay digital gateway and offline bank deposit settings.
           </p>
         </div>
-        <Button onClick={handleSave} disabled={isSaving} className="min-w-36 shadow-sm bg-[#121212] text-white hover:bg-neutral-800">
-          {isSaving ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Save className="mr-2 size-4" />}
-          {isSaving ? 'Saving...' : 'Save Settings'}
+
+        <Button
+          onClick={handleSave}
+          disabled={isSaving}
+          className="h-9 px-4 text-xs font-semibold cursor-pointer shrink-0"
+        >
+          {isSaving ? <Loader2 className="size-3.5 animate-spin mr-1.5" /> : <Save className="size-3.5 mr-1.5" />}
+          {isSaving ? 'Saving...' : 'Save Changes'}
         </Button>
       </div>
 
-      <div className="grid gap-6">
-        {/* 1. AsaanPay Online Gateway Card */}
-        <Card className="surface-card border-[#EAE5DD] shadow-sm">
-          <CardHeader className="border-b border-[#EAE5DD]/70 pb-4">
+      <div className="space-y-6">
+        {/* 1. AsaanPay Online Gateway Card (Standard Clean Shadcn) */}
+        <Card className="rounded-xl border border-border shadow-xs">
+          <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="flex size-9 items-center justify-center rounded-lg bg-[#A67C52]/10 text-[#A67C52]">
-                  <CreditCard className="size-5" />
-                </div>
+                <CreditCard className="size-5 text-primary" />
                 <div>
-                  <CardTitle className="text-lg">AsaanPay Online Gateway</CardTitle>
-                  <CardDescription>
-                    Accept Debit/Credit Cards (Visa, Mastercard, PayPak), EasyPaisa, and JazzCash automatically.
+                  <CardTitle className="text-base font-semibold">AsaanPay Digital Gateway</CardTitle>
+                  <CardDescription className="text-xs mt-0.5">
+                    Accept Cards (Visa, Mastercard, PayPak), EasyPaisa, and JazzCash at checkout.
                   </CardDescription>
                 </div>
               </div>
-              <span className={cn(
-                "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider",
-                formData.asaanPayEnabled ? "bg-emerald-100 text-emerald-800" : "bg-neutral-100 text-neutral-600"
-              )}>
-                {formData.asaanPayEnabled ? "Active" : "Disabled"}
-              </span>
+              <Badge variant={formData.asaanPayEnabled ? 'default' : 'secondary'} className="text-xs">
+                {formData.asaanPayEnabled ? 'Enabled' : 'Disabled'}
+              </Badge>
             </div>
           </CardHeader>
-          <CardContent className="space-y-6 pt-5">
-            <FieldGroup>
-              {/* Enable Switch */}
-              <div className="flex items-center justify-between gap-4 rounded-xl border border-[#EAE5DD] bg-[#FAF9F6] p-4">
-                <div className="space-y-0.5">
-                  <FieldLabel className="text-base font-semibold text-[#121212]">Enable AsaanPay Gateway</FieldLabel>
-                  <FieldDescription>
-                    Turn ON to offer AsaanPay instant digital payments at checkout.
-                  </FieldDescription>
-                </div>
-                <Switch
-                  checked={formData.asaanPayEnabled}
-                  onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, asaanPayEnabled: checked }))}
-                />
+          <CardContent className="space-y-4 pt-0">
+            {/* Enable Switch */}
+            <div className="flex items-center justify-between rounded-lg border border-border bg-muted/30 p-3.5">
+              <div className="space-y-0.5">
+                <FieldLabel className="text-sm font-medium">Enable AsaanPay</FieldLabel>
+                <FieldDescription className="text-xs">
+                  Offer AsaanPay instant digital payment option at checkout.
+                </FieldDescription>
               </div>
+              <Switch
+                checked={formData.asaanPayEnabled}
+                onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, asaanPayEnabled: checked }))}
+              />
+            </div>
 
-              {formData.asaanPayEnabled && (
-                <div className="space-y-5 animate-in fade-in slide-in-from-top-2 duration-200">
-                  {/* Environment Switcher */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Field>
-                      <FieldLabel htmlFor="asaanPayEnvironment">Environment Mode</FieldLabel>
-                      <select
-                        id="asaanPayEnvironment"
-                        name="asaanPayEnvironment"
-                        value={formData.asaanPayEnvironment}
-                        onChange={handleChange}
-                        className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3.5 text-sm text-[#121212] outline-none focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/20"
-                      >
-                        <option value="sandbox">Sandbox / Testing (Test mode)</option>
-                        <option value="live">Live / Production (Real payments)</option>
-                      </select>
-                      <FieldDescription>
-                        Use Sandbox while verifying and switch to Live when you are ready to accept real customer money.
-                      </FieldDescription>
-                    </Field>
+            {formData.asaanPayEnabled && (
+              <FieldGroup className="space-y-4 pt-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Field>
+                    <FieldLabel htmlFor="asaanPayEnvironment" className="text-xs font-medium">
+                      Environment Mode
+                    </FieldLabel>
+                    <Select
+                      value={formData.asaanPayEnvironment}
+                      onValueChange={(val) => setFormData((prev) => ({ ...prev, asaanPayEnvironment: val }))}
+                    >
+                      <SelectTrigger id="asaanPayEnvironment" className="h-9 text-xs">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="sandbox" className="text-xs">Sandbox / Testing</SelectItem>
+                        <SelectItem value="live" className="text-xs">Live / Production</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </Field>
 
-                    <Field>
-                      <FieldLabel htmlFor="asaanPayTitle">Checkout Button Label</FieldLabel>
-                      <Input
-                        id="asaanPayTitle"
-                        name="asaanPayTitle"
-                        value={formData.asaanPayTitle}
-                        onChange={handleChange}
-                        placeholder="AsaanPay (Cards, EasyPaisa, JazzCash)"
-                      />
-                      <FieldDescription>
-                        The label customers see when selecting this payment method.
-                      </FieldDescription>
-                    </Field>
-                  </div>
-
-                  {/* Merchant ID and API Key */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Field>
-                      <FieldLabel htmlFor="asaanPayMerchantId">Merchant ID / Store Code</FieldLabel>
-                      <Input
-                        id="asaanPayMerchantId"
-                        name="asaanPayMerchantId"
-                        value={formData.asaanPayMerchantId}
-                        onChange={handleChange}
-                        placeholder="e.g. AP_MCH_123456"
-                      />
-                      <FieldDescription>
-                        Provided in your AsaanPay merchant dashboard.
-                      </FieldDescription>
-                    </Field>
-
-                    <Field>
-                      <FieldLabel htmlFor="asaanPayApiKey">API Public Key / Client ID</FieldLabel>
-                      <Input
-                        id="asaanPayApiKey"
-                        name="asaanPayApiKey"
-                        value={formData.asaanPayApiKey}
-                        onChange={handleChange}
-                        placeholder="e.g. pk_live_xxxx or pk_test_xxxx"
-                      />
-                      <FieldDescription>
-                        Your AsaanPay API key for authentication.
-                      </FieldDescription>
-                    </Field>
-                  </div>
-
-                  {/* Secret Keys */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Field>
-                      <FieldLabel htmlFor="asaanPayApiSecret">API Secret Key</FieldLabel>
-                      <Input
-                        type="password"
-                        id="asaanPayApiSecret"
-                        name="asaanPayApiSecret"
-                        value={formData.asaanPayApiSecret}
-                        onChange={handleChange}
-                        placeholder="sk_live_xxxx or sk_test_xxxx"
-                      />
-                      <FieldDescription>
-                        Kept encrypted and safe in database.
-                      </FieldDescription>
-                    </Field>
-
-                    <Field>
-                      <FieldLabel htmlFor="asaanPayWebhookSecret">Webhook Secret / Signature Key</FieldLabel>
-                      <Input
-                        type="password"
-                        id="asaanPayWebhookSecret"
-                        name="asaanPayWebhookSecret"
-                        value={formData.asaanPayWebhookSecret}
-                        onChange={handleChange}
-                        placeholder="whsec_xxxx (optional)"
-                      />
-                      <FieldDescription>
-                        Used to verify webhook authenticity.
-                      </FieldDescription>
-                    </Field>
-                  </div>
-
-                  {/* Webhook URL Helper */}
-                  <div className="rounded-xl border border-[#A67C52]/30 bg-[#F5EFE6]/60 p-4 space-y-2">
-                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#A67C52]">
-                      <Zap className="size-3.5" />
-                      <span>Webhook Callback URL (Paste in AsaanPay Dashboard)</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Input
-                        readOnly
-                        value={webhookUrl}
-                        className="bg-white text-xs font-mono select-all text-neutral-800"
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={handleCopyWebhook}
-                        className="shrink-0 bg-white hover:bg-neutral-100"
-                      >
-                        {copiedWebhook ? <Check className="size-4 text-emerald-600 mr-1" /> : <Copy className="size-4 mr-1" />}
-                        {copiedWebhook ? 'Copied' : 'Copy'}
-                      </Button>
-                    </div>
-                    <p className="text-[11.5px] text-neutral-600 leading-relaxed">
-                      Paste this URL in your <strong>AsaanPay Merchant Portal → Webhooks</strong> so your store automatically receives real-time payment success notifications.
-                    </p>
-                  </div>
+                  <Field>
+                    <FieldLabel htmlFor="asaanPayTitle" className="text-xs font-medium">
+                      Checkout Button Title
+                    </FieldLabel>
+                    <Input
+                      id="asaanPayTitle"
+                      name="asaanPayTitle"
+                      value={formData.asaanPayTitle}
+                      onChange={handleChange}
+                      placeholder="AsaanPay (Cards, EasyPaisa, JazzCash)"
+                      className="h-9 text-xs"
+                    />
+                  </Field>
                 </div>
-              )}
-            </FieldGroup>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Field>
+                    <FieldLabel htmlFor="asaanPayMerchantId" className="text-xs font-medium">
+                      Merchant ID / Store Code
+                    </FieldLabel>
+                    <Input
+                      id="asaanPayMerchantId"
+                      name="asaanPayMerchantId"
+                      value={formData.asaanPayMerchantId}
+                      onChange={handleChange}
+                      placeholder="e.g. AP_MCH_123456"
+                      className="h-9 text-xs font-mono"
+                    />
+                  </Field>
+
+                  <Field>
+                    <FieldLabel htmlFor="asaanPayApiKey" className="text-xs font-medium">
+                      API Public Key / Client ID
+                    </FieldLabel>
+                    <Input
+                      id="asaanPayApiKey"
+                      name="asaanPayApiKey"
+                      value={formData.asaanPayApiKey}
+                      onChange={handleChange}
+                      placeholder="pk_live_xxxx or pk_test_xxxx"
+                      className="h-9 text-xs font-mono"
+                    />
+                  </Field>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Field>
+                    <FieldLabel htmlFor="asaanPayApiSecret" className="text-xs font-medium">
+                      API Secret Key
+                    </FieldLabel>
+                    <Input
+                      type="password"
+                      id="asaanPayApiSecret"
+                      name="asaanPayApiSecret"
+                      value={formData.asaanPayApiSecret}
+                      onChange={handleChange}
+                      placeholder="sk_live_xxxx or sk_test_xxxx"
+                      className="h-9 text-xs font-mono"
+                    />
+                  </Field>
+
+                  <Field>
+                    <FieldLabel htmlFor="asaanPayWebhookSecret" className="text-xs font-medium">
+                      Webhook Secret (Optional)
+                    </FieldLabel>
+                    <Input
+                      type="password"
+                      id="asaanPayWebhookSecret"
+                      name="asaanPayWebhookSecret"
+                      value={formData.asaanPayWebhookSecret}
+                      onChange={handleChange}
+                      placeholder="whsec_xxxx"
+                      className="h-9 text-xs font-mono"
+                    />
+                  </Field>
+                </div>
+
+                {/* Webhook URL Helper */}
+                <Field className="space-y-1.5 pt-1">
+                  <FieldLabel className="text-xs font-medium">
+                    Webhook Callback URL
+                  </FieldLabel>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      readOnly
+                      value={webhookUrl}
+                      className="h-9 text-xs font-mono select-all bg-muted/40"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleCopyWebhook}
+                      className="h-9 text-xs px-3 shrink-0"
+                    >
+                      {copiedWebhook ? <Check className="size-3.5 text-emerald-600 mr-1" /> : <Copy className="size-3.5 mr-1" />}
+                      {copiedWebhook ? 'Copied' : 'Copy'}
+                    </Button>
+                  </div>
+                  <FieldDescription className="text-[11px]">
+                    Paste this URL in your AsaanPay merchant dashboard webhooks settings for real-time transaction updates.
+                  </FieldDescription>
+                </Field>
+              </FieldGroup>
+            )}
           </CardContent>
         </Card>
 
-        {/* 2. Bank Deposit / Manual Transfer Card */}
-        <Card className="surface-card border-[#EAE5DD] shadow-sm">
-          <CardHeader className="border-b border-[#EAE5DD]/70 pb-4">
+        {/* 2. Bank Deposit Card (Standard Clean Shadcn) */}
+        <Card className="rounded-xl border border-border shadow-xs">
+          <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="flex size-9 items-center justify-center rounded-lg bg-[#A67C52]/10 text-[#A67C52]">
-                  <Landmark className="size-5" />
-                </div>
+                <Landmark className="size-5 text-primary" />
                 <div>
-                  <CardTitle className="text-lg">Bank Deposit / Direct Transfer</CardTitle>
-                  <CardDescription>
-                    Allow customers to transfer payment manually to your bank account and share slip.
+                  <CardTitle className="text-base font-semibold">Bank Deposit / Manual Transfer</CardTitle>
+                  <CardDescription className="text-xs mt-0.5">
+                    Allow customers to manually transfer payments to your bank account.
                   </CardDescription>
                 </div>
               </div>
-              <span className={cn(
-                "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider",
-                formData.bankDepositEnabled ? "bg-emerald-100 text-emerald-800" : "bg-neutral-100 text-neutral-600"
-              )}>
-                {formData.bankDepositEnabled ? "Active" : "Disabled"}
-              </span>
+              <Badge variant={formData.bankDepositEnabled ? 'default' : 'secondary'} className="text-xs">
+                {formData.bankDepositEnabled ? 'Enabled' : 'Disabled'}
+              </Badge>
             </div>
           </CardHeader>
-          <CardContent className="space-y-6 pt-5">
-            <FieldGroup>
-              <div className="flex items-center justify-between gap-4 rounded-xl border border-[#EAE5DD] bg-[#FAF9F6] p-4">
-                <div className="space-y-0.5">
-                  <FieldLabel className="text-base font-semibold text-[#121212]">Enable Bank Deposit</FieldLabel>
-                  <FieldDescription>
-                    Show manual bank transfer instructions at checkout.
-                  </FieldDescription>
-                </div>
-                <Switch
-                  checked={formData.bankDepositEnabled}
-                  onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, bankDepositEnabled: checked }))}
-                />
+          <CardContent className="space-y-4 pt-0">
+            <div className="flex items-center justify-between rounded-lg border border-border bg-muted/30 p-3.5">
+              <div className="space-y-0.5">
+                <FieldLabel className="text-sm font-medium">Enable Bank Deposit</FieldLabel>
+                <FieldDescription className="text-xs">
+                  Display bank account numbers and instructions on checkout.
+                </FieldDescription>
               </div>
+              <Switch
+                checked={formData.bankDepositEnabled}
+                onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, bankDepositEnabled: checked }))}
+              />
+            </div>
 
-              {formData.bankDepositEnabled && (
-                <Field className="animate-in fade-in slide-in-from-top-2 duration-200">
-                  <FieldLabel htmlFor="bankDepositAccountDetails">Bank Account Details</FieldLabel>
-                  <Textarea
-                    id="bankDepositAccountDetails"
-                    name="bankDepositAccountDetails"
-                    value={formData.bankDepositAccountDetails}
-                    onChange={handleChange}
-                    placeholder="Bank Name: Meezan Bank&#10;Account Title: Ornaments by Arshad&#10;Account Number: 010203040506&#10;IBAN: PK36MEZN0001020304050607"
-                    rows={5}
-                  />
-                  <FieldDescription>
-                    These details will be displayed to the customer during checkout when they select Bank Deposit.
-                  </FieldDescription>
-                </Field>
-              )}
-            </FieldGroup>
+            {formData.bankDepositEnabled && (
+              <Field className="space-y-1.5 pt-1">
+                <FieldLabel htmlFor="bankDepositAccountDetails" className="text-xs font-medium">
+                  Bank Account Details & Instructions
+                </FieldLabel>
+                <Textarea
+                  id="bankDepositAccountDetails"
+                  name="bankDepositAccountDetails"
+                  value={formData.bankDepositAccountDetails}
+                  onChange={handleChange}
+                  placeholder="Bank Name: Meezan Bank&#10;Account Title: Ornaments by Arshad&#10;Account Number: 010203040506&#10;IBAN: PK36MEZN0001020304050607"
+                  rows={5}
+                  className="text-xs font-mono"
+                />
+              </Field>
+            )}
           </CardContent>
         </Card>
       </div>

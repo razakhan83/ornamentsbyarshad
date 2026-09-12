@@ -11,6 +11,7 @@ import { normalizeProductImages } from "@/lib/productImages";
 import { getBlurPlaceholderProps } from "@/lib/imagePlaceholder";
 import { getProductReviewCount, getProductRating } from "@/lib/productReviewUtils";
 import { getProductUnitPrice, getVisibleCompareAtPrice, isProductOutOfStock } from "@/lib/productCommerce";
+import { getProductCategoryBgColor } from "@/lib/productCategories";
 
 const formatPrice = (raw) => {
   let cleanNumbers = String(raw).replace(/[^\d.]/g, "");
@@ -45,11 +46,6 @@ export default function ProductCard({ product, className = "", priority = false 
     setActiveImageIndex((prev) => (prev - 1 + normalizedImages.length) % normalizedImages.length);
   };
 
-  const currentImage = normalizedImages[activeImageIndex] || normalizedImages[0] || null;
-  const currentImageSrc = currentImage?.url
-    ? optimizeCloudinaryUrl(currentImage.url, CLOUDINARY_IMAGE_PRESETS.productCard)
-    : "";
-
   return (
     <div
       className={cn(
@@ -57,9 +53,10 @@ export default function ProductCard({ product, className = "", priority = false 
         className
       )}
     >
-      {/* Product Image Area with Light Gray Background & Soft Premium Rounded Edges */}
+      {/* Product Image Area with Category Background Color & Soft Premium Rounded Edges */}
       <div 
-        className="relative w-full aspect-[4/5] overflow-hidden rounded-[8px] bg-[#F4F2EE] transition-[border-color,box-shadow] duration-300"
+        className="relative w-full aspect-[4/5] overflow-hidden rounded-[8px] transition-[border-color,box-shadow,background-color] duration-300"
+        style={{ backgroundColor: getProductCategoryBgColor(product) }}
       >
         <ProductCardWishlistSlot product={product} />
 
@@ -177,7 +174,7 @@ export default function ProductCard({ product, className = "", priority = false 
       </div>
 
       {/* Info Area: Title, Star Rating, Price */}
-      <div className="pt-3 pb-1 text-left flex flex-col items-start px-0.5">
+      <div className="pt-2.5 pb-1 text-left flex flex-col items-start px-0.5 w-full">
         <Link
           href={productHref}
           prefetch={false}
@@ -186,38 +183,38 @@ export default function ProductCard({ product, className = "", priority = false 
           draggable={false}
         >
           <h3
-            className="text-xs sm:text-[13.5px] font-medium text-[#121212] leading-snug line-clamp-2 hover:text-[#A67C52] transition-colors"
+            className="text-xs sm:text-[13.5px] font-medium text-[#121212] leading-snug line-clamp-2 min-h-[2.1rem] sm:min-h-[2.35rem] hover:text-[#A67C52] transition-colors"
             title={productName}
           >
             {productName}
           </h3>
         </Link>
 
-        {/* Star Rating */}
-        <div className="mt-1 flex items-center gap-1.5">
-          <div className="flex text-[#D97706]">
+        {/* Star Rating — Strictly 1 Line */}
+        <div className="mt-1 flex items-center gap-1.5 flex-nowrap whitespace-nowrap overflow-hidden max-w-full">
+          <div className="flex text-[#D97706] shrink-0">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star
                 key={i}
                 className={cn(
-                  "size-3",
+                  "size-2.5 sm:size-3",
                   i < Math.round(rating) ? "fill-current" : "text-neutral-300"
                 )}
               />
             ))}
           </div>
-          <span className="text-[11px] text-[#737373] font-normal">
-            {rating.toFixed(1)} · {reviewCount} {reviewCount === 1 ? "review" : "reviews"}
+          <span className="text-[10px] sm:text-[11px] text-[#737373] font-normal whitespace-nowrap shrink-0">
+            {rating.toFixed(1)} ({reviewCount})
           </span>
         </div>
 
-        {/* Price Display: Strictly Single Line with Non-Breaking Space & Scaled Typography */}
-        <div className="mt-1.5 flex items-baseline gap-1.5 sm:gap-2 flex-wrap min-w-0 w-full">
+        {/* Price Display — Strictly Single Line for Mobile & Desktop */}
+        <div className="mt-1.5 flex items-baseline gap-1.5 sm:gap-2 flex-nowrap whitespace-nowrap min-w-0 w-full overflow-hidden">
           <p
             className={cn(
               "font-semibold text-[#121212] tabular-nums whitespace-nowrap shrink-0",
               sellingPrice >= 100000
-                ? "text-[11px] min-[360px]:text-[12px] sm:text-[13px] md:text-sm"
+                ? "text-[11.5px] min-[360px]:text-[12.5px] sm:text-[13.5px] md:text-sm"
                 : "text-xs min-[360px]:text-[13px] sm:text-sm"
             )}
           >
@@ -228,7 +225,7 @@ export default function ProductCard({ product, className = "", priority = false 
               className={cn(
                 "font-normal text-neutral-400 line-through tabular-nums whitespace-nowrap shrink-0",
                 compareAtPrice >= 100000
-                  ? "text-[9.5px] min-[360px]:text-[10px] sm:text-[11px]"
+                  ? "text-[9.5px] min-[360px]:text-[10.5px] sm:text-[11.5px]"
                   : "text-[10px] min-[360px]:text-[11px] sm:text-xs"
               )}
             >
@@ -240,4 +237,3 @@ export default function ProductCard({ product, className = "", priority = false 
     </div>
   );
 }
-

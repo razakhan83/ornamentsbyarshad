@@ -7,13 +7,17 @@ import { Sparkles } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-function BrandFallback({ storeName = 'Ornaments by Arshad', invert = false, compact = false }) {
+function BrandFallback({ storeName = 'Ornaments by Arshad', invert = false, compact = false, scalePercent = 100 }) {
   const title = String(storeName || 'Ornaments by Arshad').trim();
   const titleClass = invert ? 'text-white' : 'text-[#121212]';
   const subtitleClass = invert ? 'text-white/70' : 'text-[#a67c52]';
+  const scale = Number(scalePercent) ? Number(scalePercent) / 100 : 1;
 
   return (
-    <div className="flex flex-col items-center justify-center text-center select-none py-0.5">
+    <div
+      className="flex flex-col items-center justify-center text-center select-none py-0.5 origin-left"
+      style={scale !== 1 ? { transform: `scale(${scale})`, transformOrigin: 'left center' } : undefined}
+    >
       <p className={cn('font-serif font-medium tracking-[0.22em] uppercase leading-tight', compact ? 'text-sm sm:text-base' : 'text-base sm:text-lg md:text-xl', titleClass)}>
         {title}
       </p>
@@ -44,31 +48,31 @@ export default function StoreLogo({
   const fallbackLogoUrl = prefersLightLogo ? darkLogoUrl : lightLogoUrl;
   const logoUrl = String(preferredLogoUrl || '').trim() || String(fallbackLogoUrl || '').trim() || '/logo.png';
   const hasLogo = Boolean(String(logoUrl || '').trim()) && !imageError;
-  const baseHeight = compact ? 44 : 52;
-  const safeScalePercent = Math.min(220, Math.max(60, Number(logoScalePercent) || 100));
-  const logoScale = 1 + ((safeScalePercent - 100) / 100) * 1.9;
+  const baseHeight = compact ? 38 : 46;
+  const safeScalePercent = Math.min(350, Math.max(30, Number(logoScalePercent) || 100));
+  const effectiveHeight = Math.round(baseHeight * (safeScalePercent / 100));
 
   const innerContent = (
     <>
       {hasLogo ? (
         <div
           className="flex shrink-0 items-center justify-center overflow-visible"
-          style={{ height: `${baseHeight}px` }}
+          style={{ height: `${effectiveHeight}px` }}
         >
           <Image
             src={logoUrl}
             alt={storeName || 'Ornaments by Arshad'}
-            width={280}
-            height={70}
+            width={450}
+            height={130}
             priority={priority}
-            sizes={compact ? '190px' : '260px'}
+            sizes={compact ? '180px' : '360px'}
             className="h-full w-auto max-h-full object-contain pointer-events-none"
-            style={{ maxHeight: `${baseHeight}px` }}
+            style={{ maxHeight: `${effectiveHeight}px` }}
             onError={() => setImageError(true)}
           />
         </div>
       ) : (
-        <BrandFallback storeName={storeName} invert={prefersLightLogo} compact={compact} />
+        <BrandFallback storeName={storeName} invert={prefersLightLogo} compact={compact} scalePercent={safeScalePercent} />
       )}
     </>
   );

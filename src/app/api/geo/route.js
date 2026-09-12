@@ -82,7 +82,7 @@ export async function GET(request) {
 
       const response = await fetch(url, {
         signal: controller.signal,
-        headers: { 'User-Agent': 'ChinaUnique/1.0' },
+        headers: { 'User-Agent': 'OrnamentsByArshad/1.0' },
       });
 
       clearTimeout(timeoutId);

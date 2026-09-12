@@ -4,8 +4,10 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { useSession } from 'next-auth/react';
 
 const WishlistContext = createContext(null);
-const GUEST_WISHLIST_STORAGE_KEY = 'china_unique_guest_wishlist';
-const GUEST_WISHLIST_ITEMS_STORAGE_KEY = 'china_unique_guest_wishlist_items';
+const GUEST_WISHLIST_STORAGE_KEY = 'ornaments_guest_wishlist';
+const GUEST_WISHLIST_ITEMS_STORAGE_KEY = 'ornaments_guest_wishlist_items';
+const LEGACY_WISHLIST_STORAGE_KEY = 'china_unique_guest_wishlist';
+const LEGACY_WISHLIST_ITEMS_STORAGE_KEY = 'china_unique_guest_wishlist_items';
 
 function getWishlistItemId(item) {
   return String(item?._id || item?.id || item?.slug || '').trim();
@@ -56,7 +58,7 @@ function postMetaAddToWishlist(product, eventId) {
 function readGuestWishlistIds() {
   if (typeof window === 'undefined') return [];
   try {
-    const raw = localStorage.getItem(GUEST_WISHLIST_STORAGE_KEY);
+    const raw = localStorage.getItem(GUEST_WISHLIST_STORAGE_KEY) || localStorage.getItem(LEGACY_WISHLIST_STORAGE_KEY);
     const parsed = raw ? JSON.parse(raw) : [];
     return Array.isArray(parsed) ? parsed.map((id) => String(id).trim()).filter(Boolean) : [];
   } catch {
@@ -67,7 +69,7 @@ function readGuestWishlistIds() {
 function readGuestWishlistItems() {
   if (typeof window === 'undefined') return [];
   try {
-    const raw = localStorage.getItem(GUEST_WISHLIST_ITEMS_STORAGE_KEY);
+    const raw = localStorage.getItem(GUEST_WISHLIST_ITEMS_STORAGE_KEY) || localStorage.getItem(LEGACY_WISHLIST_ITEMS_STORAGE_KEY);
     const parsed = raw ? JSON.parse(raw) : [];
     return Array.isArray(parsed) ? parsed : [];
   } catch {

@@ -73,6 +73,7 @@ import { PAKISTAN_CITIES } from '@/lib/cities';
 import { trackInitiateCheckoutEvent, trackPurchaseEvent } from '@/lib/clientTracking';
 import { getBlurPlaceholderProps } from '@/lib/imagePlaceholder';
 import { getPrimaryProductImage } from '@/lib/productImages';
+import { getProductCategoryBgColor } from '@/lib/productCategories';
 import { cn } from '@/lib/utils';
 import { calculateCheckoutPricing } from '@/lib/checkoutPricing';
 import styles from './CheckoutClient.module.css';
@@ -320,13 +321,16 @@ function OrderSummaryContent({
           return (
             <div key={`${item.id}-${index}`} className="flex items-start gap-3 py-3.5 first:pt-0 last:pb-1">
               {/* Product Thumbnail */}
-              <div className="relative size-16 shrink-0 rounded-xl overflow-hidden border border-border/70 bg-card shadow-2xs">
+              <div 
+                className="relative size-16 shrink-0 rounded-xl overflow-hidden border border-border/70 shadow-2xs flex items-center justify-center"
+                style={{ backgroundColor: getProductCategoryBgColor(item) }}
+              >
                 {imgUrl ? (
                   <Image
                     src={imgUrl}
                     alt={item.Name || item.name}
                     fill
-                    className="object-cover"
+                    className="object-cover p-1"
                     {...getBlurPlaceholderProps(getPrimaryProductImage(item).blurDataURL)}
                   />
                 ) : null}
@@ -1093,6 +1097,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
           isOpen={!!orderState.orderId} 
           onClose={handleModalClose} 
           orderId={orderState.orderId} 
+          paymentMethod={orderState.paymentMethod || paymentMethod}
         />
       </div>
     );
@@ -1162,10 +1167,10 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
           aria-expanded={mobileOrderOpen}
         >
           <span className={styles.mobileOrderSummaryTriggerLeft}>
-            <ShoppingBag className="size-4" />
-            {mobileOrderOpen ? 'Hide order summary' : 'Show order summary'}
+            <ShoppingBag className="size-3.5 shrink-0 text-[#A67C52]" />
+            <span className="whitespace-nowrap">{mobileOrderOpen ? 'Hide order summary' : 'Show order summary'}</span>
             <ChevronDown
-              className={cn(styles.mobileOrderSummaryChevron, mobileOrderOpen && styles.mobileOrderSummaryChevronOpen)}
+              className={cn(styles.mobileOrderSummaryChevron, mobileOrderOpen && styles.mobileOrderSummaryChevronOpen, "size-3.5 shrink-0 text-[#A67C52]")}
               aria-hidden
             />
           </span>
@@ -1615,13 +1620,16 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
 
           {itemToRemove && (
             <div className="flex items-center gap-3.5 p-3.5 my-2 rounded-xl border border-border/60 bg-muted/30">
-              <div className="relative size-14 shrink-0 rounded-lg overflow-hidden border border-border/40 bg-card">
+              <div 
+                className="relative size-14 shrink-0 rounded-lg overflow-hidden border border-border/40 flex items-center justify-center"
+                style={{ backgroundColor: getProductCategoryBgColor(itemToRemove) }}
+              >
                 {getPrimaryProductImage(itemToRemove)?.url ? (
                   <Image
                     src={getPrimaryProductImage(itemToRemove).url}
                     alt={itemToRemove.Name || itemToRemove.name}
                     fill
-                    className="object-cover"
+                    className="object-cover p-1"
                   />
                 ) : null}
               </div>

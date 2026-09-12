@@ -7,16 +7,17 @@ import {
   Dialog,
   DialogContent,
 } from '@/components/ui/dialog';
-import { Check, Copy, ShoppingBag, Truck, ArrowRight, X, Sparkles } from 'lucide-react';
+import { Check, Copy, ShoppingBag, Truck, X } from 'lucide-react';
 import Link from 'next/link';
 
-export default function OrderSuccessModal({ isOpen, onClose, orderId }) {
+export default function OrderSuccessModal({ isOpen, onClose, orderId, paymentMethod = 'cod' }) {
   const router = useRouter();
   const { data: session, status } = useSession();
   const isSignedIn = status === 'authenticated';
   const [copied, setCopied] = useState(false);
 
   const displayOrderId = orderId || '#ORD-' + Math.floor(100000 + Math.random() * 900000);
+  const isOnlinePayment = paymentMethod === 'online' || paymentMethod === 'card' || paymentMethod === 'bank' || paymentMethod === 'bank_transfer' || paymentMethod === 'stripe';
 
   const handleCopy = () => {
     navigator.clipboard.writeText(displayOrderId);
@@ -43,7 +44,7 @@ export default function OrderSuccessModal({ isOpen, onClose, orderId }) {
     }}>
       <DialogContent 
         showCloseButton={false} 
-        className="p-0 overflow-hidden border border-[#E8E5DF] bg-[#FAF9F6] text-center w-full max-w-lg rounded-none shadow-2xl transition-all"
+        className="p-0 overflow-hidden border border-[#E8E5DF] bg-[#FAF9F6] text-center w-full max-w-md rounded-2xl shadow-2xl transition-all"
       >
         <style dangerouslySetInnerHTML={{__html: `
           @keyframes drawCheck {
@@ -83,90 +84,87 @@ export default function OrderSuccessModal({ isOpen, onClose, orderId }) {
           }
         `}} />
 
-        {/* Top Gold Accent Bar */}
-        <div className="h-1 w-full bg-gradient-to-r from-[#8F673F] via-[#B8976C] to-[#8F673F]" />
-
-        <div className="relative p-7 sm:p-10 flex flex-col items-center">
+        <div className="relative p-6 sm:p-8 flex flex-col items-center">
           {/* Close button */}
           <button 
             onClick={handleClose}
-            className="absolute top-4 right-4 p-2 text-[#737373] hover:text-[#121212] hover:bg-black/5 rounded-none transition-colors"
+            className="absolute top-3.5 right-3.5 p-1.5 text-[#737373] hover:text-[#121212] hover:bg-black/5 rounded-full transition-colors cursor-pointer"
             aria-label="Close"
           >
-            <X className="size-4.5" />
+            <X className="size-4" />
           </button>
 
           {/* Animated Gold Checkmark Badge */}
-          <div className="animate-circle-scale relative size-20 rounded-full bg-[#F4F2EE] border border-[#A67C52]/40 flex items-center justify-center mb-6">
-            <svg className="size-10 text-[#A67C52]" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <div className="animate-circle-scale relative size-16 sm:size-18 rounded-full bg-[#F4F2EE] border border-[#A67C52]/40 flex items-center justify-center mb-4 sm:mb-5">
+            <svg className="size-8 sm:size-9 text-[#A67C52]" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="14 25 21 32 34 17" className="animate-draw-check" />
             </svg>
-            <div className="absolute -top-1 -right-1">
-              <Sparkles className="size-4 text-[#A67C52] animate-pulse" />
-            </div>
           </div>
 
-          {/* Title & Subtitle */}
-          <div className="animate-luxury-1 space-y-2">
-            <p className="text-[11px] font-sans uppercase tracking-[0.25em] text-[#A67C52] font-semibold">
-              Payment Confirmed & Verified
+          {/* Dynamic Header: Online vs COD */}
+          <div className="animate-luxury-1 space-y-1.5">
+            <p className="text-[10px] sm:text-[10.5px] font-sans uppercase tracking-[0.22em] text-[#A67C52] font-semibold">
+              {isOnlinePayment ? 'Payment Confirmed & Verified' : 'Order Placed'}
             </p>
-            <h2 className="font-serif text-2xl sm:text-3xl text-[#121212] uppercase tracking-wider font-normal [text-wrap:balance]">
+            <h2 className="font-serif text-xl sm:text-2xl text-[#121212] uppercase tracking-wider font-normal">
               Order Successfully Placed
             </h2>
-            <p className="text-xs sm:text-sm text-[#737373] max-w-sm mx-auto leading-relaxed [text-wrap:pretty]">
-              Thank you for trusting Ornaments by Arshad. Your jewelry piece is now being prepared with utmost care.
+            <p className="text-xs text-[#737373] max-w-xs mx-auto leading-relaxed pt-0.5">
+              {isOnlinePayment 
+                ? 'Thank you! Your order is being prepared with utmost care.'
+                : 'Thank you! Your order is confirmed and will be dispatched via insured courier.'
+              }
             </p>
           </div>
 
-          {/* Order ID Box */}
-          <div className="animate-luxury-2 mt-6 w-full max-w-xs bg-white border border-[#E8E5DF] p-3.5 flex items-center justify-between shadow-2xs">
+          {/* Minimal Order ID Card */}
+          <div className="animate-luxury-2 mt-4 sm:mt-5 w-full max-w-xs bg-white border border-[#E8E5DF] rounded-xl p-3 flex items-center justify-between shadow-xs">
             <div className="text-left">
-              <span className="block text-[10px] uppercase font-mono tracking-widest text-[#737373]">
-                Order Reference
+              <span className="block text-[9.5px] uppercase font-sans tracking-widest text-[#737373] font-medium">
+                Order ID
               </span>
-              <span className="font-mono text-xs sm:text-sm font-semibold text-[#121212] tracking-wider">
+              <span className="font-mono text-xs sm:text-[13px] font-semibold text-[#121212] tracking-wide">
                 {displayOrderId}
               </span>
             </div>
             <button
               type="button"
               onClick={handleCopy}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#121212] hover:text-[#A67C52] bg-[#FAF9F6] hover:bg-[#F4F2EE] border border-[#E8E5DF] transition-colors"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-[#121212] hover:text-[#A67C52] bg-[#FAF9F6] hover:bg-[#F4F2EE] border border-[#E8E5DF] rounded-lg transition-colors cursor-pointer"
               title="Copy Order ID"
             >
               {copied ? (
                 <>
-                  <Check className="size-3.5 text-emerald-600" />
-                  <span className="text-[11px] text-emerald-600">Copied</span>
+                  <Check className="size-3 text-emerald-600" />
+                  <span className="text-[10.5px] text-emerald-600 font-semibold">Copied</span>
                 </>
               ) : (
                 <>
-                  <Copy className="size-3.5" />
-                  <span className="text-[11px]">Copy</span>
+                  <Copy className="size-3" />
+                  <span className="text-[10.5px]">Copy</span>
                 </>
               )}
             </button>
           </div>
 
           {/* Action CTAs */}
-          <div className="animate-luxury-3 mt-8 w-full max-w-xs space-y-3">
+          <div className="animate-luxury-3 mt-5 sm:mt-6 w-full max-w-xs space-y-2">
             {isSignedIn ? (
               <>
                 <button
                   type="button"
                   onClick={(e) => handleLinkClick(e, '/orders')}
-                  className="w-full flex items-center justify-center gap-2 bg-[#121212] hover:bg-neutral-800 text-white py-3.5 text-xs uppercase tracking-[0.2em] font-medium transition-colors"
+                  className="w-full flex items-center justify-center gap-2 bg-[#121212] hover:bg-neutral-800 text-white h-11 text-xs uppercase tracking-[0.18em] font-semibold rounded-lg transition-all active:scale-[0.98] cursor-pointer shadow-xs"
                 >
-                  <Truck className="size-4" />
+                  <Truck className="size-3.5" />
                   <span>View & Track Order</span>
                 </button>
                 <button
                   type="button"
                   onClick={(e) => handleLinkClick(e, '/products')}
-                  className="w-full flex items-center justify-center gap-2 bg-white hover:bg-[#F4F2EE] border border-[#E8E5DF] text-[#121212] py-3.5 text-xs uppercase tracking-[0.2em] font-medium transition-colors"
+                  className="w-full flex items-center justify-center gap-2 bg-white hover:bg-[#FAF9F6] border border-[#E8E5DF] text-[#121212] h-10.5 text-xs uppercase tracking-[0.16em] font-semibold rounded-lg transition-all active:scale-[0.98] cursor-pointer"
                 >
-                  <ShoppingBag className="size-4 text-[#A67C52]" />
+                  <ShoppingBag className="size-3.5 text-[#A67C52]" />
                   <span>Continue Shopping</span>
                 </button>
               </>
@@ -175,20 +173,20 @@ export default function OrderSuccessModal({ isOpen, onClose, orderId }) {
                 <button
                   type="button"
                   onClick={(e) => handleLinkClick(e, '/track-order')}
-                  className="w-full flex items-center justify-center gap-2 bg-[#121212] hover:bg-neutral-800 text-white py-3.5 text-xs uppercase tracking-[0.2em] font-medium transition-colors"
+                  className="w-full flex items-center justify-center gap-2 bg-[#121212] hover:bg-neutral-800 text-white h-11 text-xs uppercase tracking-[0.18em] font-semibold rounded-lg transition-all active:scale-[0.98] cursor-pointer shadow-xs"
                 >
-                  <Truck className="size-4" />
+                  <Truck className="size-3.5" />
                   <span>Track Your Order</span>
                 </button>
                 <button
                   type="button"
                   onClick={(e) => handleLinkClick(e, '/products')}
-                  className="w-full flex items-center justify-center gap-2 bg-white hover:bg-[#F4F2EE] border border-[#E8E5DF] text-[#121212] py-3.5 text-xs uppercase tracking-[0.2em] font-medium transition-colors"
+                  className="w-full flex items-center justify-center gap-2 bg-white hover:bg-[#FAF9F6] border border-[#E8E5DF] text-[#121212] h-10.5 text-xs uppercase tracking-[0.16em] font-semibold rounded-lg transition-all active:scale-[0.98] cursor-pointer"
                 >
-                  <ShoppingBag className="size-4 text-[#A67C52]" />
+                  <ShoppingBag className="size-3.5 text-[#A67C52]" />
                   <span>Continue Shopping</span>
                 </button>
-                <p className="text-[11px] text-[#737373] pt-1">
+                <p className="text-[10.5px] text-[#737373] pt-1">
                   Want full history?{' '}
                   <Link 
                     href="/auth/signin?callbackUrl=/orders" 

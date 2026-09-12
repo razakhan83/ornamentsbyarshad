@@ -1,39 +1,51 @@
 'use client';
 
-import Link from 'next/link';
+import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
 import { toast } from 'sonner';
-
-import { Button } from '@/components/ui/button';
-import { FieldGroup, Field, FieldLabel } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
+import { Loader2 } from 'lucide-react';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 
-export default function AdminLoginFormClient({ guestModeEnabled }) {
+export default function AdminLoginFormClient() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams?.get('callbackUrl') || '/admin';
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
+  const [forgotModalOpen, setForgotModalOpen] = useState(false);
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get('email');
-    const password = formData.get('password');
-    
+
     try {
       const res = await signIn('credentials', {
-        email,
-        password,
+        email: formData.email,
+        password: formData.password,
         redirect: false,
         callbackUrl,
       });
 
       if (res?.error) {
-        toast.error('Invalid admin credentials');
+        toast.error('Invalid admin credentials. Please verify your email and password.');
       } else if (res?.url) {
         window.location.href = res.url;
       }
@@ -45,50 +57,122 @@ export default function AdminLoginFormClient({ guestModeEnabled }) {
   };
 
   return (
-    <form className="mb-3 sm:mb-6" onSubmit={handleSubmit}>
-      <FieldGroup>
-        <Field>
-          <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input id="email" name="email" type="email" placeholder="admin@example.com" required autoComplete="email" className="h-10 sm:h-12 text-sm sm:text-base" />
-        </Field>
-        <Field>
-          <div className="flex items-center justify-between">
-            <FieldLabel htmlFor="password">Password</FieldLabel>
-            <button type="button" className="text-[10px] sm:text-sm font-medium text-primary hover:underline" tabIndex={-1}>
-              Forgot password?
+    <div className="w-full">
+      {/* ── Subtitle & Title ── */}
+      <div className="mb-6 text-left">
+        <p className="text-xs sm:text-sm font-medium text-[#737373] tracking-wide">
+          Please enter your credentials
+        </p>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#121212] mt-1">
+          Admin Access
+        </h1>
+      </div>
+
+      {/* ── Form ── */}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-xs font-semibold text-[#121212] mb-1.5" htmlFor="admin-email">
+            Admin Email
+          </label>
+          <input
+            id="admin-email"
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            placeholder="admin@example.com"
+            className="w-full h-11 px-3.5 rounded-xl border border-[#E0DCD5] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/20"
+          />
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold text-[#121212] mb-1.5" htmlFor="admin-password">
+            Password
+          </label>
+          <input
+            id="admin-password"
+            name="password"
+            type="password"
+            required
+            autoComplete="current-password"
+            value={formData.password}
+            onChange={handleInputChange}
+            placeholder="••••••••"
+            className="w-full h-11 px-3.5 rounded-xl border border-[#E0DCD5] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/20"
+          />
+        </div>
+
+        {/* Remember me & Forgot Password */}
+        <div className="flex items-center justify-between pt-0.5 text-xs">
+          <label className="flex items-center gap-2 cursor-pointer select-none text-[#525252]">
+            <Checkbox
+              checked={rememberMe}
+              onCheckedChange={(checked) => setRememberMe(!!checked)}
+              className="size-4 rounded-sm border-[#C7C2BA] data-[state=checked]:bg-[#121212] data-[state=checked]:border-[#121212]"
+            />
+            <span>Remember for 30 days</span>
+          </label>
+
+          <button
+            type="button"
+            onClick={() => setForgotModalOpen(true)}
+            className="font-medium text-[#121212] hover:text-[#A67C52] transition-colors underline-offset-2 hover:underline cursor-pointer"
+          >
+            Forgot password?
+          </button>
+        </div>
+
+        {/* Primary Submit Button */}
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full h-11 mt-2 bg-[#121212] hover:bg-[#262626] text-white text-sm font-semibold rounded-xl flex items-center justify-center transition-all shadow-xs active:scale-[0.99] cursor-pointer disabled:opacity-70"
+        >
+          {isLoading ? (
+            <span className="flex items-center gap-2">
+              <Loader2 className="size-4 animate-spin" />
+              <span>Authenticating...</span>
+            </span>
+          ) : (
+            <span>Sign in to Admin</span>
+          )}
+        </button>
+
+        {/* Continue with Google */}
+        <div className="pt-2">
+          <GoogleSignInButton
+            callbackUrl={callbackUrl}
+            className="h-11 rounded-xl text-xs sm:text-sm font-medium border border-[#E0DCD5] bg-white hover:bg-[#FAF9F6] text-[#121212] shadow-2xs"
+          />
+        </div>
+      </form>
+
+      {/* Forgot Password Dialog */}
+      <Dialog open={forgotModalOpen} onOpenChange={setForgotModalOpen}>
+        <DialogContent className="max-w-md bg-white text-[#121212] rounded-2xl p-6 shadow-xl border border-[#E8E5DF]">
+          <DialogHeader className="pb-2">
+            <DialogTitle className="text-lg font-bold text-[#121212]">
+              Admin Password Recovery
+            </DialogTitle>
+            <DialogDescription className="text-xs text-[#737373] leading-relaxed pt-1">
+              Admin credentials are authenticated against master configuration or authorized Google workspace email.
+              <br /><br />
+              If you have lost your master admin password, check the system environment variables or log in using an authorized Google Admin email address.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="pt-3 flex justify-end">
+            <button
+              type="button"
+              onClick={() => setForgotModalOpen(false)}
+              className="px-4 py-2 bg-[#121212] text-white text-xs font-semibold rounded-xl hover:bg-neutral-800"
+            >
+              Close
             </button>
           </div>
-          <Input id="password" name="password" type="password" placeholder="••••••••" required autoComplete="current-password" className="h-10 sm:h-12 text-sm sm:text-base" />
-        </Field>
-      </FieldGroup>
-
-      <Button type="submit" disabled={isLoading} className="mt-5 sm:mt-8 h-10 sm:h-12 w-full text-sm sm:text-base font-semibold">
-        {isLoading ? 'Authenticating...' : 'Sign In'}
-      </Button>
-
-      <div className="relative mb-4 mt-6 sm:mb-8 sm:mt-10">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-border" />
-        </div>
-        <div className="relative flex justify-center text-[9px] sm:text-xs uppercase tracking-wider">
-          <span className="bg-background px-2 sm:px-4 text-muted-foreground font-medium">Or continue with</span>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-3 sm:gap-4">
-        <GoogleSignInButton callbackUrl={callbackUrl} className="h-10 sm:h-12 text-xs sm:text-base" />
-
-        {guestModeEnabled && (
-          <Button 
-            type="button"
-            variant="outline" 
-            className="h-10 sm:h-12 w-full text-xs sm:text-base font-semibold bg-muted/50" 
-            onClick={() => signIn('credentials', { isGuest: 'true', callbackUrl })}
-          >
-            Explore as Guest
-          </Button>
-        )}
-      </div>
-    </form>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

@@ -120,9 +120,7 @@ export default function MobileBottomNav({
   const isSidebarOpen = isSidebarOpenProp ?? isSidebarOpenCtx;
   const isCartOpen = isCartOpenProp ?? isCartOpenCtx;
 
-  const isScrollHidePage = pathname === '/' || pathname === '/products' || pathname.startsWith('/products');
-  const isHiddenOnScroll = isScrollHidePage && isNavbarHidden;
-  const isHidden = isSidebarOpen || isCartOpen || (isHiddenOnScroll && !isSearchOpen);
+  const isHidden = isSidebarOpen || isCartOpen;
 
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
   const mobileDrawerReservedLane = 'calc(env(safe-area-inset-bottom) + var(--mobile-bottom-nav-offset))';

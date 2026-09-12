@@ -72,6 +72,7 @@ const primaryNavItems = [
 // 2. Products Management
 const productNavItems = [
   { href: '/admin/products', label: 'Product List', icon: Box, match: (pathname) => pathname.startsWith('/admin/products') },
+  { href: '/admin/top-performing-products', label: 'Top Performing Products', icon: Sparkles, match: (pathname) => pathname.startsWith('/admin/top-performing-products') },
   { href: '/admin/restock-requests', label: 'Restock Requests', icon: Bell, match: (pathname) => pathname.startsWith('/admin/restock-requests') },
   { href: '/admin/categories', label: 'Categories', icon: LayoutGrid, match: (pathname) => pathname.startsWith('/admin/categories') },
   { href: '/admin/reviews', label: 'Reviews', icon: MessageSquare, match: (pathname) => pathname.startsWith('/admin/reviews') },
@@ -82,7 +83,6 @@ const ordersNavItems = [
   { href: '/admin/orders', label: 'View All Orders', icon: ShoppingCart, match: (pathname) => pathname.startsWith('/admin/orders') },
   { href: '/admin/abandoned-carts', label: 'Abandoned Carts', icon: ShoppingBag, match: (pathname) => pathname.startsWith('/admin/abandoned-carts') },
   { href: '/admin/payments', label: 'Payments & Revenue', icon: CreditCard, match: (pathname) => pathname.startsWith('/admin/payments') },
-  { href: '/admin/top-performing-products', label: 'Top Products', icon: Sparkles, match: (pathname) => pathname.startsWith('/admin/top-performing-products') },
 ];
 
 // 4. Customers

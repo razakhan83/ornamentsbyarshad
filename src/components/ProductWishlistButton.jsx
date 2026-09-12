@@ -36,6 +36,27 @@ export default function ProductWishlistButton({ product, mode = 'grid', classNam
     }
   }
 
+  if (mode === 'icon-only') {
+    return (
+      <button
+        type="button"
+        role="checkbox"
+        aria-checked={active}
+        aria-label={active ? 'Remove from wishlist' : 'Add to wishlist'}
+        onClick={handleToggle}
+        disabled={isSubmitting || isLoading}
+        className={cn(
+          'inline-flex items-center justify-center p-0 bg-transparent border-0 shadow-none text-[#121212] hover:text-[#A67C52] transition-transform duration-200 active:scale-90 cursor-pointer select-none',
+          active && 'text-red-500',
+          (isSubmitting || isLoading) && 'pointer-events-none opacity-70',
+          className
+        )}
+      >
+        <Heart className={cn('size-6 stroke-[1.8] drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)] transition-colors', active && 'fill-red-500 stroke-red-500')} />
+      </button>
+    );
+  }
+
   if (mode === 'detail') {
     return (
       <button

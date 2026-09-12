@@ -13,11 +13,10 @@ export default function SplashScreen({ onComplete }) {
     return (
         <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-primary animate-fadeIn">
             <div className="flex flex-col items-center gap-4 animate-fadeInUp">
-                <i className="fa-solid fa-store mb-2 text-6xl text-accent drop-shadow-xl"></i>
-                <h1 className="text-center text-4xl font-extrabold tracking-widest text-primary-foreground md:text-5xl">
-                    CHINA <span className="text-accent">UNIQUE</span>
-                    <span className="mt-2 block text-2xl font-medium tracking-normal text-primary-foreground/70 md:text-3xl">
-                        ITEMS
+                <h1 className="text-center font-serif text-3xl font-bold tracking-[0.2em] text-primary-foreground md:text-4xl uppercase">
+                    ORNAMENTS <span className="text-[#A67C52]">BY ARSHAD</span>
+                    <span className="mt-2 block font-sans text-xs font-medium tracking-[0.3em] text-primary-foreground/70 md:text-sm">
+                        FINE JEWELRY & HAUTE JOAILLERIE
                     </span>
                 </h1>
             </div>

@@ -120,6 +120,7 @@ export async function POST(req) {
             Price,
             compareAtPrice,
             stockQuantity,
+            isUnlimitedStock,
             Images,
             cloudinary_id,
             Category: categoryInput,
@@ -134,6 +135,7 @@ export async function POST(req) {
             primaryTag,
             customReviewCount,
             rating,
+            plating,
         } = body;
 
         if (!Name || !Price || !categoryInput) {
@@ -168,8 +170,12 @@ export async function POST(req) {
         const normalizedCompareAtPrice = compareAtPrice === '' || compareAtPrice == null
             ? null
             : Number(compareAtPrice);
-        const normalizedStockQuantity = Math.max(0, Number(stockQuantity) || 0);
-        const stockStatus = resolveStockStatus(normalizedStockQuantity, StockStatus);
+        const normalizedStockQuantity = isUnlimitedStock === true || isUnlimitedStock === 'true'
+            ? 9999
+            : Math.max(0, Number(stockQuantity) || 0);
+        const stockStatus = isUnlimitedStock === true || isUnlimitedStock === 'true'
+            ? 'In Stock'
+            : resolveStockStatus(normalizedStockQuantity, StockStatus);
         const persistedRating = rating !== '' && rating != null
             ? normalizeProductRating(rating)
             : generateNewProductRating();
@@ -195,6 +201,7 @@ export async function POST(req) {
             Images: normalizedImages,
             cloudinary_id,
             Category: categoryArray,
+            isUnlimitedStock: isUnlimitedStock === true || isUnlimitedStock === 'true',
             stockQuantity: normalizedStockQuantity,
             StockStatus: stockStatus,
             slug: uniqueSlug, // Ensure slug is saved
@@ -206,6 +213,7 @@ export async function POST(req) {
             primaryTag: primaryTag || '',
             metalType: typeof body.metalType === 'string' ? body.metalType.trim() : '',
             purity: typeof body.purity === 'string' ? body.purity.trim() : '',
+            plating: typeof plating === 'string' ? plating.trim() : '',
             size: typeof body.size === 'string' ? body.size.trim() : '',
             availableSizes: Array.isArray(body.availableSizes) ? body.availableSizes : [],
             availableColors: Array.isArray(body.availableColors) ? body.availableColors : [],

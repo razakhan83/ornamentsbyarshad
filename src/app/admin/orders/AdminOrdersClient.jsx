@@ -2327,83 +2327,6 @@ export default function AdminOrdersClient({
               Move
             </Button>
 
-            {/* Contextual Workflow Action Buttons for Selected Orders */}
-            {statusFilter === 'Order Confirmed' && (
-              <Button
-                type="button"
-                size="sm"
-                onClick={() => handlePrintSourcingSlip({ moveToNextStep: false })}
-                disabled={pendingWorkflowAction !== '' || isBulkUpdating}
-                className="h-7.5 px-2.5 text-xs bg-yellow-200 text-yellow-900 hover:bg-yellow-300 rounded-lg font-medium shadow-xs"
-              >
-                {pendingWorkflowAction === 'sourcing-print' ? <Spinner data-icon="inline-start" /> : <Printer data-icon="inline-start" />}
-                Print Sourcing Slip
-              </Button>
-            )}
-
-            {statusFilter === 'In Process' && (
-              <Button
-                type="button"
-                size="sm"
-                onClick={() => handlePrintPackingSlip({ moveToNextStep: false })}
-                disabled={pendingWorkflowAction !== '' || isBulkUpdating}
-                className="h-7.5 px-2.5 text-xs bg-yellow-200 text-yellow-900 hover:bg-yellow-300 rounded-lg font-medium shadow-xs"
-              >
-                {pendingWorkflowAction === 'packing-print' ? <Spinner data-icon="inline-start" /> : <Printer data-icon="inline-start" />}
-                Print Packing Slip
-              </Button>
-            )}
-
-            {(statusFilter === 'Packed' || statusFilter === DRAFT_TAB_ID || statusFilter === 'all') && (
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={handleGenerateCourierSheet}
-                disabled={pendingWorkflowAction !== '' || isBulkUpdating}
-                className="h-7.5 px-2.5 text-xs font-medium gap-1.5 rounded-lg shadow-xs cursor-pointer"
-              >
-                {pendingWorkflowAction === 'courier' ? <Spinner data-icon="inline-start" className="size-3" /> : <Download className="size-3.5" />}
-                Courier Sheet
-              </Button>
-            )}
-
-            {(statusFilter === 'Packed' || statusFilter === DRAFT_TAB_ID) && (
-              <Button
-                type="button"
-                size="sm"
-                onClick={() => setNocBookingOpen(true)}
-                disabled={isBookingNoc}
-                className="h-7.5 px-2.5 text-xs bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-semibold shadow-xs"
-              >
-                <Truck className="size-3.5 mr-1" />
-                Send to NOC
-              </Button>
-            )}
-
-            {(statusFilter === 'Packed' || statusFilter === DRAFT_TAB_ID || statusFilter === 'Shipped') && (
-              <Button
-                type="button"
-                size="sm"
-                onClick={handlePrintSelectedNocSlips}
-                className="h-7.5 px-2.5 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold shadow-xs"
-              >
-                <Printer className="size-3.5 mr-1" />
-                Print Slips
-              </Button>
-            )}
-
-            <Button
-              type="button"
-              size="sm"
-              onClick={() => handleSyncNocStatus(selectedOrders)}
-              disabled={isBulkSyncingNoc}
-              className="h-7.5 px-2.5 text-xs bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-semibold shadow-xs flex items-center gap-1 cursor-pointer"
-            >
-              {isBulkSyncingNoc ? <Spinner data-icon="inline-start" /> : <RotateCcw className="size-3.5" />}
-              Sync NOC Status
-            </Button>
-
             {/* Delete / Move to Trash Button */}
             <Button
               type="button"
@@ -2572,44 +2495,8 @@ export default function AdminOrdersClient({
             </Field>
           </form>
 
-          {/* Action Buttons Row (Sync NOC, Reports, etc.) */}
+          {/* Action Buttons Row (Reports, etc.) */}
           <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-border/50 md:border-0 md:pt-0 shrink-0">
-            {(statusFilter === 'Shipped' || statusFilter === 'all' || statusFilter === 'In Transit' || statusFilter === 'Out for Delivery' || statusFilter === 'Out For Delivery' || statusFilter === 'Returned') ? (
-              <>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    const targetOrders = displayOrders
-                      .filter((o) => o.nocParcelNo || o.trackingNumber || o.nocThirdPartyNo)
-                      .map((o) => o._id);
-                    if (targetOrders.length === 0) {
-                      toast.error('No orders with tracking numbers found to sync.');
-                      return;
-                    }
-                    handleSyncNocStatus(targetOrders);
-                  }}
-                  disabled={isBulkSyncingNoc}
-                  className="h-8 px-3 text-xs font-medium rounded-lg flex items-center gap-1.5 cursor-pointer text-foreground hover:bg-muted"
-                >
-                  {isBulkSyncingNoc ? <Spinner data-icon="inline-start" className="size-3" /> : <RotateCcw className="size-3.5 text-muted-foreground" />}
-                  <span>{isBulkSyncingNoc ? 'Syncing...' : 'Sync NOC Status'}</span>
-                </Button>
-
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsSyncSheetModalOpen(true)}
-                  className="h-8 px-3 text-xs font-medium rounded-lg flex items-center gap-1.5 cursor-pointer text-foreground hover:bg-muted"
-                  title="Upload NOC Excel file to auto-sync 3rd Party CNs and Courier Partners"
-                >
-                  <Upload className="size-3.5 text-muted-foreground" />
-                  <span>Sync NOC Sheet</span>
-                </Button>
-              </>
-            ) : null}
 
             {statusFilter === 'all' ? (
               <DropdownMenu>

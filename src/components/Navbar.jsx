@@ -343,7 +343,7 @@ function NavbarContent({
         window.cancelAnimationFrame(frameId);
       }
     };
-  }, [isAccountDrawerOpen, isSearchOpen, isSidebarOpen]);
+  }, [isAccountDrawerOpen, isCartOpen, isSearchOpen, isSidebarOpen]);
 
   function handleCategoryClick(categoryId) {
     setActiveCategory(categoryId);
@@ -458,7 +458,7 @@ function NavbarContent({
 
       <div className="relative z-50">
           {/* Tier 1: Main Header Row */}
-          <header className="relative mx-auto flex h-16 sm:h-18 md:h-20 max-w-[1440px] items-center justify-between px-4 sm:px-6 xl:px-10">
+          <header className="relative mx-auto flex h-14 sm:h-16 md:h-[68px] max-w-[1440px] items-center justify-between px-4 sm:px-6 xl:px-10">
             {/* Left Zone: Mobile Hamburger & PC Left-Aligned Logo */}
             <div className="flex items-center gap-4">
               <Button 
@@ -466,9 +466,9 @@ function NavbarContent({
                 size="icon" 
                 onClick={() => isSidebarOpen ? setIsSidebarOpen(false) : handleSidebarOpen()} 
                 aria-label={isSidebarOpen ? "Close menu" : "Open menu"} 
-                className="lg:hidden relative rounded-full hover:bg-white hover:text-[#A67C52] hover:shadow-[0_2px_10px_rgba(166,124,82,0.15)] text-[#121212] size-10.5 transition-all duration-300 ease-out active:scale-95 cursor-pointer"
+                className="lg:hidden relative rounded-full hover:bg-white hover:text-[#A67C52] hover:shadow-[0_2px_10px_rgba(166,124,82,0.15)] text-[#121212] size-10 transition-all duration-300 ease-out active:scale-95 cursor-pointer"
               >
-                <span className="relative flex size-6 items-center justify-center">
+                <span className="relative flex size-5.5 items-center justify-center">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={cn('absolute inset-0 size-full transition-all duration-300', isSidebarOpen ? 'opacity-0 scale-50 rotate-90' : 'opacity-100 scale-100 rotate-0')}>
                     <line x1="3.5" y1="7" x2="20.5" y2="7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                     <line x1="3.5" y1="12" x2="20.5" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -484,7 +484,7 @@ function NavbarContent({
                   storeName={storeName}
                   lightLogoUrl={lightLogoUrl}
                   darkLogoUrl={darkLogoUrl}
-                  logoScalePercent={logoScalePercent * 1.15}
+                  logoScalePercent={logoScalePercent * 0.95}
                   variant="light-surface"
                   priority
                   onClick={(event) => {
@@ -503,7 +503,7 @@ function NavbarContent({
                 storeName={storeName}
                 lightLogoUrl={lightLogoUrl}
                 darkLogoUrl={darkLogoUrl}
-                logoScalePercent={logoScalePercent * 0.92}
+                logoScalePercent={logoScalePercent * 0.78}
                 variant="light-surface"
                 priority
                 onClick={(event) => {
@@ -796,7 +796,7 @@ export function NavbarStaticShell({
                 storeName={storeName}
                 lightLogoUrl={lightLogoUrl}
                 darkLogoUrl={darkLogoUrl}
-                logoScalePercent={logoScalePercent * 1.15}
+                logoScalePercent={logoScalePercent * 0.95}
                 variant="light-surface"
                 priority
                 isLink={false}
@@ -810,7 +810,7 @@ export function NavbarStaticShell({
               storeName={storeName}
               lightLogoUrl={lightLogoUrl}
               darkLogoUrl={darkLogoUrl}
-              logoScalePercent={logoScalePercent * 0.92}
+              logoScalePercent={logoScalePercent * 0.78}
               variant="light-surface"
               priority
               isLink={false}
@@ -819,7 +819,7 @@ export function NavbarStaticShell({
 
           {/* Desktop Center Search Bar Placeholder */}
           <div className="hidden lg:flex flex-1 max-w-lg xl:max-w-xl mx-6 xl:mx-10 relative">
-            <div className="relative flex h-10 w-full items-center border border-[#E8E5DF] bg-white/80 px-4 text-xs font-sans text-neutral-400">
+            <div className="relative flex h-9.5 w-full items-center border border-[#E8E5DF] bg-white/80 px-4 text-xs font-sans text-neutral-400">
               <Search className="mr-2.5 size-4 text-neutral-400" />
               <span>Search rings, necklaces, bracelets, gold...</span>
             </div>
@@ -841,7 +841,7 @@ export function NavbarStaticShell({
 
         {/* Tier 2: Sub-Navbar for PC only */}
         <div className="hidden lg:block border-t border-[#E8E5DF] bg-[#F7F3EE]">
-          <div className="mx-auto flex h-9 max-w-[1440px] items-center justify-center gap-4 sm:gap-6 xl:gap-8 px-4 text-[10px] sm:text-[10.5px] font-sans uppercase tracking-[0.16em] text-[#121212]/80">
+          <div className="mx-auto flex h-8.5 max-w-[1440px] items-center justify-center gap-4 sm:gap-6 xl:gap-8 px-4 text-[10px] sm:text-[10.5px] font-sans uppercase tracking-[0.16em] text-[#121212]/80">
             <span className="px-2 py-1 font-medium">Home</span>
             <span className="px-2 py-1 font-medium">All Jewelry</span>
             <span className="px-2 py-1 font-medium">Collections</span>

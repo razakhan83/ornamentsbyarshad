@@ -28,7 +28,10 @@ export default function CategoryPillCard({ category, index = 0, href, className 
       prefetch={false}
       className={cn("group relative flex flex-col select-none w-full", className)}
     >
-      <div className="relative w-full aspect-[4/5] overflow-hidden rounded-2xl bg-[#F4F2EE] shadow-xs transition-transform duration-500 ease-out group-hover:scale-[1.02]">
+      <div
+        className="relative w-full aspect-[4/5] overflow-hidden rounded-2xl bg-[#F4F4F5] shadow-xs transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+        style={category?.bgColor ? { backgroundColor: category.bgColor } : { backgroundColor: '#F4F4F5' }}
+      >
         {categoryImage ? (
           <Image
             src={categoryImage}
@@ -40,7 +43,7 @@ export default function CategoryPillCard({ category, index = 0, href, className 
             onError={() => setImgError(true)}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-[#F4F2EE] text-[#A67C52]">
+          <div className="flex h-full w-full items-center justify-center text-[#A67C52]">
             <span className="font-serif text-xs uppercase tracking-widest">Collection</span>
           </div>
         )}

@@ -115,6 +115,11 @@ const ProductSchema = new mongoose.Schema(
             default: '',
             trim: true,
         },
+        plating: {
+            type: String,
+            default: '',
+            trim: true,
+        },
         size: {
             type: String,
             default: '',
@@ -144,6 +149,10 @@ const ProductSchema = new mongoose.Schema(
             type: String,
             default: '',
             trim: true,
+        },
+        isUnlimitedStock: {
+            type: Boolean,
+            default: false,
         },
         stockQuantity: {
             type: Number,
@@ -226,7 +235,9 @@ if (
         !cachedProduct.schema.path('primaryTag') ||
         !cachedProduct.schema.path('isFeatured') ||
         !cachedProduct.schema.path('featuredPriority') ||
-        !cachedProduct.schema.path('availableColors')
+        !cachedProduct.schema.path('availableColors') ||
+        !cachedProduct.schema.path('plating') ||
+        !cachedProduct.schema.path('isUnlimitedStock')
     )
 ) {
     delete mongoose.models.Product;

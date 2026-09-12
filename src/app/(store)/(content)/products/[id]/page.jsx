@@ -492,6 +492,7 @@ function ProductTabsWrapper({ product, reviewSummary }) {
   const hasSpecs = Boolean(
     product.metalType ||
     product.purity ||
+    product.plating ||
     product.grossWeightGrams ||
     product.size ||
     product.availableSizes?.length ||
@@ -522,6 +523,12 @@ function ProductTabsWrapper({ product, reviewSummary }) {
           <div className="grid grid-cols-3 p-3">
             <dt className="text-[#737373] font-medium">Gold Purity / Karat</dt>
             <dd className="col-span-2 text-[#121212] font-semibold">{product.purity}</dd>
+          </div>
+        )}
+        {product.plating && (
+          <div className="grid grid-cols-3 p-3">
+            <dt className="text-[#737373] font-medium">Plating / Polish</dt>
+            <dd className="col-span-2 text-[#121212] font-semibold">{product.plating}</dd>
           </div>
         )}
         {product.grossWeightGrams != null && product.grossWeightGrams !== '' && (

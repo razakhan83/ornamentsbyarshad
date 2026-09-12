@@ -59,7 +59,7 @@ export async function bookNocParcels(parcels, portalKey = 'portal_1') {
       ConsigneeAddress: String(p.consigneeAddress || '').trim(),
       ConsigneeEmail: (() => {
         const email = String(p.consigneeEmail || '').trim();
-        return email && email.includes('@') && email.includes('.') ? email : 'customer@chinaunique.pk';
+        return email && email.includes('@') && email.includes('.') ? email : 'customer@ornamentsbyarshad.pk';
       })(),
       ConsigneeCellNo: String(p.consigneeCellNo || '').trim(),
       ItemType: String(p.itemType || 'Mix').trim(),

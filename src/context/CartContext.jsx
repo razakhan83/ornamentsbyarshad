@@ -6,6 +6,7 @@ import { CheckCircle2, ShoppingCart } from 'lucide-react';
 
 import { trackAddToCartEvent } from '@/lib/clientTracking';
 import { getAvailableStock, getProductUnitPrice, isProductOutOfStock } from '@/lib/productCommerce';
+import { getProductCategoryBgColor } from '@/lib/productCategories';
 
 const CART_STORAGE_KEY = 'ornaments_cart_v1';
 const LEGACY_CART_STORAGE_KEY = 'kifayatly_cart_v2';
@@ -27,6 +28,7 @@ function normalizeCartItem(item) {
     StockStatus: item.StockStatus,
     showOnStore: item.showOnStore,
   });
+  const bgColor = getProductCategoryBgColor(item);
 
   return {
     id: getCartItemId(item),
@@ -43,6 +45,7 @@ function normalizeCartItem(item) {
     selectedMetal: item.selectedMetal || item.metalType || '',
     selectedSize: item.selectedSize || item.size || '',
     selectedColor: item.selectedColor || '',
+    bgColor,
   };
 }
 

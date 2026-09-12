@@ -86,7 +86,7 @@ const FULL_FAQ = [
     id: 'f12',
     question: 'Are your products authentic and good quality?',
     answer:
-      'Every product listed is sourced from verified suppliers and checked for quality before listing. We have been importing directly from China for years: quality is our top priority.',
+      'Every jewelry piece is handcrafted with high quality standards, hallmarked metals, and premium gemstones. Quality, purity, and timeless elegance are our top priorities.',
   },
   {
     id: 'f13',

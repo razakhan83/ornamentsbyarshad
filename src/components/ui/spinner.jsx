@@ -13,3 +13,4 @@ function Spinner({ className, ...props }) {
 }
 
 export { Spinner };
+export default Spinner;

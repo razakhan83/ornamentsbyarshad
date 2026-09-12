@@ -35,16 +35,8 @@ import {
   Trash2,
   Search,
   Loader2,
-  Sparkles,
-  Sliders,
-  Check,
   Package,
-  Layers,
-  ArrowUpDown,
   X,
-  CheckCircle2,
-  Zap,
-  Lock,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -276,26 +268,20 @@ export default function CategoryShowcaseDialog({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="w-[96vw] max-w-[1100px] sm:!max-w-[1100px] md:!max-w-[1100px] max-h-[92vh] flex flex-col p-0 gap-0 overflow-hidden rounded-2xl border border-border shadow-2xl bg-background">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-border bg-muted/30 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-              <Sparkles className="h-5 w-5" />
-            </span>
-            <div>
-              <DialogTitle className="text-base sm:text-lg font-bold text-foreground">
-                Storefront Showcase Manager
-              </DialogTitle>
-              <DialogDescription className="text-xs text-muted-foreground mt-0.5">
-                Category:{' '}
-                <span className="font-bold text-foreground px-1.5 py-0.5 rounded bg-muted/60">
-                  {category?.name}
-                </span>
-              </DialogDescription>
-            </div>
+        <div className="px-6 py-4 border-b border-border bg-muted/20 flex items-center justify-between">
+          <div>
+            <DialogTitle className="text-base sm:text-lg font-bold text-foreground">
+              Storefront Showcase Manager
+            </DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground mt-0.5">
+              Category:{' '}
+              <span className="font-bold text-foreground px-1.5 py-0.5 rounded bg-muted/60">
+                {category?.name}
+              </span>
+            </DialogDescription>
           </div>
 
-          <Badge variant="outline" className="hidden sm:inline-flex gap-1.5 px-3 py-1 font-semibold text-xs border-border bg-card text-foreground">
-            <Package className="h-3.5 w-3.5 text-primary" />
+          <Badge variant="outline" className="hidden sm:inline-flex px-3 py-1 font-semibold text-xs border-border bg-card text-foreground">
             {allProducts.length} Products in Category
           </Badge>
         </div>
@@ -307,8 +293,7 @@ export default function CategoryShowcaseDialog({
             {/* 1. Limit Controller (7 cols) */}
             <div className="lg:col-span-7 flex flex-col justify-between space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
-                  <Sliders className="h-4 w-4 text-primary" />
+                <label className="text-xs font-bold uppercase tracking-wider text-foreground">
                   1. How Many Products on Front?
                 </label>
                 <Badge className="font-mono text-xs px-2.5 py-0.5 bg-primary/10 text-primary hover:bg-primary/15 border-none font-bold">
@@ -350,8 +335,7 @@ export default function CategoryShowcaseDialog({
 
             {/* 2. Selection Strategy (5 cols) */}
             <div className="lg:col-span-5 flex flex-col justify-between space-y-2 lg:border-l lg:border-border/80 lg:pl-5">
-              <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
-                <Layers className="h-4 w-4 text-primary" />
+              <label className="text-xs font-bold uppercase tracking-wider text-foreground">
                 2. Display Strategy
               </label>
 
@@ -364,10 +348,7 @@ export default function CategoryShowcaseDialog({
                       : 'border-border bg-background/50 text-muted-foreground hover:bg-muted/30'
                   )}
                 >
-                  <div className="flex items-center gap-2">
-                    <Zap className="h-3.5 w-3.5 text-primary" />
-                    <span>Pinned First + Auto-Fill</span>
-                  </div>
+                  <span>Pinned First + Auto-Fill</span>
                   <input
                     type="radio"
                     name="selectionMode"
@@ -386,10 +367,7 @@ export default function CategoryShowcaseDialog({
                       : 'border-border bg-background/50 text-muted-foreground hover:bg-muted/30'
                   )}
                 >
-                  <div className="flex items-center gap-2">
-                    <Lock className="h-3.5 w-3.5 text-primary" />
-                    <span>Curated / Pinned Only</span>
-                  </div>
+                  <span>Curated / Pinned Only</span>
                   <input
                     type="radio"
                     name="selectionMode"
@@ -414,12 +392,9 @@ export default function CategoryShowcaseDialog({
               {/* LEFT COLUMN: Pinned Front Products */}
               <div className="flex flex-col space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <ArrowUpDown className="h-4 w-4 text-primary" />
-                    <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">
-                      Front Order ({pinnedProducts.length} Pinned)
-                    </h4>
-                  </div>
+                  <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">
+                    Front Order ({pinnedProducts.length} Pinned)
+                  </h4>
                   <span className="text-[11px] text-muted-foreground">Drag to rearrange position</span>
                 </div>
 
@@ -453,10 +428,7 @@ export default function CategoryShowcaseDialog({
 
                 {/* Live Status Banner */}
                 <div className="rounded-xl bg-primary/10 border border-primary/25 p-3 text-xs text-foreground flex items-center justify-between shadow-2xs">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
-                    <span className="font-medium">Storefront Result:</span>
-                  </div>
+                  <span className="font-medium">Storefront Result:</span>
                   <span className="font-bold text-primary">
                     {selectionMode === 'pinned_first'
                       ? `${pinnedProducts.length} Pinned + ${Math.max(0, limit - pinnedProducts.length)} Auto-Fill = ${limit} Total`
@@ -566,7 +538,7 @@ export default function CategoryShowcaseDialog({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-border bg-muted/30 flex items-center justify-between">
+        <div className="px-6 py-4 border-t border-border bg-muted/20 flex items-center justify-between">
           <Button
             type="button"
             variant="ghost"
@@ -583,18 +555,15 @@ export default function CategoryShowcaseDialog({
             size="sm"
             onClick={handleSave}
             disabled={saving || loading}
-            className="text-xs font-bold gap-2 px-6 h-9 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer"
+            className="text-xs font-bold px-6 h-9 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer"
           >
             {saving ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
                 Saving Changes...
               </>
             ) : (
-              <>
-                <Check className="h-4 w-4" />
-                Save Storefront Showcase
-              </>
+              'Save Storefront Showcase'
             )}
           </Button>
         </div>

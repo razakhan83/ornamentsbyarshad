@@ -79,4 +79,25 @@ export function hasProductCategory(product, categoryId) {
   });
 }
 
+export function getProductCategoryBgColor(product, defaultColor = '#F4F2EE') {
+  if (!product) return defaultColor;
+
+  if (typeof product.bgColor === 'string' && product.bgColor.trim()) {
+    return product.bgColor.trim();
+  }
+
+  const categories = getProductCategories(product);
+  for (const cat of categories) {
+    if (cat?.bgColor && typeof cat.bgColor === 'string' && cat.bgColor.trim()) {
+      return cat.bgColor.trim();
+    }
+  }
+
+  if (product.category && typeof product.category === 'object' && product.category.bgColor) {
+    return String(product.category.bgColor).trim();
+  }
+
+  return defaultColor;
+}
+
 export { normalizeCategoryEntry, normalizeCategoryId };

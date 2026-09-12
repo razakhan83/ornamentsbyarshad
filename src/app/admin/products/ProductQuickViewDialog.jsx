@@ -28,6 +28,7 @@ import {
 import { getBlurPlaceholderProps } from "@/lib/imagePlaceholder";
 import { getProductDetailsAction } from "@/app/actions";
 import { getProductUnitPrice, getVisibleCompareAtPrice, getCompareAtOffPercent } from "@/lib/productCommerce";
+import { getProductCategoryBgColor } from "@/lib/productCategories";
 
 export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct, categoryOptions }) {
   const [detailProduct, setDetailProduct] = useState(null);
@@ -99,7 +100,10 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
                 </div>
               ) : images.length > 0 ? (
                 <div className="flex flex-col gap-3">
-                  <div className="relative w-full aspect-square rounded-xl overflow-hidden border border-border/40 bg-white shadow-sm">
+                  <div 
+                    className="relative w-full aspect-square rounded-xl overflow-hidden border border-border/40 shadow-sm"
+                    style={{ backgroundColor: getProductCategoryBgColor(product) }}
+                  >
                     <Image
                       src={images[0].url}
                       alt="Main product image"
@@ -113,7 +117,8 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
                       {images.slice(1).map((img, idx) => (
                         <div
                           key={idx}
-                          className="relative aspect-square rounded-lg overflow-hidden border border-border/40 bg-white shadow-sm hover:ring-2 hover:ring-primary/30 transition-all"
+                          className="relative aspect-square rounded-lg overflow-hidden border border-border/40 shadow-sm hover:ring-2 hover:ring-primary/30 transition-all"
+                          style={{ backgroundColor: getProductCategoryBgColor(product) }}
                         >
                           <Image
                             src={img.url}

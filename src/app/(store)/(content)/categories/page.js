@@ -13,7 +13,7 @@ async function getCategoriesData() {
   try {
     await mongooseConnect();
 
-    const categories = await Category.find({ isEnabled: true, slug: { $ne: 'special-offers' } })
+    const categories = await Category.find({ isEnabled: { $ne: false }, slug: { $ne: 'special-offers' } })
       .sort({ sortOrder: 1, name: 1 })
       .lean();
 
@@ -33,15 +33,15 @@ async function getCategoriesData() {
     return categories.map((cat, idx) => ({
       _id: cat._id.toString(),
       id: cat.slug || cat._id.toString(),
-      name: cat.name,
-      slug: cat.slug,
+      name: cat.name || cat.label || 'Collection',
+      slug: cat.slug || cat._id.toString(),
       image: cat.image || '',
       secondaryImage: cat.secondaryImage || '',
       tertiaryImage: cat.tertiaryImage || '',
       blurDataURL: cat.blurDataURL || '',
       secondaryBlurDataURL: cat.secondaryBlurDataURL || '',
       tertiaryBlurDataURL: cat.tertiaryBlurDataURL || '',
-      productCount: countMap.get(String(cat._id)) || 0,
+      productCount: countMap.get(String(cat._id)) || countMap.get(String(cat.slug)) || 0,
       index: idx,
     }));
   } catch (error) {
@@ -52,7 +52,7 @@ async function getCategoriesData() {
 
 export default async function CategoriesPage() {
   'use cache';
-  cacheLife('foreverish');
+  cacheLife('hours');
   cacheTag('categories');
 
   const categories = await getCategoriesData();

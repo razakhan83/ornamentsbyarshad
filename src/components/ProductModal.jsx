@@ -5,7 +5,7 @@ import { useCartActions } from '@/context/CartContext';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CLOUDINARY_IMAGE_PRESETS, optimizeCloudinaryUrl } from '@/lib/cloudinaryImage';
-import { getProductCategoryNames } from '@/lib/productCategories';
+import { getProductCategoryNames, getProductCategoryBgColor } from '@/lib/productCategories';
 import { getPrimaryProductImage } from '@/lib/productImages';
 import { getBlurPlaceholderProps } from '@/lib/imagePlaceholder';
 import { buildProductWhatsAppMessage, createWhatsAppUrl } from '@/lib/whatsapp';
@@ -60,7 +60,10 @@ export default function ProductModal({ product, onClose, whatsappNumber = '', st
                     </button>
 
                     <div className="flex flex-col md:flex-row">
-                        <div className="relative aspect-square w-full overflow-hidden bg-muted group md:min-h-[300px] md:w-1/2 md:aspect-auto">
+                        <div 
+                            className="relative aspect-square w-full overflow-hidden group md:min-h-[300px] md:w-1/2 md:aspect-auto"
+                            style={{ backgroundColor: getProductCategoryBgColor(product) }}
+                        >
                             {primaryImageSrc ? (
                                 <Image
                                     src={primaryImageSrc}

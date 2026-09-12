@@ -61,7 +61,7 @@ function toAbsoluteEmailUrl(url, baseUrl = DEFAULT_BASE_URL) {
   let cleanBase = String(baseUrl || DEFAULT_BASE_URL).replace(/\/+$/, '');
   // When running locally, Gmail proxy cannot reach localhost, so use live production domain for emails
   if (/localhost|127\.0\.0\.1/i.test(cleanBase) || !cleanBase) {
-    cleanBase = 'https://www.chinauniquestore.com';
+    cleanBase = 'https://www.ornamentsbyarshad.com';
   }
   const cleanPath = cleanUrl.replace(/^\/+/, '');
   return `${cleanBase}/${cleanPath}`;
@@ -123,8 +123,8 @@ function getCleanAddressHtml(address, city, landmark, phone) {
   return lines.length > 0 ? lines.join('<br/>') : 'Address provided at checkout';
 }
 
-const DARK_BRAND_LOGO = '/china-unique-logo-cropped.png';
-const WHITE_BRAND_LOGO = '/china-unique-logo-dark.png';
+const DARK_BRAND_LOGO = '/logo.png';
+const WHITE_BRAND_LOGO = '/logo.png';
 
 function isWhiteWordmark(url) {
   return /logo-dark|white-logo|logo_white/i.test(String(url || ''));

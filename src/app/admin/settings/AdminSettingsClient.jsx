@@ -257,7 +257,7 @@ export default function AdminSettingsClient({ initialSettings, isConfiguredAdmin
                 type="email"
                 value={form.supportEmail}
                 onChange={(event) => handleChange('supportEmail', event.target.value)}
-                placeholder="support@chinauniquestore.com"
+                placeholder="support@ornamentsbyarshad.com"
               />
             </Field>
             <Field>
