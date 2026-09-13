@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import Image from 'next/image';
 import AnimatedStats from '@/components/AnimatedStats';
 import WhatsAppIcon from '@/components/icons/WhatsAppIcon';
 import TiltedProductMarquee from '@/components/TiltedProductMarquee';
@@ -18,10 +19,12 @@ export default async function HomeBelowFold() {
         <div className="mx-auto max-w-[1440px] px-4 sm:px-6 xl:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <div className="relative aspect-[4/5] sm:aspect-[3/2] lg:aspect-[4/5] overflow-hidden bg-[#F4F2EE] rounded-2xl sm:rounded-3xl">
-              <img
-                src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=1200&q=80"
-                alt="Master Goldsmith Crafting Fine Jewelry"
-                className="w-full h-full object-cover rounded-2xl sm:rounded-3xl transition-transform duration-700 hover:scale-105"
+              <Image
+                src="/Gemini_Generated_Image_fhmgenfhmgenfhmg.jpg"
+                alt="The Art of Eternal Craftsmanship - Ornaments by Arshad"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="size-full object-cover rounded-2xl sm:rounded-3xl transition-transform duration-700 hover:scale-105"
                 loading="lazy"
               />
             </div>

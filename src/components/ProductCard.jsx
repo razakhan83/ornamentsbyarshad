@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Star, ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ProductCardWishlistSlot from "@/components/ProductCardWishlistSlot";
 import { CLOUDINARY_IMAGE_PRESETS, optimizeCloudinaryUrl } from "@/lib/cloudinaryImage";
@@ -59,20 +59,6 @@ export default function ProductCard({ product, className = "", priority = false 
         style={{ backgroundColor: getProductCategoryBgColor(product) }}
       >
         <ProductCardWishlistSlot product={product} />
-
-        {/* Quick View / Product Detail Eye Action */}
-        <Link
-          href={productHref}
-          prefetch={false}
-          aria-label={`View details for ${productName}`}
-          title="View product details"
-          className="absolute right-2.5 top-12 sm:top-13 z-20 flex size-8 sm:size-9 items-center justify-center rounded-full border border-[#E8E5DF] bg-white/95 text-[#121212] shadow-xs outline-none transition-all duration-300 ease-out hover:text-[#A67C52] hover:border-[#A67C52]/40 hover:scale-110 active:scale-95 cursor-pointer opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus-visible:opacity-100"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <Eye className="size-4 sm:size-4.5 stroke-[1.8]" />
-        </Link>
 
         {/* Small Previous/Next Chevrons for Cycling Images (Expanded Hitbox for Effortless Tapping) */}
         {hasMultipleImages && (
