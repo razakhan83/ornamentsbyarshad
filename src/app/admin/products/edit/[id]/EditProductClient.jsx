@@ -957,11 +957,12 @@ export default function EditProduct({ id }) {
                           <SelectValue placeholder="Pick Plating" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="Gold Plating">Gold Plating</SelectItem>
-                          <SelectItem value="18K Micron Gold Plating">18K Micron Gold Plating</SelectItem>
-                          <SelectItem value="Silver Plating">Silver Plating</SelectItem>
-                          <SelectItem value="Rose Gold Plating">Rose Gold Plating</SelectItem>
-                          <SelectItem value="Rhodium Plating">Rhodium Plating</SelectItem>
+                          <SelectItem value="Gold Plated">Gold Plated</SelectItem>
+                          <SelectItem value="18K Micron Gold Plated">18K Micron Gold Plated</SelectItem>
+                          <SelectItem value="24K Gold Plated">24K Gold Plated</SelectItem>
+                          <SelectItem value="Rose Gold Plated">Rose Gold Plated</SelectItem>
+                          <SelectItem value="Rhodium Plated">Rhodium Plated</SelectItem>
+                          <SelectItem value="Silver Plated">Silver Plated</SelectItem>
                           <SelectItem value="Antique Polish">Antique Polish</SelectItem>
                           <SelectItem value="High Polish">High Polish</SelectItem>
                           <SelectItem value="None / Plain">None / Plain</SelectItem>
@@ -972,7 +973,7 @@ export default function EditProduct({ id }) {
                         value={plating}
                         onChange={(e) => setPlating(e.target.value)}
                         className="h-10 px-3 text-xs flex-1"
-                        placeholder="e.g. 18K Micron Gold Plating"
+                        placeholder="e.g. 18K Micron Gold Plated"
                       />
                     </div>
                   </div>
