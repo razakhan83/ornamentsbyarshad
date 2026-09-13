@@ -69,14 +69,7 @@ function ProductsGridSkeletonContent({ animate, variant }) {
   return (
     <SkeletonProvider animate={animate} variant={variant}>
       <div className="products-page-results-meta mb-4 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-1.5">
-          <Skeleton className="h-4 w-14 rounded-md" />
-          <Skeleton className="h-4 w-5 rounded-md" />
-          <Skeleton className="h-4 w-7 rounded-md" />
-          <Skeleton className="h-4 w-5 rounded-md" />
-          <Skeleton className="h-4 w-7 rounded-md" />
-          <Skeleton className="h-4 w-16 rounded-md" />
-        </div>
+        <Skeleton className="h-4 w-40 rounded-sm bg-[#E8E5DF]/50" />
       </div>
 
       <div className="grid auto-rows-max grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">

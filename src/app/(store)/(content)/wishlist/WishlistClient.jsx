@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Heart } from 'lucide-react';
 
 import ProductCard from '@/components/ProductCard';
+import ProductCardSkeleton from '@/components/ProductCardSkeleton';
 import { Button } from '@/components/ui/button';
 import {
   Empty,
@@ -20,9 +21,9 @@ export default function WishlistClient() {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-        {[0, 1, 2, 3, 4].map((index) => (
-          <div key={index} className="aspect-[3/4] animate-pulse bg-[#F4F2EE]" />
+      <div className="grid auto-rows-max grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <ProductCardSkeleton key={index} />
         ))}
       </div>
     );
