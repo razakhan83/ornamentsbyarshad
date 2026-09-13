@@ -597,93 +597,93 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
             </div>
         </div>
 
-        {/* Size Guide Modal (Spacious on PC, Perfect One-View on Mobile) */}
+        {/* Size Guide Modal (Minimal, Clean, High Contrast for Mobile & Desktop) */}
         <Dialog open={sizeGuideOpen} onOpenChange={setSizeGuideOpen}>
-            <DialogContent className="w-[calc(100vw-1.5rem)] sm:w-full sm:max-w-xl md:max-w-2xl max-h-[88vh] overflow-y-auto overflow-x-hidden rounded-2xl border border-[#E8E5DF] bg-[#FAF9F6] p-3.5 sm:p-7 shadow-2xl">
-                <DialogHeader className="space-y-1 text-left border-b border-[#E8E5DF] pb-3 sm:pb-4 pr-10">
+            <DialogContent className="w-[calc(100vw-1.5rem)] sm:w-full sm:max-w-xl md:max-w-2xl max-h-[88vh] overflow-y-auto overflow-x-hidden rounded-2xl border border-[#E8E5DF] bg-[#FAF9F6] p-4 sm:p-7 shadow-2xl">
+                <DialogHeader className="space-y-1 text-left border-b border-[#E8E5DF] pb-3 sm:pb-4 pr-8">
                     <DialogTitle className="font-serif text-lg sm:text-2xl font-normal text-[#121212] tracking-normal sm:tracking-wide">
                         Jewelry & Ring Size Guide
                     </DialogTitle>
-                    <DialogDescription className="text-[11px] sm:text-xs text-[#737373] tracking-normal sm:tracking-wider sm:uppercase leading-tight">
-                        Atelier ring & jewelry measurement standards
+                    <DialogDescription className="text-xs text-[#555] tracking-wide uppercase font-medium">
+                        Standard ring and jewelry measurements
                     </DialogDescription>
                 </DialogHeader>
 
-                <div className="space-y-3.5 pt-1 sm:pt-2">
+                <div className="space-y-3.5 pt-2">
                     {/* Free Size Highlight Card */}
-                    <div className="flex items-start gap-2.5 sm:gap-3.5 rounded-xl border border-[#A67C52]/25 bg-[#A67C52]/8 p-3 sm:p-4 text-xs sm:text-sm shadow-xs">
+                    <div className="flex items-start gap-3 rounded-xl border border-[#A67C52]/30 bg-[#A67C52]/10 p-3 sm:p-4 text-xs sm:text-sm">
                         <Sparkles className="size-4 text-[#A67C52] shrink-0 mt-0.5" />
-                        <div className="text-[#555] leading-relaxed text-[11.5px] sm:text-xs">
-                            <span className="font-semibold text-[#121212] block sm:inline mr-1">
-                                ✨ Free Size (Adjustable):
+                        <div className="text-[#2B2723] leading-relaxed text-xs sm:text-[13px]">
+                            <span className="font-semibold text-[#121212] mr-1">
+                                Free Size (Adjustable):
                             </span>
-                            Open-ended flexible band that adjusts gently by hand to fit standard sizes <strong className="text-[#121212]">US 5 to US 9</strong> comfortably.
+                            Flexible open band that adjusts gently by hand to fit standard sizes <strong className="text-[#121212]">US 5 to US 9</strong> comfortably.
                         </div>
                     </div>
 
-                    {/* Responsive Sizes Table (Fixed proportions for perfect 1-view on all mobile widths) */}
-                    <div className="overflow-hidden rounded-xl border border-[#E8E5DF] bg-white shadow-xs w-full">
+                    {/* Responsive Sizes Table */}
+                    <div className="overflow-hidden rounded-xl border border-[#E8E5DF] bg-white w-full">
                         <table className="w-full table-fixed text-left text-xs sm:text-sm">
                             <colgroup>
-                                <col className="w-[30%] sm:w-[28%]" />
-                                <col className="w-[35%] sm:w-[36%]" />
-                                <col className="w-[35%] sm:w-[36%]" />
+                                <col className="w-[32%] sm:w-[30%]" />
+                                <col className="w-[34%] sm:w-[35%]" />
+                                <col className="w-[34%] sm:w-[35%]" />
                             </colgroup>
-                            <thead className="border-b border-[#E8E5DF] bg-[#FAF9F6] text-[10px] sm:text-xs uppercase tracking-wider text-[#737373]">
+                            <thead className="border-b border-[#E8E5DF] bg-[#F7F4EE] text-[10px] sm:text-xs uppercase tracking-wider text-[#4A4744]">
                                 <tr>
-                                    <th className="py-2.5 px-2.5 sm:px-4 font-semibold truncate">Size</th>
-                                    <th className="py-2.5 px-2 sm:px-4 font-semibold truncate">Diameter</th>
-                                    <th className="py-2.5 px-2 sm:px-4 font-semibold truncate">Circumference</th>
+                                    <th className="py-2.5 px-3 sm:px-4 font-semibold">Size</th>
+                                    <th className="py-2.5 px-2.5 sm:px-4 font-semibold">Diameter</th>
+                                    <th className="py-2.5 px-2.5 sm:px-4 font-semibold">Circumference</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#E8E5DF] text-[#121212] text-[11px] sm:text-xs">
-                                <tr className="bg-[#A67C52]/8 font-medium">
-                                    <td className="py-2.5 px-2.5 sm:px-4">
+                            <tbody className="divide-y divide-[#E8E5DF] text-[#121212] text-xs sm:text-[13px]">
+                                <tr className="bg-[#A67C52]/10 font-medium">
+                                    <td className="py-2.5 px-3 sm:px-4">
                                         <span className="font-bold text-[#A67C52] block leading-tight">Free Size</span>
-                                        <span className="text-[9px] text-[#A67C52] font-medium block leading-none mt-0.5">Adjustable (5-9)</span>
+                                        <span className="text-[10px] text-[#A67C52] font-semibold block leading-none mt-0.5">Adjustable (5-9)</span>
                                     </td>
-                                    <td className="py-2.5 px-2 sm:px-4 text-[#555] text-[10.5px] sm:text-xs">15.7 – 19.8 mm</td>
-                                    <td className="py-2.5 px-2 sm:px-4 text-[#555] text-[10.5px] sm:text-xs">49.3 – 62.1 mm</td>
+                                    <td className="py-2.5 px-2.5 sm:px-4 text-[#2B2723] font-medium">15.7 – 19.8 mm</td>
+                                    <td className="py-2.5 px-2.5 sm:px-4 text-[#2B2723] font-medium">49.3 – 62.1 mm</td>
                                 </tr>
                                 <tr>
-                                    <td className="py-2 px-2.5 sm:px-4 font-medium">US 5</td>
-                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">15.7 mm</td>
-                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">49.3 mm</td>
+                                    <td className="py-2.5 px-3 sm:px-4 font-medium text-[#121212]">US 5</td>
+                                    <td className="py-2.5 px-2.5 sm:px-4 text-[#4A4744]">15.7 mm</td>
+                                    <td className="py-2.5 px-2.5 sm:px-4 text-[#4A4744]">49.3 mm</td>
                                 </tr>
                                 <tr>
-                                    <td className="py-2 px-2.5 sm:px-4 font-medium">US 6</td>
-                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">16.5 mm</td>
-                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">51.9 mm</td>
+                                    <td className="py-2.5 px-3 sm:px-4 font-medium text-[#121212]">US 6</td>
+                                    <td className="py-2.5 px-2.5 sm:px-4 text-[#4A4744]">16.5 mm</td>
+                                    <td className="py-2.5 px-2.5 sm:px-4 text-[#4A4744]">51.9 mm</td>
                                 </tr>
                                 <tr>
-                                    <td className="py-2 px-2.5 sm:px-4 font-medium">
+                                    <td className="py-2.5 px-3 sm:px-4 font-medium text-[#121212]">
                                         <span>US 7</span>
-                                        <span className="hidden sm:inline-block ml-1 text-[9px] text-[#A67C52] font-medium">(Standard)</span>
+                                        <span className="ml-1 text-[10px] text-[#A67C52] font-medium">(Standard)</span>
                                     </td>
-                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">17.3 mm</td>
-                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">54.4 mm</td>
+                                    <td className="py-2.5 px-2.5 sm:px-4 text-[#4A4744]">17.3 mm</td>
+                                    <td className="py-2.5 px-2.5 sm:px-4 text-[#4A4744]">54.4 mm</td>
                                 </tr>
                                 <tr>
-                                    <td className="py-2 px-2.5 sm:px-4 font-medium">US 8</td>
-                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">18.1 mm</td>
-                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">57.0 mm</td>
+                                    <td className="py-2.5 px-3 sm:px-4 font-medium text-[#121212]">US 8</td>
+                                    <td className="py-2.5 px-2.5 sm:px-4 text-[#4A4744]">18.1 mm</td>
+                                    <td className="py-2.5 px-2.5 sm:px-4 text-[#4A4744]">57.0 mm</td>
                                 </tr>
                                 <tr>
-                                    <td className="py-2 px-2.5 sm:px-4 font-medium">US 9</td>
-                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">18.9 mm</td>
-                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">59.5 mm</td>
+                                    <td className="py-2.5 px-3 sm:px-4 font-medium text-[#121212]">US 9</td>
+                                    <td className="py-2.5 px-2.5 sm:px-4 text-[#4A4744]">18.9 mm</td>
+                                    <td className="py-2.5 px-2.5 sm:px-4 text-[#4A4744]">59.5 mm</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
                     {/* How to Measure Section */}
-                    <div className="rounded-xl border border-[#E8E5DF] bg-white p-3 sm:p-4 text-[11px] sm:text-xs text-[#737373] space-y-1.5 shadow-xs">
-                        <p className="font-semibold text-[#121212] uppercase tracking-wider text-[10px]">How to measure at home:</p>
-                        <p className="leading-relaxed text-[#555]">
+                    <div className="rounded-xl border border-[#E8E5DF] bg-white p-3.5 sm:p-4 text-xs text-[#4A4744] space-y-1.5">
+                        <p className="font-semibold text-[#121212] uppercase tracking-wider text-[11px]">How to measure at home:</p>
+                        <p className="leading-relaxed text-[#2B2723]">
                             Wrap a thin paper strip around your finger base, mark the overlap point, and measure against a ruler in mm.
                         </p>
-                        <p className="text-[#A67C52] pt-1 text-[10.5px] sm:text-xs font-medium border-t border-[#E8E5DF]">
+                        <p className="text-[#A67C52] pt-1.5 text-xs font-medium border-t border-[#E8E5DF]">
                             Need a custom size? Contact our master jeweler via WhatsApp concierge.
                         </p>
                     </div>

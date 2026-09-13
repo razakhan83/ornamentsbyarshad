@@ -486,99 +486,11 @@ function ProductTabsWrapper({ product, reviewSummary }) {
     formatRichTextDescriptionHtml(product.Description) ||
     'Crafted with utmost precision and artistic dedication, this exquisite piece from Ornaments by Arshad showcases timeless elegance, masterfully finished in authentic precious metals.';
 
-  const hasSpecs = Boolean(
-    product.metalType ||
-    product.purity ||
-    product.plating ||
-    product.grossWeightGrams ||
-    product.size ||
-    product.availableSizes?.length ||
-    product.availableColors?.length ||
-    product.certificateNumber ||
-    product.gemstone?.gemstoneType ||
-    product.gemstone?.carat
-  );
-
-  const gemstoneText = [
-    product.gemstone?.gemstoneType,
-    product.gemstone?.carat ? `${product.gemstone.carat} ct` : null,
-    product.gemstone?.cut ? `Cut: ${product.gemstone.cut}` : null,
-    product.gemstone?.clarity ? `Clarity: ${product.gemstone.clarity}` : null,
-    product.gemstone?.color ? `Color: ${product.gemstone.color}` : null,
-  ].filter(Boolean).join(' • ');
-
-  const specsContent = hasSpecs ? (
-    <div className="overflow-hidden rounded-xl border border-[#E8E5DF] bg-[#FAF9F6]">
-      <dl className="divide-y divide-[#E8E5DF] text-xs sm:text-sm">
-        {product.metalType && (
-          <div className="grid grid-cols-3 p-3">
-            <dt className="text-[#737373] font-medium">Metal Type</dt>
-            <dd className="col-span-2 text-[#121212] font-semibold">{product.metalType}</dd>
-          </div>
-        )}
-        {product.purity && (
-          <div className="grid grid-cols-3 p-3">
-            <dt className="text-[#737373] font-medium">Gold Purity / Karat</dt>
-            <dd className="col-span-2 text-[#121212] font-semibold">{product.purity}</dd>
-          </div>
-        )}
-        {product.plating && (
-          <div className="grid grid-cols-3 p-3">
-            <dt className="text-[#737373] font-medium">Plating / Polish</dt>
-            <dd className="col-span-2 text-[#121212] font-semibold">
-              {String(product.plating)
-                .replace(/Gold Plating/gi, 'Gold Plated')
-                .replace(/Silver Plating/gi, 'Silver Plated')
-                .replace(/Rose Gold Plating/gi, 'Rose Gold Plated')
-                .replace(/Rhodium Plating/gi, 'Rhodium Plated')
-                .trim()}
-            </dd>
-          </div>
-        )}
-        {product.grossWeightGrams != null && product.grossWeightGrams !== '' && (
-          <div className="grid grid-cols-3 p-3">
-            <dt className="text-[#737373] font-medium">Gross Weight</dt>
-            <dd className="col-span-2 text-[#121212] font-semibold">{product.grossWeightGrams} Grams</dd>
-          </div>
-        )}
-        {(product.size || (product.availableSizes?.length > 0)) && (
-          <div className="grid grid-cols-3 p-3">
-            <dt className="text-[#737373] font-medium">Available Sizes</dt>
-            <dd className="col-span-2 text-[#121212] font-semibold">
-              {product.availableSizes?.length > 0 ? product.availableSizes.join(', ') : product.size}
-            </dd>
-          </div>
-        )}
-        {product.availableColors?.length > 0 && (
-          <div className="grid grid-cols-3 p-3">
-            <dt className="text-[#737373] font-medium">Available Colors</dt>
-            <dd className="col-span-2 text-[#121212] font-semibold">
-              {product.availableColors.join(', ')}
-            </dd>
-          </div>
-        )}
-        {gemstoneText && (
-          <div className="grid grid-cols-3 p-3">
-            <dt className="text-[#737373] font-medium">Gemstones & Diamonds</dt>
-            <dd className="col-span-2 text-[#121212] font-semibold">{gemstoneText}</dd>
-          </div>
-        )}
-        {product.certificateNumber && (
-          <div className="grid grid-cols-3 p-3">
-            <dt className="text-[#737373] font-medium">Certificate / Hallmark</dt>
-            <dd className="col-span-2 text-[#121212] font-semibold">{product.certificateNumber}</dd>
-          </div>
-        )}
-      </dl>
-    </div>
-  ) : null;
-
   return (
     <div id="product-reviews" className="scroll-mt-24 md:scroll-mt-32 mt-12 md:mt-20">
       <ProductDetailsTabs
         reviewCount={reviewSummary.reviewCount}
         descriptionContent={<ProductDescription html={descriptionHtml} />}
-        specsContent={specsContent}
         reviewsContent={<ProductReviews productId={product._id} productName={product.Name} />}
       />
     </div>

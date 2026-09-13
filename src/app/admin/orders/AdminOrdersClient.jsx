@@ -3663,7 +3663,9 @@ export default function AdminOrdersClient({
                                 {primaryImage?.url ? (
                                   <img src={primaryImage.url} alt={product.Name} className="size-9 rounded-md object-cover border shrink-0 bg-background" />
                                 ) : (
-                                  <div className="size-9 rounded-md bg-muted flex items-center justify-center shrink-0 text-xs">📦</div>
+                                  <div className="size-9 rounded-md bg-muted flex items-center justify-center shrink-0 text-muted-foreground">
+                                    <Package className="size-4" />
+                                  </div>
                                 )}
                                 <div className="min-w-0 flex-1">
                                   <p className="text-[12px] font-semibold text-foreground truncate">{product.Name}</p>
@@ -3704,7 +3706,9 @@ export default function AdminOrdersClient({
                           {item.image ? (
                             <img src={item.image} alt={item.name || 'Product'} className="size-10 rounded-lg object-cover border shrink-0 bg-background" />
                           ) : (
-                            <div className="size-10 rounded-lg bg-muted flex items-center justify-center shrink-0 text-sm">📦</div>
+                            <div className="size-10 rounded-lg bg-muted flex items-center justify-center shrink-0 text-muted-foreground">
+                              <Package className="size-5" />
+                            </div>
                           )}
                           <div className="flex flex-col min-w-0">
                             <p className="text-[13px] font-semibold text-foreground truncate">{item.name || item.title || 'Item'}</p>
@@ -3913,7 +3917,7 @@ export default function AdminOrdersClient({
         <DialogContent className="max-w-md bg-white text-gray-900 rounded-2xl p-6 shadow-xl border border-gray-200">
           <DialogHeader className="pb-2">
             <DialogTitle className="flex items-center gap-2 text-lg font-bold text-gray-900">
-              <span className="text-xl">🎉</span>
+              <CheckCircle2 className="size-5 text-emerald-600" />
               Booking Successful!
             </DialogTitle>
             <DialogDescription className="text-xs text-gray-600">

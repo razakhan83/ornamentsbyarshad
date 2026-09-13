@@ -1575,7 +1575,7 @@ export default function AddProduct() {
                       Generating...
                     </>
                   ) : (
-                    "✨ AI Auto-SEO"
+                    "AI Auto-SEO"
                   )}
                 </Button>
                 <div

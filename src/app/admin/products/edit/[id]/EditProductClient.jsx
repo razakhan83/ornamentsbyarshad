@@ -530,7 +530,7 @@ export default function EditProduct({ id }) {
     ? 'Generating...'
     : seoCooldownRemaining > 0
       ? `Cooling down... ${seoCooldownRemaining}s`
-      : '✨ AI Auto-SEO';
+      : 'AI Auto-SEO';
   const mockProduct = {
     _id: "preview",
     slug: "preview",
