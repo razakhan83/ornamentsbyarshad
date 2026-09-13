@@ -148,7 +148,13 @@ export default function EditProduct({ id }) {
           setRating(String(getProductRating(p)));
           setMetalType(p.metalType || '');
           setPurity(p.purity || '');
-          setPlating(p.plating || '');
+          const rawPlating = String(p.plating || '').trim();
+          const normalizedPlating = rawPlating
+            .replace(/Gold Plating/gi, 'Gold Plated')
+            .replace(/Silver Plating/gi, 'Silver Plated')
+            .replace(/Rose Gold Plating/gi, 'Rose Gold Plated')
+            .replace(/Rhodium Plating/gi, 'Rhodium Plated');
+          setPlating(normalizedPlating);
           setGrossWeightGrams(p.grossWeightGrams ?? '');
           setCertificateNumber(p.certificateNumber || '');
           setSize(p.size || '');

@@ -525,7 +525,14 @@ function ProductTabsWrapper({ product, reviewSummary }) {
         {product.plating && (
           <div className="grid grid-cols-3 p-3">
             <dt className="text-[#737373] font-medium">Plating / Polish</dt>
-            <dd className="col-span-2 text-[#121212] font-semibold">{product.plating}</dd>
+            <dd className="col-span-2 text-[#121212] font-semibold">
+              {String(product.plating)
+                .replace(/Gold Plating/gi, 'Gold Plated')
+                .replace(/Silver Plating/gi, 'Silver Plated')
+                .replace(/Rose Gold Plating/gi, 'Rose Gold Plated')
+                .replace(/Rhodium Plating/gi, 'Rhodium Plated')
+                .trim()}
+            </dd>
           </div>
         )}
         {product.grossWeightGrams != null && product.grossWeightGrams !== '' && (
