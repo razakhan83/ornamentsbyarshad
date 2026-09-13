@@ -133,7 +133,6 @@ export default function ProductGallery({ images, primaryTag, product }) {
   }, []);
 
   const handleMouseMove = (e) => {
-    if (!isMagnifierActive) return;
     handlePointerMove(e.clientX, e.clientY, false);
   };
 
@@ -203,17 +202,15 @@ export default function ProductGallery({ images, primaryTag, product }) {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         className={cn(
-          "relative aspect-[4/5] w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-[#E8E5DF] shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-colors duration-300",
-          isMagnifierActive && "cursor-crosshair touch-none"
+          "relative aspect-[4/5] w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-[#E8E5DF] shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-colors duration-300 group/gallery",
+          isMagnifierActive ? "cursor-crosshair touch-none" : "cursor-zoom-in"
         )}
         style={{ backgroundColor: getProductCategoryBgColor(product) }}
       >
         {/* Transparent Touch / Interaction Shield when Magnifier is Active */}
         {isMagnifierActive && (
           <div
-            className="absolute inset-0 z-20 touch-none cursor-crosshair"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
+            className="absolute inset-0 z-20 touch-none cursor-crosshair md:hidden"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -241,7 +238,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
           </div>
         )}
 
-        {/* Jewelry Loupe Magnifier Toggle Button (Pure Icon) */}
+        {/* Jewelry Loupe Magnifier Toggle Button (Luxury Frosted Glass Pill) */}
         <div 
           className="absolute right-3 bottom-3 sm:right-4 sm:bottom-4 z-40 pointer-events-auto flex items-center gap-2"
           onMouseEnter={() => setLensState((prev) => ({ ...prev, show: false }))}
@@ -251,31 +248,31 @@ export default function ProductGallery({ images, primaryTag, product }) {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              setIsMagnifierActive(!isMagnifierActive);
+              setIsMagnifierActive((prev) => !prev);
               setLensState((prev) => ({ ...prev, show: false }));
             }}
             onMouseEnter={() => setLensState((prev) => ({ ...prev, show: false }))}
             onTouchStart={() => setLensState((prev) => ({ ...prev, show: false }))}
             aria-pressed={isMagnifierActive}
-            title={isMagnifierActive ? "Turn off magnifier" : "Magnify jewelry details"}
+            title={isMagnifierActive ? "Turn off magnifier" : "Inspect jewelry details"}
             className={cn(
-              "inline-flex items-center justify-center size-9 bg-transparent border-0 shadow-none text-[#121212] hover:text-[#A67C52] transition-transform duration-200 cursor-pointer active:scale-90 select-none p-0",
-              isMagnifierActive && "text-[#A67C52] scale-110"
+              "inline-flex items-center justify-center size-9 sm:size-10 rounded-full bg-white/90 backdrop-blur-md border border-[#E8E5DF] shadow-[0_2px_10px_rgba(0,0,0,0.08)] text-[#121212] hover:text-[#A67C52] hover:bg-white hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer select-none",
+              isMagnifierActive && "bg-[#121212] text-white hover:bg-[#121212] hover:text-white border-[#121212]"
             )}
           >
             {isMagnifierActive ? (
-              <ZoomOut className="size-6 text-[#A67C52] stroke-[1.8] drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)]" />
+              <ZoomOut className="size-4.5 sm:size-5 stroke-[2]" />
             ) : (
-              <ZoomIn className="size-6 text-[#121212] hover:text-[#A67C52] stroke-[1.8] drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)]" />
+              <ZoomIn className="size-4.5 sm:size-5 stroke-[2]" />
             )}
           </button>
         </div>
 
-        {/* Loupe Active Helper Banner */}
+        {/* Loupe Active Helper Banner (Mobile) */}
         {isMagnifierActive && !lensState.show && (
-          <div className="absolute top-3 sm:top-4 left-1/2 -translate-x-1/2 z-25 pointer-events-none bg-[#121212]/90 backdrop-blur-sm text-white text-[10px] sm:text-[11px] font-sans px-3.5 py-1.5 rounded-full shadow-lg border border-[#A67C52]/40 flex items-center gap-1.5 animate-pulse">
+          <div className="absolute top-3 sm:top-4 left-1/2 -translate-x-1/2 z-25 pointer-events-none bg-[#121212]/90 backdrop-blur-sm text-white text-[10px] sm:text-[11px] font-sans px-3.5 py-1.5 rounded-full shadow-lg border border-[#A67C52]/40 flex items-center gap-1.5 animate-pulse md:hidden">
             <Sparkles className="size-3 text-[#A67C52]" />
-            <span>Hover or drag over jewelry</span>
+            <span>Drag finger to inspect details</span>
           </div>
         )}
 
@@ -289,20 +286,26 @@ export default function ProductGallery({ images, primaryTag, product }) {
           <CarouselContent viewportClassName="h-full rounded-2xl sm:rounded-3xl" className="ml-0 h-full">
             {normalizedImages.map((image, index) => {
               const productName = product?.Name || product?.name || 'Product';
+              const isFirstImage = index === 0;
               return (
                 <CarouselItem key={index} className="h-full basis-full pl-0">
-                  <div className="relative h-full min-h-0 w-full overflow-hidden rounded-2xl sm:rounded-3xl">
-                    <Image
-                      src={optimizeCloudinaryUrl(image.url, CLOUDINARY_IMAGE_PRESETS.productGalleryMain)}
-                      alt={`${productName} - View ${index + 1}`}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 58vw, 50vw"
-                      className="object-cover rounded-2xl sm:rounded-3xl"
-                      {...getBlurPlaceholderProps(image.blurDataURL)}
-                      priority={index === 0}
-                      fetchPriority={index === 0 ? 'high' : 'auto'}
-                      loading={index === 0 ? 'eager' : 'lazy'}
-                    />
+                  <div className={cn(
+                    "relative h-full min-h-0 w-full overflow-hidden rounded-2xl sm:rounded-3xl flex items-center justify-center",
+                    isFirstImage ? "p-3 sm:p-5 md:p-6" : "p-0"
+                  )}>
+                    <div className="relative size-full">
+                      <Image
+                        src={optimizeCloudinaryUrl(image.url, CLOUDINARY_IMAGE_PRESETS.productGalleryMain)}
+                        alt={`${productName} - View ${index + 1}`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 58vw, 50vw"
+                        className="object-contain transition-transform duration-300"
+                        {...getBlurPlaceholderProps(image.blurDataURL)}
+                        priority={isFirstImage}
+                        fetchPriority={isFirstImage ? 'high' : 'auto'}
+                        loading={isFirstImage ? 'eager' : 'lazy'}
+                      />
+                    </div>
                   </div>
                 </CarouselItem>
               );
@@ -330,14 +333,15 @@ export default function ProductGallery({ images, primaryTag, product }) {
               height: `${lensDiameter}px`,
               left: `${lensState.x - lensRadius}px`,
               top: `${lensState.y - lensRadius}px`,
+              backgroundColor: getProductCategoryBgColor(product) || '#FAF9F6',
               backgroundImage: `url(${zoomImageUrl})`,
               backgroundSize: `${lensState.containerWidth * zoomLevel}px ${lensState.containerHeight * zoomLevel}px`,
               backgroundPosition: `${-lensState.targetX * zoomLevel + lensRadius}px ${-lensState.targetY * zoomLevel + lensRadius}px`,
             }}
           >
             {/* High-end Jeweler reflection and center focus crosshair */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-black/10 via-transparent to-white/25 pointer-events-none" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-2 rounded-full bg-[#A67C52]/70 border border-white shadow-xs pointer-events-none" />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-black/5 via-transparent to-white/20 pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-2 rounded-full bg-[#A67C52]/80 border border-white shadow-xs pointer-events-none" />
           </div>
         )}
 
@@ -389,7 +393,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
                 alt={`Thumbnail ${index + 1}`}
                 fill
                 sizes="120px"
-                className="object-cover rounded-lg sm:rounded-xl"
+                className="object-contain p-0.5 rounded-lg sm:rounded-xl"
                 {...getBlurPlaceholderProps(image.blurDataURL)}
                 loading="lazy"
               />

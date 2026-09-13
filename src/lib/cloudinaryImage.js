@@ -3,13 +3,8 @@ const CLOUDINARY_HOSTS = new Set(['res.cloudinary.com']);
 export const CLOUDINARY_IMAGE_PRESETS = {
   // ── Store-facing presets ─────────────────────────────────────────────────────
 
-  // Product cards: mobile-first sizing
-  // Mobile: 2-column grid → ~180px wide per card on a 360px screen
-  // Tablet: 3-column grid → ~240px wide per card
-  // Desktop: 4-column grid → ~285px wide per card
-  // We use 380px as the Cloudinary transform width to cover 2x DPR on mobile
-  // (180px × 2 = 360px ≈ 380px with some breathing room)
-  productCard: { width: 380, crop: 'fill', gravity: 'auto', format: 'avif', quality: 75 },
+  // Product cards: mobile-first sizing (serves uncropped image for Next.js to handle)
+  productCard: { width: 500, crop: 'limit', format: 'avif', quality: 78 },
 
   // Category circles: small fixed-size icons in the horizontal carousel
   categoryCircle: { width: 216, height: 216, crop: 'fill', gravity: 'auto', format: 'avif', quality: 80 },
@@ -18,26 +13,26 @@ export const CLOUDINARY_IMAGE_PRESETS = {
   heroFull: { width: 1400, crop: 'fill', gravity: 'auto', format: 'avif', quality: 80 },
   heroMobile: { width: 640, crop: 'fill', gravity: 'auto', format: 'avif', quality: 78 },
 
-  // Product detail gallery — main image (Next.js srcset handles DPR; keep master modest)
-  productGalleryMain: { width: 960, height: 960, crop: 'fill', gravity: 'auto', format: 'avif', quality: 80 },
+  // Product detail gallery — main image (preserves full aspect ratio, never crops)
+  productGalleryMain: { width: 1200, crop: 'limit', format: 'avif', quality: 82 },
 
-  // Product detail gallery — high resolution zoom lens
-  productGalleryZoom: { width: 1600, height: 1600, crop: 'fill', gravity: 'auto', format: 'avif', quality: 85 },
+  // Product detail gallery — high resolution zoom lens (preserves full original image)
+  productGalleryZoom: { width: 2200, crop: 'limit', format: 'avif', quality: 88 },
 
   // Home / category banners (below-fold; Next optimizer + sizes do the rest)
-  storeBanner: { width: 960, crop: 'fill', gravity: 'auto', format: 'avif', quality: 75 },
+  storeBanner: { width: 1400, crop: 'limit', format: 'avif', quality: 78 },
 
-  // Product detail gallery — thumbnail strip
-  productGalleryThumb: { width: 240, height: 240, crop: 'fill', gravity: 'auto', format: 'avif', quality: 75 },
+  // Product detail gallery — thumbnail strip (uncropped)
+  productGalleryThumb: { width: 300, crop: 'limit', format: 'avif', quality: 75 },
 
   // Search suggestions dropdown — tiny thumbnails
-  searchSuggestion: { width: 96, height: 96, crop: 'fill', gravity: 'auto', format: 'avif', quality: 72 },
+  searchSuggestion: { width: 120, crop: 'limit', format: 'avif', quality: 72 },
 
   // Cart drawer line items
-  cartItem: { width: 160, height: 160, crop: 'fill', gravity: 'auto', format: 'avif', quality: 75 },
+  cartItem: { width: 200, crop: 'limit', format: 'avif', quality: 75 },
 
   // Product quick-view modal
-  productModal: { width: 960, height: 960, crop: 'fill', gravity: 'auto', format: 'avif', quality: 80 },
+  productModal: { width: 1200, crop: 'limit', format: 'avif', quality: 80 },
 
   // Social share preview card (WhatsApp / Facebook / Twitter):
   // 1200x630 landscape banner

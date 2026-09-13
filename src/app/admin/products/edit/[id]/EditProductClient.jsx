@@ -1394,12 +1394,12 @@ export default function EditProduct({ id }) {
             </AccordionContent>
           </AccordionItem>
 
-          {/* 2. Short Description */}
+          {/* 2. Product Details */}
           <AccordionItem value="short-description" className="rounded-xl border border-border bg-background shadow-sm px-4">
             <AccordionTrigger className="hover:no-underline py-4">
               <div className="flex flex-col items-start text-left">
-                <span className="text-sm font-semibold text-foreground">Short Description</span>
-                <span className="text-xs font-normal text-muted-foreground mt-0.5">Brief summary displayed right below the price.</span>
+                <span className="text-sm font-semibold text-foreground">Product Details</span>
+                <span className="text-xs font-normal text-muted-foreground mt-0.5">Summary displayed in the Product Details dropdown on the product page.</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pb-4">
@@ -1407,7 +1407,7 @@ export default function EditProduct({ id }) {
                 <ProductRichTextEditor
                   value={shortDescription}
                   onChange={setShortDescription}
-                  placeholder="A brief summary displayed right below the price on the product page..."
+                  placeholder="Product details summary displayed in the dropdown on the product page..."
                 />
               </div>
             </AccordionContent>

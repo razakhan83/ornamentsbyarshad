@@ -421,20 +421,20 @@ function ProductHeroSection({ product, settings, reviewSummary, categoryLabel })
         value={price}
       />
 
-      <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-10 lg:gap-14">
+      <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8 lg:gap-12">
         <div className="w-full md:w-[48%] lg:w-[46%]">
           <ProductGallery images={product.Images} primaryTag={product.primaryTag} product={product} />
         </div>
 
         <div className="w-full md:w-[52%] lg:w-[54%]">
-          <div className="flex flex-col gap-3.5 sm:gap-4 md:sticky md:top-[140px] md:gap-6">
-            <div className="space-y-1.5 sm:space-y-2">
+          <div className="flex flex-col gap-2.5 sm:gap-3 md:sticky md:top-[120px] md:gap-3.5">
+            <div className="space-y-1 sm:space-y-1.5">
               <span className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-[#A67C52] block">
                 {categoryLabel || 'Fine Jewelry Haute Joaillerie'}
               </span>
 
               <div className="flex items-start justify-between gap-3">
-                <h1 className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal leading-[1.25] tracking-normal sm:tracking-wide text-[#121212]">
+                <h1 className="font-serif text-lg sm:text-xl md:text-2xl lg:text-[26px] font-normal leading-[1.3] tracking-normal sm:tracking-wide text-[#121212]">
                   {product.Name}
                 </h1>
                 <ProductSocialActions product={product} className="mt-0.5 shrink-0 md:hidden" />
@@ -450,7 +450,7 @@ function ProductHeroSection({ product, settings, reviewSummary, categoryLabel })
                 return (
                 <a 
                   href="#product-reviews"
-                  className="group flex w-fit items-center gap-2 pt-1"
+                  className="group flex w-fit items-center gap-2 pt-0.5"
                 >
                    <div className="flex items-center text-[#A67C52]">
                       {Array.from({ length: 5 }).map((_, i) => (
@@ -465,7 +465,7 @@ function ProductHeroSection({ product, settings, reviewSummary, categoryLabel })
               })()}
             </div>
 
-            <div className="pt-2">
+            <div className="pt-0.5">
               <ProductActions 
                 product={product} 
                 whatsappNumber={settings.whatsappNumber} 
@@ -474,13 +474,6 @@ function ProductHeroSection({ product, settings, reviewSummary, categoryLabel })
                 compareAtPrice={compareAtPrice}
               />
             </div>
-
-            {product.shortDescription ? (
-              <div
-                className="mt-4 border-t border-[#E8E5DF] pt-5 text-sm leading-relaxed text-[#737373] [&_a]:text-[#121212] [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:my-2 [&_ul]:list-disc [&_ul]:pl-5"
-                dangerouslySetInnerHTML={{ __html: product.shortDescription }}
-              />
-            ) : null}
           </div>
         </div>
       </div>

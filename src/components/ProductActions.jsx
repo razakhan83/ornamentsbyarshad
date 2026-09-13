@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import ProductWishlistButton from '@/components/ProductWishlistButton';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { Share2, Minus, Plus, ShieldCheck, Truck, RotateCcw, Award } from 'lucide-react';
+import { Share2, Minus, Plus, ShieldCheck, Truck, RotateCcw, Award, Sparkles } from 'lucide-react';
 import WhatsAppIcon from '@/components/icons/WhatsAppIcon';
 import { buildProductWhatsAppMessage, createWhatsAppUrl } from '@/lib/whatsapp';
 import { flyToCart } from '@/lib/flyToCart';
@@ -107,7 +107,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
     const [selectedSize, setSelectedSize] = useState(sizeList[0] || '');
 
     const [descriptionOpen, setDescriptionOpen] = useState(false);
-    const [specsOpen, setSpecsOpen] = useState(true);
+    const [specsOpen, setSpecsOpen] = useState(false);
     const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
     const addLock = useActionLock();
     const buyLock = useActionLock();
@@ -287,18 +287,18 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
 
     return (
         <>
-        <div className="flex flex-col gap-4 sm:gap-5">
+        <div className="flex flex-col gap-3 sm:gap-3.5">
             {/* Price Row */}
-            <div className="flex flex-wrap items-baseline gap-x-3 sm:gap-x-4 gap-y-1.5 border-b border-[#E8E5DF] pb-3 sm:pb-4">
-                <span className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#121212] tracking-wide font-normal">
+            <div className="flex flex-wrap items-baseline gap-x-3 sm:gap-x-4 gap-y-1 border-b border-[#E8E5DF] pb-2 sm:pb-2.5">
+                <span className="font-serif text-2xl sm:text-3xl text-[#121212] tracking-wide font-normal">
                     {formatPrice(displayPrice)}
                 </span>
                 {displayComparePrice ? (
                     <div className="flex items-center gap-2">
-                        <span className="text-sm sm:text-base text-[#737373] line-through">
+                        <span className="text-sm text-[#737373] line-through">
                             {formatPrice(displayComparePrice)}
                         </span>
-                        <span className="text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold text-[#A67C52] bg-[#A67C52]/10 px-2 py-0.5 rounded-xs">
+                        <span className="text-[10px] sm:text-[10.5px] uppercase tracking-wider font-semibold text-[#A67C52] bg-[#A67C52]/10 px-2 py-0.5 rounded-xs">
                             Save {formatPrice(displayComparePrice - displayPrice)}
                         </span>
                     </div>
@@ -319,7 +319,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
 
             {/* Dynamic Color Variant Selection Pills (Shown only if colors are entered) */}
             {colorList.length > 0 && (
-                <div className="space-y-2 pt-1">
+                <div className="space-y-1.5 pt-0.5">
                     <span className="text-xs font-medium text-[#121212] tracking-wide">
                         Color / Shade: <span className="text-[#A67C52] font-semibold">{selectedColor}</span>
                     </span>
@@ -332,7 +332,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                                     type="button"
                                     onClick={() => setSelectedColor(colorName)}
                                     className={cn(
-                                        "relative px-3.5 py-1.5 text-xs font-medium tracking-wide transition-all duration-200 cursor-pointer rounded-xl border",
+                                        "relative px-3 py-1 text-xs font-medium tracking-wide transition-all duration-200 cursor-pointer rounded-lg border",
                                         isSelected
                                             ? "border-[#121212] bg-[#121212] text-white shadow-xs"
                                             : "border-[#E8E5DF] bg-white text-[#121212] hover:border-[#121212]/50"
@@ -348,7 +348,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
 
             {/* Dynamic Size / Length Selection Pills (Shown only if sizes are entered) */}
             {sizeList.length > 0 && (
-                <div className="space-y-2 pt-1">
+                <div className="space-y-1.5 pt-0.5">
                     <div className="flex items-center justify-between">
                         <span className="text-xs font-medium text-[#121212] tracking-wide">
                             Size / Length: <span className="text-[#A67C52] font-semibold">{selectedSize}</span>
@@ -370,7 +370,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                                     type="button"
                                     onClick={() => setSelectedSize(sz)}
                                     className={cn(
-                                        "relative px-3.5 py-1.5 text-xs font-medium tracking-wide transition-all duration-200 cursor-pointer rounded-xl border",
+                                        "relative px-3 py-1 text-xs font-medium tracking-wide transition-all duration-200 cursor-pointer rounded-lg border",
                                         isSelected
                                             ? "border-[#121212] bg-[#121212] text-white shadow-xs"
                                             : "border-[#E8E5DF] bg-white text-[#121212] hover:border-[#121212]/50"
@@ -384,9 +384,130 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                 </div>
             )}
 
+            {/* Quantity Selector & Action Buttons (Placed immediately for fast conversion & compact standard height) */}
+            <div className="flex flex-col gap-2.5 pt-1">
+                {/* Quantity Row */}
+                <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium text-[#121212]">Quantity</span>
+                    <div className="inline-flex items-center border border-[#E8E5DF] bg-white rounded-[6px] h-8.5 overflow-hidden">
+                        <button
+                            type="button"
+                            onClick={decrement}
+                            className="inline-flex size-8.5 items-center justify-center text-[#737373] hover:text-[#121212] transition-colors cursor-pointer"
+                            aria-label="Decrease quantity"
+                        >
+                            <Minus className="size-3" />
+                        </button>
+                        <span className="inline-flex min-w-8 items-center justify-center text-xs font-semibold text-[#121212] tabular-nums">
+                            {quantity}
+                        </span>
+                        <button
+                            type="button"
+                            onClick={increment}
+                            className="inline-flex size-8.5 items-center justify-center text-[#737373] hover:text-[#121212] transition-colors cursor-pointer"
+                            aria-label="Increase quantity"
+                        >
+                            <Plus className="size-3" />
+                        </button>
+                    </div>
+                </div>
+
+                {/* Primary CTA Buttons */}
+                <div className="flex flex-col gap-2">
+                    {isOutOfStock ? (
+                        <Button
+                            onClick={() => setNotifyModalOpen(true)}
+                            className="h-11 w-full rounded-[6px] bg-[#121212] text-white hover:bg-neutral-800 uppercase tracking-[0.2em] text-xs font-semibold shadow-xs cursor-pointer"
+                        >
+                            Notify When Available
+                        </Button>
+                    ) : (
+                        <>
+                            {/* Primary Add to Cart Button (Solid Onyx Black -> Rich Gold Hover) */}
+                            <button
+                                type="button"
+                                onClick={handleAddToCart}
+                                disabled={addLock.isPending || isOutOfStock}
+                                className={cn(
+                                    "add-to-cart-button h-11.5 w-full inline-flex items-center justify-center rounded-[6px] font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-xs bg-[#121212] hover:bg-[#A67C52] border border-[#121212] hover:border-[#A67C52] text-white disabled:opacity-50 cursor-pointer active:scale-[0.98]"
+                                )}
+                            >
+                                {addLock.isPending ? (
+                                    <Spinner className="size-4 animate-spin mr-2 text-white" />
+                                ) : null}
+                                {didJustAdd ? "Added to Cart" : "Add to Cart"}
+                            </button>
+
+                            {/* Secondary Buy It Now Button (Refined Gold Accent -> Solid Gold Hover) */}
+                            <button
+                                type="button"
+                                onClick={handleBuyNow}
+                                disabled={buyLock.isPending || isOutOfStock}
+                                className="buy-now-button h-11.5 w-full inline-flex items-center justify-center rounded-[6px] font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 border border-[#A67C52] bg-[#A67C52]/5 hover:bg-[#A67C52] text-[#A67C52] hover:text-white hover:border-[#A67C52] active:scale-[0.98] cursor-pointer shadow-none"
+                            >
+                                {buyLock.isPending ? (
+                                    <Spinner className="size-4 animate-spin mr-2 text-current" />
+                                ) : null}
+                                Buy It Now
+                            </button>
+                        </>
+                    )}
+
+                    {/* Order on WhatsApp Button (Clean Atelier Luxury -> Onyx Black Hover) */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            const name = product.Name || product.name || 'this piece';
+                            const url = typeof window !== 'undefined' ? window.location.href : '';
+                            const message = buildProductWhatsAppMessage({
+                                productName: name,
+                                productUrl: url,
+                                storeName,
+                                color: selectedColor || '',
+                                size: selectedSize || product?.size || '',
+                                metal: product?.metalType || '',
+                            });
+                            const whatsappUrl = createWhatsAppUrl(whatsappNumber, message);
+                            if (whatsappUrl) window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+                        }}
+                        className="w-full h-11.5 inline-flex items-center justify-center gap-2.5 rounded-[6px] border border-[#E8E5DF] bg-white hover:bg-[#121212] hover:border-[#121212] text-[#121212] hover:text-white text-xs uppercase tracking-[0.18em] font-semibold transition-all duration-300 shadow-none active:scale-[0.98] cursor-pointer group"
+                    >
+                        <WhatsAppIcon className="size-4 text-[#25D366] group-hover:text-white transition-colors shrink-0" />
+                        <span>Order on WhatsApp</span>
+                    </button>
+                </div>
+            </div>
+
+            {/* Minimal Luxury Guarantees & Authenticity Strip */}
+            <div className="border-t border-[#E8E5DF] pt-2.5 mt-0.5">
+                <div className="grid grid-cols-3 gap-1 py-2 px-2 bg-[#FAF9F6] border border-[#E8E5DF] rounded-lg">
+                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 py-0.5">
+                        <Award className="size-3.5 text-[#A67C52] shrink-0" />
+                        <div className="min-w-0">
+                            <p className="text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Authentic</p>
+                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">Certified Metals</p>
+                        </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 border-x border-[#E8E5DF] py-0.5">
+                        <Truck className="size-3.5 text-[#A67C52] shrink-0" />
+                        <div className="min-w-0">
+                            <p className="text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Insured</p>
+                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">Tracked Delivery</p>
+                        </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 py-0.5">
+                        <ShieldCheck className="size-3.5 text-[#A67C52] shrink-0" />
+                        <div className="min-w-0">
+                            <p className="text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Secure</p>
+                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">100% Encrypted</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Jewelry Specifications Accordion / Summary (Shows whatever admin added) */}
             {hasJewelrySpecs && (
-                <div className="border-y border-[#E8E5DF] py-3 my-0.5">
+                <div className="border-t border-[#E8E5DF] pt-2.5">
                     <button
                         type="button"
                         onClick={() => setSpecsOpen(!specsOpen)}
@@ -396,7 +517,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                         <span className="text-lg font-light leading-none">{specsOpen ? "−" : "+"}</span>
                     </button>
                     {specsOpen && (
-                        <div className="mt-3 overflow-hidden rounded-xl border border-[#E8E5DF] bg-[#FAF9F6]">
+                        <div className="mt-2.5 overflow-hidden rounded-xl border border-[#E8E5DF] bg-[#FAF9F6]">
                             <dl className="divide-y divide-[#E8E5DF] text-xs">
                                 {product.metalType && (
                                     <div className="grid grid-cols-3 p-2.5">
@@ -448,181 +569,116 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                 </div>
             )}
 
-            {/* Description Accordion */}
-            <div className="border-b border-[#E8E5DF] pb-3 my-0.5">
+            {/* Product Details Accordion */}
+            <div className="border-t border-[#E8E5DF] pt-2.5 pb-1">
               <button
                 type="button"
                 onClick={() => setDescriptionOpen(!descriptionOpen)}
                 className="flex w-full items-center justify-between text-left font-serif text-sm font-medium text-[#121212] uppercase tracking-wider cursor-pointer"
               >
-                <span>Description</span>
+                <span>Product Details</span>
                 <span className="text-lg font-light leading-none">{descriptionOpen ? "−" : "+"}</span>
               </button>
               {descriptionOpen && (
-                <div className="mt-3 text-xs leading-relaxed text-[#737373] space-y-2">
-                  <p>{product.shortDescription || product.Description || "Handcrafted with precision using high-grade hallmarked gold and certified precious stones."}</p>
-                </div>
+                <div 
+                  className="mt-2.5 text-xs leading-relaxed text-[#737373] space-y-2 [&_a]:text-[#121212] [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:my-1.5 [&_ul]:list-disc [&_ul]:pl-5"
+                  dangerouslySetInnerHTML={{
+                    __html: product.shortDescription || product.Description || "<p>Handcrafted with precision using high-grade hallmarked gold and certified precious stones.</p>"
+                  }}
+                />
               )}
-            </div>
-
-            {/* Quantity Selector & Action Buttons */}
-            <div className="flex flex-col gap-3 pt-2">
-                {/* Quantity Row */}
-                <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium text-[#121212]">Quantity</span>
-                    <div className="inline-flex items-center border border-[#E8E5DF] bg-white rounded-[6px] h-9 overflow-hidden">
-                        <button
-                            type="button"
-                            onClick={decrement}
-                            className="inline-flex size-9 items-center justify-center text-[#737373] hover:text-[#121212] transition-colors"
-                            aria-label="Decrease quantity"
-                        >
-                            <Minus className="size-3" />
-                        </button>
-                        <span className="inline-flex min-w-8 items-center justify-center text-xs font-semibold text-[#121212] tabular-nums">
-                            {quantity}
-                        </span>
-                        <button
-                            type="button"
-                            onClick={increment}
-                            className="inline-flex size-9 items-center justify-center text-[#737373] hover:text-[#121212] transition-colors"
-                            aria-label="Increase quantity"
-                        >
-                            <Plus className="size-3" />
-                        </button>
-                    </div>
-                </div>
-
-                {/* Primary CTA Buttons: Add to Cart (Onyx Black), Buy It Now (Clean Outline), WhatsApp (Emerald) */}
-                <div className="flex flex-col gap-2.5 pt-1">
-                    {isOutOfStock ? (
-                        <Button
-                            onClick={() => setNotifyModalOpen(true)}
-                            className="h-12.5 w-full rounded-[6px] bg-[#121212] text-white hover:bg-neutral-800 uppercase tracking-[0.2em] text-xs font-semibold shadow-xs"
-                        >
-                            Notify When Available
-                        </Button>
-                    ) : (
-                        <>
-                            {/* Primary Add to Cart Button (Solid Onyx Black #121212) */}
-                            <button
-                                type="button"
-                                onClick={handleAddToCart}
-                                disabled={addLock.isPending || isOutOfStock}
-                                className={cn(
-                                    "add-to-cart-button h-12.5 w-full inline-flex items-center justify-center rounded-[6px] font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-xs bg-[#121212] hover:bg-[#A67C52] text-white disabled:opacity-50 cursor-pointer active:scale-[0.98]"
-                                )}
-                            >
-                                {addLock.isPending ? (
-                                    <Spinner className="size-4 animate-spin mr-2" />
-                                ) : null}
-                                {didJustAdd ? "Added to Cart" : "Add to Cart"}
-                            </button>
-
-                            {/* Secondary Buy It Now Button (Clean Border #121212) */}
-                            <button
-                                type="button"
-                                onClick={handleBuyNow}
-                                disabled={buyLock.isPending || isOutOfStock}
-                                className="buy-now-button h-12.5 w-full inline-flex items-center justify-center rounded-[6px] font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 border border-[#121212] text-[#121212] hover:bg-[#121212] hover:text-white bg-transparent active:scale-[0.98] cursor-pointer"
-                            >
-                                {buyLock.isPending ? (
-                                    <Spinner className="size-4 animate-spin mr-2" />
-                                ) : null}
-                                Buy It Now
-                            </button>
-                        </>
-                    )}
-
-                    {/* Order on WhatsApp Button (Refined Luxury Styling) */}
-                    <button
-                        type="button"
-                        onClick={() => {
-                            const name = product.Name || product.name || 'this piece';
-                            const url = typeof window !== 'undefined' ? window.location.href : '';
-                            const message = buildProductWhatsAppMessage({
-                                productName: name,
-                                productUrl: url,
-                                storeName,
-                                color: selectedColor || '',
-                                size: selectedSize || product?.size || '',
-                                metal: product?.metalType || '',
-                            });
-                            const whatsappUrl = createWhatsAppUrl(whatsappNumber, message);
-                            if (whatsappUrl) window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-                        }}
-                        className="w-full h-12.5 inline-flex items-center justify-center gap-2.5 rounded-[6px] border border-[#121212]/30 bg-[#FAF9F6] hover:bg-[#121212] text-[#121212] hover:text-white text-xs uppercase tracking-[0.18em] font-semibold transition-all duration-300 shadow-none active:scale-[0.98] cursor-pointer group"
-                    >
-                        <WhatsAppIcon className="size-4 text-[#121212] group-hover:text-white transition-colors shrink-0" />
-                        <span>Order on WhatsApp</span>
-                    </button>
-                </div>
-            </div>
-
-            {/* Minimal Luxury Guarantees & Authenticity Strip */}
-            <div className="border-t border-[#E8E5DF] pt-3 mt-1.5">
-                <div className="grid grid-cols-3 gap-1.5 py-2 px-2 bg-[#FAF9F6] border border-[#E8E5DF] rounded-lg">
-                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 py-0.5">
-                        <Award className="size-3.5 text-[#A67C52] shrink-0" />
-                        <div className="min-w-0">
-                            <p className="text-[9px] sm:text-[10.5px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Authentic</p>
-                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">Certified Metals</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 border-x border-[#E8E5DF] py-0.5">
-                        <Truck className="size-3.5 text-[#A67C52] shrink-0" />
-                        <div className="min-w-0">
-                            <p className="text-[9px] sm:text-[10.5px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Insured</p>
-                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">Tracked Delivery</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 py-0.5">
-                        <ShieldCheck className="size-3.5 text-[#A67C52] shrink-0" />
-                        <div className="min-w-0">
-                            <p className="text-[9px] sm:text-[10.5px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Secure</p>
-                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">100% Encrypted</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
-        {/* Size Guide Modal */}
+        {/* Size Guide Modal (Spacious on PC, Perfect One-View on Mobile) */}
         <Dialog open={sizeGuideOpen} onOpenChange={setSizeGuideOpen}>
-            <DialogContent className="sm:max-w-lg rounded-none border border-[#E8E5DF] bg-[#FAF9F6] p-6">
-                <DialogHeader>
-                    <DialogTitle className="font-serif text-xl tracking-wide text-[#121212] font-normal">
+            <DialogContent className="w-[calc(100vw-1.5rem)] sm:w-full sm:max-w-xl md:max-w-2xl max-h-[88vh] overflow-y-auto overflow-x-hidden rounded-2xl border border-[#E8E5DF] bg-[#FAF9F6] p-3.5 sm:p-7 shadow-2xl">
+                <DialogHeader className="space-y-1 text-left border-b border-[#E8E5DF] pb-3 sm:pb-4 pr-10">
+                    <DialogTitle className="font-serif text-lg sm:text-2xl font-normal text-[#121212] tracking-normal sm:tracking-wide">
                         Jewelry & Ring Size Guide
                     </DialogTitle>
-                    <DialogDescription className="text-xs text-[#737373] uppercase tracking-[0.15em] pt-1">
-                        Find your perfect fit with our atelier measurement standards
+                    <DialogDescription className="text-[11px] sm:text-xs text-[#737373] tracking-normal sm:tracking-wider sm:uppercase leading-tight">
+                        Atelier ring & jewelry measurement standards
                     </DialogDescription>
                 </DialogHeader>
-                <div className="space-y-4 pt-2">
-                    <div className="overflow-x-auto border border-[#E8E5DF] bg-white">
-                        <table className="w-full text-left text-xs">
-                            <thead className="border-b border-[#E8E5DF] bg-[#FAF9F6] text-[11px] uppercase tracking-wider text-[#737373]">
+
+                <div className="space-y-3.5 pt-1 sm:pt-2">
+                    {/* Free Size Highlight Card */}
+                    <div className="flex items-start gap-2.5 sm:gap-3.5 rounded-xl border border-[#A67C52]/25 bg-[#A67C52]/8 p-3 sm:p-4 text-xs sm:text-sm shadow-xs">
+                        <Sparkles className="size-4 text-[#A67C52] shrink-0 mt-0.5" />
+                        <div className="text-[#555] leading-relaxed text-[11.5px] sm:text-xs">
+                            <span className="font-semibold text-[#121212] block sm:inline mr-1">
+                                ✨ Free Size (Adjustable):
+                            </span>
+                            Open-ended flexible band that adjusts gently by hand to fit standard sizes <strong className="text-[#121212]">US 5 to US 9</strong> comfortably.
+                        </div>
+                    </div>
+
+                    {/* Responsive Sizes Table (Fixed proportions for perfect 1-view on all mobile widths) */}
+                    <div className="overflow-hidden rounded-xl border border-[#E8E5DF] bg-white shadow-xs w-full">
+                        <table className="w-full table-fixed text-left text-xs sm:text-sm">
+                            <colgroup>
+                                <col className="w-[30%] sm:w-[28%]" />
+                                <col className="w-[35%] sm:w-[36%]" />
+                                <col className="w-[35%] sm:w-[36%]" />
+                            </colgroup>
+                            <thead className="border-b border-[#E8E5DF] bg-[#FAF9F6] text-[10px] sm:text-xs uppercase tracking-wider text-[#737373]">
                                 <tr>
-                                    <th className="p-2.5">US Size</th>
-                                    <th className="p-2.5">Inside Diameter (mm)</th>
-                                    <th className="p-2.5">Inside Circumference (mm)</th>
+                                    <th className="py-2.5 px-2.5 sm:px-4 font-semibold truncate">Size</th>
+                                    <th className="py-2.5 px-2 sm:px-4 font-semibold truncate">Diameter</th>
+                                    <th className="py-2.5 px-2 sm:px-4 font-semibold truncate">Circumference</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#E8E5DF] text-[#121212]">
-                                <tr><td className="p-2.5 font-semibold">US 5</td><td className="p-2.5">15.7 mm</td><td className="p-2.5">49.3 mm</td></tr>
-                                <tr><td className="p-2.5 font-semibold">US 6</td><td className="p-2.5">16.5 mm</td><td className="p-2.5">51.9 mm</td></tr>
-                                <tr><td className="p-2.5 font-semibold">US 7</td><td className="p-2.5">17.3 mm</td><td className="p-2.5">54.4 mm</td></tr>
-                                <tr><td className="p-2.5 font-semibold">US 8</td><td className="p-2.5">18.1 mm</td><td className="p-2.5">57.0 mm</td></tr>
-                                <tr><td className="p-2.5 font-semibold">US 9</td><td className="p-2.5">18.9 mm</td><td className="p-2.5">59.5 mm</td></tr>
+                            <tbody className="divide-y divide-[#E8E5DF] text-[#121212] text-[11px] sm:text-xs">
+                                <tr className="bg-[#A67C52]/8 font-medium">
+                                    <td className="py-2.5 px-2.5 sm:px-4">
+                                        <span className="font-bold text-[#A67C52] block leading-tight">Free Size</span>
+                                        <span className="text-[9px] text-[#A67C52] font-medium block leading-none mt-0.5">Adjustable (5-9)</span>
+                                    </td>
+                                    <td className="py-2.5 px-2 sm:px-4 text-[#555] text-[10.5px] sm:text-xs">15.7 – 19.8 mm</td>
+                                    <td className="py-2.5 px-2 sm:px-4 text-[#555] text-[10.5px] sm:text-xs">49.3 – 62.1 mm</td>
+                                </tr>
+                                <tr>
+                                    <td className="py-2 px-2.5 sm:px-4 font-medium">US 5</td>
+                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">15.7 mm</td>
+                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">49.3 mm</td>
+                                </tr>
+                                <tr>
+                                    <td className="py-2 px-2.5 sm:px-4 font-medium">US 6</td>
+                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">16.5 mm</td>
+                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">51.9 mm</td>
+                                </tr>
+                                <tr>
+                                    <td className="py-2 px-2.5 sm:px-4 font-medium">
+                                        <span>US 7</span>
+                                        <span className="hidden sm:inline-block ml-1 text-[9px] text-[#A67C52] font-medium">(Standard)</span>
+                                    </td>
+                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">17.3 mm</td>
+                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">54.4 mm</td>
+                                </tr>
+                                <tr>
+                                    <td className="py-2 px-2.5 sm:px-4 font-medium">US 8</td>
+                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">18.1 mm</td>
+                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">57.0 mm</td>
+                                </tr>
+                                <tr>
+                                    <td className="py-2 px-2.5 sm:px-4 font-medium">US 9</td>
+                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">18.9 mm</td>
+                                    <td className="py-2 px-2 sm:px-4 text-[#737373]">59.5 mm</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div className="bg-white p-3 border border-[#E8E5DF] text-xs text-[#737373] leading-relaxed space-y-1">
-                        <p className="font-semibold text-[#121212] uppercase tracking-wider">How to measure:</p>
-                        <p>1. Wrap a thin strip of paper snugly around your finger base.</p>
-                        <p>2. Mark the exact overlap point with a pen.</p>
-                        <p>3. Measure the millimeters against a ruler to find your circumference.</p>
-                        <p className="text-[#A67C52] pt-1 font-medium">Need a custom size? Our master jeweler creates bespoke sizes on request via WhatsApp concierge.</p>
+
+                    {/* How to Measure Section */}
+                    <div className="rounded-xl border border-[#E8E5DF] bg-white p-3 sm:p-4 text-[11px] sm:text-xs text-[#737373] space-y-1.5 shadow-xs">
+                        <p className="font-semibold text-[#121212] uppercase tracking-wider text-[10px]">How to measure at home:</p>
+                        <p className="leading-relaxed text-[#555]">
+                            Wrap a thin paper strip around your finger base, mark the overlap point, and measure against a ruler in mm.
+                        </p>
+                        <p className="text-[#A67C52] pt-1 text-[10.5px] sm:text-xs font-medium border-t border-[#E8E5DF]">
+                            Need a custom size? Contact our master jeweler via WhatsApp concierge.
+                        </p>
                     </div>
                 </div>
             </DialogContent>
