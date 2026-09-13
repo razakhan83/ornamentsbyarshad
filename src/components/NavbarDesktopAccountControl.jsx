@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useSyncExternalStore } from 'react';
+import { useState, useSyncExternalStore, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import { Heart, LayoutGrid, LogOut, Settings, ShoppingBag, User, Package, X } from 'lucide-react';
@@ -41,6 +41,26 @@ export default function NavbarDesktopAccountControl({ navActionButtonClass = '' 
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const [isNavigating, setIsNavigating] = useState(false);
 
+  // Reset loading state on route change, modal close, or window refocus
+  useEffect(() => {
+    setIsNavigating(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    const handleReset = () => setIsNavigating(false);
+    window.addEventListener('pageshow', handleReset);
+    window.addEventListener('focus', handleReset);
+    return () => {
+      window.removeEventListener('pageshow', handleReset);
+      window.removeEventListener('focus', handleReset);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isNavigating) return;
+    const timer = setTimeout(() => setIsNavigating(false), 2000);
+    return () => clearTimeout(timer);
+  }, [isNavigating]);
 
   if (!mounted || status === 'loading' || !session) {
     return (
@@ -59,7 +79,15 @@ export default function NavbarDesktopAccountControl({ navActionButtonClass = '' 
         >
           {isNavigating ? <Spinner className="size-4" /> : <User strokeWidth={1.8} className="size-5 transition-transform duration-300 hover:scale-105" />}
         </Button>
-        {mounted && isAuthModalOpen ? <AuthModal open={isAuthModalOpen} onOpenChange={setIsAuthModalOpen} /> : null}
+        {mounted && isAuthModalOpen ? (
+          <AuthModal 
+            open={isAuthModalOpen} 
+            onOpenChange={(open) => {
+              setIsAuthModalOpen(open);
+              if (!open) setIsNavigating(false);
+            }} 
+          />
+        ) : null}
       </div>
     );
   }

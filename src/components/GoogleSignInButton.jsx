@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
@@ -8,6 +8,22 @@ import { Loader2 } from 'lucide-react';
 
 function GoogleSignInButtonContent({ className, callbackUrl }) {
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const handleReset = () => setIsLoading(false);
+    window.addEventListener('pageshow', handleReset);
+    window.addEventListener('focus', handleReset);
+    return () => {
+      window.removeEventListener('pageshow', handleReset);
+      window.removeEventListener('focus', handleReset);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) return;
+    const timer = setTimeout(() => setIsLoading(false), 5000);
+    return () => clearTimeout(timer);
+  }, [isLoading]);
 
   const handleSignIn = async () => {
     setIsLoading(true);
@@ -17,9 +33,6 @@ function GoogleSignInButtonContent({ className, callbackUrl }) {
       console.error('Sign in error:', error);
       setIsLoading(false);
     }
-    // We don't necessarily set isLoading(false) in a finally block 
-    // because if signIn redirects, the component will unmount. 
-    // If we set it to false before navigation completes, the loader will stop spinning too early.
   };
 
   return (

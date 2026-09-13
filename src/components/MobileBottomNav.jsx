@@ -135,13 +135,24 @@ export default function MobileBottomNav({
   const accountPanelOpen = session ? accountOpen : isAuthOpen;
 
   useEffect(() => {
-    if (pathname?.startsWith('/auth/signin')) {
-      const frameId = window.requestAnimationFrame(() => {
-        setAccountLoading(false);
-      });
-      return () => window.cancelAnimationFrame(frameId);
-    }
+    setAccountLoading(false);
   }, [pathname]);
+
+  useEffect(() => {
+    const handleReset = () => setAccountLoading(false);
+    window.addEventListener('pageshow', handleReset);
+    window.addEventListener('focus', handleReset);
+    return () => {
+      window.removeEventListener('pageshow', handleReset);
+      window.removeEventListener('focus', handleReset);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!accountLoading) return;
+    const timer = setTimeout(() => setAccountLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, [accountLoading]);
 
   useEffect(() => {
     if (session?.user?.email) {
