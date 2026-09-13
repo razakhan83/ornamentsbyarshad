@@ -30,13 +30,18 @@ export const authOptions = {
           }
           return { id: "guest", name: "Demo Guest", email: "guest@demo.com", isDemo: true };
         }
+        const inputEmail = normalizeEmail(credentials?.email);
+        const inputPass = String(credentials?.password || '').trim();
+        const configuredPass = String(process.env.ADMIN_PASSWORD || '').trim();
+
         if (
-          credentials.email &&
-          credentials.password &&
-          isAdminEmail(credentials.email) &&
-          credentials.password === process.env.ADMIN_PASSWORD
+          inputEmail &&
+          inputPass &&
+          configuredPass &&
+          isAdminEmail(inputEmail) &&
+          inputPass === configuredPass
         ) {
-          return { id: "1", name: "Raza Admin", email: normalizeEmail(credentials.email) };
+          return { id: "1", name: "Raza Admin", email: inputEmail };
         }
         return null;
       }
