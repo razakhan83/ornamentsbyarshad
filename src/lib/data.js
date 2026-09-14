@@ -429,6 +429,12 @@ function buildCustomerAggregationPipeline({ search = '', skip = 0, limit = 12 } 
   return pipeline;
 }
 
+function safeIsoDate(val) {
+  if (!val) return null;
+  const d = new Date(val);
+  return isNaN(d.getTime()) ? null : d.toISOString();
+}
+
 function toOrderSummaryRow(order) {
   return {
     _id: order._id.toString(),
@@ -461,7 +467,7 @@ function toOrderSummaryRow(order) {
     nocParcelNo: order.nocParcelNo || '',
     nocThirdPartyNo: order.nocThirdPartyNo || '',
     nocRemarks: order.nocRemarks || '',
-    nocLastTrackedAt: order.nocLastTrackedAt ? new Date(order.nocLastTrackedAt).toISOString() : null,
+    nocLastTrackedAt: safeIsoDate(order.nocLastTrackedAt),
     nocTrackingEvents: Array.isArray(order.nocTrackingEvents)
       ? order.nocTrackingEvents.map((e) => ({
           status: e.status || '',
@@ -470,7 +476,7 @@ function toOrderSummaryRow(order) {
           timestamp: e.timestamp || 0,
         }))
       : [],
-    courierBookingDate: order.courierBookingDate ? new Date(order.courierBookingDate).toISOString() : null,
+    courierBookingDate: safeIsoDate(order.courierBookingDate),
     courierResponseDetails: order.courierResponseDetails || null,
     items: Array.isArray(order.items)
       ? order.items.map((item) => ({
@@ -480,8 +486,8 @@ function toOrderSummaryRow(order) {
           sourcingVendors: Array.isArray(item.sourcingVendors) ? item.sourcingVendors : [],
         }))
       : [],
-    createdAt: order.createdAt ? new Date(order.createdAt).toISOString() : null,
-    updatedAt: order.updatedAt ? new Date(order.updatedAt).toISOString() : null,
+    createdAt: safeIsoDate(order.createdAt),
+    updatedAt: safeIsoDate(order.updatedAt),
   };
 }
 
@@ -2455,7 +2461,22 @@ export async function getUserOrders(email) {
 
 export async function getOrderById(id) {
   await mongooseConnect();
-  const order = await Order.findById(String(id || '')).lean();
+  const rawId = String(id || '').trim();
+  if (!rawId) return null;
+
+  let order = null;
+  if (mongoose.Types.ObjectId.isValid(rawId)) {
+    order = await Order.findById(rawId).lean();
+  }
+  if (!order) {
+    order = await Order.findOne({
+      $or: [
+        { orderId: rawId },
+        { orderId: rawId.toUpperCase() },
+        { orderId: rawId.toLowerCase() },
+      ],
+    }).lean();
+  }
   if (!order) return null;
 
   const productIdentifiers = Array.from(
@@ -2479,19 +2500,28 @@ export async function getOrderById(id) {
 
 export async function getOrderLogs(orderId) {
   await mongooseConnect();
-  const normalizedOrderId = mongoose.Types.ObjectId.isValid(String(orderId || ''))
-    ? new mongoose.Types.ObjectId(String(orderId))
-    : String(orderId || '');
+  const rawId = String(orderId || '').trim();
+  if (!rawId) return [];
 
-  const logs = await OrderLog.find({ orderId: normalizedOrderId })
+  let normalizedOrderId = rawId;
+  if (mongoose.Types.ObjectId.isValid(rawId)) {
+    normalizedOrderId = new mongoose.Types.ObjectId(rawId);
+  }
+
+  const logs = await OrderLog.find({
+    $or: [
+      { orderId: normalizedOrderId },
+      { orderId: rawId },
+    ],
+  })
     .sort({ createdAt: -1 })
     .lean();
   
   return logs.map(log => ({
     ...log,
-    _id: log._id.toString(),
-    orderId: log.orderId.toString(),
-    createdAt: log.createdAt.toISOString(),
+    _id: log._id ? log._id.toString() : String(Math.random()),
+    orderId: log.orderId ? log.orderId.toString() : rawId,
+    createdAt: safeIsoDate(log.createdAt) || new Date().toISOString(),
   }));
 }
 

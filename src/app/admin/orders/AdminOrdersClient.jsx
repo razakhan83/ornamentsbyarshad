@@ -1933,7 +1933,7 @@ export default function AdminOrdersClient({
       : null,
   ].filter(Boolean);
   const isTrashView = statusFilter === TRASH_TAB_ID;
-  const showNocColumns = ['all', 'Shipped', 'Out For Delivery', 'Delivered', 'Returned'].includes(statusFilter);
+  const showNocColumns = false;
 
   return (
     <div className="flex flex-col gap-4">
@@ -2774,17 +2774,8 @@ export default function AdminOrdersClient({
                                             Edit Order
                                           </DropdownMenuItem>
                                         )}
-                                        {(order.trackingNumber || order.nocParcelNo || order.nocThirdPartyNo) && (
-                                          <DropdownMenuItem
-                                            onClick={() => setNocTrackingOrder(order)}
-                                            className="cursor-pointer text-[12px]"
-                                          >
-                                            <Truck className="size-3.5 mr-2 text-primary" />
-                                            Track NOC
-                                          </DropdownMenuItem>
-                                        )}
                                       </DropdownMenuGroup>
-                                      {(!isShippedPhase || order.trackingNumber || order.nocParcelNo || order.nocThirdPartyNo) && <DropdownMenuSeparator />}
+                                      {!isShippedPhase && <DropdownMenuSeparator />}
                                       <DropdownMenuItem
                                         variant="destructive"
                                         onClick={() => handleDeleteOrder(order)}
@@ -2884,7 +2875,12 @@ export default function AdminOrdersClient({
                             <Globe className="size-3 text-foreground shrink-0 select-none" title={origin.tooltip} />
                           );
                         })()}
-                        <p className="text-[13px] font-bold tracking-tight text-foreground truncate leading-none">{order.orderId}</p>
+                        <Link
+                          href={`/admin/orders/${order._id}`}
+                          className="text-[13px] font-bold tracking-tight text-foreground hover:underline truncate leading-none"
+                        >
+                          {order.orderId}
+                        </Link>
                         {isNewOrder(order.createdAt) && (
                           <span className="inline-flex items-center rounded-md border border-emerald-200 bg-emerald-100 text-emerald-800 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider shrink-0 leading-none">
                             NEW
@@ -2912,17 +2908,8 @@ export default function AdminOrdersClient({
                                     Edit Order
                                   </DropdownMenuItem>
                                 )}
-                                {(order.trackingNumber || order.nocParcelNo || order.nocThirdPartyNo) && (
-                                  <DropdownMenuItem
-                                    onClick={() => setNocTrackingOrder(order)}
-                                    className="cursor-pointer text-[12px]"
-                                  >
-                                    <Truck className="size-3.5 mr-2 text-primary" />
-                                    Track NOC
-                                  </DropdownMenuItem>
-                                )}
                               </DropdownMenuGroup>
-                              {(!isShippedPhase || order.trackingNumber || order.nocParcelNo || order.nocThirdPartyNo) && <DropdownMenuSeparator />}
+                              {!isShippedPhase && <DropdownMenuSeparator />}
                               <DropdownMenuItem
                                 className="text-destructive focus:text-destructive cursor-pointer text-[12px]"
                                 onClick={() => handleDeleteOrder(order)}
@@ -2949,48 +2936,7 @@ export default function AdminOrdersClient({
                       </Badge>
                     </div>
 
-                    {(() => {
-                      const isShippedPhase = ['Shipped', 'Out For Delivery', 'Delivered', 'Returned'].includes(order.status) || showNocColumns;
-                      const has3rdParty = order.nocThirdPartyNo && String(order.nocThirdPartyNo).trim() !== '' && String(order.nocThirdPartyNo).trim().toUpperCase() !== 'N/A' && String(order.nocThirdPartyNo).trim().toUpperCase() !== 'NA';
-                      const displayTracking = has3rdParty ? String(order.nocThirdPartyNo).trim() : (order.nocParcelNo || order.trackingNumber);
-                      const courierToDisplay = order.courierName || (order.trackingNumber ? 'NOC' : '—');
 
-                      if (!isShippedPhase || !displayTracking) return null;
-
-                      const effectiveTime = getEffectiveNocStatusTime(order);
-                      const statusTimeAgo = effectiveTime ? formatSmartTimeAgo(effectiveTime) : '';
-
-                      return (
-                        <div className="flex items-center justify-between gap-2 py-1.5 border-t border-border/40 text-[12px]">
-                          <div className="flex items-center gap-1.5 min-w-0">
-                            <span className="font-mono text-[12px] font-bold text-foreground truncate" title={has3rdParty ? `3rd Party No: ${displayTracking}` : `Parcel No: ${displayTracking}`}>
-                              {displayTracking}
-                            </span>
-                            <span className="text-[11px] font-semibold text-muted-foreground truncate">({courierToDisplay})</span>
-                          </div>
-                          <div className="flex items-center gap-1.5 shrink-0">
-                            <button
-                              type="button"
-                              onClick={() => setNocTrackingOrder(order)}
-                              className="text-[12px] font-semibold text-foreground hover:underline cursor-pointer"
-                            >
-                              {(() => {
-                                const raw = order.nocStatus || '';
-                                if (raw && !raw.match(/^\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4}/)) {
-                                  return raw;
-                                }
-                                return order.status === 'Delivered' ? 'Delivered' : (order.status === 'Out For Delivery' ? 'INTRANSIT' : 'Booked');
-                              })()}
-                            </button>
-                            {statusTimeAgo && (
-                              <span className="text-[10.5px] text-muted-foreground font-normal">
-                                • {statusTimeAgo}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })()}
 
                     {/* Mobile Amounts Row: COD & Total */}
                     <div className="flex items-center justify-between gap-2 py-1.5 border-t border-border/40 text-[12.5px]">

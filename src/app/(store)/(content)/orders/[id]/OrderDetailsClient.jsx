@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Package, Truck, ExternalLink, MessageSquare, CheckCircle2, Star } from 'lucide-react';
 import CopyButton from '@/components/CopyButton';
-import NocTrackingModal from '@/components/NocTrackingModal';
 import ReviewModal from '@/components/ReviewModal';
 import { Button } from '@/components/ui/button';
 import { normalizeOrderStatus } from '@/lib/order-status';
@@ -28,7 +27,6 @@ import {
 } from '@/components/ui/table';
 
 export default function OrderDetailsClient({ order }) {
-  const [showTrackingModal, setShowTrackingModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [currentOrder, setCurrentOrder] = useState(order);
 
@@ -393,14 +391,7 @@ export default function OrderDetailsClient({ order }) {
         </div>
       </div>
 
-      <NocTrackingModal
-        open={showTrackingModal}
-        onOpenChange={setShowTrackingModal}
-        trackingNumber={currentOrder.nocThirdPartyNo || currentOrder.nocParcelNo || currentOrder.trackingNumber}
-        orderId={currentOrder.orderId}
-        courierName={currentOrder.courierName || 'NOC Express'}
-        nocLabelUrl={currentOrder.nocLabelUrl}
-      />
+
 
       {isDelivered && (
         <ReviewModal

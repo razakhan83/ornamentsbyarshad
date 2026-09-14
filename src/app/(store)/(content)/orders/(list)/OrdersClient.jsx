@@ -53,7 +53,6 @@ import {
 } from '@/components/ui/dialog';
 
 const ReviewModal = dynamic(() => import('@/components/ReviewModal'));
-import NocTrackingModal from '@/components/NocTrackingModal';
 import { normalizeOrderStatus } from '@/lib/order-status';
 import { cn } from '@/lib/utils';
 import CopyButton from '@/components/CopyButton';
@@ -588,26 +587,6 @@ export default function OrdersClient({ initialOrders }) {
                             <Button render={<Link href={`/orders/${order._id}`} />} nativeButton={false} className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-11 px-6 shadow-sm font-semibold transition-all active:scale-[0.98] w-full sm:w-auto">
                               View your items
                             </Button>
-                            {(order.nocThirdPartyNo || order.nocParcelNo || order.trackingNumber) ? (
-                              <Button 
-                                variant="outline" 
-                                className="h-11 px-6 rounded-xl border-sky-300 bg-sky-50/60 hover:bg-sky-100 text-sky-700 font-semibold shadow-sm transition-all active:scale-[0.98] w-full sm:w-auto flex items-center gap-2 cursor-pointer"
-                                onClick={() => setTrackingOrder(order)}
-                              >
-                                <Truck className="size-4 text-sky-600" />
-                                Track Package
-                              </Button>
-                            ) : (
-                              <Button 
-                                variant="outline" 
-                                disabled
-                                className="h-11 px-6 rounded-xl border-gray-200 bg-gray-50 text-gray-400 font-semibold cursor-not-allowed w-full sm:w-auto flex items-center gap-2"
-                                title="Tracking details will activate once dispatched via courier"
-                              >
-                                <Truck className="size-4" />
-                                Track Package (Preparing)
-                              </Button>
-                            )}
                           </>
                         )}
                       </div>
@@ -660,16 +639,6 @@ export default function OrdersClient({ initialOrders }) {
           </div>
         </div>
       </div>
-
-      {/* NOC Tracking Modal */}
-      <NocTrackingModal
-        open={!!trackingOrder}
-        onOpenChange={(open) => !open && setTrackingOrder(null)}
-        trackingNumber={trackingOrder?.nocThirdPartyNo || trackingOrder?.nocParcelNo || trackingOrder?.trackingNumber}
-        orderId={trackingOrder?.orderId}
-        courierName={trackingOrder?.courierName || 'NOC Express'}
-        nocLabelUrl={trackingOrder?.nocLabelUrl}
-      />
       
       {/* Feedback Modal */}
       {feedbackOrder && (
