@@ -436,12 +436,13 @@ function safeIsoDate(val) {
 }
 
 function toOrderSummaryRow(order) {
+  if (!order) return null;
   return {
-    _id: order._id.toString(),
-    orderId: order.orderId,
+    _id: order._id ? order._id.toString() : '',
+    orderId: order.orderId || '',
     isDraft: order.isDraft === true,
     sourceTag: order.sourceTag || '',
-    customerName: order.customerName,
+    customerName: order.customerName || '',
     customerEmail: order.customerEmail || '',
     customerPhone: order.customerPhone || '',
     customerAddress: order.customerAddress || '',
@@ -470,10 +471,10 @@ function toOrderSummaryRow(order) {
     nocLastTrackedAt: safeIsoDate(order.nocLastTrackedAt),
     nocTrackingEvents: Array.isArray(order.nocTrackingEvents)
       ? order.nocTrackingEvents.map((e) => ({
-          status: e.status || '',
-          remarks: e.remarks || '',
-          dateTime: e.dateTime || '',
-          timestamp: e.timestamp || 0,
+          status: e?.status || '',
+          remarks: e?.remarks || '',
+          dateTime: e?.dateTime || '',
+          timestamp: e?.timestamp || 0,
         }))
       : [],
     courierBookingDate: safeIsoDate(order.courierBookingDate),
@@ -481,9 +482,9 @@ function toOrderSummaryRow(order) {
     items: Array.isArray(order.items)
       ? order.items.map((item) => ({
           ...item,
-          _id: item._id?.toString(),
-          productId: item.productId?.toString() || item.productId,
-          sourcingVendors: Array.isArray(item.sourcingVendors) ? item.sourcingVendors : [],
+          _id: item?._id ? item._id.toString() : '',
+          productId: item?.productId ? item.productId.toString() : '',
+          sourcingVendors: Array.isArray(item?.sourcingVendors) ? item.sourcingVendors : [],
         }))
       : [],
     createdAt: safeIsoDate(order.createdAt),
@@ -2178,7 +2179,7 @@ export async function getAdminOrdersPage({
   const skip = (safePage - 1) * safeLimit;
 
   const [items, total, statusCounts, draftCount, trashCount, deliveredPaidCount] = await Promise.all([
-    Order.find(query).sort({ createdAt: -1 }).skip(skip).limit(safeLimit).lean().then((orders) => orders.map(toOrderSummaryRow)),
+    Order.find(query).sort({ createdAt: -1 }).skip(skip).limit(safeLimit).lean().then((orders) => orders.map(toOrderSummaryRow).filter(Boolean)),
     Order.countDocuments(query),
     Order.aggregate([
       {
@@ -2248,8 +2249,8 @@ export async function getAdminTrashOrders() {
     customerPhone: o.customerPhone || '',
     totalAmount: Number(o.totalAmount || 0),
     isDraft: o.isDraft === true,
-    deletedAt: o.deletedAt ? o.deletedAt.toISOString() : null,
-    createdAt: o.createdAt ? o.createdAt.toISOString() : null,
+    deletedAt: safeIsoDate(o.deletedAt),
+    createdAt: safeIsoDate(o.createdAt),
   }));
 }
 
