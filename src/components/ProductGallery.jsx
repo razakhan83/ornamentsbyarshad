@@ -34,7 +34,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
   );
   const hasMultipleImages = normalizedImages.length > 1;
   const currentImage = normalizedImages[selectedIndex] || normalizedImages[0];
-  const zoomLevel = 2.85;
+  const zoomLevel = 1.85;
 
   const mainOptions = useMemo(
     () => ({
