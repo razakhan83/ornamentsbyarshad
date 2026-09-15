@@ -127,14 +127,14 @@ export async function uploadVideoFile(file, folder = "ornaments_videos", ratioTy
 
   let optimizedUrl = uploadData.secure_url;
   
-  // Inject Cloudinary optimization and cropping flags
+  // Inject Cloudinary universal compression and adaptive streaming flags
   if (optimizedUrl.includes('/video/upload/')) {
-    let flags = 'q_auto,f_webm';
+    let flags = 'q_auto:good,f_auto,vc_auto';
     
     if (ratioType === 'pc') {
       flags += ',ar_21:9,c_fill,g_auto,w_1920';
-    } else if (ratioType === 'mobile') {
-      flags += ',ar_1:1,c_fill,g_auto,w_800';
+    } else if (ratioType === 'mobile' || ratioType === 'hero-mobile') {
+      flags += ',w_800';
     }
 
     optimizedUrl = optimizedUrl.replace('/video/upload/', `/video/upload/${flags}/`);

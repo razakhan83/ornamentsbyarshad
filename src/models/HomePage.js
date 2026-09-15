@@ -60,6 +60,14 @@ const HomePageHeroSlideSchema = new mongoose.Schema(
       type: HomePageAssetSchema,
       default: () => ({}),
     },
+    mobileVideo: {
+      type: HomePageVideoSchema,
+      default: undefined,
+    },
+    desktopVideo: {
+      type: HomePageVideoSchema,
+      default: undefined,
+    },
     alt: {
       type: String,
       default: '',

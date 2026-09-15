@@ -70,10 +70,22 @@ function normalizeHeroSlides(slides = []) {
       const mobileImage = normalizeAsset(slide?.mobileImage, desktopImage) || desktopImage;
       const tabletImage = normalizeAsset(slide?.tabletImage, desktopImage);
 
+      const mobileVideo = slide?.mobileVideo?.url ? {
+        url: cleanText(slide.mobileVideo.url),
+        publicId: cleanText(slide.mobileVideo.publicId || slide.mobileVideo.public_id),
+      } : undefined;
+
+      const desktopVideo = slide?.desktopVideo?.url ? {
+        url: cleanText(slide.desktopVideo.url),
+        publicId: cleanText(slide.desktopVideo.publicId || slide.desktopVideo.public_id),
+      } : undefined;
+
       return {
         desktopImage,
         mobileImage,
         ...(tabletImage ? { tabletImage } : {}),
+        ...(mobileVideo ? { mobileVideo } : {}),
+        ...(desktopVideo ? { desktopVideo } : {}),
         alt: cleanText(slide?.alt),
         link: cleanText(slide?.link),
         sortOrder: safeNumber(slide?.sortOrder, index),

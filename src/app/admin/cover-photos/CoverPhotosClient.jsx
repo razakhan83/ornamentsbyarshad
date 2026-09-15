@@ -18,13 +18,13 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { GripVertical, Images, Loader2, Monitor, Plus, Save, Smartphone, Tablet, Trash2, Upload } from 'lucide-react';
+import { GripVertical, Images, Loader2, Monitor, Play, Plus, Save, Smartphone, Tablet, Trash2, Upload, Video, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { uploadImageDataUrl } from '@/lib/cloudinaryUpload';
+import { uploadImageDataUrl, uploadVideoFile } from '@/lib/cloudinaryUpload';
 import { getBlurPlaceholderProps } from '@/lib/imagePlaceholder';
 import { cn } from '@/lib/utils';
 
@@ -65,6 +65,10 @@ function normalizeSlides(input = []) {
         desktopImage,
         tabletImage: normalizeAsset(item?.tabletImage),
         mobileImage: normalizeAsset(item?.mobileImage),
+        mobileVideo: item?.mobileVideo?.url ? {
+          url: String(item.mobileVideo.url).trim(),
+          publicId: String(item.mobileVideo.publicId || item.mobileVideo.public_id || '').trim(),
+        } : null,
         alt: String(item?.alt || '').trim(),
         sortOrder: Number(item?.sortOrder ?? index) || 0,
       };
@@ -78,6 +82,7 @@ function createEmptySlide(index) {
     desktopImage: null,
     tabletImage: null,
     mobileImage: null,
+    mobileVideo: null,
     alt: '',
     sortOrder: index,
   };
@@ -96,7 +101,7 @@ function VariantUpload({ slideId, variantKey, title, description, icon: Icon, as
     <div className="rounded-2xl border border-border bg-background/70 p-3">
       <div className="mb-3 flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">
-                <div className="flex size-10 items-center justify-center rounded-xl border border-border bg-muted text-foreground">
+          <div className="flex size-10 items-center justify-center rounded-xl border border-border bg-muted text-foreground">
             <Icon className="size-4" />
           </div>
           <div>
@@ -142,7 +147,79 @@ function VariantUpload({ slideId, variantKey, title, description, icon: Icon, as
   );
 }
 
-function SortableSlideCard({ slide, index, onRemove, onAltChange, onUpload, uploadingSlideId }) {
+function MobileVideoUpload({ slideId, video, onUploadVideo, onRemoveVideo, disabled }) {
+  return (
+    <div className="mt-3 rounded-2xl border border-border/80 bg-gradient-to-r from-amber-500/5 via-background to-background p-3.5">
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <div className="flex items-start gap-3">
+          <div className="flex size-10 items-center justify-center rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400">
+            <Video className="size-4" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <p className="text-sm font-semibold text-foreground">Mobile Hero Video (Optional)</p>
+              <span className="rounded-md bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
+                Autoplay Loop
+              </span>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Plays in a seamless muted loop on phones. Falls back to Mobile Image if not uploaded.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {video?.url ? (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => onRemoveVideo(slideId)}
+              disabled={disabled}
+              className="h-8 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
+            >
+              <X className="size-3.5" data-icon="inline-start" />
+              Remove Video
+            </Button>
+          ) : null}
+
+          <label
+            className={cn(
+              'inline-flex cursor-pointer items-center gap-2 rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-amber-500/20',
+              disabled && 'cursor-not-allowed opacity-60',
+            )}
+          >
+            <Upload className="size-3.5 text-amber-600 dark:text-amber-400" />
+            {video?.url ? 'Change Video' : 'Upload Video (.mp4)'}
+            <input
+              type="file"
+              accept="video/mp4,video/webm,video/quicktime,video/*"
+              className="hidden"
+              disabled={disabled}
+              onChange={(event) => onUploadVideo(slideId, event)}
+            />
+          </label>
+        </div>
+      </div>
+
+      {video?.url ? (
+        <div className="relative aspect-[16/9] max-w-sm overflow-hidden rounded-xl border border-amber-500/20 bg-black">
+          <video
+            src={video.url}
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls
+            className="h-full w-full object-cover"
+          />
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function SortableSlideCard({ slide, index, onRemove, onAltChange, onUpload, onUploadVideo, onRemoveVideo, uploadingSlideId }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: slide.id,
   });
@@ -152,8 +229,8 @@ function SortableSlideCard({ slide, index, onRemove, onAltChange, onUpload, uplo
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={cn(
-                'group relative overflow-hidden rounded-2xl border border-border bg-background shadow-[0_16px_40px_rgba(0,0,0,0.08)]',
-                isDragging && 'z-10 shadow-[0_24px_60px_rgba(0,0,0,0.18)]',
+        'group relative overflow-hidden rounded-2xl border border-border bg-background shadow-[0_16px_40px_rgba(0,0,0,0.08)]',
+        isDragging && 'z-10 shadow-[0_24px_60px_rgba(0,0,0,0.18)]',
       )}
     >
       <div className="border-b border-border bg-muted/25 px-4 py-3">
@@ -230,6 +307,14 @@ function SortableSlideCard({ slide, index, onRemove, onAltChange, onUpload, uplo
             disabled={uploadingSlideId === slide.id}
           />
         </div>
+
+        <MobileVideoUpload
+          slideId={slide.id}
+          video={slide.mobileVideo}
+          onUploadVideo={onUploadVideo}
+          onRemoveVideo={onRemoveVideo}
+          disabled={uploadingSlideId === slide.id}
+        />
       </div>
     </div>
   );
@@ -333,6 +418,58 @@ export default function CoverPhotosClient({ initialSlides }) {
     }
   }
 
+  async function handleUploadVideo(slideId, event) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    if (file.size > 60 * 1024 * 1024) {
+      toast.error('Video file is too large. Please select a video under 60MB.');
+      return;
+    }
+
+    setUploadingSlideId(slideId);
+    setSaved(false);
+
+    try {
+      toast.info('Uploading & optimizing mobile video to Cloudinary...');
+      const videoResult = await uploadVideoFile(file, 'ornaments_homepage_videos', 'hero-mobile');
+      if (!videoResult?.url) {
+        throw new Error('Video upload did not return a valid URL.');
+      }
+
+      setSlides((current) =>
+        current.map((slide) =>
+          slide.id === slideId
+            ? {
+                ...slide,
+                mobileVideo: {
+                  url: videoResult.url,
+                  publicId: videoResult.publicId,
+                },
+              }
+            : slide,
+        ),
+      );
+      toast.success('Mobile video uploaded and optimized successfully!');
+    } catch (error) {
+      console.error('Failed to upload mobile video', error);
+      toast.error(error.message || 'Failed to upload video.');
+    } finally {
+      setUploadingSlideId('');
+    }
+  }
+
+  function handleRemoveVideo(slideId) {
+    setSlides((current) =>
+      current.map((slide) =>
+        slide.id === slideId ? { ...slide, mobileVideo: null } : slide,
+      ),
+    );
+    setSaved(false);
+    toast.info('Mobile video removed (will use mobile image).');
+  }
+
   async function handleSave() {
     const missingDesktopIndex = slides.findIndex((slide) => !slide.desktopImage?.url);
     if (missingDesktopIndex !== -1) {
@@ -344,7 +481,7 @@ export default function CoverPhotosClient({ initialSlides }) {
     setSaved(false);
 
     const payload = {
-      slides: slides.map(({ id, desktopImage, tabletImage, mobileImage, alt }, index) => {
+      slides: slides.map(({ id, desktopImage, tabletImage, mobileImage, mobileVideo, alt }, index) => {
         const slide = {
           desktopImage,
           alt: alt || `Store cover ${index + 1}`,
@@ -353,6 +490,7 @@ export default function CoverPhotosClient({ initialSlides }) {
 
         if (tabletImage?.url) slide.tabletImage = tabletImage;
         if (mobileImage?.url) slide.mobileImage = mobileImage;
+        if (mobileVideo?.url) slide.mobileVideo = mobileVideo;
 
         return slide;
       }),
@@ -430,6 +568,8 @@ export default function CoverPhotosClient({ initialSlides }) {
                     onRemove={handleRemoveSlide}
                     onAltChange={handleAltChange}
                     onUpload={handleUpload}
+                    onUploadVideo={handleUploadVideo}
+                    onRemoveVideo={handleRemoveVideo}
                     uploadingSlideId={uploadingSlideId}
                   />
                 ))}

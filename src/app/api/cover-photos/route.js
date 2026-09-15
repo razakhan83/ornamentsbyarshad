@@ -47,8 +47,20 @@ async function normalizeSlides(input) {
         imageDataUrl: item?.mobileImage?.imageDataUrl || '',
       });
 
+      const mobileVideo = item?.mobileVideo?.url ? {
+        url: String(item.mobileVideo.url).trim(),
+        publicId: String(item.mobileVideo.publicId || item.mobileVideo.public_id || '').trim(),
+      } : undefined;
+
+      const desktopVideo = item?.desktopVideo?.url ? {
+        url: String(item.desktopVideo.url).trim(),
+        publicId: String(item.desktopVideo.publicId || item.desktopVideo.public_id || '').trim(),
+      } : undefined;
+
       if (tabletImage) slide.tabletImage = tabletImage;
       if (mobileImage) slide.mobileImage = mobileImage;
+      if (mobileVideo) slide.mobileVideo = mobileVideo;
+      if (desktopVideo) slide.desktopVideo = desktopVideo;
 
       return slide;
     }),

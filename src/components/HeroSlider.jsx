@@ -13,6 +13,7 @@ const HERO_SWIPE_THRESHOLD_PX = 40;
 function extractSlideImages(slide) {
   const desktopAsset = slide?.desktopImage || null;
   const mobileAsset = slide?.mobileImage || null;
+  const mobileVideoAsset = slide?.mobileVideo || null;
 
   const rawDesktopSrc =
     (typeof desktopAsset === 'string' ? desktopAsset : desktopAsset?.url || desktopAsset?.image?.url) ||
@@ -25,6 +26,11 @@ function extractSlideImages(slide) {
     slide?.mobileSrc ||
     '';
 
+  const mobileVideoSrc =
+    (typeof mobileVideoAsset === 'string' ? mobileVideoAsset : mobileVideoAsset?.url) ||
+    slide?.mobileVideoUrl ||
+    '';
+
   const fallbackSrc = rawDesktopSrc || rawMobileSrc || slide?.image || slide?.src || '';
 
   const desktopSrc = rawDesktopSrc || fallbackSrc;
@@ -35,6 +41,7 @@ function extractSlideImages(slide) {
     desktopBlur: desktopAsset?.blurDataURL || slide?.blurDataURL || '',
     mobileSrc,
     mobileBlur: mobileAsset?.blurDataURL || desktopAsset?.blurDataURL || slide?.blurDataURL || '',
+    mobileVideoSrc,
   };
 }
 
@@ -62,9 +69,63 @@ function isNearbySlide(index, activeIndex, total) {
   return false;
 }
 
-function HeroSlideImage({ slide, isPriority }) {
+function HeroSlideMedia({ slide, isPriority, isActive }) {
   const desktopSrc = slide.images.desktopSrc || slide.images.mobileSrc;
   const mobileSrc = slide.images.mobileSrc || slide.images.desktopSrc;
+  const mobileVideoSrc = slide.images.mobileVideoSrc;
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (!mobileVideoSrc || !videoRef.current) return;
+    if (isActive) {
+      videoRef.current.play().catch(() => {});
+    } else {
+      videoRef.current.pause();
+    }
+  }, [isActive, mobileVideoSrc]);
+
+  const desktopOptimized = optimizeCloudinaryUrl(desktopSrc, CLOUDINARY_IMAGE_PRESETS.heroFull);
+  const mobileOptimized = optimizeCloudinaryUrl(mobileSrc, CLOUDINARY_IMAGE_PRESETS.heroMobile);
+
+  if (mobileVideoSrc) {
+    return (
+      <div className="relative block h-full w-full">
+        {/* Desktop image (visible on md: and larger) */}
+        {desktopOptimized ? (
+          <div className="hidden md:block absolute inset-0 h-full w-full">
+            <Image
+              src={desktopOptimized}
+              alt={slide.alt}
+              fill
+              sizes="100vw"
+              priority={isPriority}
+              fetchPriority={isPriority ? 'high' : 'auto'}
+              loading={isPriority ? 'eager' : 'lazy'}
+              className="object-cover"
+              quality={80}
+              {...getBlurPlaceholderProps(slide.images.desktopBlur || slide.images.mobileBlur)}
+            />
+          </div>
+        ) : null}
+
+        {/* Mobile video (visible on < md) */}
+        <div className="block md:hidden absolute inset-0 h-full w-full overflow-hidden">
+          <video
+            ref={videoRef}
+            src={mobileVideoSrc}
+            poster={mobileOptimized || desktopOptimized}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload={isPriority ? 'auto' : 'metadata'}
+            className="h-full w-full object-cover"
+          />
+        </div>
+      </div>
+    );
+  }
+
   const hasDistinct =
     Boolean(slide.images.desktopSrc && slide.images.mobileSrc && slide.images.desktopSrc !== slide.images.mobileSrc);
 
@@ -86,9 +147,6 @@ function HeroSlideImage({ slide, isPriority }) {
       />
     );
   }
-
-  const desktopOptimized = optimizeCloudinaryUrl(desktopSrc, CLOUDINARY_IMAGE_PRESETS.heroFull);
-  const mobileOptimized = optimizeCloudinaryUrl(mobileSrc, CLOUDINARY_IMAGE_PRESETS.heroMobile);
 
   return (
     <picture className="relative block h-full w-full">
@@ -264,7 +322,7 @@ export default function HeroSlider({ slides = [] }) {
               <SlideFrame href={slide.link} isActive={isActive}>
                 <div className="relative h-full w-full">
                   {isNearbySlide(index, safeActiveIndex, resolvedSlides.length) ? (
-                    <HeroSlideImage slide={slide} isPriority={index === 0} />
+                    <HeroSlideMedia slide={slide} isPriority={index === 0} isActive={isActive} />
                   ) : null}
                 </div>
               </SlideFrame>

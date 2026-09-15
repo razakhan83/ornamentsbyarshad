@@ -22,6 +22,24 @@ const CoverPhotoAssetSchema = new mongoose.Schema(
   },
 );
 
+const CoverPhotoVideoSchema = new mongoose.Schema(
+  {
+    url: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    publicId: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+  },
+  {
+    _id: false,
+  },
+);
+
 const CoverSlideSchema = new mongoose.Schema(
   {
     desktopImage: {
@@ -35,6 +53,14 @@ const CoverSlideSchema = new mongoose.Schema(
     mobileImage: {
       type: CoverPhotoAssetSchema,
       default: () => ({}),
+    },
+    mobileVideo: {
+      type: CoverPhotoVideoSchema,
+      default: undefined,
+    },
+    desktopVideo: {
+      type: CoverPhotoVideoSchema,
+      default: undefined,
     },
     alt: {
       type: String,
