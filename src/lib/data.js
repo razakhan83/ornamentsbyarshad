@@ -1295,6 +1295,8 @@ export async function getStorefrontHomePage() {
                 Boolean(
                   slide?.desktopImage?.url ||
                   slide?.mobileImage?.url ||
+                  slide?.mobileVideo?.url ||
+                  slide?.desktopVideo?.url ||
                   slide?.pcSrc ||
                   slide?.mobileSrc ||
                   slide?.image ||

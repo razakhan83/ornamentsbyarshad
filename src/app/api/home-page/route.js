@@ -252,7 +252,11 @@ export async function PUT(request) {
     ).lean();
 
     revalidateTag('home-page', 'max');
+    revalidateTag('home-page');
     revalidateTag('home-sections', 'max');
+    revalidateTag('home-sections');
+    revalidateTag('settings');
+    revalidateTag('products');
     revalidatePath('/');
 
     return NextResponse.json({

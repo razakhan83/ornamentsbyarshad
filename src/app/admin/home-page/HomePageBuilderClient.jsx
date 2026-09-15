@@ -393,19 +393,24 @@ function PreviewVideoUploadTile({ label, description, asset, onChange, disabled,
 
       <div
         className={cn(
-          'relative overflow-hidden rounded-xl border border-border bg-muted/25 flex items-center justify-center',
+          'relative overflow-hidden rounded-xl border border-border bg-black flex items-center justify-center',
           ratio === 'square' ? 'aspect-square' : 'aspect-[21/9]',
         )}
       >
         {asset?.url ? (
           <video
+            key={asset.url}
             src={asset.url}
             autoPlay
             loop
             muted
+            controls
             playsInline
+            preload="metadata"
             className="h-full w-full object-cover"
-          />
+          >
+            <source src={asset.url} type="video/mp4" />
+          </video>
         ) : (
           <div className="flex h-full items-center justify-center px-4 text-center text-xs text-muted-foreground">
             Upload a video for this slot.
@@ -449,16 +454,21 @@ function PreviewHeroVideoUploadTile({ label, description, asset, onChange, onRem
         </div>
       </div>
 
-      <div className="relative overflow-hidden rounded-xl border border-border bg-muted/25 aspect-[16/8] flex items-center justify-center">
+      <div className="relative overflow-hidden rounded-xl border border-border bg-black aspect-[16/8] flex items-center justify-center">
         {asset?.url ? (
           <video
+            key={asset.url}
             src={asset.url}
             autoPlay
             loop
             muted
+            controls
             playsInline
+            preload="metadata"
             className="h-full w-full object-cover"
-          />
+          >
+            <source src={asset.url} type="video/mp4" />
+          </video>
         ) : (
           <div className="flex h-full items-center justify-center px-4 text-center text-xs text-muted-foreground">
             Optional: Looping mobile background video.

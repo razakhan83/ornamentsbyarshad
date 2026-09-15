@@ -65,8 +65,6 @@ function normalizeHeroSlides(slides = []) {
   return slides
     .map((slide, index) => {
       const desktopImage = normalizeAsset(slide?.desktopImage || slide, slide);
-      if (!desktopImage) return null;
-
       const mobileImage = normalizeAsset(slide?.mobileImage, desktopImage) || desktopImage;
       const tabletImage = normalizeAsset(slide?.tabletImage, desktopImage);
 
@@ -80,9 +78,11 @@ function normalizeHeroSlides(slides = []) {
         publicId: cleanText(slide.desktopVideo.publicId || slide.desktopVideo.public_id),
       } : undefined;
 
+      if (!desktopImage && !mobileImage && !mobileVideo && !desktopVideo) return null;
+
       return {
-        desktopImage,
-        mobileImage,
+        desktopImage: desktopImage || mobileImage || { url: '', publicId: '', blurDataURL: '' },
+        mobileImage: mobileImage || desktopImage || { url: '', publicId: '', blurDataURL: '' },
         ...(tabletImage ? { tabletImage } : {}),
         ...(mobileVideo ? { mobileVideo } : {}),
         ...(desktopVideo ? { desktopVideo } : {}),

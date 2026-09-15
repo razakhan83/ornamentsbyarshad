@@ -76,11 +76,19 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    if (!mobileVideoSrc || !videoRef.current) return;
+    const video = videoRef.current;
+    if (!mobileVideoSrc || !video) return;
+
+    video.defaultMuted = true;
+    video.muted = true;
+
     if (isActive) {
-      videoRef.current.play().catch(() => {});
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
     } else {
-      videoRef.current.pause();
+      video.pause();
     }
   }, [isActive, mobileVideoSrc]);
 
@@ -89,7 +97,7 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
 
   if (mobileVideoSrc) {
     return (
-      <div className="relative block h-full w-full">
+      <div className="relative block h-full w-full bg-black">
         {/* Desktop image (visible on md: and larger) */}
         {desktopOptimized ? (
           <div className="hidden md:block absolute inset-0 h-full w-full">
@@ -109,18 +117,27 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
         ) : null}
 
         {/* Mobile video (visible on < md) */}
-        <div className="block md:hidden absolute inset-0 h-full w-full overflow-hidden">
+        <div className="block md:hidden absolute inset-0 h-full w-full overflow-hidden bg-black">
           <video
-            ref={videoRef}
+            ref={(el) => {
+              if (el) {
+                el.defaultMuted = true;
+                el.muted = true;
+              }
+              videoRef.current = el;
+            }}
             src={mobileVideoSrc}
-            poster={mobileOptimized || desktopOptimized}
+            poster={mobileOptimized || desktopOptimized || undefined}
             autoPlay
             loop
             muted
             playsInline
+            webkit-playsinline="true"
             preload={isPriority ? 'auto' : 'metadata'}
             className="h-full w-full object-cover"
-          />
+          >
+            <source src={mobileVideoSrc} type="video/mp4" />
+          </video>
         </div>
       </div>
     );
@@ -177,7 +194,7 @@ export default function HeroSlider({ slides = [] }) {
           images: extractSlideImages(slide),
           alt: slide?.alt || `Slide ${index + 1}`,
         }))
-        .filter((slide) => slide.images.mobileSrc || slide.images.desktopSrc),
+        .filter((slide) => slide.images.mobileSrc || slide.images.desktopSrc || slide.images.mobileVideoSrc),
     [slides]
   );
 
