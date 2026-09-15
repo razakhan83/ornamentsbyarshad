@@ -175,6 +175,7 @@ function createHeroSlide(index = 0) {
     link: '',
     desktopImage: null,
     mobileImage: null,
+    mobileVideo: null,
   };
 }
 
@@ -317,6 +318,7 @@ function normalizeSections(input = []) {
           link: slide.link || '',
           desktopImage: slide.desktopImage || null,
           mobileImage: slide.mobileImage || null,
+          mobileVideo: slide.mobileVideo || null,
         }))
       : [],
     pcVideo: section.pcVideo || null,
@@ -414,6 +416,59 @@ function PreviewVideoUploadTile({ label, description, asset, onChange, disabled,
   );
 }
 
+function PreviewHeroVideoUploadTile({ label, description, asset, onChange, onRemove, disabled }) {
+  return (
+    <div className="rounded-xl border border-border bg-background/75 p-2.5">
+      <div className="mb-2 flex items-start justify-between gap-2">
+        <div>
+          <p className="text-xs font-semibold text-foreground">{label}</p>
+          <p className="text-[11px] text-muted-foreground">{description}</p>
+        </div>
+        <div className="flex items-center gap-1.5">
+          {asset?.url && (
+            <button
+              type="button"
+              disabled={disabled}
+              onClick={onRemove}
+              className="inline-flex items-center gap-1 rounded-lg border border-destructive/30 bg-destructive/10 px-2 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/20 transition-colors"
+            >
+              <Trash2 className="size-3" />
+              Remove
+            </button>
+          )}
+          <label
+            className={cn(
+              'inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted',
+              disabled && 'cursor-not-allowed opacity-60',
+            )}
+          >
+            <Upload className="size-3.5" />
+            {asset?.url ? 'Change Video' : 'Upload Video'}
+            <input type="file" accept="video/mp4,video/webm" className="hidden" disabled={disabled} onChange={onChange} />
+          </label>
+        </div>
+      </div>
+
+      <div className="relative overflow-hidden rounded-xl border border-border bg-muted/25 aspect-[16/8] flex items-center justify-center">
+        {asset?.url ? (
+          <video
+            src={asset.url}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center px-4 text-center text-xs text-muted-foreground">
+            Optional: Looping mobile background video.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function SortableSectionCard({
   section,
   index,
@@ -430,6 +485,8 @@ function SortableSectionCard({
   onAddHeroSlide,
   onHeroSlideChange,
   onHeroSlideImageUpload,
+  onHeroSlideVideoUpload,
+  onHeroSlideRemoveVideo,
   onRemoveHeroSlide,
   onMoveHeroSlide,
   onAddCarouselBanner,
@@ -1003,10 +1060,10 @@ function SortableSectionCard({
                     </div>
                   </div>
 
-                  <div className="grid gap-3 lg:grid-cols-2">
+                  <div className="grid gap-3 xl:grid-cols-3">
                     <PreviewUploadTile
                       label="Desktop Slide"
-                      description="Large landscape image for desktop and wide screens."
+                      description="Large landscape image for desktop."
                       asset={slide.desktopImage}
                       disabled={uploadingKey === `${section.id}:${slide.id}:desktopImage`}
                       onChange={(event) => onHeroSlideImageUpload(section.id, slide.id, 'desktopImage', event)}
@@ -1018,6 +1075,14 @@ function SortableSectionCard({
                       mobile
                       disabled={uploadingKey === `${section.id}:${slide.id}:mobileImage`}
                       onChange={(event) => onHeroSlideImageUpload(section.id, slide.id, 'mobileImage', event)}
+                    />
+                    <PreviewHeroVideoUploadTile
+                      label="Mobile Hero Video"
+                      description="Optional looping background video for mobile."
+                      asset={slide.mobileVideo}
+                      disabled={uploadingKey === `${section.id}:${slide.id}:mobileVideo`}
+                      onChange={(event) => onHeroSlideVideoUpload(section.id, slide.id, 'mobileVideo', event)}
+                      onRemove={() => onHeroSlideRemoveVideo(section.id, slide.id)}
                     />
                   </div>
 
@@ -1181,6 +1246,8 @@ function HomePageSectionsWorkspace({
   onAddHeroSlide,
   onHeroSlideChange,
   onHeroSlideImageUpload,
+  onHeroSlideVideoUpload,
+  onHeroSlideRemoveVideo,
   onRemoveHeroSlide,
   onMoveHeroSlide,
   onAddCarouselBanner,
@@ -1240,6 +1307,8 @@ function HomePageSectionsWorkspace({
                 onAddHeroSlide={onAddHeroSlide}
                 onHeroSlideChange={onHeroSlideChange}
                 onHeroSlideImageUpload={onHeroSlideImageUpload}
+                onHeroSlideVideoUpload={onHeroSlideVideoUpload}
+                onHeroSlideRemoveVideo={onHeroSlideRemoveVideo}
                 onRemoveHeroSlide={onRemoveHeroSlide}
                 onMoveHeroSlide={onMoveHeroSlide}
                 onAddCarouselBanner={onAddCarouselBanner}
@@ -1271,6 +1340,8 @@ function HomePageSectionsWorkspace({
               onAddHeroSlide={() => {}}
               onHeroSlideChange={() => {}}
               onHeroSlideImageUpload={() => {}}
+              onHeroSlideVideoUpload={() => {}}
+              onHeroSlideRemoveVideo={() => {}}
               onRemoveHeroSlide={() => {}}
               onMoveHeroSlide={() => {}}
               onAddCarouselBanner={() => {}}
@@ -1619,6 +1690,29 @@ export default function HomePageBuilderClient({ initialSections, availableCatego
     }
   }
 
+  async function handleHeroSlideVideoUpload(sectionId, slideId, fieldName, event) {
+    const file = Array.from(event.target.files || []).find((entry) => entry.type.startsWith('video/'));
+    event.target.value = '';
+    if (!file) return;
+
+    const uploadId = `${sectionId}:${slideId}:${fieldName}`;
+    setUploadingKey(uploadId);
+    setSaved(false);
+
+    try {
+      const asset = await uploadVideoFile(file, 'ornaments_hero_videos', 'hero-mobile');
+      handleHeroSlideChange(sectionId, slideId, { [fieldName]: asset });
+    } catch (error) {
+      toast.error(error.message || 'Failed to upload mobile hero video.');
+    } finally {
+      setUploadingKey('');
+    }
+  }
+
+  function handleHeroSlideRemoveVideo(sectionId, slideId) {
+    handleHeroSlideChange(sectionId, slideId, { mobileVideo: null });
+  }
+
   async function handleSave() {
     setSaving(true);
     setSaved(false);
@@ -1660,6 +1754,7 @@ export default function HomePageBuilderClient({ initialSections, availableCatego
                   ...slide,
                   desktopImage: slide.desktopImage || null,
                   mobileImage: slide.mobileImage || null,
+                  mobileVideo: slide.mobileVideo || null,
                 }))
               : [],
             pcVideo: section.pcVideo || null,
@@ -1717,6 +1812,8 @@ export default function HomePageBuilderClient({ initialSections, availableCatego
           onAddHeroSlide={handleAddHeroSlide}
           onHeroSlideChange={handleHeroSlideChange}
           onHeroSlideImageUpload={handleHeroSlideImageUpload}
+          onHeroSlideVideoUpload={handleHeroSlideVideoUpload}
+          onHeroSlideRemoveVideo={handleHeroSlideRemoveVideo}
           onRemoveHeroSlide={handleRemoveHeroSlide}
           onMoveHeroSlide={handleMoveHeroSlide}
           onAddCarouselBanner={handleAddCarouselBanner}

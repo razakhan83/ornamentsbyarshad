@@ -60,10 +60,28 @@ async function normalizeHeroSlides(slides = []) {
         toAssetInput(slide?.tabletImage, slide?.tabletImageDataUrl),
       );
 
+      const mobileVideo =
+        slide?.mobileVideo && typeof slide.mobileVideo === 'object' && cleanText(slide.mobileVideo.url)
+          ? {
+              url: cleanText(slide.mobileVideo.url),
+              publicId: cleanText(slide.mobileVideo.publicId || slide.mobileVideo.public_id),
+            }
+          : null;
+
+      const desktopVideo =
+        slide?.desktopVideo && typeof slide.desktopVideo === 'object' && cleanText(slide.desktopVideo.url)
+          ? {
+              url: cleanText(slide.desktopVideo.url),
+              publicId: cleanText(slide.desktopVideo.publicId || slide.desktopVideo.public_id),
+            }
+          : null;
+
       return {
         desktopImage,
         mobileImage: mobileImage || desktopImage,
         ...(tabletImage ? { tabletImage } : {}),
+        ...(mobileVideo ? { mobileVideo } : {}),
+        ...(desktopVideo ? { desktopVideo } : {}),
         alt: cleanText(slide?.alt),
         link: cleanText(slide?.link),
         sortOrder: index,
