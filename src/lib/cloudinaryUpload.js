@@ -98,50 +98,95 @@ export async function uploadImageDataUrl(dataUrl, folder = "ornaments_products")
   }
 }
 
-export async function uploadVideoFile(file, folder = "ornaments_videos", ratioType = null) {
-  const signRes = await fetch(`/api/cloudinary-sign?folder=${encodeURIComponent(folder)}`);
-  const signData = await safeReadJson(signRes);
-  if (!signRes.ok) {
-    throw new Error(signData?.error || "Failed to get upload signature");
+function applyVideoOptimizationFlags(url, ratioType) {
+  if (!url || typeof url !== 'string' || !url.includes('/video/upload/')) {
+    return url;
   }
 
-  const uploadFormData = new FormData();
-  uploadFormData.append("file", file);
-  uploadFormData.append("api_key", signData.apiKey);
-  uploadFormData.append("timestamp", signData.timestamp);
-  uploadFormData.append("signature", signData.signature);
-  uploadFormData.append("folder", folder);
-
-  const uploadRes = await fetch(
-    `https://api.cloudinary.com/v1_1/${signData.cloudName}/video/upload`,
-    {
-      method: "POST",
-      body: uploadFormData,
-    },
-  );
-  
-  const uploadData = await safeReadJson(uploadRes);
-  if (!uploadRes.ok || !uploadData.secure_url) {
-    throw new Error(uploadData?.error?.message || "Cloudinary video upload failed");
+  let flags = 'q_auto:good,f_auto,vc_auto';
+  if (ratioType === 'pc') {
+    flags += ',ar_21:9,c_fill,g_auto,w_1920';
+  } else if (ratioType === 'mobile' || ratioType === 'hero-mobile') {
+    flags += ',w_800';
   }
 
-  let optimizedUrl = uploadData.secure_url;
-  
-  // Inject Cloudinary universal compression and adaptive streaming flags
-  if (optimizedUrl.includes('/video/upload/')) {
-    let flags = 'q_auto:good,f_auto,vc_auto';
-    
-    if (ratioType === 'pc') {
-      flags += ',ar_21:9,c_fill,g_auto,w_1920';
-    } else if (ratioType === 'mobile' || ratioType === 'hero-mobile') {
-      flags += ',w_800';
-    }
+  return url.replace('/video/upload/', `/video/upload/${flags}/`);
+}
 
-    optimizedUrl = optimizedUrl.replace('/video/upload/', `/video/upload/${flags}/`);
+async function uploadVideoViaServerApi(file, folder) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('folder', folder);
+
+  const res = await fetch('/api/cloudinary-upload', {
+    method: 'POST',
+    body: formData,
+  });
+
+  const data = await safeReadJson(res);
+  if (!res.ok || !data?.success) {
+    throw new Error(data?.error || 'Server upload to Cloudinary failed');
   }
 
   return {
-    url: optimizedUrl,
-    publicId: uploadData.public_id || "",
+    url: data.url,
+    publicId: data.publicId || '',
   };
+}
+
+export async function uploadVideoFile(file, folder = "ornaments_videos", ratioType = null) {
+  try {
+    const signRes = await fetch(`/api/cloudinary-sign?folder=${encodeURIComponent(folder)}`);
+    const signData = await safeReadJson(signRes);
+    if (!signRes.ok || !signData?.cloudName || !signData?.apiKey || !signData?.signature) {
+      if (signRes.status === 401 || (signData?.error && signData.error.includes("missing"))) {
+        throw new Error(signData.error);
+      }
+      const fallbackResult = await uploadVideoViaServerApi(file, folder);
+      return {
+        url: applyVideoOptimizationFlags(fallbackResult.url, ratioType),
+        publicId: fallbackResult.publicId,
+      };
+    }
+
+    const uploadFormData = new FormData();
+    uploadFormData.append("file", file);
+    uploadFormData.append("api_key", signData.apiKey);
+    uploadFormData.append("timestamp", signData.timestamp);
+    uploadFormData.append("signature", signData.signature);
+    uploadFormData.append("folder", folder);
+
+    const uploadRes = await fetch(
+      `https://api.cloudinary.com/v1_1/${signData.cloudName}/video/upload`,
+      {
+        method: "POST",
+        body: uploadFormData,
+      },
+    );
+    
+    const uploadData = await safeReadJson(uploadRes);
+    if (!uploadRes.ok || !uploadData.secure_url) {
+      throw new Error(uploadData?.error?.message || "Cloudinary video upload failed");
+    }
+
+    return {
+      url: applyVideoOptimizationFlags(uploadData.secure_url, ratioType),
+      publicId: uploadData.public_id || "",
+    };
+  } catch (directErr) {
+    if (directErr.message?.includes("missing") || directErr.message?.includes("Unauthorized")) {
+      throw directErr;
+    }
+
+    console.warn(
+      "[Cloudinary] Direct video upload failed, falling back to server-side upload API:",
+      directErr.message
+    );
+
+    const fallbackResult = await uploadVideoViaServerApi(file, folder);
+    return {
+      url: applyVideoOptimizationFlags(fallbackResult.url, ratioType),
+      publicId: fallbackResult.publicId,
+    };
+  }
 }

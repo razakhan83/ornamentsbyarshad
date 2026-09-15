@@ -17,7 +17,34 @@ export const maxDuration = 60; // Allow up to 60s for high-res uploads
 export async function POST(req) {
   try {
     const session = await getServerSession(authOptions);
-    const { file, folder = "ornaments_products" } = await req.json();
+    const contentType = req.headers.get("content-type") || "";
+    let filePayload = null;
+    let folder = "ornaments_products";
+
+    if (contentType.includes("multipart/form-data")) {
+      const formData = await req.formData();
+      const file = formData.get("file");
+      folder = String(formData.get("folder") || "ornaments_products");
+      if (!file) {
+        return NextResponse.json(
+          { success: false, error: "No file payload provided." },
+          { status: 400 }
+        );
+      }
+      if (typeof file === "string") {
+        filePayload = file;
+      } else {
+        const arrayBuffer = await file.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        const mimeType = file.type || "application/octet-stream";
+        filePayload = `data:${mimeType};base64,${buffer.toString("base64")}`;
+      }
+    } else {
+      const body = await req.json();
+      filePayload = body?.file;
+      folder = String(body?.folder || "ornaments_products");
+    }
+
     const resolved = resolveCloudinaryFolder(folder, session);
 
     if (resolved.error) {
@@ -33,19 +60,19 @@ export async function POST(req) {
       !process.env.CLOUDINARY_API_SECRET
     ) {
       return NextResponse.json(
-        { success: false, error: "Image upload is not configured." },
+        { success: false, error: "Cloudinary upload is not configured." },
         { status: 500 }
       );
     }
 
-    if (!file) {
+    if (!filePayload) {
       return NextResponse.json(
         { success: false, error: "No file/image payload provided." },
         { status: 400 }
       );
     }
 
-    const uploadResult = await cloudinary.uploader.upload(file, {
+    const uploadResult = await cloudinary.uploader.upload(filePayload, {
       folder: resolved.folder,
       resource_type: "auto",
     });
@@ -58,10 +85,12 @@ export async function POST(req) {
     }
 
     let blurDataURL = "";
-    try {
-      blurDataURL = await generateBlurDataURLFromRemoteUrl(uploadResult.secure_url);
-    } catch (blurErr) {
-      console.warn("Server blur placeholder generation warning:", blurErr.message);
+    if (uploadResult.resource_type === "image") {
+      try {
+        blurDataURL = await generateBlurDataURLFromRemoteUrl(uploadResult.secure_url);
+      } catch (blurErr) {
+        console.warn("Server blur placeholder generation warning:", blurErr.message);
+      }
     }
 
     return NextResponse.json({
