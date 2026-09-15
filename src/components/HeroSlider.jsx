@@ -127,17 +127,14 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
               videoRef.current = el;
             }}
             src={mobileVideoSrc}
-            poster={mobileOptimized || desktopOptimized || undefined}
             autoPlay
             loop
             muted
             playsInline
             webkit-playsinline="true"
-            preload={isPriority ? 'auto' : 'metadata'}
+            preload="auto"
             className="h-full w-full object-cover"
-          >
-            <source src={mobileVideoSrc} type="video/mp4" />
-          </video>
+          />
         </div>
       </div>
     );

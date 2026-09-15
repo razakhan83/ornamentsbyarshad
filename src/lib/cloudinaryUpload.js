@@ -103,7 +103,7 @@ function applyVideoOptimizationFlags(url, ratioType) {
     return url;
   }
 
-  let flags = 'q_auto:good,f_auto,vc_auto';
+  let flags = 'q_auto:good,vc_h264';
   if (ratioType === 'pc') {
     flags += ',ar_21:9,c_fill,g_auto,w_1920';
   } else if (ratioType === 'mobile' || ratioType === 'hero-mobile') {

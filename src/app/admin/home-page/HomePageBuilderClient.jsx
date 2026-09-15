@@ -406,11 +406,9 @@ function PreviewVideoUploadTile({ label, description, asset, onChange, disabled,
             muted
             controls
             playsInline
-            preload="metadata"
+            preload="auto"
             className="h-full w-full object-cover"
-          >
-            <source src={asset.url} type="video/mp4" />
-          </video>
+          />
         ) : (
           <div className="flex h-full items-center justify-center px-4 text-center text-xs text-muted-foreground">
             Upload a video for this slot.
@@ -464,11 +462,9 @@ function PreviewHeroVideoUploadTile({ label, description, asset, onChange, onRem
             muted
             controls
             playsInline
-            preload="metadata"
+            preload="auto"
             className="h-full w-full object-cover"
-          >
-            <source src={asset.url} type="video/mp4" />
-          </video>
+          />
         ) : (
           <div className="flex h-full items-center justify-center px-4 text-center text-xs text-muted-foreground">
             Optional: Looping mobile background video.
