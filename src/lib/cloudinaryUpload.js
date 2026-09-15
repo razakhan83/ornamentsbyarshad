@@ -99,18 +99,11 @@ export async function uploadImageDataUrl(dataUrl, folder = "ornaments_products")
 }
 
 function applyVideoOptimizationFlags(url, ratioType) {
-  if (!url || typeof url !== 'string' || !url.includes('/video/upload/')) {
+  if (!url || typeof url !== 'string') {
     return url;
   }
-
-  let flags = 'q_auto:good,vc_h264';
-  if (ratioType === 'pc') {
-    flags += ',ar_21:9,c_fill,g_auto,w_1920';
-  } else if (ratioType === 'mobile' || ratioType === 'hero-mobile') {
-    flags += ',w_800';
-  }
-
-  return url.replace('/video/upload/', `/video/upload/${flags}/`);
+  // Return the direct clean Cloudinary video URL so video plays immediately without async transcoding delays
+  return url;
 }
 
 async function uploadVideoViaServerApi(file, folder) {

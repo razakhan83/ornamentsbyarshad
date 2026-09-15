@@ -93,9 +93,11 @@ export async function POST(req) {
       }
     }
 
+    const isVideo = uploadResult.resource_type === "video";
+
     return NextResponse.json({
       success: true,
-      url: optimizeCloudinaryUrl(uploadResult.secure_url),
+      url: isVideo ? uploadResult.secure_url : optimizeCloudinaryUrl(uploadResult.secure_url),
       publicId: uploadResult.public_id || "",
       blurDataURL: blurDataURL || "",
     });

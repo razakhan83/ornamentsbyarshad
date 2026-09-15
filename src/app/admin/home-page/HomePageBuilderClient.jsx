@@ -407,6 +407,12 @@ function PreviewVideoUploadTile({ label, description, asset, onChange, disabled,
             controls
             playsInline
             preload="auto"
+            onLoadedMetadata={(e) => {
+              try {
+                e.currentTarget.currentTime = 0.01;
+                e.currentTarget.play().catch(() => {});
+              } catch {}
+            }}
             className="h-full w-full object-cover"
           />
         ) : (
@@ -463,6 +469,12 @@ function PreviewHeroVideoUploadTile({ label, description, asset, onChange, onRem
             controls
             playsInline
             preload="auto"
+            onLoadedMetadata={(e) => {
+              try {
+                e.currentTarget.currentTime = 0.01;
+                e.currentTarget.play().catch(() => {});
+              } catch {}
+            }}
             className="h-full w-full object-cover"
           />
         ) : (

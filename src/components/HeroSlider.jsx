@@ -69,15 +69,37 @@ function isNearbySlide(index, activeIndex, total) {
   return false;
 }
 
+function getCloudinaryVideoPoster(url) {
+  if (!url || typeof url !== 'string') return '';
+  if (!url.includes('res.cloudinary.com')) return '';
+  const withoutExt = url.replace(/\.[a-zA-Z0-9]+$/, '');
+  if (url.includes('/video/upload/')) {
+    return withoutExt.replace('/video/upload/', '/video/upload/so_0,c_fill,g_auto,w_640,q_auto,f_auto/') + '.jpg';
+  }
+  return withoutExt + '.jpg';
+}
+
+function getCloudinaryVideoBlur(url) {
+  if (!url || typeof url !== 'string') return '';
+  if (!url.includes('res.cloudinary.com')) return '';
+  const withoutExt = url.replace(/\.[a-zA-Z0-9]+$/, '');
+  if (url.includes('/video/upload/')) {
+    return withoutExt.replace('/video/upload/', '/video/upload/so_0,c_fill,g_auto,w_100,e_blur:800,q_auto:low,f_auto/') + '.jpg';
+  }
+  return withoutExt + '.jpg';
+}
+
 function HeroSlideMedia({ slide, isPriority, isActive }) {
   const desktopSrc = slide.images.desktopSrc || slide.images.mobileSrc;
   const mobileSrc = slide.images.mobileSrc || slide.images.desktopSrc;
   const mobileVideoSrc = slide.images.mobileVideoSrc;
   const videoRef = useRef(null);
+  const [videoError, setVideoError] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!mobileVideoSrc || !video) return;
+    if (!mobileVideoSrc || !video || videoError) return;
 
     video.defaultMuted = true;
     video.muted = true;
@@ -90,15 +112,25 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
     } else {
       video.pause();
     }
-  }, [isActive, mobileVideoSrc]);
+  }, [isActive, mobileVideoSrc, videoError]);
 
   const desktopOptimized = optimizeCloudinaryUrl(desktopSrc, CLOUDINARY_IMAGE_PRESETS.heroFull);
   const mobileOptimized = optimizeCloudinaryUrl(mobileSrc, CLOUDINARY_IMAGE_PRESETS.heroMobile);
 
+  const videoPoster = useMemo(() => {
+    if (!mobileVideoSrc) return '';
+    return getCloudinaryVideoPoster(mobileVideoSrc);
+  }, [mobileVideoSrc]);
+
+  const videoBlur = useMemo(() => {
+    if (!mobileVideoSrc) return '';
+    return getCloudinaryVideoBlur(mobileVideoSrc);
+  }, [mobileVideoSrc]);
+
   if (mobileVideoSrc) {
     return (
-      <div className="relative block h-full w-full bg-black">
-        {/* Desktop image (visible on md: and larger) */}
+      <div className="relative block h-full w-full overflow-hidden bg-transparent">
+        {/* Desktop image: PC and desktop screens (md:) will ONLY show the desktop image, never video */}
         {desktopOptimized ? (
           <div className="hidden md:block absolute inset-0 h-full w-full">
             <Image
@@ -116,40 +148,88 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
           </div>
         ) : null}
 
-        {/* Mobile video (visible on < md) */}
-        <div className="block md:hidden absolute inset-0 h-full w-full overflow-hidden bg-black">
-          <video
-            ref={(el) => {
-              if (el) {
-                el.defaultMuted = true;
-                el.muted = true;
-              }
-              videoRef.current = el;
-            }}
-            src={mobileVideoSrc}
-            autoPlay
-            loop
-            muted
-            playsInline
-            webkit-playsinline="true"
-            preload="auto"
-            className="h-full w-full object-cover"
-          />
-        </div>
+        {/* Mobile View: Video plays first. Video's own start frame screenshot is shown blurred until video plays */}
+        {!videoError ? (
+          <div className="block md:hidden absolute inset-0 h-full w-full overflow-hidden bg-neutral-950">
+            {/* Blur view derived directly from video's starting frame */}
+            {videoPoster || videoBlur ? (
+              <div
+                className={`absolute inset-0 h-full w-full overflow-hidden transition-opacity duration-700 pointer-events-none ${
+                  isVideoReady ? 'opacity-0' : 'opacity-100'
+                }`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={videoBlur || videoPoster}
+                  alt={slide.alt || 'Video preview'}
+                  fetchPriority={isPriority ? 'high' : 'auto'}
+                  loading={isPriority ? 'eager' : 'lazy'}
+                  className="absolute inset-0 h-full w-full object-cover blur-md scale-105"
+                />
+              </div>
+            ) : null}
+
+            <video
+              ref={(el) => {
+                if (el) {
+                  el.defaultMuted = true;
+                  el.muted = true;
+                }
+                videoRef.current = el;
+              }}
+              src={mobileVideoSrc}
+              poster={videoPoster || undefined}
+              autoPlay
+              loop
+              muted
+              playsInline
+              webkit-playsinline="true"
+              preload="auto"
+              onPlaying={() => setIsVideoReady(true)}
+              onLoadedData={() => setIsVideoReady(true)}
+              onError={() => setVideoError(true)}
+              className={`relative z-[1] h-full w-full object-cover transition-opacity duration-500 ${
+                isVideoReady ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          </div>
+        ) : mobileOptimized ? (
+          <div className="block md:hidden absolute inset-0 h-full w-full">
+            <Image
+              src={mobileOptimized}
+              alt={slide.alt}
+              fill
+              sizes="100vw"
+              priority={isPriority}
+              fetchPriority={isPriority ? 'high' : 'auto'}
+              loading={isPriority ? 'eager' : 'lazy'}
+              className="object-cover"
+              quality={80}
+              {...getBlurPlaceholderProps(slide.images.mobileBlur || slide.images.desktopBlur)}
+            />
+          </div>
+        ) : null}
       </div>
     );
   }
 
   const hasDistinct =
-    Boolean(slide.images.desktopSrc && slide.images.mobileSrc && slide.images.desktopSrc !== slide.images.mobileSrc);
+    Boolean(
+      desktopOptimized &&
+      mobileOptimized &&
+      desktopOptimized !== mobileOptimized
+    );
 
   if (!hasDistinct) {
-    const src = optimizeCloudinaryUrl(desktopSrc, CLOUDINARY_IMAGE_PRESETS.heroFull);
+    const src = desktopOptimized || mobileOptimized;
+    if (!src) {
+      return <div className="h-full w-full bg-transparent" />;
+    }
     const blur = slide.images.desktopBlur || slide.images.mobileBlur;
     return (
       <Image
         src={src}
-        alt={slide.alt}
+        alt={slide.alt || 'Slide'}
         fill
         sizes="100vw"
         priority={isPriority}
@@ -164,11 +244,11 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
 
   return (
     <picture className="relative block h-full w-full">
-      <source media="(min-width: 768px)" srcSet={desktopOptimized} />
+      {desktopOptimized ? <source media="(min-width: 768px)" srcSet={desktopOptimized} /> : null}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={mobileOptimized}
-        alt={slide.alt}
+        alt={slide.alt || 'Slide'}
         fetchPriority={isPriority ? 'high' : 'auto'}
         loading={isPriority ? 'eager' : 'lazy'}
         decoding="async"
@@ -240,38 +320,6 @@ export default function HeroSlider({ slides = [] }) {
     else goToPrevSlide();
   }
 
-  const containerRef = useRef(null);
-  const isInViewportRef = useRef(true);
-
-  useEffect(() => {
-    if (resolvedSlides.length <= 1) return;
-
-    const el = containerRef.current;
-    let observer = null;
-
-    if (typeof IntersectionObserver !== 'undefined' && el) {
-      observer = new IntersectionObserver(
-        (entries) => {
-          const entry = entries[0];
-          isInViewportRef.current = Boolean(entry && entry.isIntersecting);
-        },
-        { threshold: 0.1 }
-      );
-      observer.observe(el);
-    }
-
-    const autoplayTimer = window.setTimeout(() => {
-      if (isInViewportRef.current && typeof document !== 'undefined' && !document.hidden) {
-        setActiveIndex((current) => (current + 1) % resolvedSlides.length);
-      }
-    }, HERO_AUTOPLAY_DELAY_MS);
-
-    return () => {
-      window.clearTimeout(autoplayTimer);
-      if (observer) observer.disconnect();
-    };
-  }, [resolvedSlides.length, safeActiveIndex]);
-
   if (resolvedSlides.length === 0) {
     return (
       <section className="relative w-full overflow-hidden bg-transparent px-3 sm:px-5 md:px-6 lg:px-8 pt-2.5 sm:pt-3.5 md:pt-4 pb-2">
@@ -318,13 +366,12 @@ export default function HeroSlider({ slides = [] }) {
 
   return (
     <section
-      ref={containerRef}
       data-testid="hero-main-slider"
       className="relative w-full overflow-hidden bg-transparent px-3 sm:px-5 md:px-6 lg:px-8 pt-2.5 sm:pt-3.5 md:pt-4 pb-2"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="relative h-[58vh] min-h-[400px] w-full overflow-hidden rounded-2xl sm:rounded-3xl md:h-[540px] lg:h-[680px] bg-[#121212]">
+      <div className="relative h-[58vh] min-h-[400px] w-full overflow-hidden rounded-2xl sm:rounded-3xl md:h-[540px] lg:h-[680px] bg-transparent">
         {resolvedSlides.map((slide, index) => {
           const isActive = safeActiveIndex === index;
           return (
