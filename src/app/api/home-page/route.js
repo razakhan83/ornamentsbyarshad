@@ -10,6 +10,7 @@ import {
   HOME_PAGE_PRODUCT_COLLECTIONS,
   HOME_PAGE_SECTION_TYPES,
   HOME_PAGE_SINGLETON_KEY,
+  normalizeShoppableReels,
 } from '@/lib/homePageSections';
 
 function cleanText(value = '') {
@@ -179,6 +180,13 @@ async function normalizeSectionForSave(section, index) {
     return {
       ...baseSection,
       carouselBanners: await normalizeBannerImages(section?.carouselBanners),
+    };
+  }
+
+  if (type === 'ShoppableReels') {
+    return {
+      ...baseSection,
+      reels: normalizeShoppableReels(section?.reels),
     };
   }
 

@@ -80,11 +80,11 @@ export function ProductWhatsAppOrderButton({ product, whatsappNumber = '', store
             type="button"
             onClick={handleWhatsApp}
             className={cn(
-                "w-full h-12 flex items-center justify-center gap-2.5 rounded-[6px] border border-[#E8E5DF] bg-white hover:bg-[#FAF9F6] text-[#121212] uppercase tracking-[0.15em] text-xs font-semibold transition-all duration-300 cursor-pointer shadow-none",
+                "w-full h-12 flex items-center justify-center gap-2.5 rounded-[6px] border border-[#E8E5DF] bg-transparent text-[#121212] uppercase tracking-[0.15em] text-xs font-semibold transition-all duration-300 cursor-pointer shadow-none md:bg-transparent md:hover:bg-[#25D366] md:hover:border-[#25D366] md:hover:text-white group",
                 className
             )}
         >
-            <WhatsAppIcon className="size-4.5 text-[#25D366] shrink-0" />
+            <WhatsAppIcon className="size-4.5 text-[#A67C52] group-hover:text-white transition-colors shrink-0" />
             <span>Consult Atelier on WhatsApp</span>
         </button>
     );
@@ -289,7 +289,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
         <>
         <div className="flex flex-col gap-3 sm:gap-3.5">
             {/* Price Row */}
-            <div className="flex flex-wrap items-baseline gap-x-3 sm:gap-x-4 gap-y-1 border-b border-[#E8E5DF] pb-2 sm:pb-2.5">
+            <div className="order-1 flex flex-wrap items-baseline gap-x-3 sm:gap-x-4 gap-y-1 border-b border-[#E8E5DF] pb-2 sm:pb-2.5">
                 <span className="font-serif text-2xl sm:text-3xl text-[#121212] tracking-wide font-normal">
                     {formatPrice(displayPrice)}
                 </span>
@@ -306,7 +306,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
             </div>
 
             {/* Stock Indicator */}
-            <div className="flex items-center gap-2">
+            <div className="order-2 flex items-center gap-2">
               <span className={cn("size-2.5 rounded-full", isOutOfStock ? "bg-red-500 animate-pulse" : "bg-emerald-500")} />
               <span className="text-xs font-medium text-[#121212]">
                 {product?.isUnlimitedStock 
@@ -319,7 +319,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
 
             {/* Dynamic Color Variant Selection Pills (Shown only if colors are entered) */}
             {colorList.length > 0 && (
-                <div className="space-y-1.5 pt-0.5">
+                <div className="order-3 space-y-1.5 pt-0.5">
                     <span className="text-xs font-medium text-[#121212] tracking-wide">
                         Color / Shade: <span className="text-[#A67C52] font-semibold">{selectedColor}</span>
                     </span>
@@ -348,7 +348,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
 
             {/* Dynamic Size / Length Selection Pills (Shown only if sizes are entered) */}
             {sizeList.length > 0 && (
-                <div className="space-y-1.5 pt-0.5">
+                <div className="order-4 space-y-1.5 pt-0.5">
                     <div className="flex items-center justify-between">
                         <span className="text-xs font-medium text-[#121212] tracking-wide">
                             Size / Length: <span className="text-[#A67C52] font-semibold">{selectedSize}</span>
@@ -384,130 +384,9 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                 </div>
             )}
 
-            {/* Quantity Selector & Action Buttons (Placed immediately for fast conversion & compact standard height) */}
-            <div className="flex flex-col gap-2.5 pt-1">
-                {/* Quantity Row */}
-                <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium text-[#121212]">Quantity</span>
-                    <div className="inline-flex items-center border border-[#E8E5DF] bg-white rounded-[6px] h-8.5 overflow-hidden">
-                        <button
-                            type="button"
-                            onClick={decrement}
-                            className="inline-flex size-8.5 items-center justify-center text-[#737373] hover:text-[#121212] transition-colors cursor-pointer"
-                            aria-label="Decrease quantity"
-                        >
-                            <Minus className="size-3" />
-                        </button>
-                        <span className="inline-flex min-w-8 items-center justify-center text-xs font-semibold text-[#121212] tabular-nums">
-                            {quantity}
-                        </span>
-                        <button
-                            type="button"
-                            onClick={increment}
-                            className="inline-flex size-8.5 items-center justify-center text-[#737373] hover:text-[#121212] transition-colors cursor-pointer"
-                            aria-label="Increase quantity"
-                        >
-                            <Plus className="size-3" />
-                        </button>
-                    </div>
-                </div>
-
-                {/* Primary CTA Buttons */}
-                <div className="flex flex-col gap-2">
-                    {isOutOfStock ? (
-                        <Button
-                            onClick={() => setNotifyModalOpen(true)}
-                            className="h-11 w-full rounded-[6px] bg-[#121212] text-white hover:bg-neutral-800 uppercase tracking-[0.2em] text-xs font-semibold shadow-xs cursor-pointer"
-                        >
-                            Notify When Available
-                        </Button>
-                    ) : (
-                        <>
-                            {/* Primary Add to Cart Button (Solid Onyx Black -> Rich Gold Hover) */}
-                            <button
-                                type="button"
-                                onClick={handleAddToCart}
-                                disabled={addLock.isPending || isOutOfStock}
-                                className={cn(
-                                    "add-to-cart-button h-11.5 w-full inline-flex items-center justify-center rounded-[6px] font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-xs bg-[#121212] hover:bg-[#A67C52] border border-[#121212] hover:border-[#A67C52] text-white disabled:opacity-50 cursor-pointer active:scale-[0.98]"
-                                )}
-                            >
-                                {addLock.isPending ? (
-                                    <Spinner className="size-4 animate-spin mr-2 text-white" />
-                                ) : null}
-                                {didJustAdd ? "Added to Cart" : "Add to Cart"}
-                            </button>
-
-                            {/* Secondary Buy It Now Button (Refined Gold Accent -> Solid Gold Hover) */}
-                            <button
-                                type="button"
-                                onClick={handleBuyNow}
-                                disabled={buyLock.isPending || isOutOfStock}
-                                className="buy-now-button h-11.5 w-full inline-flex items-center justify-center rounded-[6px] font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 border border-[#A67C52] bg-[#A67C52]/5 hover:bg-[#A67C52] text-[#A67C52] hover:text-white hover:border-[#A67C52] active:scale-[0.98] cursor-pointer shadow-none"
-                            >
-                                {buyLock.isPending ? (
-                                    <Spinner className="size-4 animate-spin mr-2 text-current" />
-                                ) : null}
-                                Buy It Now
-                            </button>
-                        </>
-                    )}
-
-                    {/* Order on WhatsApp Button (Clean Atelier Luxury -> Onyx Black Hover) */}
-                    <button
-                        type="button"
-                        onClick={() => {
-                            const name = product.Name || product.name || 'this piece';
-                            const url = typeof window !== 'undefined' ? window.location.href : '';
-                            const message = buildProductWhatsAppMessage({
-                                productName: name,
-                                productUrl: url,
-                                storeName,
-                                color: selectedColor || '',
-                                size: selectedSize || product?.size || '',
-                                metal: product?.metalType || '',
-                            });
-                            const whatsappUrl = createWhatsAppUrl(whatsappNumber, message);
-                            if (whatsappUrl) window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-                        }}
-                        className="w-full h-11.5 inline-flex items-center justify-center gap-2.5 rounded-[6px] border border-[#E8E5DF] bg-white hover:bg-[#121212] hover:border-[#121212] text-[#121212] hover:text-white text-xs uppercase tracking-[0.18em] font-semibold transition-all duration-300 shadow-none active:scale-[0.98] cursor-pointer group"
-                    >
-                        <WhatsAppIcon className="size-4 text-[#25D366] group-hover:text-white transition-colors shrink-0" />
-                        <span>Order on WhatsApp</span>
-                    </button>
-                </div>
-            </div>
-
-            {/* Minimal Luxury Guarantees & Authenticity Strip */}
-            <div className="border-t border-[#E8E5DF] pt-2.5 mt-0.5">
-                <div className="grid grid-cols-3 gap-1 py-2 px-2 bg-[#FAF9F6] border border-[#E8E5DF] rounded-lg">
-                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 py-0.5">
-                        <Award className="size-3.5 text-[#A67C52] shrink-0" />
-                        <div className="min-w-0">
-                            <p className="text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Authentic</p>
-                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">Certified Metals</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 border-x border-[#E8E5DF] py-0.5">
-                        <Truck className="size-3.5 text-[#A67C52] shrink-0" />
-                        <div className="min-w-0">
-                            <p className="text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Insured</p>
-                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">Tracked Delivery</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 py-0.5">
-                        <ShieldCheck className="size-3.5 text-[#A67C52] shrink-0" />
-                        <div className="min-w-0">
-                            <p className="text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Secure</p>
-                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">100% Encrypted</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             {/* Jewelry Specifications Accordion / Summary (Shows whatever admin added) */}
             {hasJewelrySpecs && (
-                <div className="border-t border-[#E8E5DF] pt-2.5">
+                <div className="order-5 md:order-7 border-t border-[#E8E5DF] pt-2.5">
                     <button
                         type="button"
                         onClick={() => setSpecsOpen(!specsOpen)}
@@ -577,7 +456,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
             )}
 
             {/* Product Details Accordion */}
-            <div className="border-t border-[#E8E5DF] pt-2.5 pb-1">
+            <div className="order-6 md:order-8 border-t border-[#E8E5DF] pt-2.5 pb-1">
               <button
                 type="button"
                 onClick={() => setDescriptionOpen(!descriptionOpen)}
@@ -594,6 +473,137 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                   }}
                 />
               )}
+            </div>
+
+            {/* Quantity Selector & Action Buttons (Mobile: after Details/Specs; Desktop: before Details/Specs) */}
+            <div className="order-7 md:order-5 flex flex-col gap-2.5 border-t border-[#E8E5DF] md:border-t-0 pt-2.5 md:pt-1">
+                {/* Quantity Row */}
+                <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium text-[#121212]">Quantity</span>
+                    <div className="inline-flex items-center border border-[#E8E5DF] bg-white rounded-[6px] h-8.5 overflow-hidden">
+                        <button
+                            type="button"
+                            onClick={decrement}
+                            className="inline-flex size-8.5 items-center justify-center text-[#737373] hover:text-[#121212] transition-colors cursor-pointer"
+                            aria-label="Decrease quantity"
+                        >
+                            <Minus className="size-3" />
+                        </button>
+                        <span className="inline-flex min-w-8 items-center justify-center text-xs font-semibold text-[#121212] tabular-nums">
+                            {quantity}
+                        </span>
+                        <button
+                            type="button"
+                            onClick={increment}
+                            className="inline-flex size-8.5 items-center justify-center text-[#737373] hover:text-[#121212] transition-colors cursor-pointer"
+                            aria-label="Increase quantity"
+                        >
+                            <Plus className="size-3" />
+                        </button>
+                    </div>
+                </div>
+
+                {/* Primary CTA Buttons */}
+                <div className="flex flex-col gap-2">
+                    {isOutOfStock ? (
+                        <Button
+                            onClick={() => setNotifyModalOpen(true)}
+                            className="h-11 w-full rounded-[6px] bg-[#121212] text-white hover:bg-neutral-800 uppercase tracking-[0.2em] text-xs font-semibold shadow-xs cursor-pointer"
+                        >
+                            Notify When Available
+                        </Button>
+                    ) : (
+                        <>
+                            {/* Primary Add to Cart Button (Theme Gold with Black on hover) */}
+                            <button
+                                type="button"
+                                onClick={handleAddToCart}
+                                disabled={addLock.isPending || isOutOfStock}
+                                className={cn(
+                                    "add-to-cart-button h-11.5 w-full inline-flex items-center justify-center rounded-[6px] font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-none cursor-pointer active:scale-[0.98] disabled:opacity-50",
+                                    "bg-[#A67C52] border border-[#A67C52] text-white",
+                                    "hover:bg-[#121212] hover:border-[#121212] hover:text-white"
+                                )}
+                            >
+                                {addLock.isPending ? (
+                                    <Spinner className="size-4 animate-spin mr-2 text-white" />
+                                ) : null}
+                                {didJustAdd ? "Added to Cart" : "Add to Cart"}
+                            </button>
+
+                            {/* Secondary Buy It Now Button (Mobile: Transparent Black Text, PC: Transparent -> Light Warm Hover) */}
+                            <button
+                                type="button"
+                                onClick={handleBuyNow}
+                                disabled={buyLock.isPending || isOutOfStock}
+                                className={cn(
+                                    "buy-now-button h-11.5 w-full inline-flex items-center justify-center rounded-[6px] font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-none cursor-pointer active:scale-[0.98] disabled:opacity-50",
+                                    "bg-transparent border border-[#E8E5DF] text-[#121212]",
+                                    "md:bg-transparent md:border-[#E8E5DF] md:text-[#121212] md:hover:bg-[#A67C52]/10 md:hover:border-[#A67C52] md:hover:text-[#121212]"
+                                )}
+                            >
+                                {buyLock.isPending ? (
+                                    <Spinner className="size-4 animate-spin mr-2 text-current" />
+                                ) : null}
+                                Buy It Now
+                            </button>
+                        </>
+                    )}
+
+                    {/* Order on WhatsApp Button (Mobile: Transparent Black Text, PC: Transparent -> Green Hover) */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            const name = product.Name || product.name || 'this piece';
+                            const url = typeof window !== 'undefined' ? window.location.href : '';
+                            const message = buildProductWhatsAppMessage({
+                                productName: name,
+                                productUrl: url,
+                                storeName,
+                                color: selectedColor || '',
+                                size: selectedSize || product?.size || '',
+                                metal: product?.metalType || '',
+                            });
+                            const whatsappUrl = createWhatsAppUrl(whatsappNumber, message);
+                            if (whatsappUrl) window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+                        }}
+                        className={cn(
+                            "w-full h-11.5 inline-flex items-center justify-center gap-2.5 rounded-[6px] text-xs uppercase tracking-[0.18em] font-semibold transition-all duration-300 shadow-none active:scale-[0.98] cursor-pointer group",
+                            "bg-transparent border border-[#E8E5DF] text-[#121212]",
+                            "md:bg-transparent md:border-[#E8E5DF] md:text-[#121212] md:hover:bg-[#25D366] md:hover:border-[#25D366] md:hover:text-white"
+                        )}
+                    >
+                        <WhatsAppIcon className="size-4 text-[#A67C52] group-hover:text-white transition-colors shrink-0" />
+                        <span>Order on WhatsApp</span>
+                    </button>
+                </div>
+            </div>
+
+            {/* Minimal Luxury Guarantees & Authenticity Strip */}
+            <div className="order-8 md:order-6 border-t border-[#E8E5DF] pt-2.5 mt-0.5">
+                <div className="grid grid-cols-3 gap-1 py-2 px-2 bg-[#FAF9F6] border border-[#E8E5DF] rounded-lg">
+                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 py-0.5">
+                        <Award className="size-3.5 text-[#A67C52] shrink-0" />
+                        <div className="min-w-0">
+                            <p className="text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Authentic</p>
+                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">Certified Metals</p>
+                        </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 border-x border-[#E8E5DF] py-0.5">
+                        <Truck className="size-3.5 text-[#A67C52] shrink-0" />
+                        <div className="min-w-0">
+                            <p className="text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Insured</p>
+                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">Tracked Delivery</p>
+                        </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 py-0.5">
+                        <ShieldCheck className="size-3.5 text-[#A67C52] shrink-0" />
+                        <div className="min-w-0">
+                            <p className="text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-wider text-[#121212] leading-tight truncate">Secure</p>
+                            <p className="hidden sm:block text-[8.5px] text-[#737373] leading-none mt-0.5 truncate">100% Encrypted</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

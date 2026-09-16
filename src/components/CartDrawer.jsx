@@ -255,7 +255,7 @@ export default function CartDrawer({ whatsappNumber = '', storeName = 'Ornaments
                   className="size-10.5 sm:size-11 shrink-0 inline-flex items-center justify-center rounded-lg border border-[#E8E5DF] bg-white hover:bg-[#FAF9F6] text-[#121212] transition-all duration-200 cursor-pointer active:scale-[0.98]"
                   onClick={handleWhatsAppDirectCheckout}
                 >
-                  <WhatsAppIcon className="size-4.5 text-[#25D366] shrink-0" />
+                  <WhatsAppIcon className="size-4.5 text-[#A67C52] shrink-0" />
                 </button>
               </div>
             </div>

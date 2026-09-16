@@ -6,6 +6,7 @@ import FacebookIcon from '@/components/icons/FacebookIcon';
 import InstagramIcon from '@/components/icons/InstagramIcon';
 import Navbar from '@/components/Navbar';
 import StoreDeferredChrome from '@/components/StoreDeferredChrome';
+import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import StoreLogo from '@/components/StoreLogo';
 import WhatsAppIcon from '@/components/icons/WhatsAppIcon';
 import { normalizeSocialUrl } from '@/lib/social';
@@ -70,7 +71,7 @@ export default function LayoutWrapper({ children, categories, settings }) {
                   <p className="max-w-sm text-xs leading-relaxed text-[#737373]">
                     {settings.storeDescription || 'Ornaments by Arshad crafts timeless luxury jewelry, certified gold heirlooms, and bespoke bridal masterworks.'}
                   </p>
-                  <div className="mt-5 flex gap-2">
+                  <div className="mt-5 flex items-center gap-4">
                     {socialLinks.map(({ href, label, icon: Icon }) => (
                       <a
                         key={label}
@@ -79,11 +80,11 @@ export default function LayoutWrapper({ children, categories, settings }) {
                         rel={href ? 'noopener noreferrer' : undefined}
                         aria-label={label}
                         aria-disabled={!href}
-                        className={`inline-flex size-9 items-center justify-center rounded-none border border-[#E8E5DF] bg-white text-[#121212] transition-colors duration-200 ${
-                          href ? 'hover:bg-[#121212] hover:text-white hover:border-[#121212]' : 'cursor-not-allowed opacity-40'
+                        className={`inline-flex items-center justify-center text-[#121212] transition-all duration-200 ${
+                          href ? 'hover:text-[#A67C52] hover:scale-110 active:scale-95' : 'cursor-not-allowed opacity-40'
                         }`}
                       >
-                        <Icon className={label === 'WhatsApp' ? 'size-4' : 'size-3.5'} />
+                        <Icon className="size-5 shrink-0" />
                       </a>
                     ))}
                   </div>
@@ -177,6 +178,7 @@ export default function LayoutWrapper({ children, categories, settings }) {
       </div>
       <ConditionalLayoutElements>
         <StoreDeferredChrome whatsappNumber={settings.whatsappNumber} storeName={settings.storeName} hasAnnouncementBar={hasAnnouncementBar} />
+        <FloatingWhatsApp whatsappNumber={settings.whatsappNumber} storeName={settings.storeName} />
       </ConditionalLayoutElements>
     </>
   );

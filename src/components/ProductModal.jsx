@@ -111,7 +111,7 @@ export default function ProductModal({ product, onClose, whatsappNumber = '', st
                                             onClose();
                                         }
                                     }}
-                                    className="flex-1 h-11 rounded-xl font-semibold bg-primary hover:bg-primary/95 text-primary-foreground shadow-none active:scale-[0.98] transition-all"
+                                    className="flex-1 h-11 rounded-[6px] font-semibold text-xs uppercase tracking-[0.18em] shadow-none active:scale-[0.98] transition-all duration-300 bg-[#A67C52] border border-[#A67C52] text-white hover:bg-[#121212] hover:border-[#121212] hover:text-white cursor-pointer"
                                 >
                                     <ShoppingCart className="size-4 mr-2" /> Add to Cart
                                 </Button>
@@ -124,10 +124,10 @@ export default function ProductModal({ product, onClose, whatsappNumber = '', st
                                 >
                                     <button
                                         type="button"
-                                        className="w-full h-11 inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card hover:bg-muted/60 text-foreground font-semibold text-sm transition-all duration-200 active:scale-[0.98] cursor-pointer shadow-none"
+                                        className="w-full h-11 inline-flex items-center justify-center gap-2 rounded-[6px] border border-[#E8E5DF] bg-transparent text-[#121212] font-semibold text-xs uppercase tracking-[0.18em] transition-all duration-300 active:scale-[0.98] cursor-pointer shadow-none md:bg-transparent md:hover:bg-[#25D366] md:hover:border-[#25D366] md:hover:text-white group"
                                     >
-                                        <WhatsAppIcon className="size-4.5 text-[#25D366] shrink-0" />
-                                        <span>WhatsApp</span>
+                                        <WhatsAppIcon className="size-4 text-[#A67C52] group-hover:text-white transition-colors shrink-0" />
+                                        <span>Order on WhatsApp</span>
                                     </button>
                                 </a>
                             </div>

@@ -63,7 +63,7 @@ function MobileNavButton({
     </div>
   );
 
-  const baseClassName = 'relative flex flex-1 flex-col items-center justify-center pt-2 pb-1.5 outline-none w-full h-full min-h-[50px]';
+  const baseClassName = 'relative flex flex-1 flex-col items-center justify-center pt-2 pb-1.5 outline-none w-full h-full min-h-[50px] active:scale-95 transition-transform duration-150 will-change-transform';
 
   if (href) {
     return (
@@ -120,7 +120,7 @@ export default function MobileBottomNav({
   const isSidebarOpen = isSidebarOpenProp ?? isSidebarOpenCtx;
   const isCartOpen = isCartOpenProp ?? isCartOpenCtx;
 
-  const isHidden = isSidebarOpen || isCartOpen;
+  const isHidden = isNavbarHidden || isSidebarOpen || isCartOpen;
 
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
   const mobileDrawerReservedLane = 'calc(env(safe-area-inset-bottom) + var(--mobile-bottom-nav-offset))';
@@ -204,8 +204,8 @@ export default function MobileBottomNav({
     <>
       <div
         className={cn(
-          "fixed inset-x-0 bottom-0 md:hidden bg-[#F7F3EE] border-t border-[#E8E5DF] shadow-[0_-4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 ease-in-out",
-          isHidden ? "translate-y-full opacity-0 pointer-events-none" : "translate-y-0 opacity-100 pointer-events-auto"
+          "fixed inset-x-0 bottom-0 md:hidden bg-[#F7F3EE]/95 backdrop-blur-md border-t border-[#E8E5DF] shadow-[0_-4px_20px_rgba(0,0,0,0.06)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform transform-gpu",
+          isHidden ? "translate-y-full pointer-events-none" : "translate-y-0 pointer-events-auto"
         )}
         style={{ zIndex: 350 }}
       >
