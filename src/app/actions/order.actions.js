@@ -16,6 +16,7 @@ import { getSiteUrlFromHeaders } from '@/lib/siteUrl';
 import { sendPurchaseTrackingEvents } from '@/lib/trackingServer';
 import { generateOrderEmailHtml, generateCustomerOrderConfirmationHtml, generateCustomerOrderDeliveredHtml, getEmailBranding } from '@/lib/emailTemplates';
 import { getEmailInlineAttachments } from '@/lib/emailInlineAssets';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 import { getServerSession } from 'next-auth';
 import { Resend } from 'resend';
 
@@ -183,17 +184,22 @@ export async function submitOrderAction(input) {
           success: true,
           orderId: existing.orderId,
           totalAmount: existing.totalAmount,
-          whatsappUrl: whatsappNumber ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent([
-            '*New Order from Ornaments by Arshad*',
-            '',
-            '*Customer Details*',
-            `Name: ${existing.customerName}`,
-            `Phone: ${existing.customerPhone}`,
-            `Address: ${existing.customerAddress}`,
-            '',
-            `*Total:* Rs. ${(existing.totalAmount || 0).toLocaleString('en-PK')}`,
-            `*Order ID:* ${existing.orderId}`,
-          ].join('\n'))}` : '',
+          whatsappUrl: whatsappNumber
+            ? createWhatsAppUrl(
+                whatsappNumber,
+                [
+                  '*New Order from Ornaments by Arshad*',
+                  '',
+                  '*Customer Details*',
+                  `Name: ${existing.customerName}`,
+                  `Phone: ${existing.customerPhone}`,
+                  `Address: ${existing.customerAddress}`,
+                  '',
+                  `*Total:* Rs. ${(existing.totalAmount || 0).toLocaleString('en-PK')}`,
+                  `*Order ID:* ${existing.orderId}`,
+                ].join('\n')
+              )
+            : '',
           duplicate: true,
         };
       }
@@ -422,7 +428,9 @@ export async function submitOrderAction(input) {
         name: item.name,
         image: item.image || '',
       })),
-      whatsappUrl: whatsappNumber ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(lines.join('\n'))}` : '',
+      whatsappUrl: whatsappNumber
+        ? createWhatsAppUrl(whatsappNumber, lines.join('\n'))
+        : '',
     };
   } catch (error) {
     console.error('submitOrderAction failed:', error);

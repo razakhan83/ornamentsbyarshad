@@ -44,6 +44,7 @@ import {
   Trophy,
   Sparkles,
   MessageSquareQuote,
+  Film,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -93,6 +94,11 @@ const SECTION_TEMPLATES = [
     type: 'HeroSlider',
     label: 'Hero Slider',
     icon: Images,
+  },
+  {
+    type: 'ShoppableReels',
+    label: 'Shoppable Reels / Video Carousel',
+    icon: Film,
   },
   {
     type: 'CustomerReviews',
@@ -188,6 +194,21 @@ function createCarouselBanner(index = 0) {
   };
 }
 
+function createShoppableReel(index = 0) {
+  return {
+    id: `reel-${Date.now()}-${index}`,
+    title: '',
+    video: null,
+    productId: '',
+    productTitle: '',
+    productPrice: 0,
+    productImage: '',
+    productSlug: '',
+    badge: '',
+    sortOrder: index,
+  };
+}
+
 function createSection(template, index = 0) {
   const type = template?.type || 'CategoriesGrid';
 
@@ -199,6 +220,17 @@ function createSection(template, index = 0) {
       description: '',
       isEnabled: true,
       slides: [createHeroSlide(0)],
+    };
+  }
+
+  if (type === 'ShoppableReels') {
+    return {
+      id: createSectionId(type, index),
+      type,
+      title: 'Watch & Shop',
+      description: 'Explore our creations in motion',
+      isEnabled: true,
+      reels: [createShoppableReel(0)],
     };
   }
 
@@ -319,6 +351,21 @@ function normalizeSections(input = []) {
           desktopImage: slide.desktopImage || null,
           mobileImage: slide.mobileImage || null,
           mobileVideo: slide.mobileVideo || null,
+        }))
+      : [],
+    reels: Array.isArray(section.reels)
+      ? section.reels.map((reel, reelIndex) => ({
+          ...reel,
+          id: reel?.id || `reel-${index}-${reelIndex}`,
+          title: reel?.title || '',
+          video: reel?.video || null,
+          productId: reel?.productId || '',
+          productTitle: reel?.productTitle || '',
+          productPrice: Number(reel?.productPrice || 0),
+          productImage: reel?.productImage || '',
+          productSlug: reel?.productSlug || '',
+          badge: reel?.badge || '',
+          sortOrder: reelIndex,
         }))
       : [],
     pcVideo: section.pcVideo || null,
@@ -487,10 +534,73 @@ function PreviewHeroVideoUploadTile({ label, description, asset, onChange, onRem
   );
 }
 
+function PreviewReelVideoUploadTile({ label, description, asset, onChange, onRemove, disabled }) {
+  return (
+    <div className="rounded-xl border border-border bg-background/75 p-2.5">
+      <div className="mb-2 flex items-start justify-between gap-2">
+        <div>
+          <p className="text-xs font-semibold text-foreground">{label}</p>
+          <p className="text-[11px] text-muted-foreground">{description}</p>
+        </div>
+        <div className="flex items-center gap-1.5">
+          {asset?.url && (
+            <button
+              type="button"
+              disabled={disabled}
+              onClick={onRemove}
+              className="inline-flex items-center gap-1 rounded-lg border border-destructive/30 bg-destructive/10 px-2 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/20 transition-colors"
+            >
+              <Trash2 className="size-3" />
+              Remove
+            </button>
+          )}
+          <label
+            className={cn(
+              'inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted',
+              disabled && 'cursor-not-allowed opacity-60',
+            )}
+          >
+            <Upload className="size-3.5" />
+            {asset?.url ? 'Change Video' : 'Upload Video'}
+            <input type="file" accept="video/mp4,video/webm,video/quicktime" className="hidden" disabled={disabled} onChange={onChange} />
+          </label>
+        </div>
+      </div>
+
+      <div className="relative overflow-hidden rounded-xl border border-border bg-black aspect-[9/16] max-h-64 mx-auto flex items-center justify-center">
+        {asset?.url ? (
+          <video
+            key={asset.url}
+            src={asset.url}
+            autoPlay
+            loop
+            muted
+            controls
+            playsInline
+            preload="auto"
+            onLoadedMetadata={(e) => {
+              try {
+                e.currentTarget.currentTime = 0.01;
+                e.currentTarget.play().catch(() => {});
+              } catch {}
+            }}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center p-3 text-center text-xs text-muted-foreground">
+            Upload a vertical reel video (9:16)
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function SortableSectionCard({
   section,
   index,
   categories,
+  products = [],
   uploadingKey,
   isExpanded,
   onToggleExpand,
@@ -511,6 +621,12 @@ function SortableSectionCard({
   onCarouselBannerChange,
   onRemoveCarouselBanner,
   onMoveCarouselBanner,
+  onAddShoppableReel,
+  onShoppableReelChange,
+  onShoppableReelVideoUpload,
+  onShoppableReelRemoveVideo,
+  onRemoveShoppableReel,
+  onMoveShoppableReel,
   onOpenCategoryShowcase,
 }) {
   const template = SECTION_TEMPLATES.find(
@@ -1127,6 +1243,191 @@ function SortableSectionCard({
             </div>
           </div>
         )}
+
+        {section.type === 'ShoppableReels' && (
+          <div className="flex flex-col gap-4">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Field>
+                <FieldLabel>Section Heading</FieldLabel>
+                <Input
+                  value={section.title || ''}
+                  onChange={(event) => onSectionChange(section.id, { title: event.target.value })}
+                  placeholder="e.g. Watch & Shop / Customer Looks"
+                />
+              </Field>
+              <Field>
+                <FieldLabel>Subtitle / Description</FieldLabel>
+                <Input
+                  value={section.description || ''}
+                  onChange={(event) => onSectionChange(section.id, { description: event.target.value })}
+                  placeholder="e.g. Explore our creations in motion"
+                />
+              </Field>
+            </div>
+
+            <div className="rounded-2xl border border-border bg-muted/20 p-3">
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Video Reels / Clips</p>
+                  <p className="text-xs text-muted-foreground">Upload 9:16 vertical videos and tag products from your store catalog.</p>
+                </div>
+                <Button type="button" variant="outline" size="sm" className="rounded-xl" onClick={() => onAddShoppableReel(section.id)}>
+                  <Plus data-icon="inline-start" />
+                  Add Reel
+                </Button>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                {section.reels?.map((reel, reelIndex) => (
+                  <div key={reel.id} className="rounded-2xl border border-border bg-background/90 p-3.5 shadow-sm">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-border/50 pb-2">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary">Reel {reelIndex + 1}</Badge>
+                        <span className="text-xs font-semibold text-foreground truncate max-w-[200px]">
+                          {reel.title || 'Untitled Reel'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon-xs"
+                          className="rounded-lg"
+                          onClick={() => onMoveShoppableReel(section.id, reel.id, -1)}
+                          disabled={reelIndex === 0}
+                          aria-label={`Move reel ${reelIndex + 1} up`}
+                        >
+                          <ArrowUp className="size-3" />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon-xs"
+                          className="rounded-lg"
+                          onClick={() => onMoveShoppableReel(section.id, reel.id, 1)}
+                          disabled={reelIndex === (section.reels?.length || 1) - 1}
+                          aria-label={`Move reel ${reelIndex + 1} down`}
+                        >
+                          <ArrowDown className="size-3" />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon-xs"
+                          className="rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                          onClick={() => onRemoveShoppableReel(section.id, reel.id)}
+                          disabled={(section.reels?.length || 0) <= 1}
+                          aria-label={`Remove reel ${reelIndex + 1}`}
+                        >
+                          <Trash2 className="size-3" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-[170px_1fr]">
+                      <div>
+                        <PreviewReelVideoUploadTile
+                          label="Vertical Reel Video"
+                          description="9:16 mobile clip"
+                          asset={reel.video}
+                          disabled={uploadingKey === `${section.id}:${reel.id}:video`}
+                          onChange={(event) => onShoppableReelVideoUpload(section.id, reel.id, event)}
+                          onRemove={() => onShoppableReelRemoveVideo(section.id, reel.id)}
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-3">
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          <Field>
+                            <FieldLabel>Reel Caption / Title</FieldLabel>
+                            <Input
+                              value={reel.title || ''}
+                              onChange={(e) => onShoppableReelChange(section.id, reel.id, { title: e.target.value })}
+                              placeholder="e.g. Royal Emerald Bridal Look"
+                            />
+                          </Field>
+                          <Field>
+                            <FieldLabel>Badge Tag (Optional)</FieldLabel>
+                            <Input
+                              value={reel.badge || ''}
+                              onChange={(e) => onShoppableReelChange(section.id, reel.id, { badge: e.target.value })}
+                              placeholder="e.g. Trending, 18K Gold, Best Seller"
+                            />
+                          </Field>
+                        </div>
+
+                        <Field>
+                          <FieldLabel>Tagged Product (Shop from Video)</FieldLabel>
+                          <Select
+                            value={reel.productId || 'none'}
+                            onValueChange={(val) => {
+                              if (val === 'none') {
+                                onShoppableReelChange(section.id, reel.id, {
+                                  productId: '',
+                                  productTitle: '',
+                                  productPrice: 0,
+                                  productImage: '',
+                                  productSlug: '',
+                                });
+                              } else {
+                                const found = (products || []).find((p) => p._id === val);
+                                if (found) {
+                                  onShoppableReelChange(section.id, reel.id, {
+                                    productId: found._id,
+                                    productTitle: found.title,
+                                    productPrice: found.price,
+                                    productImage: found.image,
+                                    productSlug: found.slug,
+                                  });
+                                }
+                              }
+                            }}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a product from catalog..." />
+                            </SelectTrigger>
+                            <SelectContent className="max-h-72">
+                              <SelectItem value="none">-- No Product Tagged --</SelectItem>
+                              {(products || []).map((prod) => (
+                                <SelectItem key={prod._id} value={prod._id}>
+                                  <div className="flex items-center gap-2">
+                                    {prod.image ? (
+                                      <img src={prod.image} alt="" className="size-6 rounded object-cover" />
+                                    ) : null}
+                                    <span className="font-medium text-xs truncate max-w-xs">{prod.title}</span>
+                                    <span className="text-[11px] text-muted-foreground">
+                                      (Rs. {Number(prod.price || 0).toLocaleString('en-PK')})
+                                    </span>
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FieldDescription>
+                            Customers can tap on this reel to preview and buy this product directly.
+                          </FieldDescription>
+                        </Field>
+
+                        {reel.productId && reel.productTitle ? (
+                          <div className="flex items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 p-2.5">
+                            {reel.productImage ? (
+                              <img src={reel.productImage} alt="" className="size-10 rounded-lg object-cover border border-border" />
+                            ) : null}
+                            <div className="min-w-0 flex-1">
+                              <p className="text-xs font-semibold text-foreground truncate">{reel.productTitle}</p>
+                              <p className="text-[11px] font-bold text-primary">Rs. {Number(reel.productPrice || 0).toLocaleString('en-PK')}</p>
+                            </div>
+                            <Badge variant="outline" className="text-[10px] bg-background">Product Attached</Badge>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </FieldGroup>
           </div>
         </div>
@@ -1251,6 +1552,7 @@ function HomePageSectionsWorkspace({
   onToggleExpand,
   sensors,
   availableCategories,
+  availableProducts = [],
   uploadingKey,
   onAddSection,
   onDragStart,
@@ -1272,6 +1574,12 @@ function HomePageSectionsWorkspace({
   onCarouselBannerChange,
   onRemoveCarouselBanner,
   onMoveCarouselBanner,
+  onAddShoppableReel,
+  onShoppableReelChange,
+  onShoppableReelVideoUpload,
+  onShoppableReelRemoveVideo,
+  onRemoveShoppableReel,
+  onMoveShoppableReel,
   onOpenCategoryShowcase,
 }) {
   if (sections.length === 0) {
@@ -1314,6 +1622,7 @@ function HomePageSectionsWorkspace({
                 section={section}
                 index={index}
                 categories={availableCategories}
+                products={availableProducts}
                 uploadingKey={uploadingKey}
                 isExpanded={expandedIds.has(section.id)}
                 onToggleExpand={onToggleExpand}
@@ -1333,6 +1642,12 @@ function HomePageSectionsWorkspace({
                 onCarouselBannerChange={onCarouselBannerChange}
                 onRemoveCarouselBanner={onRemoveCarouselBanner}
                 onMoveCarouselBanner={onMoveCarouselBanner}
+                onAddShoppableReel={onAddShoppableReel}
+                onShoppableReelChange={onShoppableReelChange}
+                onShoppableReelVideoUpload={onShoppableReelVideoUpload}
+                onShoppableReelRemoveVideo={onShoppableReelRemoveVideo}
+                onRemoveShoppableReel={onRemoveShoppableReel}
+                onMoveShoppableReel={onMoveShoppableReel}
                 onOpenCategoryShowcase={onOpenCategoryShowcase}
               />
             ))}
@@ -1346,6 +1661,7 @@ function HomePageSectionsWorkspace({
               section={activeSection}
               index={sections.findIndex((section) => section.id === activeSection.id)}
               categories={availableCategories}
+              products={availableProducts}
               uploadingKey={uploadingKey}
               isDragPreview
               isExpanded={false}
@@ -1366,6 +1682,12 @@ function HomePageSectionsWorkspace({
               onCarouselBannerChange={() => {}}
               onRemoveCarouselBanner={() => {}}
               onMoveCarouselBanner={() => {}}
+              onAddShoppableReel={() => {}}
+              onShoppableReelChange={() => {}}
+              onShoppableReelVideoUpload={() => {}}
+              onShoppableReelRemoveVideo={() => {}}
+              onRemoveShoppableReel={() => {}}
+              onMoveShoppableReel={() => {}}
             />
           </div>
         ) : null}
@@ -1374,7 +1696,7 @@ function HomePageSectionsWorkspace({
   );
 }
 
-export default function HomePageBuilderClient({ initialSections, availableCategories }) {
+export default function HomePageBuilderClient({ initialSections, availableCategories, availableProducts = [] }) {
   const [sections, setSections] = useState(() => normalizeSections(initialSections));
   const [expandedIds, setExpandedIds] = useState(new Set());
   const [saving, setSaving] = useState(false);
@@ -1460,6 +1782,20 @@ export default function HomePageBuilderClient({ initialSections, availableCatego
     );
   }
 
+  function updateShoppableReels(sectionId, updater) {
+    setSaved(false);
+    setSections((current) =>
+      current.map((section) => {
+        if (section.id !== sectionId) return section;
+
+        return {
+          ...section,
+          reels: updater(Array.isArray(section.reels) ? section.reels : []),
+        };
+      }),
+    );
+  }
+
   function handleAddSection(template) {
     if (isTemplateAlreadyUsed(template)) {
       toast.error(`${template.label} can only be added once.`);
@@ -1483,6 +1819,9 @@ export default function HomePageBuilderClient({ initialSections, availableCatego
 
     if (type === 'HeroSlider') {
       return { ...base, title: 'Hero Slider', slides: [createHeroSlide(0)] };
+    }
+    if (type === 'ShoppableReels') {
+      return { ...base, title: 'Watch & Shop', description: 'Explore our creations in motion', reels: [createShoppableReel(0)] };
     }
     if (type === 'ScrollableBannerCarousel') {
       return { ...base, title: 'Featured Banners', carouselBanners: [createCarouselBanner(0)] };
@@ -1592,6 +1931,56 @@ export default function HomePageBuilderClient({ initialSections, availableCatego
       if (currentIndex === -1 || nextIndex < 0 || nextIndex >= banners.length) return banners;
       return arrayMove(banners, currentIndex, nextIndex);
     });
+  }
+
+  function handleAddShoppableReel(sectionId) {
+    updateShoppableReels(sectionId, (reels) => [...reels, createShoppableReel(reels.length)]);
+  }
+
+  function handleShoppableReelChange(sectionId, reelId, patch) {
+    updateShoppableReels(sectionId, (reels) =>
+      reels.map((reel) => (reel.id === reelId ? { ...reel, ...patch } : reel)),
+    );
+  }
+
+  function handleRemoveShoppableReel(sectionId, reelId) {
+    updateShoppableReels(sectionId, (reels) => {
+      const next = reels.filter((r) => r.id !== reelId);
+      return next.length > 0 ? next : [createShoppableReel(0)];
+    });
+  }
+
+  function handleMoveShoppableReel(sectionId, reelId, direction) {
+    updateShoppableReels(sectionId, (reels) => {
+      const currentIndex = reels.findIndex((r) => r.id === reelId);
+      const nextIndex = currentIndex + direction;
+      if (currentIndex === -1 || nextIndex < 0 || nextIndex >= reels.length) return reels;
+      return arrayMove(reels, currentIndex, nextIndex);
+    });
+  }
+
+  async function handleShoppableReelVideoUpload(sectionId, reelId, event) {
+    const file = Array.from(event.target.files || []).find((entry) => entry.type.startsWith('video/'));
+    event.target.value = '';
+    if (!file) return;
+
+    const uploadId = `${sectionId}:${reelId}:video`;
+    setUploadingKey(uploadId);
+    setSaved(false);
+
+    try {
+      const asset = await uploadVideoFile(file, 'ornaments_reels', 'mobile');
+      handleShoppableReelChange(sectionId, reelId, { video: asset });
+      toast.success('Reel video uploaded successfully');
+    } catch (error) {
+      toast.error(error.message || 'Failed to upload video');
+    } finally {
+      setUploadingKey('');
+    }
+  }
+
+  function handleShoppableReelRemoveVideo(sectionId, reelId) {
+    handleShoppableReelChange(sectionId, reelId, { video: null });
   }
 
   async function readFileAsDataUrl(file) {
@@ -1775,6 +2164,12 @@ export default function HomePageBuilderClient({ initialSections, availableCatego
                   mobileVideo: slide.mobileVideo || null,
                 }))
               : [],
+            reels: Array.isArray(section.reels)
+              ? section.reels.map((reel) => ({
+                  ...reel,
+                  video: reel.video || null,
+                }))
+              : [],
             pcVideo: section.pcVideo || null,
             mobileVideo: section.mobileVideo || null,
           })),
@@ -1798,7 +2193,7 @@ export default function HomePageBuilderClient({ initialSections, availableCatego
   }
 
   return (
-      <div className="w-full pb-8 md:pb-0">
+    <div className="w-full pb-8 md:pb-0">
       <HomePageSettingsHeader
         saving={saving}
         saved={saved}
@@ -1817,6 +2212,7 @@ export default function HomePageBuilderClient({ initialSections, availableCatego
           onToggleExpand={toggleSection}
           sensors={sensors}
           availableCategories={availableCategories}
+          availableProducts={availableProducts}
           uploadingKey={uploadingKey}
           onAddSection={handleAddSection}
           onDragStart={handleDragStart}
@@ -1838,6 +2234,12 @@ export default function HomePageBuilderClient({ initialSections, availableCatego
           onCarouselBannerChange={handleCarouselBannerChange}
           onRemoveCarouselBanner={handleRemoveCarouselBanner}
           onMoveCarouselBanner={handleMoveCarouselBanner}
+          onAddShoppableReel={handleAddShoppableReel}
+          onShoppableReelChange={handleShoppableReelChange}
+          onShoppableReelVideoUpload={handleShoppableReelVideoUpload}
+          onShoppableReelRemoveVideo={handleShoppableReelRemoveVideo}
+          onRemoveShoppableReel={handleRemoveShoppableReel}
+          onMoveShoppableReel={handleMoveShoppableReel}
           onOpenCategoryShowcase={(cat) => setShowcaseModal({ open: true, category: cat })}
         />
       </div>

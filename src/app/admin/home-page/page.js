@@ -11,6 +11,7 @@ export default async function AdminHomePageBuilderPage() {
     <HomePageBuilderWrapper
       initialSections={data.sections}
       availableCategories={data.categories}
+      availableProducts={data.availableProducts || []}
     />
   );
 }

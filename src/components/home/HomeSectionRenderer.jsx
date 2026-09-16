@@ -5,6 +5,7 @@ import HomeTestimonialsCarousel from '@/components/HomeTestimonialsCarousel';
 import HomeProductBanner from '@/components/home/HomeProductBanner';
 import HomeScrollableBannerCarousel from '@/components/home/HomeScrollableBannerCarousel';
 import HomeVideoCatalog from '@/components/home/HomeVideoCatalog';
+import HomeShoppableReels from '@/components/home/HomeShoppableReels';
 
 function HomeAnnouncementStrip() {
   const items = [
@@ -90,6 +91,17 @@ export default function HomeSectionRenderer({ sections = [] }) {
               title={section.title}
               description={section.description}
               banners={section.carouselBanners}
+            />
+          );
+        }
+
+        if (section.type === 'ShoppableReels') {
+          return (
+            <HomeShoppableReels
+              key={section.id}
+              title={section.title}
+              description={section.description}
+              reels={section.reels}
             />
           );
         }

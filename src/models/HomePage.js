@@ -110,6 +110,65 @@ const HomePageBannerImageSchema = new mongoose.Schema(
   },
 );
 
+const HomePageShoppableReelSchema = new mongoose.Schema(
+  {
+    id: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    title: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    video: {
+      type: HomePageVideoSchema,
+      default: () => ({}),
+    },
+    poster: {
+      type: HomePageAssetSchema,
+      default: undefined,
+    },
+    productId: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    productTitle: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    productPrice: {
+      type: Number,
+      default: 0,
+    },
+    productImage: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    productSlug: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    badge: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    sortOrder: {
+      type: Number,
+      default: 0,
+    },
+  },
+  {
+    _id: false,
+  },
+);
+
 const HomePageSectionSchema = new mongoose.Schema(
   {
     id: {
@@ -195,6 +254,10 @@ const HomePageSectionSchema = new mongoose.Schema(
     mobileVideo: {
       type: HomePageVideoSchema,
       default: undefined,
+    },
+    reels: {
+      type: [HomePageShoppableReelSchema],
+      default: [],
     },
   },
   {

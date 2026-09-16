@@ -1,7 +1,23 @@
-import { normalizePhone } from '@/lib/admin';
-
 export function normalizeWhatsappNumber(value) {
-  return normalizePhone(value || '');
+  if (!value) return '';
+  let digits = String(value).replace(/\D/g, '');
+  if (!digits) return '';
+
+  // Remove leading 00 if present (e.g. 00923352616473 -> 923352616473)
+  if (digits.startsWith('00')) {
+    digits = digits.slice(2);
+  }
+
+  // Handle local Pakistani numbers
+  if (digits.startsWith('0')) {
+    // 03352616473 -> 923352616473
+    digits = `92${digits.slice(1)}`;
+  } else if (digits.length === 10 && digits.startsWith('3')) {
+    // 3352616473 -> 923352616473
+    digits = `92${digits}`;
+  }
+
+  return digits;
 }
 
 export function createWhatsAppUrl(number, message = '') {

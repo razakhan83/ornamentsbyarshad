@@ -1225,7 +1225,30 @@ export async function getHomeSections() {
 }
 
 export async function getAdminHomePageBuilderData() {
-  const [homePage, categories] = await Promise.all([getHomePageRaw(), getCategoriesRaw()]);
+  await mongooseConnect();
+  const [homePage, categories, products] = await Promise.all([
+    getHomePageRaw(),
+    getCategoriesRaw(),
+    Product.find({ isDeleted: { $ne: true } })
+      .select('_id title price salePrice slug images stock')
+      .sort({ createdAt: -1 })
+      .limit(300)
+      .lean()
+      .then((items) =>
+        items.map((p) => {
+          const primaryImage = getPrimaryProductImage(p);
+          const rawPrice = Number(p.salePrice ?? p.price ?? 0);
+          return {
+            _id: String(p._id),
+            title: p.title || '',
+            slug: p.slug || String(p._id),
+            price: rawPrice,
+            image: primaryImage?.url || '',
+          };
+        })
+      )
+      .catch(() => []),
+  ]);
 
   return {
     sections: homePage.sections,
@@ -1236,6 +1259,7 @@ export async function getAdminHomePageBuilderData() {
         id: category.id,
         label: category.label,
       })),
+    availableProducts: products,
   };
 }
 
@@ -1417,6 +1441,19 @@ export async function getStorefrontHomePage() {
                 ...section,
                 pcVideo,
                 mobileVideo,
+              }
+            : null;
+        }
+
+        if (section.type === 'ShoppableReels') {
+          const reels = Array.isArray(section.reels)
+            ? section.reels.filter((r) => r?.video?.url)
+            : [];
+
+          return reels.length > 0
+            ? {
+                ...section,
+                reels,
               }
             : null;
         }

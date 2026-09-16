@@ -29,6 +29,7 @@ import { toast } from 'sonner';
 
 import { getLastOrderDetailsAction, submitOrderAction, validateCouponAction } from '@/app/actions';
 import { getAvailableStock, isProductOutOfStock } from '@/lib/productCommerce';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 
 import AuthModal from '@/components/AuthModal';
 import OrderSuccessModal from '@/components/OrderSuccessModal';
@@ -1467,7 +1468,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
                         <p className="font-semibold">
                           Send payment slip to:{' '}
                           <a
-                            href={`https://wa.me/${settings?.whatsappNumber?.replace(/\D/g, '')}`}
+                            href={createWhatsAppUrl(settings?.whatsappNumber, 'Salam, sending bank transfer payment slip for my order.') || '#'}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-primary hover:underline"

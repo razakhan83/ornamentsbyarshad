@@ -16,6 +16,7 @@ export const HOME_PAGE_SECTION_TYPES = [
   'ProductGridByCategory',
   'ProductCollection',
   'VideoCatalog',
+  'ShoppableReels',
   'CustomerReviews',
 ];
 
@@ -182,6 +183,13 @@ export function normalizeHomePageSection(section, index = 0) {
     };
   }
 
+  if (type === 'ShoppableReels') {
+    return {
+      ...baseSection,
+      reels: normalizeShoppableReels(section?.reels),
+    };
+  }
+
   if (type === 'CustomerReviews') {
     return {
       ...baseSection,
@@ -190,6 +198,43 @@ export function normalizeHomePageSection(section, index = 0) {
   }
 
   return baseSection;
+}
+
+export function normalizeShoppableReels(reels = []) {
+  if (!Array.isArray(reels)) return [];
+
+  return reels
+    .map((reel, index) => {
+      const videoUrl = cleanText(reel?.video?.url || reel?.videoUrl || (typeof reel?.video === 'string' ? reel.video : ''));
+      if (!videoUrl) return null;
+
+      const video = {
+        url: videoUrl,
+        publicId: cleanText(reel?.video?.publicId || reel?.video?.public_id),
+      };
+
+      const poster = normalizeAsset(reel?.poster);
+
+      return {
+        id: cleanText(reel?.id) || `reel-${index + 1}`,
+        title: cleanText(reel?.title),
+        video,
+        ...(poster ? { poster } : {}),
+        productId: cleanText(reel?.productId),
+        productTitle: cleanText(reel?.productTitle),
+        productPrice: safeNumber(reel?.productPrice, 0),
+        productImage: cleanText(reel?.productImage),
+        productSlug: cleanText(reel?.productSlug),
+        badge: cleanText(reel?.badge),
+        sortOrder: safeNumber(reel?.sortOrder, index),
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.sortOrder - b.sortOrder)
+    .map((reel, index) => ({
+      ...reel,
+      sortOrder: index,
+    }));
 }
 
 export function normalizeHomePageSections(sections = []) {
