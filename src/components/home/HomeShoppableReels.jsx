@@ -18,6 +18,12 @@ import {
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  useCarousel,
+} from '@/components/ui/carousel';
 
 function optimizeCloudinaryVideoUrl(url) {
   if (!url || typeof url !== 'string') return '';
@@ -53,6 +59,7 @@ function ReelCard({ reel, onOpenModal }) {
   const [isInView, setIsInView] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isVideoReady, setIsVideoReady] = useState(false);
+  const pointerStartRef = useRef({ x: 0, y: 0 });
 
   const rawVideoUrl = reel?.video?.url || '';
   const optimizedVideoUrl = useMemo(() => optimizeCloudinaryVideoUrl(rawVideoUrl), [rawVideoUrl]);
@@ -91,13 +98,25 @@ function ReelCard({ reel, onOpenModal }) {
     }
   }, [isInView, isHovered]);
 
+  const handlePointerDown = (e) => {
+    pointerStartRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleClick = (e) => {
+    const dx = Math.abs(e.clientX - pointerStartRef.current.x);
+    const dy = Math.abs(e.clientY - pointerStartRef.current.y);
+    if (dx > 8 || dy > 8) return; // User was dragging the carousel
+    onOpenModal();
+  };
+
   return (
     <div
       ref={cardRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={onOpenModal}
-      className="group relative flex-shrink-0 cursor-pointer overflow-hidden rounded-2xl md:rounded-3xl border border-black/5 dark:border-white/10 bg-neutral-900 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl w-[200px] sm:w-[230px] md:w-[260px] aspect-[9/16]"
+      onPointerDown={handlePointerDown}
+      onClick={handleClick}
+      className="group relative flex-shrink-0 cursor-pointer overflow-hidden rounded-2xl md:rounded-3xl bg-neutral-900 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl w-full aspect-[9/16] select-none"
     >
       {/* Blurred starting frame placeholder */}
       {blurUrl || posterUrl ? (
@@ -208,8 +227,6 @@ function ReelModalViewer({ reels, activeIndex, isOpen, onClose, onNavigate }) {
 
   useEffect(() => {
     if (!isOpen) return;
-    setIsPlaying(true);
-    setProgress(0);
     const video = videoRef.current;
     if (video) {
       video.currentTime = 0;
@@ -280,6 +297,8 @@ function ReelModalViewer({ reels, activeIndex, isOpen, onClose, onNavigate }) {
             webkit-playsinline="true"
             preload="auto"
             onClick={togglePlay}
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
             onTimeUpdate={handleTimeUpdate}
             className="h-full w-full object-cover cursor-pointer"
           />
@@ -401,16 +420,179 @@ function ReelModalViewer({ reels, activeIndex, isOpen, onClose, onNavigate }) {
   );
 }
 
+function ReelHeaderArrows() {
+  const { scrollPrev, scrollNext, api } = useCarousel();
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+
+  useEffect(() => {
+    if (!api) return;
+    const update = () => {
+      setCanPrev(api.canGoToPrev ? api.canGoToPrev() : api.canScrollPrev ? api.canScrollPrev() : false);
+      setCanNext(api.canGoToNext ? api.canGoToNext() : api.canScrollNext ? api.canScrollNext() : false);
+    };
+    update();
+    api.on('select', update);
+    api.on('reInit', update);
+    return () => {
+      api.off('select', update);
+      api.off('reInit', update);
+    };
+  }, [api]);
+
+  return (
+    <div className="flex items-center gap-2">
+      <button
+        type="button"
+        className="flex size-9 sm:size-10 items-center justify-center rounded-full border border-[#121212]/20 bg-white text-[#121212] transition-all duration-200 hover:bg-[#121212] hover:text-white hover:border-[#121212] disabled:opacity-20 disabled:pointer-events-none cursor-pointer active:scale-[0.96] shadow-xs"
+        disabled={!canPrev}
+        onClick={() => scrollPrev()}
+        aria-label="Previous reel"
+      >
+        <ChevronLeft className="size-5" />
+      </button>
+      <button
+        type="button"
+        className="flex size-9 sm:size-10 items-center justify-center rounded-full border border-[#121212]/20 bg-white text-[#121212] transition-all duration-200 hover:bg-[#121212] hover:text-white hover:border-[#121212] disabled:opacity-20 disabled:pointer-events-none cursor-pointer active:scale-[0.96] shadow-xs"
+        disabled={!canNext}
+        onClick={() => scrollNext()}
+        aria-label="Next reel"
+      >
+        <ChevronRight className="size-5" />
+      </button>
+    </div>
+  );
+}
+
+function FloatingReelsArrows() {
+  const { scrollPrev, scrollNext, api } = useCarousel();
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+
+  useEffect(() => {
+    if (!api) return;
+    const update = () => {
+      setCanPrev(api.canGoToPrev ? api.canGoToPrev() : api.canScrollPrev ? api.canScrollPrev() : false);
+      setCanNext(api.canGoToNext ? api.canGoToNext() : api.canScrollNext ? api.canScrollNext() : false);
+    };
+    update();
+    api.on('select', update);
+    api.on('reInit', update);
+    return () => {
+      api.off('select', update);
+      api.off('reInit', update);
+    };
+  }, [api]);
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => scrollPrev()}
+        disabled={!canPrev}
+        aria-label="Previous reel"
+        className={cn(
+          "absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-20 flex size-9 sm:size-10 items-center justify-center rounded-full border border-white/25 bg-black/60 text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:bg-black/90 hover:scale-110 active:scale-95 cursor-pointer",
+          !canPrev ? "opacity-0 pointer-events-none" : "opacity-100"
+        )}
+      >
+        <ChevronLeft className="size-5" />
+      </button>
+      <button
+        type="button"
+        onClick={() => scrollNext()}
+        disabled={!canNext}
+        aria-label="Next reel"
+        className={cn(
+          "absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-20 flex size-9 sm:size-10 items-center justify-center rounded-full border border-white/25 bg-black/60 text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:bg-black/90 hover:scale-110 active:scale-95 cursor-pointer",
+          !canNext ? "opacity-0 pointer-events-none" : "opacity-100"
+        )}
+      >
+        <ChevronRight className="size-5" />
+      </button>
+    </>
+  );
+}
+
+function ReelDots() {
+  const { api } = useCarousel();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState([]);
+
+  useEffect(() => {
+    if (!api) return;
+
+    const onInit = () => {
+      const snaps = typeof api.snapList === 'function'
+        ? api.snapList()
+        : typeof api.scrollSnapList === 'function'
+        ? api.scrollSnapList()
+        : [];
+      const current = typeof api.selectedSnap === 'function'
+        ? api.selectedSnap()
+        : typeof api.selectedScrollSnap === 'function'
+        ? api.selectedScrollSnap()
+        : 0;
+      setScrollSnaps(snaps);
+      setSelectedIndex(current);
+    };
+
+    const onSelect = () => {
+      const current = typeof api.selectedSnap === 'function'
+        ? api.selectedSnap()
+        : typeof api.selectedScrollSnap === 'function'
+        ? api.selectedScrollSnap()
+        : 0;
+      setSelectedIndex(current);
+    };
+
+    onInit();
+    api.on('init', onInit);
+    api.on('reInit', onInit);
+    api.on('select', onSelect);
+
+    return () => {
+      api.off('init', onInit);
+      api.off('reInit', onInit);
+      api.off('select', onSelect);
+    };
+  }, [api]);
+
+  if (!scrollSnaps || scrollSnaps.length <= 1) return null;
+
+  return (
+    <div className="flex justify-center items-center gap-1.5 mt-4 sm:mt-6">
+      {scrollSnaps.map((_, index) => (
+        <button
+          key={`reel-dot-${index}`}
+          type="button"
+          aria-label={`Go to reel ${index + 1}`}
+          onClick={() => {
+            if (typeof api?.goTo === 'function') {
+              api.goTo(index);
+            } else if (typeof api?.scrollTo === 'function') {
+              api.scrollTo(index);
+            }
+          }}
+          className="flex min-h-[28px] min-w-[28px] -m-1 items-center justify-center cursor-pointer p-0 border-0 bg-transparent outline-none focus-visible:ring-2 focus-visible:ring-[#121212]/50 rounded-full"
+        >
+          <span
+            className={cn(
+              "h-1.5 sm:h-2 rounded-full transition-all duration-300 pointer-events-none block",
+              selectedIndex === index
+                ? "w-6 sm:w-7 bg-[#121212] dark:bg-white"
+                : "w-1.5 sm:w-2 bg-[#121212]/20 dark:bg-white/20 hover:bg-[#121212]/50 dark:hover:bg-white/50"
+            )}
+          />
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function HomeShoppableReels({ title, description, reels = [] }) {
   const safeReels = Array.isArray(reels) ? reels.filter((r) => r?.video?.url) : [];
   const [modalIndex, setModalIndex] = useState(null);
-  const carouselRef = useRef(null);
-
-  const scrollCarousel = (direction) => {
-    if (!carouselRef.current) return;
-    const scrollAmount = 300 * direction;
-    carouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-  };
 
   const handleNavigateModal = (step) => {
     if (modalIndex === null) return;
@@ -425,59 +607,67 @@ export default function HomeShoppableReels({ title, description, reels = [] }) {
   return (
     <section className="relative w-full py-6 sm:py-8 md:py-10 bg-transparent">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="mb-5 md:mb-6 flex items-end justify-between gap-4">
-          <div className="space-y-1">
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-sans uppercase tracking-[0.24em] text-[#a67c52] font-semibold">
-              <Sparkles className="size-3.5" />
-              Reels & Looks
-            </span>
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-foreground font-normal tracking-tight">
-              {title || 'Watch & Shop'}
-            </h2>
-            {description ? (
-              <p className="text-xs sm:text-sm text-muted-foreground font-sans max-w-xl">
-                {description}
-              </p>
-            ) : null}
+        <Carousel
+          opts={{
+            align: 'start',
+            loop: false,
+            watchDrag: true,
+            duration: 20,
+          }}
+          className="w-full"
+        >
+          {/* Section Header */}
+          <div className="mb-4 sm:mb-6 flex items-end justify-between gap-4">
+            <div className="space-y-1">
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-sans uppercase tracking-[0.24em] text-[#a67c52] font-semibold">
+                <Sparkles className="size-3.5" />
+                Reels & Looks
+              </span>
+              <h2 className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl text-foreground font-medium tracking-tight">
+                {title || 'Watch & Shop'}
+              </h2>
+              {description ? (
+                <p className="text-xs sm:text-sm text-muted-foreground font-sans max-w-xl">
+                  {description}
+                </p>
+              ) : null}
+            </div>
+
+            {/* Carousel Header Arrows */}
+            {safeReels.length > 1 && (
+              <div className="flex items-center gap-2">
+                <ReelHeaderArrows />
+              </div>
+            )}
           </div>
 
-          {/* Carousel Arrows (Desktop) */}
-          {safeReels.length > 3 && (
-            <div className="hidden sm:flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => scrollCarousel(-1)}
-                aria-label="Scroll left"
-                className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm hover:bg-muted transition cursor-pointer"
-              >
-                <ChevronLeft className="size-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollCarousel(1)}
-                aria-label="Scroll right"
-                className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm hover:bg-muted transition cursor-pointer"
-              >
-                <ChevronRight className="size-4" />
-              </button>
-            </div>
-          )}
-        </div>
+          {/* Carousel Track with Floating Side Arrows */}
+          <div className="relative group/reels">
+            <CarouselContent
+              viewportClassName="overflow-hidden py-2 -my-2"
+              className="-ml-3 sm:-ml-4 md:-ml-5 touch-pan-y"
+              style={{ touchAction: 'pan-y' }}
+            >
+              {safeReels.map((reel, index) => (
+                <CarouselItem
+                  key={reel.id || index}
+                  className="pl-3 sm:pl-4 md:pl-5 basis-[70%] sm:basis-[45%] md:basis-[32%] lg:basis-[24%] xl:basis-[20%] max-w-[280px]"
+                >
+                  <ReelCard
+                    reel={reel}
+                    onOpenModal={() => setModalIndex(index)}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
 
-        {/* Carousel Container */}
-        <div
-          ref={carouselRef}
-          className="flex gap-3.5 sm:gap-4 md:gap-5 overflow-x-auto scrollbar-none pb-2 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 scroll-smooth"
-        >
-          {safeReels.map((reel, index) => (
-            <ReelCard
-              key={reel.id || index}
-              reel={reel}
-              onOpenModal={() => setModalIndex(index)}
-            />
-          ))}
-        </div>
+            {/* Floating Arrows directly on the reels track */}
+            {safeReels.length > 1 && <FloatingReelsArrows />}
+          </div>
+
+          {/* Pagination dots underneath */}
+          <ReelDots />
+        </Carousel>
       </div>
 
       {/* Fullscreen / Interactive Reel Modal Viewer */}
