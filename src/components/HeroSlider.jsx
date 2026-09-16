@@ -69,6 +69,14 @@ function isNearbySlide(index, activeIndex, total) {
   return false;
 }
 
+function optimizeCloudinaryVideoUrl(url) {
+  if (!url || typeof url !== 'string') return '';
+  if (!url.includes('res.cloudinary.com')) return url;
+  if (!url.includes('/video/upload/')) return url;
+  if (/\/video\/upload\/[a-z0-9_,:]+\/v[0-9]+\//.test(url)) return url;
+  return url.replace('/video/upload/', '/video/upload/q_auto:good,w_640,vc_h264/');
+}
+
 function getCloudinaryVideoPoster(url) {
   if (!url || typeof url !== 'string') return '';
   if (!url.includes('res.cloudinary.com')) return '';
@@ -92,10 +100,47 @@ function getCloudinaryVideoBlur(url) {
 function HeroSlideMedia({ slide, isPriority, isActive }) {
   const desktopSrc = slide.images.desktopSrc || slide.images.mobileSrc;
   const mobileSrc = slide.images.mobileSrc || slide.images.desktopSrc;
-  const mobileVideoSrc = slide.images.mobileVideoSrc;
+  const rawMobileVideoSrc = slide.images.mobileVideoSrc;
+  const mobileVideoSrc = useMemo(() => optimizeCloudinaryVideoUrl(rawMobileVideoSrc), [rawMobileVideoSrc]);
+
+  const [cachedVideoSrc, setCachedVideoSrc] = useState(mobileVideoSrc);
   const videoRef = useRef(null);
   const [videoError, setVideoError] = useState(false);
   const [isVideoReady, setIsVideoReady] = useState(false);
+
+  // Persistent Cache Storage: Store video locally so subsequent opens & reloads play instantly in 0ms
+  useEffect(() => {
+    if (!mobileVideoSrc || typeof window === 'undefined' || !('caches' in window)) return;
+
+    let isCancelled = false;
+    const cacheName = 'ornaments-hero-video-v1';
+
+    window.caches
+      .open(cacheName)
+      .then(async (cache) => {
+        try {
+          const match = await cache.match(mobileVideoSrc);
+          if (match) {
+            const blob = await match.blob();
+            if (!isCancelled) {
+              const blobUrl = URL.createObjectURL(blob);
+              setCachedVideoSrc(blobUrl);
+            }
+          } else {
+            fetch(mobileVideoSrc)
+              .then((res) => {
+                if (res.ok) cache.put(mobileVideoSrc, res.clone());
+              })
+              .catch(() => {});
+          }
+        } catch {}
+      })
+      .catch(() => {});
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [mobileVideoSrc]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -112,7 +157,7 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
     } else {
       video.pause();
     }
-  }, [isActive, mobileVideoSrc, videoError]);
+  }, [isActive, mobileVideoSrc, videoError, cachedVideoSrc]);
 
   const desktopOptimized = optimizeCloudinaryUrl(desktopSrc, CLOUDINARY_IMAGE_PRESETS.heroFull);
   const mobileOptimized = optimizeCloudinaryUrl(mobileSrc, CLOUDINARY_IMAGE_PRESETS.heroMobile);
@@ -177,7 +222,7 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
                 }
                 videoRef.current = el;
               }}
-              src={mobileVideoSrc}
+              src={cachedVideoSrc || mobileVideoSrc}
               poster={videoPoster || undefined}
               autoPlay
               loop
