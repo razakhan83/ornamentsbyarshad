@@ -30,7 +30,10 @@ function optimizeCloudinaryVideoUrl(url) {
   if (!url.includes('res.cloudinary.com')) return url;
   if (!url.includes('/video/upload/')) return url;
   if (/\/video\/upload\/[a-z0-9_,:]+\/v[0-9]+\//.test(url)) return url;
-  return url.replace('/video/upload/', '/video/upload/q_auto:good,w_640,vc_h264/');
+  const isWebm = /\.webm($|\?)/i.test(url);
+  // WebM format does not support H.264 codec (causes Cloudinary 400 Unsupported codec error)
+  const codecParam = isWebm ? '' : ',vc_h264';
+  return url.replace('/video/upload/', `/video/upload/q_auto:good,w_640${codecParam}/`);
 }
 
 function getCloudinaryVideoPoster(url) {

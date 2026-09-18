@@ -1,7 +1,17 @@
 'use client';
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
-import { ImageIcon, ZoomIn, ZoomOut, Sparkles } from 'lucide-react';
+import { 
+  ImageIcon, 
+  ZoomIn, 
+  ZoomOut, 
+  Sparkles, 
+  Maximize2, 
+  X, 
+  ChevronLeft, 
+  ChevronRight 
+} from 'lucide-react';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { CLOUDINARY_IMAGE_PRESETS, optimizeCloudinaryUrl } from '@/lib/cloudinaryImage';
 import { normalizeProductImage } from '@/lib/productImages';
@@ -15,6 +25,10 @@ export default function ProductGallery({ images, primaryTag, product }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [mainApi, setMainApi] = useState(null);
   const [isMagnifierActive, setIsMagnifierActive] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [lightboxZoom, setLightboxZoom] = useState(false);
+
   const [lensState, setLensState] = useState({
     show: false,
     x: 0,
@@ -27,6 +41,8 @@ export default function ProductGallery({ images, primaryTag, product }) {
   });
 
   const containerRef = useRef(null);
+  const pointerStartRef = useRef({ x: 0, y: 0, time: 0 });
+  const lightboxTouchStartRef = useRef(0);
 
   const normalizedImages = useMemo(
     () => (Array.isArray(images) ? images.map(normalizeProductImage).filter(Boolean) : []),
@@ -34,6 +50,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
   );
   const hasMultipleImages = normalizedImages.length > 1;
   const currentImage = normalizedImages[selectedIndex] || normalizedImages[0];
+  const productName = product?.Name || product?.name || 'Product';
   const zoomLevel = 1.85;
 
   const mainOptions = useMemo(
@@ -90,6 +107,33 @@ export default function ProductGallery({ images, primaryTag, product }) {
     }
   }, [isMagnifierActive, mainApi]);
 
+  // Keyboard navigation & body scroll lock for fullscreen lightbox
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsLightboxOpen(false);
+        setLightboxZoom(false);
+      } else if (e.key === 'ArrowLeft') {
+        setLightboxIndex((prev) => (prev > 0 ? prev - 1 : normalizedImages.length - 1));
+        setLightboxZoom(false);
+      } else if (e.key === 'ArrowRight') {
+        setLightboxIndex((prev) => (prev < normalizedImages.length - 1 ? prev + 1 : 0));
+        setLightboxZoom(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isLightboxOpen, normalizedImages.length]);
+
   const handlePointerMove = useCallback((clientX, clientY, isTouch = false) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -108,10 +152,8 @@ export default function ProductGallery({ images, primaryTag, product }) {
       const offset = 95;
       // If finger is in the top area where loupe would clip off the top edge:
       if (targetY - offset - radius < padding) {
-        // Auto-flip loupe to BELOW the finger so it remains 100% visible and unclipt
         y = targetY + offset;
       } else {
-        // Default: position loupe ABOVE the finger
         y = targetY - offset;
       }
     }
@@ -170,6 +212,61 @@ export default function ProductGallery({ images, primaryTag, product }) {
       } else if (typeof mainApi.goTo === 'function') {
         mainApi.goTo(index);
       }
+    }
+  };
+
+  const openLightbox = (index = selectedIndex) => {
+    setLightboxIndex(index);
+    setLightboxZoom(false);
+    setIsLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setIsLightboxOpen(false);
+    setLightboxZoom(false);
+  };
+
+  const handleLightboxNavigate = (index) => {
+    setLightboxIndex(index);
+    setLightboxZoom(false);
+    handleThumbnailClick(index);
+  };
+
+  const handleImagePointerDown = (e) => {
+    pointerStartRef.current = {
+      x: e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : 0),
+      y: e.clientY ?? (e.touches && e.touches[0] ? e.touches[0].clientY : 0),
+      time: Date.now(),
+    };
+  };
+
+  const handleImagePointerUp = (e) => {
+    if (isMagnifierActive) return;
+    const clientX = e.clientX ?? (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : 0);
+    const clientY = e.clientY ?? (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientY : 0);
+    const dx = Math.abs(clientX - pointerStartRef.current.x);
+    const dy = Math.abs(clientY - pointerStartRef.current.y);
+    const dt = Date.now() - pointerStartRef.current.time;
+
+    // Only open lightbox if it was a genuine click/tap and not a swipe drag
+    if (dx < 8 && dy < 8 && dt < 450) {
+      openLightbox(selectedIndex);
+    }
+  };
+
+  const handleLightboxTouchStart = (e) => {
+    if (e.touches && e.touches[0]) {
+      lightboxTouchStartRef.current = e.touches[0].clientX;
+    }
+  };
+
+  const handleLightboxTouchEnd = (e) => {
+    if (!e.changedTouches || !e.changedTouches[0] || lightboxZoom) return;
+    const diff = e.changedTouches[0].clientX - lightboxTouchStartRef.current;
+    if (diff > 50) {
+      handleLightboxNavigate(lightboxIndex > 0 ? lightboxIndex - 1 : normalizedImages.length - 1);
+    } else if (diff < -50) {
+      handleLightboxNavigate(lightboxIndex < normalizedImages.length - 1 ? lightboxIndex + 1 : 0);
     }
   };
 
@@ -238,12 +335,27 @@ export default function ProductGallery({ images, primaryTag, product }) {
           </div>
         )}
 
-        {/* Jewelry Loupe Magnifier Toggle Button (Luxury Frosted Glass Pill) */}
+        {/* Gallery Controls (Fullscreen Lightbox & Jeweler Loupe) */}
         <div 
           className="absolute right-3 bottom-3 sm:right-4 sm:bottom-4 z-40 pointer-events-auto flex items-center gap-2"
           onMouseEnter={() => setLensState((prev) => ({ ...prev, show: false }))}
           onTouchStart={() => setLensState((prev) => ({ ...prev, show: false }))}
         >
+          {/* Fullscreen Modal Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              openLightbox(selectedIndex);
+            }}
+            aria-label="View fullscreen image"
+            title="Open fullscreen view"
+            className="inline-flex items-center justify-center size-9 sm:size-10 rounded-full bg-white/90 backdrop-blur-md border border-[#E8E5DF] shadow-[0_2px_10px_rgba(0,0,0,0.08)] text-[#121212] hover:text-[#A67C52] hover:bg-white hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer select-none"
+          >
+            <Maximize2 className="size-4 sm:size-4.5 stroke-[2]" />
+          </button>
+
+          {/* Jewelry Loupe Magnifier Toggle Button (Luxury Frosted Glass Pill) */}
           <button
             type="button"
             onClick={(e) => {
@@ -285,27 +397,25 @@ export default function ProductGallery({ images, primaryTag, product }) {
         >
           <CarouselContent viewportClassName="h-full rounded-2xl sm:rounded-3xl" className="ml-0 h-full">
             {normalizedImages.map((image, index) => {
-              const productName = product?.Name || product?.name || 'Product';
               const isFirstImage = index === 0;
               return (
                 <CarouselItem key={index} className="h-full basis-full pl-0">
-                  <div className={cn(
-                    "relative h-full min-h-0 w-full overflow-hidden rounded-2xl sm:rounded-3xl flex items-center justify-center",
-                    isFirstImage ? "p-3 sm:p-5 md:p-6" : "p-0"
-                  )}>
-                    <div className="relative size-full">
-                      <Image
-                        src={optimizeCloudinaryUrl(image.url, CLOUDINARY_IMAGE_PRESETS.productGalleryMain)}
-                        alt={`${productName} - View ${index + 1}`}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 58vw, 50vw"
-                        className="object-contain transition-transform duration-300"
-                        {...getBlurPlaceholderProps(image.blurDataURL)}
-                        priority={isFirstImage}
-                        fetchPriority={isFirstImage ? 'high' : 'auto'}
-                        loading={isFirstImage ? 'eager' : 'lazy'}
-                      />
-                    </div>
+                  <div 
+                    onPointerDown={handleImagePointerDown}
+                    onPointerUp={handleImagePointerUp}
+                    className="relative h-full min-h-0 w-full overflow-hidden rounded-2xl sm:rounded-3xl p-0 cursor-zoom-in"
+                  >
+                    <Image
+                      src={optimizeCloudinaryUrl(image.url, CLOUDINARY_IMAGE_PRESETS.productGalleryMain)}
+                      alt={`${productName} - View ${index + 1}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 58vw, 50vw"
+                      className="object-cover object-center transition-transform duration-500"
+                      {...getBlurPlaceholderProps(image.blurDataURL)}
+                      priority={isFirstImage}
+                      fetchPriority={isFirstImage ? 'high' : 'auto'}
+                      loading={isFirstImage ? 'eager' : 'lazy'}
+                    />
                   </div>
                 </CarouselItem>
               );
@@ -393,7 +503,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
                 alt={`Thumbnail ${index + 1}`}
                 fill
                 sizes="120px"
-                className="object-contain p-0.5 rounded-lg sm:rounded-xl"
+                className="object-cover rounded-lg sm:rounded-xl"
                 {...getBlurPlaceholderProps(image.blurDataURL)}
                 loading="lazy"
               />
@@ -401,6 +511,149 @@ export default function ProductGallery({ images, primaryTag, product }) {
           ))}
         </div>
       ) : null}
+
+      {/* Luxury Fullscreen Lightbox Modal */}
+      {typeof document !== 'undefined' && isLightboxOpen && createPortal(
+        <div 
+          className="fixed inset-0 z-[9999] bg-[#0A0A0A]/95 backdrop-blur-md flex flex-col justify-between select-none animate-in fade-in-0 duration-200"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Fullscreen Product Gallery"
+        >
+          {/* Top Bar */}
+          <div className="flex items-center justify-between px-3.5 sm:px-6 py-3 z-50 text-white border-b border-white/10 bg-black/75 backdrop-blur-md gap-2">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+              <span className="font-serif text-xs sm:text-base font-normal tracking-wide text-neutral-200 truncate">
+                {productName}
+              </span>
+              {hasMultipleImages && (
+                <span className="shrink-0 whitespace-nowrap px-2.5 py-0.5 rounded-full bg-white/15 text-white/90 font-sans text-[11px] sm:text-xs font-medium">
+                  {lightboxIndex + 1} / {normalizedImages.length}
+                </span>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              {/* Zoom In/Out Toggle within Lightbox */}
+              <button
+                type="button"
+                onClick={() => setLightboxZoom((prev) => !prev)}
+                title={lightboxZoom ? "Reset zoom (1x)" : "Zoom in (2x)"}
+                className={cn(
+                  "p-2 sm:p-2.5 rounded-full border border-white/15 text-neutral-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer",
+                  lightboxZoom && "bg-white text-black border-white hover:bg-white hover:text-black"
+                )}
+              >
+                {lightboxZoom ? <ZoomOut className="size-4 sm:size-4.5" /> : <ZoomIn className="size-4 sm:size-4.5" />}
+              </button>
+
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={closeLightbox}
+                title="Close fullscreen view (Esc)"
+                className="p-2 sm:p-2.5 rounded-full border border-white/15 text-neutral-300 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all cursor-pointer"
+              >
+                <X className="size-4.5 sm:size-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Center Image Stage */}
+          <div 
+            className="relative flex-1 flex items-center justify-center p-2 sm:p-6 min-h-0 overflow-hidden"
+            onTouchStart={handleLightboxTouchStart}
+            onTouchEnd={handleLightboxTouchEnd}
+          >
+            {/* Previous Button */}
+            {hasMultipleImages && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleLightboxNavigate(lightboxIndex > 0 ? lightboxIndex - 1 : normalizedImages.length - 1);
+                }}
+                title="Previous image"
+                className="absolute left-3 sm:left-8 z-40 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 shadow-xl backdrop-blur-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
+              >
+                <ChevronLeft className="size-5 sm:size-6 stroke-[2]" />
+              </button>
+            )}
+
+            {/* Current Large Image */}
+            <div 
+              onClick={() => setLightboxZoom((prev) => !prev)}
+              className={cn(
+                "relative size-full max-h-[82vh] flex items-center justify-center transition-transform duration-300 select-none",
+                lightboxZoom ? "cursor-zoom-out overflow-auto" : "cursor-zoom-in"
+              )}
+            >
+              <div 
+                className={cn(
+                  "relative w-full h-full max-w-5xl transition-transform duration-300 flex items-center justify-center",
+                  lightboxZoom && "scale-140 sm:scale-165"
+                )}
+              >
+                <Image
+                  src={optimizeCloudinaryUrl(
+                    normalizedImages[lightboxIndex]?.url,
+                    CLOUDINARY_IMAGE_PRESETS.productGalleryZoom
+                  )}
+                  alt={`${productName} view ${lightboxIndex + 1}`}
+                  fill
+                  className="object-contain"
+                  sizes="100vw"
+                  priority
+                />
+              </div>
+            </div>
+
+            {/* Next Button */}
+            {hasMultipleImages && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleLightboxNavigate(lightboxIndex < normalizedImages.length - 1 ? lightboxIndex + 1 : 0);
+                }}
+                title="Next image"
+                className="absolute right-3 sm:right-8 z-40 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 shadow-xl backdrop-blur-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
+              >
+                <ChevronRight className="size-5 sm:size-6 stroke-[2]" />
+              </button>
+            )}
+          </div>
+
+          {/* Bottom Thumbnail Strip */}
+          {hasMultipleImages && (
+            <div className="px-4 py-3.5 z-50 border-t border-white/10 bg-black/50 backdrop-blur-md flex items-center justify-center gap-2.5 sm:gap-3 overflow-x-auto">
+              {normalizedImages.map((image, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => handleLightboxNavigate(idx)}
+                  aria-label={`View image ${idx + 1}`}
+                  className={cn(
+                    "relative size-12 sm:size-14 rounded-lg overflow-hidden border transition-all cursor-pointer shrink-0",
+                    idx === lightboxIndex 
+                      ? "border-white ring-2 ring-white scale-105 opacity-100" 
+                      : "border-white/20 opacity-50 hover:opacity-90"
+                  )}
+                >
+                  <Image
+                    src={optimizeCloudinaryUrl(image.url, CLOUDINARY_IMAGE_PRESETS.productGalleryThumb)}
+                    alt=""
+                    fill
+                    className="object-contain"
+                    sizes="60px"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>,
+        document.body
+      )}
     </div>
   );
 }
