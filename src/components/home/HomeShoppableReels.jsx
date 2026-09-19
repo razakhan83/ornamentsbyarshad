@@ -119,7 +119,7 @@ function ReelCard({ reel, onOpenModal }) {
       onMouseLeave={() => setIsHovered(false)}
       onPointerDown={handlePointerDown}
       onClick={handleClick}
-      className="group relative flex-shrink-0 cursor-pointer overflow-hidden rounded-2xl md:rounded-3xl bg-neutral-900 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl w-full aspect-[9/16] select-none"
+      className="group relative flex-shrink-0 cursor-pointer overflow-hidden rounded-sm md:rounded-sm bg-neutral-900 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl w-full aspect-[9/16] select-none"
     >
       {/* Blurred starting frame placeholder */}
       {blurUrl || posterUrl ? (
@@ -187,15 +187,15 @@ function ReelCard({ reel, onOpenModal }) {
         ) : null}
 
         {reel.productTitle ? (
-          <div className="flex items-center gap-2 rounded-xl bg-black/70 p-1.5 pr-3 text-white backdrop-blur-md border border-white/15 shadow-lg transition-transform duration-300 group-hover:scale-[1.02]">
+          <div className="flex items-center gap-2 rounded-sm bg-black/70 p-1.5 pr-3 text-white backdrop-blur-md border border-white/15 shadow-lg transition-transform duration-300 group-hover:scale-[1.02]">
             {reel.productImage ? (
               <img
                 src={reel.productImage}
                 alt={reel.productTitle}
-                className="size-8 rounded-lg object-cover flex-shrink-0 border border-white/20"
+                className="size-8 rounded-sm object-cover flex-shrink-0 border border-white/20"
               />
             ) : (
-              <div className="flex size-8 items-center justify-center rounded-lg bg-neutral-800 text-[#a67c52] flex-shrink-0">
+              <div className="flex size-8 items-center justify-center rounded-sm bg-neutral-800 text-[#a67c52] flex-shrink-0">
                 <ShoppingBag className="size-4" />
               </div>
             )}
@@ -271,7 +271,7 @@ function ReelModalViewer({ reels, activeIndex, isOpen, onClose, onNavigate }) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
-        className="max-w-md sm:max-w-lg p-0 bg-black border-neutral-800 text-white overflow-hidden rounded-3xl shadow-2xl [&>button]:hidden"
+        className="max-w-md sm:max-w-lg p-0 bg-black border-neutral-800 text-white overflow-hidden rounded-sm shadow-2xl [&>button]:hidden"
       >
         <DialogTitle className="sr-only">
           {currentReel.title || 'Shoppable Reel Video'}
@@ -387,13 +387,13 @@ function ReelModalViewer({ reels, activeIndex, isOpen, onClose, onNavigate }) {
             ) : null}
 
             {currentReel.productId || currentReel.productTitle ? (
-              <div className="flex items-center justify-between gap-3 rounded-2xl bg-black/80 p-2.5 sm:p-3 backdrop-blur-xl border border-white/20 shadow-2xl">
+              <div className="flex items-center justify-between gap-3 rounded-sm bg-black/80 p-2.5 sm:p-3 backdrop-blur-xl border border-white/20 shadow-2xl">
                 <div className="flex items-center gap-2.5 min-w-0 flex-1">
                   {currentReel.productImage ? (
                     <img
                       src={currentReel.productImage}
                       alt={currentReel.productTitle}
-                      className="size-11 sm:size-12 rounded-xl object-cover flex-shrink-0 border border-white/20"
+                      className="size-11 sm:size-12 rounded-sm object-cover flex-shrink-0 border border-white/20"
                     />
                   ) : null}
                   <div className="min-w-0 flex-1">
@@ -409,7 +409,7 @@ function ReelModalViewer({ reels, activeIndex, isOpen, onClose, onNavigate }) {
                 <Link
                   href={currentReel.productSlug ? `/products/${currentReel.productSlug}` : '/products'}
                   onClick={onClose}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-white text-black px-4 py-2 text-xs font-semibold uppercase tracking-wider hover:bg-[#a67c52] hover:text-white transition-colors duration-200 flex-shrink-0"
+                  className="inline-flex items-center gap-1.5 rounded-sm bg-white text-black px-4 py-2 text-xs font-semibold uppercase tracking-wider hover:bg-[#a67c52] hover:text-white transition-colors duration-200 flex-shrink-0"
                 >
                   <span>Shop</span>
                   <ExternalLink className="size-3.5" />

@@ -62,8 +62,8 @@ function PaginationAnchor({
         aria-disabled="true"
         className={cn(
           kind === 'page'
-            ? 'inline-flex size-8 items-center justify-center rounded-lg border border-border bg-background p-0 text-sm font-medium text-muted-foreground opacity-50'
-            : 'inline-flex h-8 min-w-16 items-center justify-center rounded-lg border border-border/80 bg-muted px-2 text-sm font-semibold text-foreground/80 opacity-50',
+            ? 'inline-flex size-8 items-center justify-center rounded-sm border border-border bg-background p-0 text-sm font-medium text-muted-foreground opacity-50'
+            : 'inline-flex h-8 min-w-16 items-center justify-center rounded-sm border border-border/80 bg-muted px-2 text-sm font-semibold text-foreground/80 opacity-50',
           'pointer-events-none text-center leading-none',
           className,
         )}

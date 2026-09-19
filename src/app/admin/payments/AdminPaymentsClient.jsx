@@ -25,7 +25,7 @@ export default function AdminPaymentsClient() {
       </div>
 
       {/* Simple Clean Message Card */}
-      <div className="rounded-xl border border-border bg-card p-8 sm:p-12 text-center space-y-2 shadow-xs">
+      <div className="rounded-sm border border-border bg-card p-8 sm:p-12 text-center space-y-2 shadow-xs">
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Working on it
         </p>

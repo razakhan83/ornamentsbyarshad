@@ -23,7 +23,7 @@ export default function TrackOrderPage() {
           </p>
         </div>
 
-        <Suspense fallback={<div className="h-40 w-full bg-muted/40 rounded-xl animate-pulse" />}>
+        <Suspense fallback={<div className="h-40 w-full bg-muted/40 rounded-sm animate-pulse" />}>
           <GuestOrderLookupForm />
         </Suspense>
       </div>

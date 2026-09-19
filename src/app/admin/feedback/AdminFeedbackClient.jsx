@@ -590,7 +590,7 @@ export default function AdminFeedbackClient({
       {/* Detail Modal */}
       {activeFeedback && (
         <Dialog open={!!activeFeedback} onOpenChange={(open) => !open && setActiveFeedback(null)}>
-          <DialogContent className="max-w-lg p-0 gap-0 overflow-hidden rounded-2xl">
+          <DialogContent className="max-w-lg p-0 gap-0 overflow-hidden rounded-sm">
             <DialogHeader className="px-6 pt-6 pb-4 border-b">
               <div className="flex items-center justify-between gap-2 mb-2">
                 <div className="flex items-center gap-1">
@@ -619,7 +619,7 @@ export default function AdminFeedbackClient({
             </DialogHeader>
 
             <div className="p-6 space-y-4 max-h-[65vh] overflow-y-auto">
-              <div className="p-3.5 rounded-xl bg-muted/40 border space-y-2 text-xs">
+              <div className="p-3.5 rounded-sm bg-muted/40 border space-y-2 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Sender</span>
                   <span className="font-semibold text-foreground">{activeFeedback.name || 'Anonymous Visitor'}</span>
@@ -642,7 +642,7 @@ export default function AdminFeedbackClient({
                 <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block mb-1.5">
                   Feedback Message
                 </label>
-                <div className="p-3.5 rounded-xl bg-background border text-sm text-foreground leading-relaxed whitespace-pre-wrap">
+                <div className="p-3.5 rounded-sm bg-background border text-sm text-foreground leading-relaxed whitespace-pre-wrap">
                   {activeFeedback.message}
                 </div>
               </div>
@@ -652,7 +652,7 @@ export default function AdminFeedbackClient({
                   <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block mb-1.5">
                     What to add / Suggestion
                   </label>
-                  <div className="p-3.5 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/60 text-sm text-foreground leading-relaxed">
+                  <div className="p-3.5 rounded-sm bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/60 text-sm text-foreground leading-relaxed">
                     {activeFeedback.suggestions}
                   </div>
                 </div>
@@ -665,7 +665,7 @@ export default function AdminFeedbackClient({
                   href={`https://wa.me/${formatCleanPhone(activeFeedback.contact)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-sm bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs"
                 >
                   <MessageCircle className="size-3.5" />
                   Reply on WhatsApp
@@ -698,7 +698,7 @@ export default function AdminFeedbackClient({
       {/* Delete Confirmation Dialog */}
       {deleteConfirmId && (
         <Dialog open={!!deleteConfirmId} onOpenChange={(open) => !open && setDeleteConfirmId(null)}>
-          <DialogContent className="max-w-sm rounded-2xl">
+          <DialogContent className="max-w-sm rounded-sm">
             <DialogHeader>
               <DialogTitle className="text-base font-bold">Delete Feedback?</DialogTitle>
               <DialogDescription className="text-xs text-muted-foreground">
@@ -710,7 +710,7 @@ export default function AdminFeedbackClient({
                 variant="outline"
                 size="sm"
                 onClick={() => setDeleteConfirmId(null)}
-                className="text-xs rounded-lg"
+                className="text-xs rounded-sm"
               >
                 Cancel
               </Button>
@@ -718,7 +718,7 @@ export default function AdminFeedbackClient({
                 variant="destructive"
                 size="sm"
                 onClick={() => deleteFeedback(deleteConfirmId)}
-                className="text-xs rounded-lg"
+                className="text-xs rounded-sm"
               >
                 Delete Permanently
               </Button>

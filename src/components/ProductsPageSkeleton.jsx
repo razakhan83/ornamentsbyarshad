@@ -86,11 +86,11 @@ export function ProductsPaginationSkeleton({ animate, variant }) {
     <SkeletonProvider animate={animate} variant={variant}>
       <div className="products-page-footer mt-8 flex flex-col items-center gap-4">
         <div className="flex items-center gap-0.5">
-          <Skeleton className="h-8 w-24 rounded-lg" />
-          <Skeleton className="size-8 rounded-lg" />
-          <Skeleton className="size-8 rounded-lg" />
-          <Skeleton className="size-8 rounded-lg" />
-          <Skeleton className="h-8 w-24 rounded-lg" />
+          <Skeleton className="h-8 w-24 rounded-sm" />
+          <Skeleton className="size-8 rounded-sm" />
+          <Skeleton className="size-8 rounded-sm" />
+          <Skeleton className="size-8 rounded-sm" />
+          <Skeleton className="h-8 w-24 rounded-sm" />
         </div>
         <Skeleton className="h-4 w-24 rounded-md" />
       </div>

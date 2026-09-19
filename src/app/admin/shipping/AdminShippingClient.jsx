@@ -61,10 +61,10 @@ export default function AdminShippingClient({ initialSettings }) {
       </div>
 
       {/* Courier Accounts Configuration */}
-      <Card className="rounded-2xl shadow-sm border-border">
+      <Card className="rounded-sm shadow-sm border-border">
         <CardHeader className="pb-4">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-xl border border-border bg-sky-50 text-sky-700">
+            <div className="flex size-10 items-center justify-center rounded-sm border border-border bg-sky-50 text-sky-700">
               <PackageCheck className="size-5" />
             </div>
             <div>
@@ -74,7 +74,7 @@ export default function AdminShippingClient({ initialSettings }) {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-border p-4 bg-card/60 hover:bg-muted/10 transition-colors">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-sm border border-border p-4 bg-card/60 hover:bg-muted/10 transition-colors">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-semibold text-foreground">Enable Secondary NOC Account</span>
@@ -95,10 +95,10 @@ export default function AdminShippingClient({ initialSettings }) {
         </CardContent>
       </Card>
 
-      <Card className="rounded-2xl shadow-sm border-border">
+      <Card className="rounded-sm shadow-sm border-border">
         <CardHeader className="pb-4">
           <div className="flex items-center gap-3">
-          <div className="flex size-10 items-center justify-center rounded-xl border border-border bg-muted text-foreground">
+          <div className="flex size-10 items-center justify-center rounded-sm border border-border bg-muted text-foreground">
               <Truck className="size-5" />
             </div>
             <div>
@@ -118,7 +118,7 @@ export default function AdminShippingClient({ initialSettings }) {
                   id="karachiFee"
                   type="number"
                   min="0"
-                  className="pl-10 h-11 rounded-xl"
+                  className="pl-10 h-11 rounded-sm"
                   value={form.karachiDeliveryFee}
                   onChange={(e) => handleChange('karachiDeliveryFee', Number(e.target.value))}
                 />
@@ -134,7 +134,7 @@ export default function AdminShippingClient({ initialSettings }) {
                   id="outsideKarachiFee"
                   type="number"
                   min="0"
-                  className="pl-10 h-11 rounded-xl"
+                  className="pl-10 h-11 rounded-sm"
                   value={form.outsideKarachiDeliveryFee}
                   onChange={(e) => handleChange('outsideKarachiDeliveryFee', Number(e.target.value))}
                 />
@@ -154,7 +154,7 @@ export default function AdminShippingClient({ initialSettings }) {
                 id="freeThreshold"
                 type="number"
                 min="0"
-                className="pl-10 h-11 rounded-xl"
+                className="pl-10 h-11 rounded-sm"
                 value={form.freeShippingThreshold}
                 onChange={(e) => handleChange('freeShippingThreshold', Number(e.target.value))}
               />
@@ -171,7 +171,7 @@ export default function AdminShippingClient({ initialSettings }) {
                 onClick={handleSave} 
                 disabled={saving} 
                 size="lg"
-                className="w-full sm:w-auto px-8 rounded-xl font-semibold shadow-md active:scale-95 transition-all"
+                className="w-full sm:w-auto px-8 rounded-sm font-semibold shadow-md active:scale-95 transition-all"
             >
               {saving ? (
                 <Loader2 className="animate-spin" data-icon="inline-start" />

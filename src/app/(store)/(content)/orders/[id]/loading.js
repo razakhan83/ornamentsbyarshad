@@ -8,21 +8,21 @@ export default function OrderDetailLoading() {
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-2">
             <Skeleton className="h-4 w-32 rounded" />
-            <Skeleton className="h-9 w-64 rounded-lg" />
+            <Skeleton className="h-9 w-64 rounded-sm" />
             <Skeleton className="h-4 w-80 max-w-full rounded" />
           </div>
-          <Skeleton className="h-10 w-40 rounded-xl" />
+          <Skeleton className="h-10 w-40 rounded-sm" />
         </div>
 
         {/* Content */}
         <div className="grid gap-4 md:gap-6 md:grid-cols-3">
           {/* Left Column */}
           <div className="flex flex-col gap-4 md:gap-6 md:col-span-2">
-            <div className="rounded-2xl border border-border/60 bg-card p-6 flex flex-col justify-center gap-3">
+            <div className="rounded-sm border border-border/60 bg-card p-6 flex flex-col justify-center gap-3">
               <Skeleton className="h-6 w-48 rounded" />
               <Skeleton className="h-4 w-32 rounded" />
             </div>
-            <div className="rounded-2xl border border-border/60 bg-card p-6 space-y-4">
+            <div className="rounded-sm border border-border/60 bg-card p-6 space-y-4">
               <div className="space-y-1">
                 <Skeleton className="h-6 w-32 rounded" />
                 <Skeleton className="h-4 w-24 rounded" />
@@ -30,7 +30,7 @@ export default function OrderDetailLoading() {
               <div className="space-y-4 pt-4">
                 {[1, 2, 3].map((i) => (
                   <div key={i} className="flex gap-4 items-center">
-                    <Skeleton className="size-14 rounded-xl shrink-0" />
+                    <Skeleton className="size-14 rounded-sm shrink-0" />
                     <div className="space-y-2 flex-1">
                       <Skeleton className="h-4 w-3/4 rounded" />
                       <Skeleton className="h-3.5 w-1/4 rounded" />
@@ -44,7 +44,7 @@ export default function OrderDetailLoading() {
 
           {/* Right Column */}
           <div className="flex flex-col gap-4 md:gap-6">
-            <div className="rounded-2xl border border-border/60 bg-card p-6 space-y-4">
+            <div className="rounded-sm border border-border/60 bg-card p-6 space-y-4">
               <Skeleton className="h-5 w-36 rounded" />
               <div className="space-y-2">
                 <Skeleton className="h-4 w-full rounded" />

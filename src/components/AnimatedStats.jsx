@@ -74,7 +74,7 @@ function StatItem({ stat }) {
       ref={itemRef}
       className={cn(
         'flex flex-col items-center justify-center p-4 sm:p-7 md:p-8 text-center',
-        'bg-card border border-border/80 rounded-2xl shadow-none',
+        'bg-card border border-border/80 rounded-sm shadow-none',
         'transition-all duration-300'
       )}
     >

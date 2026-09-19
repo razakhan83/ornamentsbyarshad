@@ -103,7 +103,7 @@ export default function WebsiteFeedbackModal({ open, onOpenChange }) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100vw-28px)] sm:max-w-lg md:max-w-[560px] p-0 gap-0 overflow-hidden rounded-2xl border border-gray-200/90 bg-white shadow-2xl z-[500] font-sans">
+      <DialogContent className="w-[calc(100vw-28px)] sm:max-w-lg md:max-w-[560px] p-0 gap-0 overflow-hidden rounded-sm border border-gray-200/90 bg-white shadow-2xl z-[500] font-sans">
         
         {/* Header */}
         <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-3.5 sm:pb-4 border-b border-gray-100 flex items-start justify-between">
@@ -141,7 +141,7 @@ export default function WebsiteFeedbackModal({ open, onOpenChange }) {
                     {RATING_LABELS[currentRating]}
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 sm:gap-2 py-2 px-3 rounded-xl bg-gray-50/90 border border-gray-100 justify-center">
+                <div className="flex items-center gap-1.5 sm:gap-2 py-2 px-3 rounded-sm bg-gray-50/90 border border-gray-100 justify-center">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
@@ -170,14 +170,14 @@ export default function WebsiteFeedbackModal({ open, onOpenChange }) {
                 <label className="text-[11px] font-bold text-gray-600 uppercase tracking-wider block mb-1.5">
                   Feedback Topic
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 p-1 bg-gray-100/80 rounded-xl">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 p-1 bg-gray-100/80 rounded-sm">
                   {CATEGORIES.map((cat) => (
                     <button
                       key={cat.id}
                       type="button"
                       onClick={() => setType(cat.id)}
                       className={cn(
-                        'py-1.5 px-2.5 text-xs rounded-lg transition-all text-center truncate cursor-pointer',
+                        'py-1.5 px-2.5 text-xs rounded-sm transition-all text-center truncate cursor-pointer',
                         type === cat.id
                           ? 'bg-white text-gray-900 font-bold shadow-xs'
                           : 'text-gray-600 font-medium hover:text-gray-900'
@@ -199,7 +199,7 @@ export default function WebsiteFeedbackModal({ open, onOpenChange }) {
                   placeholder="Tell us what you liked or what needs improvement..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="min-h-[85px] sm:min-h-[95px] text-xs sm:text-sm resize-none rounded-xl border-gray-200 focus-visible:ring-primary"
+                  className="min-h-[85px] sm:min-h-[95px] text-xs sm:text-sm resize-none rounded-sm border-gray-200 focus-visible:ring-primary"
                   required
                 />
               </div>
@@ -214,7 +214,7 @@ export default function WebsiteFeedbackModal({ open, onOpenChange }) {
                   placeholder="Products, categories, or features you'd like us to add..."
                   value={suggestions}
                   onChange={(e) => setSuggestions(e.target.value)}
-                  className="h-10 text-xs sm:text-sm rounded-xl border-gray-200 focus-visible:ring-primary"
+                  className="h-10 text-xs sm:text-sm rounded-sm border-gray-200 focus-visible:ring-primary"
                 />
               </div>
 
@@ -229,7 +229,7 @@ export default function WebsiteFeedbackModal({ open, onOpenChange }) {
                     placeholder="Your name..."
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="h-10 text-xs sm:text-sm rounded-xl border-gray-200 focus-visible:ring-primary"
+                    className="h-10 text-xs sm:text-sm rounded-sm border-gray-200 focus-visible:ring-primary"
                   />
                 </div>
 
@@ -242,7 +242,7 @@ export default function WebsiteFeedbackModal({ open, onOpenChange }) {
                     placeholder="For follow-up / reply..."
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
-                    className="h-10 text-xs sm:text-sm rounded-xl border-gray-200 focus-visible:ring-primary"
+                    className="h-10 text-xs sm:text-sm rounded-sm border-gray-200 focus-visible:ring-primary"
                   />
                 </div>
               </div>
@@ -256,14 +256,14 @@ export default function WebsiteFeedbackModal({ open, onOpenChange }) {
                 variant="ghost"
                 onClick={() => onOpenChange(false)}
                 disabled={submitting}
-                className="rounded-xl h-10 px-4 text-xs font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 cursor-pointer"
+                className="rounded-sm h-10 px-4 text-xs font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 cursor-pointer"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={submitting || !message.trim()}
-                className="rounded-xl h-10 px-5 text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-xs transition-all active:scale-[0.98] cursor-pointer"
+                className="rounded-sm h-10 px-5 text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-xs transition-all active:scale-[0.98] cursor-pointer"
               >
                 {submitting ? (
                   <>

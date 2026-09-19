@@ -40,9 +40,9 @@ function CategoryCarouselArrows() {
 
 export default function HomeCategoriesGrid({ title = 'Collections', categories = [] }) {
   const displayedCategories = Array.isArray(categories) ? categories.slice(0, 10) : [];
-  if (displayedCategories.length === 0) return null;
-
   const [emblaApi, setEmblaApi] = useState(null);
+
+  if (displayedCategories.length === 0) return null;
 
   const displayTitle = (title && !title.toLowerCase().includes('shop by') && !title.toLowerCase().includes('our collections'))
     ? title

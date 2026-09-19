@@ -178,7 +178,7 @@ export default function AdminStoreSetupClient({ initialSettings }) {
           title="Home Layout Settings"
           description="Open the dedicated builder to manage hero slides, section order, banners, and category blocks."
         >
-          <div className="flex flex-col gap-3 rounded-xl border border-border bg-muted/20 p-4 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-3 rounded-sm border border-border bg-muted/20 p-4 md:flex-row md:items-center md:justify-between">
             <div>
               <p className="text-sm font-semibold text-foreground">Open Home Page Builder</p>
               <p className="mt-1 text-xs text-muted-foreground">
@@ -260,7 +260,7 @@ export default function AdminStoreSetupClient({ initialSettings }) {
               label="Store Favicon"
               hint="Recommended size is at least 64x64 pixels. You can increase the export size below for sharper rendering."
               surfaceClassName="bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(242,246,244,0.98))]"
-              imageClassName="rounded-xl object-contain"
+              imageClassName="rounded-sm object-contain"
               imageStyle={{ width: `${faviconPreviewSize}px`, height: `${faviconPreviewSize}px` }}
               emptyMessage="Upload a square PNG, SVG, or ICO favicon."
               value={form.faviconUrl}
@@ -325,7 +325,7 @@ export default function AdminStoreSetupClient({ initialSettings }) {
             <div className="space-y-2">
               <FieldLabel>Message List</FieldLabel>
               {form.announcementBarMessages.length === 0 ? (
-                <div className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
+                <div className="rounded-sm border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
                   No announcement messages yet. Add one above.
                 </div>
               ) : (
@@ -333,7 +333,7 @@ export default function AdminStoreSetupClient({ initialSettings }) {
                   const isEditing = editingAnnouncementId === message.id;
 
                   return (
-                    <div key={message.id} className="rounded-lg border border-border bg-muted/20 px-4 py-3">
+                    <div key={message.id} className="rounded-sm border border-border bg-muted/20 px-4 py-3">
                       <div className="mb-2 flex items-center justify-between gap-3">
                         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                           Message {index + 1}

@@ -152,7 +152,7 @@ export default function AdminAccessSectionClient({ isConfiguredAdmin, initialGue
           {loadingList ? (
             <div className="space-y-2 pt-2">
               {[1, 2].map((item) => (
-                <div key={item} className="h-11 animate-pulse rounded-lg bg-muted/50" />
+                <div key={item} className="h-11 animate-pulse rounded-sm bg-muted/50" />
               ))}
             </div>
           ) : (
@@ -160,7 +160,7 @@ export default function AdminAccessSectionClient({ isConfiguredAdmin, initialGue
               <div className="space-y-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Configured admins</p>
                 {configuredAdmins.length === 0 ? (
-                  <p className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
+                  <p className="rounded-sm border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
                     No configured admin emails found in environment variables.
                   </p>
                 ) : (
@@ -168,7 +168,7 @@ export default function AdminAccessSectionClient({ isConfiguredAdmin, initialGue
                     {configuredAdmins.map((email) => (
                       <li
                         key={email}
-                        className="flex items-center justify-between gap-3 rounded-lg border border-border bg-muted/35 px-4 py-2.5"
+                        className="flex items-center justify-between gap-3 rounded-sm border border-border bg-muted/35 px-4 py-2.5"
                       >
                         <div className="flex min-w-0 items-center gap-2">
                           <ShieldCheck className="size-4 shrink-0 text-foreground" />
@@ -186,7 +186,7 @@ export default function AdminAccessSectionClient({ isConfiguredAdmin, initialGue
               <div className="space-y-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Additional admins</p>
                 {dynamicAdmins.length === 0 ? (
-                  <p className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
+                  <p className="rounded-sm border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
                     No additional admins yet. Add one above.
                   </p>
                 ) : (
@@ -194,7 +194,7 @@ export default function AdminAccessSectionClient({ isConfiguredAdmin, initialGue
                     {dynamicAdmins.map((email) => (
                       <li
                         key={email}
-                        className="flex items-center justify-between gap-3 rounded-lg border border-border bg-muted/35 px-4 py-2.5"
+                        className="flex items-center justify-between gap-3 rounded-sm border border-border bg-muted/35 px-4 py-2.5"
                       >
                         <div className="flex min-w-0 items-center gap-2">
                           <ShieldCheck className="size-4 shrink-0 text-foreground" />
@@ -225,7 +225,7 @@ export default function AdminAccessSectionClient({ isConfiguredAdmin, initialGue
           title="Live Demo / Guest Mode"
           description="Allow prospective clients or users to explore the admin panel as a guest. All database mutations (saving, deleting) are strictly blocked in Demo Mode."
         >
-          <div className="flex items-center justify-between rounded-lg border border-border bg-muted/20 p-4">
+          <div className="flex items-center justify-between rounded-sm border border-border bg-muted/20 p-4">
             <div className="space-y-0.5">
               <div className="text-sm font-medium text-foreground">
                 Enable &quot;Explore as Guest&quot;

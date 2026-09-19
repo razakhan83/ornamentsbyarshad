@@ -104,7 +104,7 @@ export default function LiveVisitorMap({ visitors = [] }) {
   };
 
   return (
-    <Card className={`relative w-full overflow-hidden border p-1.5 sm:p-2.5 rounded-2xl transition-colors duration-300 ${styles.cardBg}`}>
+    <Card className={`relative w-full overflow-hidden border p-1.5 sm:p-2.5 rounded-sm transition-colors duration-300 ${styles.cardBg}`}>
       {/* Map Hotspots Count */}
       <div className="absolute top-2.5 left-2.5 sm:top-3.5 sm:left-3.5 z-10 pointer-events-none">
         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium border backdrop-blur-md shadow-xs ${isLight ? 'bg-white/90 border-border text-foreground' : 'bg-slate-900/90 border-slate-800 text-slate-300'}`}>
@@ -114,13 +114,13 @@ export default function LiveVisitorMap({ visitors = [] }) {
       </div>
 
       {/* Map Theme & Zoom Controls */}
-      <div className={`absolute top-3 right-3 sm:top-4 sm:right-4 z-10 flex items-center gap-1 backdrop-blur-md p-1 rounded-xl border shadow-sm ${styles.controlsBg}`}>
+      <div className={`absolute top-3 right-3 sm:top-4 sm:right-4 z-10 flex items-center gap-1 backdrop-blur-md p-1 rounded-sm border shadow-sm ${styles.controlsBg}`}>
         {/* Light / Dark Mode Toggle */}
         <Button
           size="sm"
           variant="ghost"
           onClick={() => setMapTheme(isLight ? 'dark' : 'light')}
-          className={`h-7 sm:h-8 px-2 text-xs font-medium gap-1.5 rounded-lg transition-colors ${styles.btnHover}`}
+          className={`h-7 sm:h-8 px-2 text-xs font-medium gap-1.5 rounded-sm transition-colors ${styles.btnHover}`}
           title={isLight ? 'Switch to Dark Radar' : 'Switch to Clean Light Map'}
         >
           {isLight ? (
@@ -138,12 +138,12 @@ export default function LiveVisitorMap({ visitors = [] }) {
       </div>
 
       {/* Map Zoom Controls (Bottom Right) */}
-      <div className={`absolute bottom-10 right-3 sm:bottom-12 sm:right-4 z-10 flex flex-col gap-1 backdrop-blur-md p-1 rounded-xl border shadow-sm ${styles.controlsBg}`}>
+      <div className={`absolute bottom-10 right-3 sm:bottom-12 sm:right-4 z-10 flex flex-col gap-1 backdrop-blur-md p-1 rounded-sm border shadow-sm ${styles.controlsBg}`}>
         <Button
           size="icon"
           variant="ghost"
           onClick={handleZoomIn}
-          className={`size-7 sm:size-8 rounded-lg ${styles.btnHover}`}
+          className={`size-7 sm:size-8 rounded-sm ${styles.btnHover}`}
           title="Zoom In"
         >
           <Plus className="size-3.5 sm:size-4" />
@@ -152,7 +152,7 @@ export default function LiveVisitorMap({ visitors = [] }) {
           size="icon"
           variant="ghost"
           onClick={handleZoomOut}
-          className={`size-7 sm:size-8 rounded-lg ${styles.btnHover}`}
+          className={`size-7 sm:size-8 rounded-sm ${styles.btnHover}`}
           title="Zoom Out"
         >
           <Minus className="size-3.5 sm:size-4" />
@@ -161,7 +161,7 @@ export default function LiveVisitorMap({ visitors = [] }) {
           size="icon"
           variant="ghost"
           onClick={handleReset}
-          className={`size-7 sm:size-8 rounded-lg ${styles.btnHover}`}
+          className={`size-7 sm:size-8 rounded-sm ${styles.btnHover}`}
           title="Reset View"
         >
           <RotateCcw className="size-3 sm:size-3.5" />
@@ -169,7 +169,7 @@ export default function LiveVisitorMap({ visitors = [] }) {
       </div>
 
       {/* Interactive SVG World Map */}
-      <div className="w-full h-[290px] sm:h-[400px] md:h-[500px] flex items-center justify-center cursor-grab active:cursor-grabbing rounded-xl overflow-hidden transition-colors duration-300" style={{ backgroundColor: styles.oceanBg }}>
+      <div className="w-full h-[290px] sm:h-[400px] md:h-[500px] flex items-center justify-center cursor-grab active:cursor-grabbing rounded-sm overflow-hidden transition-colors duration-300" style={{ backgroundColor: styles.oceanBg }}>
         {!geoData ? (
           <div className="flex flex-col items-center justify-center gap-2.5 text-muted-foreground">
             <Loader2 className="size-6 sm:size-7 animate-spin text-emerald-500" />
@@ -259,7 +259,7 @@ export default function LiveVisitorMap({ visitors = [] }) {
 
         {/* Hovered Marker Floating Tooltip Overlay */}
         {hoveredVisitor && (
-          <div className={`absolute top-12 left-3 sm:top-14 sm:left-4 z-20 pointer-events-none px-3.5 py-2 rounded-xl backdrop-blur-md animate-in fade-in zoom-in-95 duration-150 border shadow-lg ${styles.overlayBg}`}>
+          <div className={`absolute top-12 left-3 sm:top-14 sm:left-4 z-20 pointer-events-none px-3.5 py-2 rounded-sm backdrop-blur-md animate-in fade-in zoom-in-95 duration-150 border shadow-lg ${styles.overlayBg}`}>
             <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
               <MapPin className="size-3.5 shrink-0" />
               <span>{hoveredVisitor.city}, {hoveredVisitor.country}</span>

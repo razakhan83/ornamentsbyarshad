@@ -130,7 +130,7 @@ export default function ReviewModal({ isOpen, onOpenChange, order, onComplete, o
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-xl max-h-[90dvh] sm:max-h-[85vh] flex flex-col p-0 overflow-hidden sm:rounded-2xl gap-0">
+      <DialogContent className="max-w-xl max-h-[90dvh] sm:max-h-[85vh] flex flex-col p-0 overflow-hidden sm:rounded-sm gap-0">
         <DialogHeader className="p-4 sm:p-6 border-b border-border/80 shrink-0 bg-background flex flex-row items-center justify-between gap-3">
           <div>
             <DialogTitle className="text-xl sm:text-2xl font-bold flex items-center gap-2">
@@ -149,7 +149,7 @@ export default function ReviewModal({ isOpen, onOpenChange, order, onComplete, o
                 onAction?.('dismiss_all');
                 onOpenChange(false);
               }}
-              className="text-xs text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 px-2.5 py-1.5 rounded-lg font-semibold transition-colors cursor-pointer"
+              className="text-xs text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 px-2.5 py-1.5 rounded-sm font-semibold transition-colors cursor-pointer"
               title="Don't ask for reviews on any order again"
             >
               Close All
@@ -161,7 +161,7 @@ export default function ReviewModal({ isOpen, onOpenChange, order, onComplete, o
           {itemsToReview.map((item) => (
             <div key={item.productId} className="space-y-4 pt-6 first:pt-0">
               <div className="flex gap-4">
-                <div className="relative size-14 sm:size-16 shrink-0 overflow-hidden rounded-xl border border-border bg-muted">
+                <div className="relative size-14 sm:size-16 shrink-0 overflow-hidden rounded-sm border border-border bg-muted">
                   <Image src={item.image} alt={item.name} fill sizes="64px" className="object-cover" unoptimized />
                 </div>
                 <div className="flex-1 space-y-1">
@@ -187,7 +187,7 @@ export default function ReviewModal({ isOpen, onOpenChange, order, onComplete, o
               </div>
 
               {errors[item.productId] ? (
-                <Alert variant="destructive" className="rounded-lg px-3 py-3 text-xs">
+                <Alert variant="destructive" className="rounded-sm px-3 py-3 text-xs">
                   <AlertCircle className="size-4" />
                   <AlertTitle>Review unavailable</AlertTitle>
                   <AlertDescription>{errors[item.productId]}</AlertDescription>
@@ -200,7 +200,7 @@ export default function ReviewModal({ isOpen, onOpenChange, order, onComplete, o
                       <Textarea
                         id={`review-${item.productId}`}
                         placeholder="Share your thoughts about this product..."
-                        className="min-h-[80px] resize-none text-sm rounded-xl"
+                        className="min-h-[80px] resize-none text-sm rounded-sm"
                         value={item.comment}
                         onChange={(e) => handleCommentChange(item.productId, e.target.value)}
                       />
@@ -221,11 +221,11 @@ export default function ReviewModal({ isOpen, onOpenChange, order, onComplete, o
               onOpenChange(false);
             }} 
             disabled={submitting}
-            className="flex-1 rounded-xl h-11"
+            className="flex-1 rounded-sm h-11"
           >
             Maybe Later
           </Button>
-          <Button onClick={handleSubmit} disabled={submitting || itemsToReview.length === 0} className="flex-1 rounded-xl h-11">
+          <Button onClick={handleSubmit} disabled={submitting || itemsToReview.length === 0} className="flex-1 rounded-sm h-11">
             {submitting ? (
               <>
                 <Loader2 className="mr-2 size-4 animate-spin" />

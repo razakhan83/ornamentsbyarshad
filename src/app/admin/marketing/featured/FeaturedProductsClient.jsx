@@ -300,7 +300,7 @@ export default function FeaturedProductsClient({ initialFeatured = [] }) {
             <span className="text-foreground font-medium">Featured (Ads)</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex size-9 items-center justify-center rounded-lg bg-muted/50 text-foreground border border-border shrink-0">
+            <div className="flex size-9 items-center justify-center rounded-sm bg-muted/50 text-foreground border border-border shrink-0">
               <Megaphone className="size-4 text-muted-foreground" />
             </div>
             <div>
@@ -343,7 +343,7 @@ export default function FeaturedProductsClient({ initialFeatured = [] }) {
                 />
               </div>
 
-              <div className="flex-1 overflow-y-auto max-h-[50vh] divide-y divide-border border rounded-lg bg-card">
+              <div className="flex-1 overflow-y-auto max-h-[50vh] divide-y divide-border border rounded-sm bg-card">
                 {availableProducts.length === 0 ? (
                   <div className="p-8 text-center text-muted-foreground text-xs">
                     No matching products available to add.

@@ -106,7 +106,7 @@ function FloatingLabelInput({ label, id, value, className, wrapperClassName, isV
         value={value}
         {...props}
         className={cn(
-          'h-12 text-[15px] md:text-sm rounded-xl transition-all duration-150',
+          'h-12 text-[15px] md:text-sm rounded-sm transition-all duration-150',
           className,
           hasValue ? 'pt-5 pb-1' : '',
           isValid ? 'border-emerald-500/80 pr-10 focus-visible:border-emerald-600 focus-visible:ring-emerald-500/15' : ''
@@ -142,7 +142,7 @@ function FloatingLabelTextarea({ label, id, value, className, wrapperClassName, 
         rows={rows}
         {...props}
         className={cn(
-          'min-h-[4.5rem] text-[15px] md:text-sm resize-none rounded-xl shadow-none transition-all duration-150',
+          'min-h-[4.5rem] text-[15px] md:text-sm resize-none rounded-sm shadow-none transition-all duration-150',
           className,
           hasValue ? 'pt-5 pb-1.5' : 'pt-3.5',
           isValid ? 'border-emerald-500/80 pr-10 focus-visible:border-emerald-600 focus-visible:ring-emerald-500/15' : ''
@@ -323,7 +323,7 @@ function OrderSummaryContent({
             <div key={`${item.id}-${index}`} className="flex items-start gap-3 py-3.5 first:pt-0 last:pb-1">
               {/* Product Thumbnail */}
               <div 
-                className="relative size-16 shrink-0 rounded-xl overflow-hidden border border-border/70 shadow-2xs flex items-center justify-center"
+                className="relative size-16 shrink-0 rounded-sm overflow-hidden border border-border/70 shadow-2xs flex items-center justify-center"
                 style={{ backgroundColor: getProductCategoryBgColor(item) }}
               >
                 {imgUrl ? (
@@ -363,7 +363,7 @@ function OrderSummaryContent({
 
                 <div className="flex items-center justify-between mt-2.5">
                   {/* Stepper Quantity Controls */}
-                  <div className="inline-flex items-center h-8 sm:h-7 rounded-lg border border-border/80 bg-background shadow-2xs">
+                  <div className="inline-flex items-center h-8 sm:h-7 rounded-sm border border-border/80 bg-background shadow-2xs">
                     <button
                       type="button"
                       onClick={() => handleQuantityDecrease ? handleQuantityDecrease(item) : null}
@@ -1344,7 +1344,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
                       )}
                       triggerClassName="translate-y-0 scale-100 transition-none hover:bg-transparent active:translate-y-0 active:scale-100 data-[pressed]:translate-y-0 data-[pressed]:scale-100"
                       className={cn(
-                        'h-12 text-[15px] md:text-sm rounded-xl border border-slate-300 dark:border-border/80 bg-card shadow-none transition-colors duration-150',
+                        'h-12 text-[15px] md:text-sm rounded-sm border border-slate-300 dark:border-border/80 bg-card shadow-none transition-colors duration-150',
                         'hover:border-slate-400 dark:hover:border-border',
                         'focus-within:border-primary focus-within:ring-3 focus-within:ring-primary/15',
                         '[&_[data-slot=input-group-control]]:shadow-none [&_[data-slot=input-group-control]]:ring-0',
@@ -1352,7 +1352,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
                       )}
                     />
                     <ComboboxContent
-                      className="rounded-xl border border-slate-300 dark:border-border/80 bg-card p-0 shadow-lg"
+                      className="rounded-sm border border-slate-300 dark:border-border/80 bg-card p-0 shadow-lg"
                       sideOffset={8}
                     >
                       <ComboboxList className="max-h-72 p-2">
@@ -1543,7 +1543,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
               id="place-order-desktop"
               type="button"
               className={cn(
-                'hidden md:flex w-full h-13 rounded-xl items-center justify-center gap-2 font-bold text-base transition-all duration-300',
+                'hidden md:flex w-full h-13 rounded-sm items-center justify-center gap-2 font-bold text-base transition-all duration-300',
                 submitting ? 'cursor-wait' : 'cursor-pointer',
                 isFormComplete
                   ? 'bg-primary text-primary-foreground hover:bg-primary/95 shadow-md active:scale-[0.98]'
@@ -1588,7 +1588,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
             id="place-order-mobile"
             type="button"
             className={cn(
-              'h-11 px-5 rounded-xl text-sm font-bold inline-flex items-center justify-center gap-2 transition-all duration-300 shrink-0',
+              'h-11 px-5 rounded-sm text-sm font-bold inline-flex items-center justify-center gap-2 transition-all duration-300 shrink-0',
               submitting ? 'cursor-wait min-w-[148px]' : 'cursor-pointer',
               isFormComplete
                 ? 'bg-primary text-primary-foreground hover:bg-primary/95 shadow-sm active:scale-[0.97]'
@@ -1620,9 +1620,9 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
           </DialogHeader>
 
           {itemToRemove && (
-            <div className="flex items-center gap-3.5 p-3.5 my-2 rounded-xl border border-border/60 bg-muted/30">
+            <div className="flex items-center gap-3.5 p-3.5 my-2 rounded-sm border border-border/60 bg-muted/30">
               <div 
-                className="relative size-14 shrink-0 rounded-lg overflow-hidden border border-border/40 flex items-center justify-center"
+                className="relative size-14 shrink-0 rounded-sm overflow-hidden border border-border/40 flex items-center justify-center"
                 style={{ backgroundColor: getProductCategoryBgColor(itemToRemove) }}
               >
                 {getPrimaryProductImage(itemToRemove)?.url ? (
@@ -1653,7 +1653,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
                 setIsRemoveModalOpen(false);
                 setItemToRemove(null);
               }}
-              className="rounded-xl px-4"
+              className="rounded-sm px-4"
             >
               Keep Item
             </Button>
@@ -1661,7 +1661,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
               type="button"
               variant="destructive"
               onClick={handleConfirmRemove}
-              className="rounded-xl px-4 font-semibold"
+              className="rounded-sm px-4 font-semibold"
             >
               Yes, Remove
             </Button>

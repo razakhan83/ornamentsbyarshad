@@ -487,7 +487,7 @@ export default function AdminReviewsClient({
               </div>
 
               {/* Home Page Showcase Toggle */}
-              <div className="flex items-center justify-between rounded-xl border border-border/80 bg-muted/30 p-4">
+              <div className="flex items-center justify-between rounded-sm border border-border/80 bg-muted/30 p-4">
                 <div className="flex flex-col gap-0.5">
                   <p className="text-sm font-semibold text-foreground flex items-center gap-1.5">
                     <Sparkles className="size-4 text-primary" />
@@ -504,7 +504,7 @@ export default function AdminReviewsClient({
                 />
               </div>
               
-              <div className="rounded-xl bg-muted/40 p-4 border text-sm">
+              <div className="rounded-sm bg-muted/40 p-4 border text-sm">
                 <p className="text-foreground leading-relaxed whitespace-pre-wrap">
                   {viewReview.comment || <span className="italic text-muted-foreground">No text comment provided</span>}
                 </p>
@@ -515,7 +515,7 @@ export default function AdminReviewsClient({
                   <h4 className="mb-3 font-semibold text-sm flex items-center gap-2"><ImageIcon className="size-4" /> Attached Images</h4>
                   <div className="grid grid-cols-2 gap-4">
                     {viewReview.images.map((img, idx) => (
-                      <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border bg-muted/20">
+                      <div key={idx} className="relative aspect-square rounded-sm overflow-hidden border bg-muted/20">
                         {/* Use standard img tag for external user uploaded images to avoid Next.js domain config errors if cloudinary domain isn't fully configured */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={img} alt={`Review attachment ${idx + 1}`} className="object-cover w-full h-full" />

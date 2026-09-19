@@ -98,10 +98,10 @@ function VariantUpload({ slideId, variantKey, title, description, icon: Icon, as
         : `${description} Falls back to the large image until uploaded.`;
 
   return (
-    <div className="rounded-2xl border border-border bg-background/70 p-3">
+    <div className="rounded-sm border border-border bg-background/70 p-3">
       <div className="mb-3 flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">
-          <div className="flex size-10 items-center justify-center rounded-xl border border-border bg-muted text-foreground">
+          <div className="flex size-10 items-center justify-center rounded-sm border border-border bg-muted text-foreground">
             <Icon className="size-4" />
           </div>
           <div>
@@ -111,7 +111,7 @@ function VariantUpload({ slideId, variantKey, title, description, icon: Icon, as
         </div>
         <label
           className={cn(
-            'inline-flex cursor-pointer items-center gap-2 rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted',
+            'inline-flex cursor-pointer items-center gap-2 rounded-sm border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted',
             disabled && 'cursor-not-allowed opacity-60',
           )}
         >
@@ -127,7 +127,7 @@ function VariantUpload({ slideId, variantKey, title, description, icon: Icon, as
         </label>
       </div>
 
-      <div className="relative aspect-[16/9] overflow-hidden rounded-xl border border-border bg-muted/25">
+      <div className="relative aspect-[16/9] overflow-hidden rounded-sm border border-border bg-muted/25">
         {previewAsset ? (
           <Image
             src={previewAsset.url}
@@ -149,10 +149,10 @@ function VariantUpload({ slideId, variantKey, title, description, icon: Icon, as
 
 function MobileVideoUpload({ slideId, video, onUploadVideo, onRemoveVideo, disabled }) {
   return (
-    <div className="mt-3 rounded-2xl border border-border/80 bg-gradient-to-r from-amber-500/5 via-background to-background p-3.5">
+    <div className="mt-3 rounded-sm border border-border/80 bg-gradient-to-r from-amber-500/5 via-background to-background p-3.5">
       <div className="mb-3 flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">
-          <div className="flex size-10 items-center justify-center rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400">
+          <div className="flex size-10 items-center justify-center rounded-sm border border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400">
             <Video className="size-4" />
           </div>
           <div>
@@ -185,7 +185,7 @@ function MobileVideoUpload({ slideId, video, onUploadVideo, onRemoveVideo, disab
 
           <label
             className={cn(
-              'inline-flex cursor-pointer items-center gap-2 rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-amber-500/20',
+              'inline-flex cursor-pointer items-center gap-2 rounded-sm border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-amber-500/20',
               disabled && 'cursor-not-allowed opacity-60',
             )}
           >
@@ -203,7 +203,7 @@ function MobileVideoUpload({ slideId, video, onUploadVideo, onRemoveVideo, disab
       </div>
 
       {video?.url ? (
-        <div className="relative aspect-[16/9] max-w-sm overflow-hidden rounded-xl border border-amber-500/20 bg-black">
+        <div className="relative aspect-[16/9] max-w-sm overflow-hidden rounded-sm border border-amber-500/20 bg-black">
           <video
             src={video.url}
             autoPlay
@@ -229,7 +229,7 @@ function SortableSlideCard({ slide, index, onRemove, onAltChange, onUpload, onUp
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={cn(
-        'group relative overflow-hidden rounded-2xl border border-border bg-background shadow-[0_16px_40px_rgba(0,0,0,0.08)]',
+        'group relative overflow-hidden rounded-sm border border-border bg-background shadow-[0_16px_40px_rgba(0,0,0,0.08)]',
         isDragging && 'z-10 shadow-[0_24px_60px_rgba(0,0,0,0.18)]',
       )}
     >
@@ -245,7 +245,7 @@ function SortableSlideCard({ slide, index, onRemove, onAltChange, onUpload, onUp
             <button
               type="button"
               aria-label={`Reorder cover image ${index + 1}`}
-              className="flex size-9 items-center justify-center rounded-lg border border-border bg-background text-foreground transition-colors hover:bg-muted"
+              className="flex size-9 items-center justify-center rounded-sm border border-border bg-background text-foreground transition-colors hover:bg-muted"
               {...attributes}
               {...listeners}
             >
@@ -254,7 +254,7 @@ function SortableSlideCard({ slide, index, onRemove, onAltChange, onUpload, onUp
             <button
               type="button"
               onClick={() => onRemove(slide.id)}
-              className="flex size-9 items-center justify-center rounded-lg border border-border bg-background text-foreground transition-colors hover:border-destructive hover:bg-destructive hover:text-destructive-foreground"
+              className="flex size-9 items-center justify-center rounded-sm border border-border bg-background text-foreground transition-colors hover:border-destructive hover:bg-destructive hover:text-destructive-foreground"
             >
               <Trash2 className="size-4" />
             </button>
@@ -531,10 +531,10 @@ export default function CoverPhotosClient({ initialSlides }) {
         </p>
       </div>
 
-      <div className="surface-card rounded-xl p-5 md:p-6">
+      <div className="surface-card rounded-sm p-5 md:p-6">
         <div className="mb-5 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-lg border border-border bg-muted text-foreground">
+                <div className="flex size-10 items-center justify-center rounded-sm border border-border bg-muted text-foreground">
               <Images className="size-4" />
             </div>
             <div>
@@ -551,7 +551,7 @@ export default function CoverPhotosClient({ initialSlides }) {
         </div>
 
         {slides.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border bg-background/60 px-6 py-10 text-center">
+          <div className="rounded-sm border border-dashed border-border bg-background/60 px-6 py-10 text-center">
             <p className="text-sm font-medium text-muted-foreground">
               No cover photos yet. Add a cover to create desktop, medium, and mobile upload slots.
             </p>

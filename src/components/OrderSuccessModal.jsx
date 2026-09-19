@@ -16,7 +16,7 @@ export default function OrderSuccessModal({ isOpen, onClose, orderId, paymentMet
   const isSignedIn = status === 'authenticated';
   const [copied, setCopied] = useState(false);
 
-  const displayOrderId = orderId || '#ORD-' + Math.floor(100000 + Math.random() * 900000);
+  const [displayOrderId] = useState(() => orderId || '#ORD-' + Math.floor(100000 + Math.random() * 900000));
   const isOnlinePayment = paymentMethod === 'online' || paymentMethod === 'card' || paymentMethod === 'bank' || paymentMethod === 'bank_transfer' || paymentMethod === 'stripe';
 
   const handleCopy = () => {
@@ -44,7 +44,7 @@ export default function OrderSuccessModal({ isOpen, onClose, orderId, paymentMet
     }}>
       <DialogContent 
         showCloseButton={false} 
-        className="p-0 overflow-hidden border border-[#E8E5DF] bg-[#FAF9F6] text-center w-full max-w-md rounded-2xl shadow-2xl transition-all"
+        className="p-0 overflow-hidden border border-[#E8E5DF] bg-[#FAF9F6] text-center w-full max-w-md rounded-sm shadow-2xl transition-all"
       >
         <style dangerouslySetInnerHTML={{__html: `
           @keyframes drawCheck {
@@ -118,7 +118,7 @@ export default function OrderSuccessModal({ isOpen, onClose, orderId, paymentMet
           </div>
 
           {/* Minimal Order ID Card */}
-          <div className="animate-luxury-2 mt-4 sm:mt-5 w-full max-w-xs bg-white border border-[#E8E5DF] rounded-xl p-3 flex items-center justify-between shadow-xs">
+          <div className="animate-luxury-2 mt-4 sm:mt-5 w-full max-w-xs bg-white border border-[#E8E5DF] rounded-sm p-3 flex items-center justify-between shadow-xs">
             <div className="text-left">
               <span className="block text-[9.5px] uppercase font-sans tracking-widest text-[#737373] font-medium">
                 Order ID
@@ -130,7 +130,7 @@ export default function OrderSuccessModal({ isOpen, onClose, orderId, paymentMet
             <button
               type="button"
               onClick={handleCopy}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-[#121212] hover:text-[#A67C52] bg-[#FAF9F6] hover:bg-[#F4F2EE] border border-[#E8E5DF] rounded-lg transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-[#121212] hover:text-[#A67C52] bg-[#FAF9F6] hover:bg-[#F4F2EE] border border-[#E8E5DF] rounded-sm transition-colors cursor-pointer"
               title="Copy Order ID"
             >
               {copied ? (
@@ -154,7 +154,7 @@ export default function OrderSuccessModal({ isOpen, onClose, orderId, paymentMet
                 <button
                   type="button"
                   onClick={(e) => handleLinkClick(e, '/orders')}
-                  className="w-full flex items-center justify-center gap-2 bg-[#121212] hover:bg-neutral-800 text-white h-11 text-xs uppercase tracking-[0.18em] font-semibold rounded-lg transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+                  className="w-full flex items-center justify-center gap-2 bg-[#121212] hover:bg-neutral-800 text-white h-11 text-xs uppercase tracking-[0.18em] font-semibold rounded-sm transition-all active:scale-[0.98] cursor-pointer shadow-xs"
                 >
                   <Truck className="size-3.5" />
                   <span>View & Track Order</span>
@@ -162,7 +162,7 @@ export default function OrderSuccessModal({ isOpen, onClose, orderId, paymentMet
                 <button
                   type="button"
                   onClick={(e) => handleLinkClick(e, '/products')}
-                  className="w-full flex items-center justify-center gap-2 bg-white hover:bg-[#FAF9F6] border border-[#E8E5DF] text-[#121212] h-10.5 text-xs uppercase tracking-[0.16em] font-semibold rounded-lg transition-all active:scale-[0.98] cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 bg-white hover:bg-[#FAF9F6] border border-[#E8E5DF] text-[#121212] h-10.5 text-xs uppercase tracking-[0.16em] font-semibold rounded-sm transition-all active:scale-[0.98] cursor-pointer"
                 >
                   <ShoppingBag className="size-3.5 text-[#A67C52]" />
                   <span>Continue Shopping</span>
@@ -173,7 +173,7 @@ export default function OrderSuccessModal({ isOpen, onClose, orderId, paymentMet
                 <button
                   type="button"
                   onClick={(e) => handleLinkClick(e, '/track-order')}
-                  className="w-full flex items-center justify-center gap-2 bg-[#121212] hover:bg-neutral-800 text-white h-11 text-xs uppercase tracking-[0.18em] font-semibold rounded-lg transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+                  className="w-full flex items-center justify-center gap-2 bg-[#121212] hover:bg-neutral-800 text-white h-11 text-xs uppercase tracking-[0.18em] font-semibold rounded-sm transition-all active:scale-[0.98] cursor-pointer shadow-xs"
                 >
                   <Truck className="size-3.5" />
                   <span>Track Your Order</span>
@@ -181,7 +181,7 @@ export default function OrderSuccessModal({ isOpen, onClose, orderId, paymentMet
                 <button
                   type="button"
                   onClick={(e) => handleLinkClick(e, '/products')}
-                  className="w-full flex items-center justify-center gap-2 bg-white hover:bg-[#FAF9F6] border border-[#E8E5DF] text-[#121212] h-10.5 text-xs uppercase tracking-[0.16em] font-semibold rounded-lg transition-all active:scale-[0.98] cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 bg-white hover:bg-[#FAF9F6] border border-[#E8E5DF] text-[#121212] h-10.5 text-xs uppercase tracking-[0.16em] font-semibold rounded-sm transition-all active:scale-[0.98] cursor-pointer"
                 >
                   <ShoppingBag className="size-3.5 text-[#A67C52]" />
                   <span>Continue Shopping</span>

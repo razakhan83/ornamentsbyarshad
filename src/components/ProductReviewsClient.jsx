@@ -216,7 +216,7 @@ export default function ProductReviewsClient({ productId, productName, reviewCou
     <>
       <Button
         variant="outline"
-        className="max-w-max border-primary/20 text-primary hover:bg-primary/5 font-semibold transition-all shadow-sm rounded-xl h-10 px-4"
+        className="max-w-max border-primary/20 text-primary hover:bg-primary/5 font-semibold transition-all shadow-sm rounded-sm h-10 px-4"
         onClick={() => setModalOpen(true)}
       >
         <MessageSquarePlus className="mr-2 size-4" />
@@ -278,7 +278,7 @@ export default function ProductReviewsClient({ productId, productName, reviewCou
                   <Textarea
                     id="comment"
                     placeholder="What did you like or dislike about this product?"
-                    className="min-h-[100px] rounded-xl resize-none"
+                    className="min-h-[100px] rounded-sm resize-none"
                     value={comment}
                     onChange={(event) => setComment(event.target.value)}
                   />
@@ -291,12 +291,12 @@ export default function ProductReviewsClient({ productId, productName, reviewCou
                 type="button" 
                 variant="outline" 
                 onClick={handleRemindLater}
-                className="flex-1 h-11 rounded-xl font-semibold border-border text-muted-foreground hover:bg-muted"
+                className="flex-1 h-11 rounded-sm font-semibold border-border text-muted-foreground hover:bg-muted"
                 disabled={submitting}
               >
                 Remind me later
               </Button>
-              <Button type="submit" className="flex-1 h-11 rounded-xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground" disabled={submitting}>
+              <Button type="submit" className="flex-1 h-11 rounded-sm font-bold bg-primary hover:bg-primary/90 text-primary-foreground" disabled={submitting}>
                 {submitting ? <Loader2 className="mr-2 size-4 animate-spin" /> : null}
                 {submitting ? 'Submitting...' : 'Submit Review'}
               </Button>

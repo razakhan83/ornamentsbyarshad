@@ -294,7 +294,7 @@ export default function HomeTestimonialsCarousel({
                   key={review._id}
                   className="pl-3 basis-[88%] sm:basis-[50%] lg:basis-[33.33%] md:pl-4"
                 >
-                  <div className="flex h-full flex-col justify-between rounded-xl border border-border bg-card p-4 sm:p-5 shadow-none transition-colors">
+                  <div className="flex h-full flex-col justify-between rounded-sm border border-border bg-card p-4 sm:p-5 shadow-none transition-colors">
                     <div className="flex flex-col gap-2">
                       {/* Top: Customer Name + Verified Buyer Badge */}
                       <div className="flex items-center gap-2 flex-wrap">

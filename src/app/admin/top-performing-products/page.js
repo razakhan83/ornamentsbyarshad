@@ -45,7 +45,7 @@ export default async function TopPerformingProductsPage({ searchParams }) {
         </div>
       </div>
 
-      <div className="admin-surface rounded-xl border border-border/60">
+      <div className="admin-surface rounded-sm border border-border/60">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
             <thead className="border-b border-border/60 bg-muted/30">

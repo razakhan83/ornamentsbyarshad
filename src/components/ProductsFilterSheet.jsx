@@ -165,7 +165,7 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
                 <ToggleGroupItem
                   key={bucket.value}
                   value={bucket.value}
-                  className="h-9 rounded-lg px-3.5 text-sm font-medium aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                  className="h-9 rounded-sm px-3.5 text-sm font-medium aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
                 >
                   {bucket.label}
                 </ToggleGroupItem>

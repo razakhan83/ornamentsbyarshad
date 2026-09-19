@@ -135,7 +135,7 @@ export default function CategoryIconCarousel({ categories = [] }) {
               <Link
                 href="/categories"
                 prefetch={false}
-                className="inline-flex h-8 md:h-10 shrink-0 items-center justify-center gap-1 md:gap-1.5 whitespace-nowrap rounded-lg border border-primary/20 bg-background px-3 md:px-4 text-[13px] md:text-sm font-semibold text-primary outline-none select-none shadow-xs transition-[transform,background-color,color,border-color] duration-200 focus-visible:border-ring focus-visible:ring-2 hover:border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.97]"
+                className="inline-flex h-8 md:h-10 shrink-0 items-center justify-center gap-1 md:gap-1.5 whitespace-nowrap rounded-sm border border-primary/20 bg-background px-3 md:px-4 text-[13px] md:text-sm font-semibold text-primary outline-none select-none shadow-xs transition-[transform,background-color,color,border-color] duration-200 focus-visible:border-ring focus-visible:ring-2 hover:border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.97]"
               >
                 <span>View All</span>
                 <ArrowRight className="ml-1 size-3.5 md:size-4" />

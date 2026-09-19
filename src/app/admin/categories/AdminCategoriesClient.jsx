@@ -113,7 +113,7 @@ function CategoryCard({ category, onEdit, onDelete, onToggleEnabled, onManageSho
       ref={setNodeRef}
       style={style}
       className={cn(
-        "surface-card flex items-center gap-4 rounded-2xl p-4 shadow-[0_18px_40px_rgba(0,0,0,0.07)]",
+        "surface-card flex items-center gap-4 rounded-sm p-4 shadow-[0_18px_40px_rgba(0,0,0,0.07)]",
         isDragging && "opacity-60 border-primary/50 border-2 shadow-xl"
       )}
     >
@@ -126,7 +126,7 @@ function CategoryCard({ category, onEdit, onDelete, onToggleEnabled, onManageSho
       </div>
 
       <div 
-        className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-border bg-muted/35"
+        className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-sm border border-border bg-muted/35"
         style={{ backgroundColor: category.bgColor }}
       >
         {category.image ? (
@@ -200,7 +200,7 @@ function CategoryCard({ category, onEdit, onDelete, onToggleEnabled, onManageSho
           variant="outline"
           size="sm"
           onClick={() => onManageShowcase?.(category)}
-          className="hidden sm:inline-flex items-center gap-1.5 h-8 text-xs font-semibold rounded-xl border-primary/20 bg-primary/5 text-primary hover:bg-primary/10 hover:border-primary/30 shadow-2xs"
+          className="hidden sm:inline-flex items-center gap-1.5 h-8 text-xs font-semibold rounded-sm border-primary/20 bg-primary/5 text-primary hover:bg-primary/10 hover:border-primary/30 shadow-2xs"
           title="Manage Storefront Products & Limit"
         >
           <Sparkles className="size-3.5" />
@@ -226,7 +226,7 @@ function CategoryCard({ category, onEdit, onDelete, onToggleEnabled, onManageSho
               type="button"
               variant="ghost"
               size="icon"
-              className="shrink-0 rounded-xl"
+              className="shrink-0 rounded-sm"
               aria-label="Category actions"
             >
               <MoreVertical className="size-4" />
@@ -691,13 +691,13 @@ export default function AdminCategoriesClient() {
                     )}
                   </div>
                   <div className="flex items-center gap-3">
-                    <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-border bg-background px-4 py-2.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted shadow-2xs">
+                    <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-sm border border-border bg-background px-4 py-2.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted shadow-2xs">
                       <Upload className="size-3.5" />
                       Upload Image
                       <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageSelect(e, 1)} />
                     </label>
                     {newImage ? (
-                      <div className="relative size-14 shrink-0 overflow-hidden rounded-2xl border border-border group shadow-2xs">
+                      <div className="relative size-14 shrink-0 overflow-hidden rounded-sm border border-border group shadow-2xs">
                         <Image
                           src={newImage}
                           alt="Image preview"
@@ -716,7 +716,7 @@ export default function AdminCategoriesClient() {
                         </button>
                       </div>
                     ) : (
-                      <div className="flex size-14 items-center justify-center rounded-2xl border border-dashed border-border bg-muted/25 text-muted-foreground">
+                      <div className="flex size-14 items-center justify-center rounded-sm border border-dashed border-border bg-muted/25 text-muted-foreground">
                         <ImageIcon className="size-5" />
                       </div>
                     )}
@@ -724,7 +724,7 @@ export default function AdminCategoriesClient() {
                 </div>
               </div>
 
-              <div className="flex flex-col items-center justify-center rounded-2xl border border-border/80 bg-muted/20 p-4 min-w-[200px]">
+              <div className="flex flex-col items-center justify-center rounded-sm border border-border/80 bg-muted/20 p-4 min-w-[200px]">
                 <div className="mb-4 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                   <Eye className="size-3.5 text-primary" />
                   <span>Home Live Preview</span>
@@ -758,7 +758,7 @@ export default function AdminCategoriesClient() {
         </AlertDialogContent>
       </AlertDialog>
 
-      <div className="surface-card mb-6 rounded-2xl border border-border/70 p-4">
+      <div className="surface-card mb-6 rounded-sm border border-border/70 p-4">
         <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
           <Badge variant="secondary" className="rounded-full px-3 py-1">
             <Package2 />
@@ -771,11 +771,11 @@ export default function AdminCategoriesClient() {
       {loading ? (
         <div className="flex flex-col gap-3">
           {Array.from({ length: 4 }).map((_, index) => (
-            <div key={index} className="surface-card h-24 animate-pulse rounded-2xl" />
+            <div key={index} className="surface-card h-24 animate-pulse rounded-sm" />
           ))}
         </div>
       ) : orderedCategories.length === 0 ? (
-        <div className="surface-card rounded-2xl p-12 text-center">
+        <div className="surface-card rounded-sm p-12 text-center">
           <p className="font-medium text-muted-foreground">No categories yet. Add your first category above.</p>
         </div>
       ) : (
@@ -920,13 +920,13 @@ export default function AdminCategoriesClient() {
                     )}
                   </div>
                   <div className="flex items-center gap-3">
-                    <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-border bg-background px-4 py-2.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted shadow-2xs">
+                    <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-sm border border-border bg-background px-4 py-2.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted shadow-2xs">
                       <Upload className="size-3.5" />
                       Upload Image
                       <input type="file" accept="image/*" className="hidden" onChange={(e) => handleEditImageSelect(e, 1)} />
                     </label>
                     {editImage ? (
-                      <div className="relative size-14 shrink-0 overflow-hidden rounded-2xl border border-border shadow-2xs">
+                      <div className="relative size-14 shrink-0 overflow-hidden rounded-sm border border-border shadow-2xs">
                         <Image
                           src={editImage}
                           alt="Image preview"
@@ -937,7 +937,7 @@ export default function AdminCategoriesClient() {
                         />
                       </div>
                     ) : (
-                      <div className="flex size-14 items-center justify-center rounded-2xl border border-dashed border-border bg-muted/25 text-muted-foreground">
+                      <div className="flex size-14 items-center justify-center rounded-sm border border-dashed border-border bg-muted/25 text-muted-foreground">
                         <ImageIcon className="size-5" />
                       </div>
                     )}
@@ -947,7 +947,7 @@ export default function AdminCategoriesClient() {
               {/* End of first column */}
 
               <div className="flex flex-col gap-4 min-w-[200px]">
-                <div className="flex flex-col items-center justify-center rounded-2xl border border-border/80 bg-muted/20 p-4">
+                <div className="flex flex-col items-center justify-center rounded-sm border border-border/80 bg-muted/20 p-4">
                   <div className="mb-4 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                     <Eye className="size-3.5 text-primary" />
                     <span>Live Home Card Preview</span>
@@ -967,7 +967,7 @@ export default function AdminCategoriesClient() {
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-center rounded-2xl border border-border p-4 gap-3">
+                <div className="flex flex-col justify-center rounded-sm border border-border p-4 gap-3">
                   <div className="space-y-0.5">
                     <Label className="text-sm font-semibold">Enable Category</Label>
                     <p className="text-xs text-muted-foreground">Make this category visible on the storefront.</p>

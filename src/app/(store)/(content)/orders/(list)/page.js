@@ -39,7 +39,7 @@ function OrdersPageSkeleton() {
       <div className="w-full max-w-xl mx-auto space-y-6 animate-pulse">
         <div className="h-8 w-48 bg-muted rounded" />
         <div className="h-4 w-72 bg-muted/60 rounded" />
-        <div className="h-40 w-full bg-muted/40 rounded-xl" />
+        <div className="h-40 w-full bg-muted/40 rounded-sm" />
       </div>
     </main>
   );

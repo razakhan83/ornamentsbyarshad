@@ -375,7 +375,7 @@ function normalizeSections(input = []) {
 
 function PreviewUploadTile({ label, description, asset, onChange, disabled, ratio = 'landscape' }) {
   return (
-    <div className="rounded-xl border border-border bg-background/75 p-2.5">
+    <div className="rounded-sm border border-border bg-background/75 p-2.5">
       <div className="mb-2 flex items-start justify-between gap-2">
         <div>
           <p className="text-xs font-semibold text-foreground">{label}</p>
@@ -383,7 +383,7 @@ function PreviewUploadTile({ label, description, asset, onChange, disabled, rati
         </div>
         <label
           className={cn(
-            'inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted',
+            'inline-flex cursor-pointer items-center gap-1.5 rounded-sm border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted',
             disabled && 'cursor-not-allowed opacity-60',
           )}
         >
@@ -395,7 +395,7 @@ function PreviewUploadTile({ label, description, asset, onChange, disabled, rati
 
       <div
         className={cn(
-          'relative overflow-hidden rounded-xl border border-border bg-muted/25',
+          'relative overflow-hidden rounded-sm border border-border bg-muted/25',
           ratio === 'mobileLandscape' ? 'aspect-[16/9]' : 'aspect-[16/8]',
         )}
       >
@@ -420,7 +420,7 @@ function PreviewUploadTile({ label, description, asset, onChange, disabled, rati
 
 function PreviewVideoUploadTile({ label, description, asset, onChange, disabled, ratio = 'landscape' }) {
   return (
-    <div className="rounded-xl border border-border bg-background/75 p-2.5">
+    <div className="rounded-sm border border-border bg-background/75 p-2.5">
       <div className="mb-2 flex items-start justify-between gap-2">
         <div>
           <p className="text-xs font-semibold text-foreground">{label}</p>
@@ -428,7 +428,7 @@ function PreviewVideoUploadTile({ label, description, asset, onChange, disabled,
         </div>
         <label
           className={cn(
-            'inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted',
+            'inline-flex cursor-pointer items-center gap-1.5 rounded-sm border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted',
             disabled && 'cursor-not-allowed opacity-60',
           )}
         >
@@ -440,7 +440,7 @@ function PreviewVideoUploadTile({ label, description, asset, onChange, disabled,
 
       <div
         className={cn(
-          'relative overflow-hidden rounded-xl border border-border bg-black flex items-center justify-center',
+          'relative overflow-hidden rounded-sm border border-border bg-black flex items-center justify-center',
           ratio === 'square' ? 'aspect-square' : 'aspect-[21/9]',
         )}
       >
@@ -474,7 +474,7 @@ function PreviewVideoUploadTile({ label, description, asset, onChange, disabled,
 
 function PreviewHeroVideoUploadTile({ label, description, asset, onChange, onRemove, disabled }) {
   return (
-    <div className="rounded-xl border border-border bg-background/75 p-2.5">
+    <div className="rounded-sm border border-border bg-background/75 p-2.5">
       <div className="mb-2 flex items-start justify-between gap-2">
         <div>
           <p className="text-xs font-semibold text-foreground">{label}</p>
@@ -486,7 +486,7 @@ function PreviewHeroVideoUploadTile({ label, description, asset, onChange, onRem
               type="button"
               disabled={disabled}
               onClick={onRemove}
-              className="inline-flex items-center gap-1 rounded-lg border border-destructive/30 bg-destructive/10 px-2 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/20 transition-colors"
+              className="inline-flex items-center gap-1 rounded-sm border border-destructive/30 bg-destructive/10 px-2 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/20 transition-colors"
             >
               <Trash2 className="size-3" />
               Remove
@@ -494,7 +494,7 @@ function PreviewHeroVideoUploadTile({ label, description, asset, onChange, onRem
           )}
           <label
             className={cn(
-              'inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted',
+              'inline-flex cursor-pointer items-center gap-1.5 rounded-sm border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted',
               disabled && 'cursor-not-allowed opacity-60',
             )}
           >
@@ -505,7 +505,7 @@ function PreviewHeroVideoUploadTile({ label, description, asset, onChange, onRem
         </div>
       </div>
 
-      <div className="relative overflow-hidden rounded-xl border border-border bg-black aspect-[16/8] flex items-center justify-center">
+      <div className="relative overflow-hidden rounded-sm border border-border bg-black aspect-[16/8] flex items-center justify-center">
         {asset?.url ? (
           <video
             key={asset.url}
@@ -536,7 +536,7 @@ function PreviewHeroVideoUploadTile({ label, description, asset, onChange, onRem
 
 function PreviewReelVideoUploadTile({ label, description, asset, onChange, onRemove, disabled }) {
   return (
-    <div className="rounded-xl border border-border bg-background/75 p-2.5">
+    <div className="rounded-sm border border-border bg-background/75 p-2.5">
       <div className="mb-2 flex items-start justify-between gap-2">
         <div>
           <p className="text-xs font-semibold text-foreground">{label}</p>
@@ -548,7 +548,7 @@ function PreviewReelVideoUploadTile({ label, description, asset, onChange, onRem
               type="button"
               disabled={disabled}
               onClick={onRemove}
-              className="inline-flex items-center gap-1 rounded-lg border border-destructive/30 bg-destructive/10 px-2 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/20 transition-colors"
+              className="inline-flex items-center gap-1 rounded-sm border border-destructive/30 bg-destructive/10 px-2 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/20 transition-colors"
             >
               <Trash2 className="size-3" />
               Remove
@@ -556,7 +556,7 @@ function PreviewReelVideoUploadTile({ label, description, asset, onChange, onRem
           )}
           <label
             className={cn(
-              'inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted',
+              'inline-flex cursor-pointer items-center gap-1.5 rounded-sm border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted',
               disabled && 'cursor-not-allowed opacity-60',
             )}
           >
@@ -567,7 +567,7 @@ function PreviewReelVideoUploadTile({ label, description, asset, onChange, onRem
         </div>
       </div>
 
-      <div className="relative overflow-hidden rounded-xl border border-border bg-black aspect-[9/16] max-h-64 mx-auto flex items-center justify-center">
+      <div className="relative overflow-hidden rounded-sm border border-border bg-black aspect-[9/16] max-h-64 mx-auto flex items-center justify-center">
         {asset?.url ? (
           <video
             key={asset.url}
@@ -644,7 +644,7 @@ function SortableSectionCard({
       ref={setNodeRef}
       style={isDragPreview ? undefined : { transform: CSS.Transform.toString(transform), transition }}
       className={cn(
-        'surface-card overflow-hidden rounded-2xl border border-border/70 shadow-[0_8px_20px_rgba(0,0,0,0.05)] transition-all duration-300',
+        'surface-card overflow-hidden rounded-sm border border-border/70 shadow-[0_8px_20px_rgba(0,0,0,0.05)] transition-all duration-300',
         (isDragging || isDragPreview) && 'border-border bg-muted/60 shadow-[0_20px_44px_rgba(0,0,0,0.12)]',
         isDragging && !isDragPreview && 'opacity-60',
         isExpanded && 'ring-1 ring-border shadow-[0_12px_28px_rgba(0,0,0,0.08)]',
@@ -658,7 +658,7 @@ function SortableSectionCard({
           <button
             type="button"
             className={cn(
-              'flex size-8 shrink-0 items-center justify-center rounded-lg border bg-background text-muted-foreground transition-all duration-200',
+              'flex size-8 shrink-0 items-center justify-center rounded-sm border bg-background text-muted-foreground transition-all duration-200',
               (isDragging || isDragPreview)
                 ? 'border-border bg-foreground text-background shadow-sm'
                 : 'border-border hover:bg-muted hover:text-foreground',
@@ -671,7 +671,7 @@ function SortableSectionCard({
             <GripVertical className="size-4" />
           </button>
           
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-muted text-foreground">
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-sm border border-border bg-muted text-foreground">
             <Icon className="size-3.5" />
           </div>
           
@@ -704,7 +704,7 @@ function SortableSectionCard({
             variant="ghost"
             size="icon-xs"
             className={cn(
-              "size-8 rounded-lg transition-transform duration-200",
+              "size-8 rounded-sm transition-transform duration-200",
               isExpanded && "rotate-90 bg-muted text-foreground"
             )}
             onClick={() => onToggleExpand(section.id)}
@@ -717,7 +717,7 @@ function SortableSectionCard({
             type="button"
             variant="ghost"
             size="icon-xs"
-            className="size-8 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+            className="size-8 rounded-sm text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
             onClick={() => onDelete(section.id)}
             aria-label={`Delete ${template?.label || section.type}`}
           >
@@ -756,7 +756,7 @@ function SortableSectionCard({
               />
             </Field>
 
-            <div className="rounded-2xl border border-border bg-muted/20 p-3">
+            <div className="rounded-sm border border-border bg-muted/20 p-3">
               <div className="mb-3">
                 <p className="text-sm font-semibold text-foreground">Product Banner Group</p>
                 <p className="text-xs text-muted-foreground">
@@ -766,7 +766,7 @@ function SortableSectionCard({
 
               <div className="grid gap-3 xl:grid-cols-3">
                 {[0, 1].map((imageIndex) => (
-                  <div key={`desktop-banner-${imageIndex}`} className="rounded-2xl border border-border bg-background/80 p-3">
+                  <div key={`desktop-banner-${imageIndex}`} className="rounded-sm border border-border bg-background/80 p-3">
                     <PreviewUploadTile
                       label={`PC Image ${imageIndex + 1}`}
                       description="Landscape image used in the desktop 2-column row."
@@ -803,7 +803,7 @@ function SortableSectionCard({
                   </div>
                 ))}
 
-                <div className="rounded-2xl border border-border bg-background/80 p-3">
+                <div className="rounded-sm border border-border bg-background/80 p-3">
                   <PreviewUploadTile
                     label="Mobile Image"
                     description="Single landscape image for small and medium screens."
@@ -858,7 +858,7 @@ function SortableSectionCard({
               />
             </Field>
 
-            <div className="rounded-2xl border border-border bg-muted/20 p-3">
+            <div className="rounded-sm border border-border bg-muted/20 p-3">
               <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-sm font-semibold text-foreground">Landscape Banners</p>
@@ -866,7 +866,7 @@ function SortableSectionCard({
                     Add multiple landscape banners. They render as a horizontal scroll row on the storefront.
                   </p>
                 </div>
-                <Button type="button" variant="outline" size="sm" className="rounded-xl" onClick={() => onAddCarouselBanner(section.id)}>
+                <Button type="button" variant="outline" size="sm" className="rounded-sm" onClick={() => onAddCarouselBanner(section.id)}>
                   <Plus data-icon="inline-start" />
                   Add Banner
                 </Button>
@@ -874,7 +874,7 @@ function SortableSectionCard({
 
               <div className="flex flex-col gap-3">
                 {(section.carouselBanners || []).map((banner, bannerIndex) => (
-                  <div key={banner.id || `carousel-banner-${bannerIndex}`} className="rounded-2xl border border-border bg-background/80 p-3">
+                  <div key={banner.id || `carousel-banner-${bannerIndex}`} className="rounded-sm border border-border bg-background/80 p-3">
                     <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
                         <Badge variant="secondary">Banner {bannerIndex + 1}</Badge>
@@ -885,7 +885,7 @@ function SortableSectionCard({
                           type="button"
                           variant="outline"
                           size="icon-sm"
-                          className="rounded-xl"
+                          className="rounded-sm"
                           onClick={() => onMoveCarouselBanner(section.id, banner.id, -1)}
                           disabled={bannerIndex === 0}
                           aria-label={`Move banner ${bannerIndex + 1} up`}
@@ -896,7 +896,7 @@ function SortableSectionCard({
                           type="button"
                           variant="outline"
                           size="icon-sm"
-                          className="rounded-xl"
+                          className="rounded-sm"
                           onClick={() => onMoveCarouselBanner(section.id, banner.id, 1)}
                           disabled={bannerIndex === (section.carouselBanners?.length || 1) - 1}
                           aria-label={`Move banner ${bannerIndex + 1} down`}
@@ -907,7 +907,7 @@ function SortableSectionCard({
                           type="button"
                           variant="outline"
                           size="icon-sm"
-                          className="rounded-xl"
+                          className="rounded-sm"
                           onClick={() => onRemoveCarouselBanner(section.id, banner.id)}
                           disabled={(section.carouselBanners?.length || 0) <= 1}
                           aria-label={`Remove banner ${bannerIndex + 1}`}
@@ -991,7 +991,7 @@ function SortableSectionCard({
             </Field>
 
             {section.categoryId && (
-              <div className="md:col-span-2 flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl border border-primary/20 bg-primary/5">
+              <div className="md:col-span-2 flex flex-wrap items-center justify-between gap-2 p-3 rounded-sm border border-primary/20 bg-primary/5">
                 <div className="text-xs text-foreground">
                   <span className="font-semibold text-primary">Curated Showcase: </span>
                   <span className="text-muted-foreground">
@@ -1006,7 +1006,7 @@ function SortableSectionCard({
                     const cat = categories.find((c) => c._id === section.categoryId);
                     onOpenCategoryShowcase?.(cat || { _id: section.categoryId, name: section.title || 'Category' });
                   }}
-                  className="text-xs font-semibold gap-1.5 h-8 rounded-lg border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-all"
+                  className="text-xs font-semibold gap-1.5 h-8 rounded-sm border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-all"
                 >
                   <Sparkles className="size-3.5" />
                   Customize Front Products & Order
@@ -1020,7 +1020,7 @@ function SortableSectionCard({
           <div className="grid gap-3 md:grid-cols-2">
             <Field>
               <FieldLabel>Collection Type</FieldLabel>
-              <div className="rounded-2xl border border-border bg-muted/20 px-4 py-3 text-sm font-semibold text-foreground">
+              <div className="rounded-sm border border-border bg-muted/20 px-4 py-3 text-sm font-semibold text-foreground">
                 {template?.label || section.collectionKey || 'Product Collection'}
               </div>
               <FieldDescription>
@@ -1050,7 +1050,7 @@ function SortableSectionCard({
         )}
 
         {section.type === 'VideoCatalog' && (
-          <div className="rounded-2xl border border-border bg-muted/20 p-3">
+          <div className="rounded-sm border border-border bg-muted/20 p-3">
             <div className="mb-3">
               <p className="text-sm font-semibold text-foreground">Video Catalog</p>
               <p className="text-xs text-muted-foreground">
@@ -1059,7 +1059,7 @@ function SortableSectionCard({
             </div>
 
             <div className="grid gap-3 xl:grid-cols-2">
-              <div className="rounded-2xl border border-border bg-background/80 p-3">
+              <div className="rounded-sm border border-border bg-background/80 p-3">
                 <PreviewVideoUploadTile
                   label="PC Video"
                   description="Ultra-wide video for desktop screens (21:9)."
@@ -1069,7 +1069,7 @@ function SortableSectionCard({
                   onChange={(event) => onSectionVideoUpload(section.id, 'pcVideo', event)}
                 />
               </div>
-              <div className="rounded-2xl border border-border bg-background/80 p-3">
+              <div className="rounded-sm border border-border bg-background/80 p-3">
                 <PreviewVideoUploadTile
                   label="Mobile Video"
                   description="Square video for small screens (1:1)."
@@ -1120,7 +1120,7 @@ function SortableSectionCard({
               />
             </Field>
 
-            <div className="flex flex-col gap-2 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-xs text-foreground/85">
+            <div className="flex flex-col gap-2 rounded-sm border border-primary/20 bg-primary/5 p-4 text-xs text-foreground/85">
               <div className="flex items-center gap-2 font-semibold text-primary">
                 <Sparkles className="size-4" />
                 <span>Curated Customer Reviews</span>
@@ -1137,13 +1137,13 @@ function SortableSectionCard({
         )}
 
         {section.type === 'HeroSlider' && (
-          <div className="rounded-2xl border border-border bg-muted/20 p-3">
+          <div className="rounded-sm border border-border bg-muted/20 p-3">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-sm font-semibold text-foreground">Slides</p>
                 <p className="text-xs text-muted-foreground">Upload desktop and mobile artwork for each hero frame.</p>
               </div>
-              <Button type="button" variant="outline" size="sm" className="rounded-xl" onClick={() => onAddHeroSlide(section.id)}>
+              <Button type="button" variant="outline" size="sm" className="rounded-sm" onClick={() => onAddHeroSlide(section.id)}>
                 <Plus data-icon="inline-start" />
                 Add Slide
               </Button>
@@ -1151,7 +1151,7 @@ function SortableSectionCard({
 
             <div className="flex flex-col gap-3">
               {section.slides?.map((slide, slideIndex) => (
-                <div key={slide.id} className="rounded-2xl border border-border bg-background/80 p-3">
+                <div key={slide.id} className="rounded-sm border border-border bg-background/80 p-3">
                   <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <Badge variant="secondary">Slide {slideIndex + 1}</Badge>
@@ -1162,7 +1162,7 @@ function SortableSectionCard({
                         type="button"
                         variant="outline"
                         size="icon-sm"
-                        className="rounded-xl"
+                        className="rounded-sm"
                         onClick={() => onMoveHeroSlide(section.id, slide.id, -1)}
                         disabled={slideIndex === 0}
                         aria-label={`Move slide ${slideIndex + 1} up`}
@@ -1173,7 +1173,7 @@ function SortableSectionCard({
                         type="button"
                         variant="outline"
                         size="icon-sm"
-                        className="rounded-xl"
+                        className="rounded-sm"
                         onClick={() => onMoveHeroSlide(section.id, slide.id, 1)}
                         disabled={slideIndex === (section.slides?.length || 1) - 1}
                         aria-label={`Move slide ${slideIndex + 1} down`}
@@ -1184,7 +1184,7 @@ function SortableSectionCard({
                         type="button"
                         variant="outline"
                         size="icon-sm"
-                        className="rounded-xl"
+                        className="rounded-sm"
                         onClick={() => onRemoveHeroSlide(section.id, slide.id)}
                         disabled={(section.slides?.length || 0) <= 1}
                         aria-label={`Remove slide ${slideIndex + 1}`}
@@ -1265,13 +1265,13 @@ function SortableSectionCard({
               </Field>
             </div>
 
-            <div className="rounded-2xl border border-border bg-muted/20 p-3">
+            <div className="rounded-sm border border-border bg-muted/20 p-3">
               <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-sm font-semibold text-foreground">Video Reels / Clips</p>
                   <p className="text-xs text-muted-foreground">Upload 9:16 vertical videos and tag products from your store catalog.</p>
                 </div>
-                <Button type="button" variant="outline" size="sm" className="rounded-xl" onClick={() => onAddShoppableReel(section.id)}>
+                <Button type="button" variant="outline" size="sm" className="rounded-sm" onClick={() => onAddShoppableReel(section.id)}>
                   <Plus data-icon="inline-start" />
                   Add Reel
                 </Button>
@@ -1279,7 +1279,7 @@ function SortableSectionCard({
 
               <div className="flex flex-col gap-3">
                 {section.reels?.map((reel, reelIndex) => (
-                  <div key={reel.id} className="rounded-2xl border border-border bg-background/90 p-3.5 shadow-sm">
+                  <div key={reel.id} className="rounded-sm border border-border bg-background/90 p-3.5 shadow-sm">
                     <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-border/50 pb-2">
                       <div className="flex items-center gap-2">
                         <Badge variant="secondary">Reel {reelIndex + 1}</Badge>
@@ -1292,7 +1292,7 @@ function SortableSectionCard({
                           type="button"
                           variant="outline"
                           size="icon-xs"
-                          className="rounded-lg"
+                          className="rounded-sm"
                           onClick={() => onMoveShoppableReel(section.id, reel.id, -1)}
                           disabled={reelIndex === 0}
                           aria-label={`Move reel ${reelIndex + 1} up`}
@@ -1303,7 +1303,7 @@ function SortableSectionCard({
                           type="button"
                           variant="outline"
                           size="icon-xs"
-                          className="rounded-lg"
+                          className="rounded-sm"
                           onClick={() => onMoveShoppableReel(section.id, reel.id, 1)}
                           disabled={reelIndex === (section.reels?.length || 1) - 1}
                           aria-label={`Move reel ${reelIndex + 1} down`}
@@ -1314,7 +1314,7 @@ function SortableSectionCard({
                           type="button"
                           variant="outline"
                           size="icon-xs"
-                          className="rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                          className="rounded-sm text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                           onClick={() => onRemoveShoppableReel(section.id, reel.id)}
                           disabled={(section.reels?.length || 0) <= 1}
                           aria-label={`Remove reel ${reelIndex + 1}`}
@@ -1409,9 +1409,9 @@ function SortableSectionCard({
                         </Field>
 
                         {reel.productId && reel.productTitle ? (
-                          <div className="flex items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 p-2.5">
+                          <div className="flex items-center gap-3 rounded-sm border border-primary/20 bg-primary/5 p-2.5">
                             {reel.productImage ? (
-                              <img src={reel.productImage} alt="" className="size-10 rounded-lg object-cover border border-border" />
+                              <img src={reel.productImage} alt="" className="size-10 rounded-sm object-cover border border-border" />
                             ) : null}
                             <div className="min-w-0 flex-1">
                               <p className="text-xs font-semibold text-foreground truncate">{reel.productTitle}</p>
@@ -1584,7 +1584,7 @@ function HomePageSectionsWorkspace({
 }) {
   if (sections.length === 0) {
     return (
-      <Empty className="surface-card rounded-2xl border border-border/70 px-6 py-10 shadow-sm">
+      <Empty className="surface-card rounded-sm border border-border/70 px-6 py-10 shadow-sm">
         <EmptyHeader className="items-center text-center">
           <EmptyMedia variant="icon" className="bg-muted/50">
             <LayoutGrid className="size-8 text-muted-foreground/50" />
@@ -1595,7 +1595,7 @@ function HomePageSectionsWorkspace({
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent className="flex justify-center">
-          <Button type="button" variant="default" size="sm" className="rounded-xl" onClick={() => onAddSection(SECTION_TEMPLATES[0])}>
+          <Button type="button" variant="default" size="sm" className="rounded-sm" onClick={() => onAddSection(SECTION_TEMPLATES[0])}>
             <Plus className="size-4" />
             Add Hero Slider
           </Button>

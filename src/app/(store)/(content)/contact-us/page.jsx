@@ -117,7 +117,7 @@ export default async function ContactUsPage() {
         </div>
 
         {/* WhatsApp Featured Row */}
-        <div className="rounded-2xl border border-border bg-card p-5 sm:p-6 md:p-7 mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="rounded-sm border border-border bg-card p-5 sm:p-6 md:p-7 mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <WhatsAppIcon className="size-6 sm:size-7 text-[#25D366] shrink-0" />
             <div>
@@ -134,7 +134,7 @@ export default async function ContactUsPage() {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto h-10 md:h-11 px-5 md:px-6 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white text-xs md:text-sm font-semibold flex items-center justify-center gap-2 transition-all active:scale-[0.98] shrink-0"
+            className="w-full sm:w-auto h-10 md:h-11 px-5 md:px-6 rounded-sm bg-[#25D366] hover:bg-[#20ba59] text-white text-xs md:text-sm font-semibold flex items-center justify-center gap-2 transition-all active:scale-[0.98] shrink-0"
           >
             <WhatsAppIcon className="size-4 md:size-4.5" />
             Chat on WhatsApp
@@ -147,7 +147,7 @@ export default async function ContactUsPage() {
           {/* Phone Call */}
           <a
             href={`tel:${cleanPhone}`}
-            className="p-5 md:p-6 rounded-2xl border border-border bg-card hover:border-foreground/30 transition-all flex items-center justify-between group"
+            className="p-5 md:p-6 rounded-sm border border-border bg-card hover:border-foreground/30 transition-all flex items-center justify-between group"
           >
             <div className="flex items-center gap-4">
               <PhoneSvg className="size-5 md:size-6 text-foreground/75 group-hover:text-primary transition-colors shrink-0" />
@@ -162,7 +162,7 @@ export default async function ContactUsPage() {
           {/* Email */}
           <a
             href={`mailto:${supportEmail}`}
-            className="p-5 md:p-6 rounded-2xl border border-border bg-card hover:border-foreground/30 transition-all flex items-center justify-between group"
+            className="p-5 md:p-6 rounded-sm border border-border bg-card hover:border-foreground/30 transition-all flex items-center justify-between group"
           >
             <div className="flex items-center gap-4 min-w-0">
               <MailSvg className="size-5 md:size-6 text-foreground/75 group-hover:text-primary transition-colors shrink-0" />
@@ -179,7 +179,7 @@ export default async function ContactUsPage() {
             href={instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-5 md:p-6 rounded-2xl border border-border bg-card hover:border-foreground/30 transition-all flex items-center justify-between group"
+            className="p-5 md:p-6 rounded-sm border border-border bg-card hover:border-foreground/30 transition-all flex items-center justify-between group"
           >
             <div className="flex items-center gap-4 min-w-0">
               <InstagramIcon className="size-5 md:size-6 text-foreground/75 group-hover:text-primary transition-colors shrink-0" />
@@ -196,7 +196,7 @@ export default async function ContactUsPage() {
             href={facebookUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-5 md:p-6 rounded-2xl border border-border bg-card hover:border-foreground/30 transition-all flex items-center justify-between group"
+            className="p-5 md:p-6 rounded-sm border border-border bg-card hover:border-foreground/30 transition-all flex items-center justify-between group"
           >
             <div className="flex items-center gap-4 min-w-0">
               <FacebookIcon className="size-5 md:size-6 text-foreground/75 group-hover:text-primary transition-colors shrink-0" />
@@ -211,7 +211,7 @@ export default async function ContactUsPage() {
         </div>
 
         {/* Store Location & Timings */}
-        <div className="rounded-2xl border border-border bg-card p-5 sm:p-6 md:p-7 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="rounded-sm border border-border bg-card p-5 sm:p-6 md:p-7 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-start gap-4">
             <LocationPinSvg className="size-5 md:size-6 text-foreground/75 shrink-0 mt-0.5" />
             <div>

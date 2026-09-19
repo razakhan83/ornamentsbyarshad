@@ -89,7 +89,7 @@ export default function FaqPageClient({ whatsappNumber, storeName, pageTitle, pa
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label="Search frequently asked questions"
-              className="w-full rounded-xl border border-border bg-card py-3 pl-11 pr-10 text-xs sm:text-sm outline-none transition-all placeholder:text-muted-foreground/75 focus:border-primary focus:ring-1 focus:ring-primary shadow-none"
+              className="w-full rounded-sm border border-border bg-card py-3 pl-11 pr-10 text-xs sm:text-sm outline-none transition-all placeholder:text-muted-foreground/75 focus:border-primary focus:ring-1 focus:ring-primary shadow-none"
             />
             {searchQuery && (
               <button
@@ -109,7 +109,7 @@ export default function FaqPageClient({ whatsappNumber, storeName, pageTitle, pa
               type="button"
               onClick={() => setSelectedCategory('all')}
               className={cn(
-                'shrink-0 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-semibold transition-all duration-200 cursor-pointer',
+                'shrink-0 whitespace-nowrap rounded-sm px-3.5 py-2 text-xs font-semibold transition-all duration-200 cursor-pointer',
                 selectedCategory === 'all'
                   ? 'bg-primary text-primary-foreground shadow-none'
                   : 'bg-card border border-border text-muted-foreground hover:text-foreground hover:border-border/80'
@@ -126,7 +126,7 @@ export default function FaqPageClient({ whatsappNumber, storeName, pageTitle, pa
                   type="button"
                   onClick={() => setSelectedCategory(cat.id)}
                   className={cn(
-                    'shrink-0 whitespace-nowrap flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all duration-200 cursor-pointer',
+                    'shrink-0 whitespace-nowrap flex items-center gap-1.5 rounded-sm px-3.5 py-2 text-xs font-semibold transition-all duration-200 cursor-pointer',
                     selectedCategory === cat.id
                       ? 'bg-primary text-primary-foreground shadow-none'
                       : 'bg-card border border-border text-muted-foreground hover:text-foreground hover:border-border/80'
@@ -145,7 +145,7 @@ export default function FaqPageClient({ whatsappNumber, storeName, pageTitle, pa
         {/* ── FAQ Accordion List ── */}
         <div className="space-y-4">
           {filteredFaqs.length > 0 ? (
-            <div className="rounded-2xl border border-border bg-card p-2 sm:p-4 shadow-none divide-y divide-border/60">
+            <div className="rounded-sm border border-border bg-card p-2 sm:p-4 shadow-none divide-y divide-border/60">
               <Accordion type="single" collapsible="true" className="w-full">
                 {filteredFaqs.map((faq) => (
                   <AccordionItem
@@ -164,7 +164,7 @@ export default function FaqPageClient({ whatsappNumber, storeName, pageTitle, pa
               </Accordion>
             </div>
           ) : (
-            <div className="rounded-2xl border border-dashed border-border bg-card py-12 px-4 text-center">
+            <div className="rounded-sm border border-dashed border-border bg-card py-12 px-4 text-center">
               <h3 className="text-base font-bold text-foreground mb-1">
                 No matching questions found
               </h3>
@@ -177,7 +177,7 @@ export default function FaqPageClient({ whatsappNumber, storeName, pageTitle, pa
                   setSearchQuery('');
                   setSelectedCategory('all');
                 }}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-none transition-all hover:bg-primary/90 cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-sm bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-none transition-all hover:bg-primary/90 cursor-pointer"
               >
                 Reset Filters
               </button>
@@ -186,9 +186,9 @@ export default function FaqPageClient({ whatsappNumber, storeName, pageTitle, pa
         </div>
 
         {/* ── Support / WhatsApp Contact Card ── */}
-        <div className="mt-10 rounded-2xl border border-border bg-card p-5 sm:p-6 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
+        <div className="mt-10 rounded-sm border border-border bg-card p-5 sm:p-6 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
           <div className="flex items-start sm:items-center gap-3.5 text-left">
-            <div className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary mt-0.5 sm:mt-0">
+            <div className="inline-flex size-10 shrink-0 items-center justify-center rounded-sm bg-primary/10 text-primary mt-0.5 sm:mt-0">
               <WhatsAppIcon className="size-5" />
             </div>
             <div className="space-y-0.5">
@@ -204,7 +204,7 @@ export default function FaqPageClient({ whatsappNumber, storeName, pageTitle, pa
           <div className="flex w-full sm:w-auto flex-col sm:flex-row items-center gap-2.5 shrink-0 pt-1 sm:pt-0">
             <a
               href={storePhoneTelHref(phone)}
-              className="w-full sm:w-auto inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl border border-border bg-background px-4 py-2.5 text-xs sm:text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+              className="w-full sm:w-auto inline-flex shrink-0 items-center justify-center gap-1.5 rounded-sm border border-border bg-background px-4 py-2.5 text-xs sm:text-sm font-semibold text-foreground transition-colors hover:bg-muted"
             >
               Call {displayPhone}
             </a>
@@ -212,7 +212,7 @@ export default function FaqPageClient({ whatsappNumber, storeName, pageTitle, pa
               href={whatsappLink || '#'}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-5 py-2.5 text-xs sm:text-sm font-semibold shadow-none transition-colors"
+              className="w-full sm:w-auto inline-flex shrink-0 items-center justify-center gap-2 rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 px-5 py-2.5 text-xs sm:text-sm font-semibold shadow-none transition-colors"
             >
               <WhatsAppIcon className="size-4" />
               Chat on WhatsApp

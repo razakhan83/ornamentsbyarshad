@@ -168,7 +168,7 @@ export default function MobileSearchOverlay({ open, onOpenChange }) {
                           onOpenChange(false);
                           router.push(`/products/${product.slug || product._id || product.id}`);
                         }}
-                        className="flex items-center p-3 bg-muted/30 rounded-xl border border-border/40 text-left active:scale-[0.98] transition-transform"
+                        className="flex items-center p-3 bg-muted/30 rounded-sm border border-border/40 text-left active:scale-[0.98] transition-transform"
                       >
                         <span className="text-sm font-medium line-clamp-1">{product.Name || product.name}</span>
                       </button>
@@ -201,7 +201,7 @@ export default function MobileSearchOverlay({ open, onOpenChange }) {
                   <div className="mt-4 pb-6 px-1">
                     <button 
                       onClick={handleSearchSubmit}
-                      className="w-full py-3.5 bg-muted/50 hover:bg-muted text-foreground font-semibold rounded-xl transition-colors border border-border/50"
+                      className="w-full py-3.5 bg-muted/50 hover:bg-muted text-foreground font-semibold rounded-sm transition-colors border border-border/50"
                     >
                       See more results for &quot;{debouncedSearch}&quot;
                     </button>

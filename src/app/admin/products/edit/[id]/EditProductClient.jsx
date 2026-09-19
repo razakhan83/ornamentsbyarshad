@@ -37,14 +37,14 @@ import { getProductRating } from '@/lib/productReviewUtils';
 
 const selectionChipClass = (selected) =>
   cn(
-    'inline-flex items-center rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors',
+    'inline-flex items-center rounded-sm border px-3 py-1.5 text-xs font-semibold transition-colors',
     selected
     ? 'border-border bg-foreground text-background shadow-[0_12px_30px_rgba(0,0,0,0.14)]'
     : 'border-border bg-background text-muted-foreground hover:border-border hover:text-foreground',
   );
 
 const uploadActionClass =
-  'relative overflow-hidden inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground';
+  'relative overflow-hidden inline-flex cursor-pointer items-center gap-1.5 rounded-sm border border-border bg-background px-3 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground';
 
 export default function EditProduct({ id }) {
   const router = useRouter();
@@ -551,7 +551,7 @@ export default function EditProduct({ id }) {
     <div className="w-full pb-20">
       <form onSubmit={handleSubmit}>
         {/* Sticky Header */}
-        <div className="sticky top-4 z-50 mb-6 flex items-center justify-between rounded-xl border border-border bg-background/95 px-4 py-3 shadow-md backdrop-blur-md md:px-6">
+        <div className="sticky top-4 z-50 mb-6 flex items-center justify-between rounded-sm border border-border bg-background/95 px-4 py-3 shadow-md backdrop-blur-md md:px-6">
           <div className="flex items-center gap-4">
             <Link href="/admin/products" className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background transition-colors hover:bg-muted">
               <ArrowLeft className="size-4" />
@@ -570,16 +570,16 @@ export default function EditProduct({ id }) {
               <Switch id="top-visibility" checked={showOnStore} onCheckedChange={setIsLive} />
             </div>
             <Link href="/admin/products" className="hidden sm:block">
-              <Button variant="outline" size="sm" className="rounded-lg font-semibold" type="button">Cancel</Button>
+              <Button variant="outline" size="sm" className="rounded-sm font-semibold" type="button">Cancel</Button>
             </Link>
-            <Button type="submit" disabled={saving} size="sm" className="rounded-lg font-semibold shadow-sm">
+            <Button type="submit" disabled={saving} size="sm" className="rounded-sm font-semibold shadow-sm">
               {saving ? <><Loader2 className="mr-2 size-4 animate-spin" /> Saving...</> : "Save Changes"}
             </Button>
           </div>
         </div>
 
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1fr_360px]">
-          <div className="surface-card w-full space-y-6 rounded-xl p-4 shadow-lg md:p-8">
+          <div className="surface-card w-full space-y-6 rounded-sm p-4 shadow-lg md:p-8">
           {/* Product Name */}
           <div>
             <Label className="mb-2">Product Name</Label>
@@ -647,7 +647,7 @@ export default function EditProduct({ id }) {
           </div>
 
           {/* Stock & Availability Card */}
-          <div className="rounded-xl border border-border bg-background p-4 shadow-sm">
+          <div className="rounded-sm border border-border bg-background p-4 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border/60 pb-3">
               <div>
                 <Label className="text-sm font-semibold text-foreground">Stock & Availability</Label>
@@ -665,7 +665,7 @@ export default function EditProduct({ id }) {
             </div>
 
             {isUnlimitedStock ? (
-              <div className="mt-3 flex items-center gap-2.5 text-xs text-muted-foreground bg-muted/50 p-3 rounded-lg border border-border">
+              <div className="mt-3 flex items-center gap-2.5 text-xs text-muted-foreground bg-muted/50 p-3 rounded-sm border border-border">
                 <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-foreground/10 text-foreground">
                   <Check className="size-3.5" />
                 </div>
@@ -691,7 +691,7 @@ export default function EditProduct({ id }) {
                       type="button"
                       onClick={() => setStockStatus('In Stock')}
                       className={cn(
-                        "h-10 rounded-lg border text-xs font-semibold transition-colors cursor-pointer",
+                        "h-10 rounded-sm border text-xs font-semibold transition-colors cursor-pointer",
                         stockStatus === 'In Stock'
                           ? "bg-foreground text-background border-border"
                           : "bg-muted text-muted-foreground hover:text-foreground"
@@ -703,7 +703,7 @@ export default function EditProduct({ id }) {
                       type="button"
                       onClick={() => setStockStatus('Out of Stock')}
                       className={cn(
-                        "h-10 rounded-lg border text-xs font-semibold transition-colors cursor-pointer",
+                        "h-10 rounded-sm border text-xs font-semibold transition-colors cursor-pointer",
                         stockStatus === 'Out of Stock'
                           ? "bg-red-600 text-white border-red-600"
                           : "bg-muted text-muted-foreground hover:text-foreground"
@@ -729,7 +729,7 @@ export default function EditProduct({ id }) {
             </div>
             
             {/* Desktop View */}
-            <div className="hidden sm:flex min-h-[52px] flex-wrap gap-2 rounded-xl border border-border bg-muted/35 p-3">
+            <div className="hidden sm:flex min-h-[52px] flex-wrap gap-2 rounded-sm border border-border bg-muted/35 p-3">
 
               {allCategories.length === 0 ? (
                 <p className="self-center text-xs text-muted-foreground">No categories found. Add one.</p>
@@ -755,7 +755,7 @@ export default function EditProduct({ id }) {
             {/* Mobile View */}
             <div className="sm:hidden">
               <Accordion type="multiple" className="w-full">
-                <AccordionItem value="categories" className="rounded-xl border border-border bg-muted/35 px-4 shadow-sm">
+                <AccordionItem value="categories" className="rounded-sm border border-border bg-muted/35 px-4 shadow-sm">
                   <AccordionTrigger className="hover:no-underline py-3">
                     <span className="text-sm font-semibold">Select Categories ({Categories.length})</span>
                   </AccordionTrigger>
@@ -806,7 +806,7 @@ export default function EditProduct({ id }) {
             
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
                 {images.map((img, idx) => (
-                    <div key={idx} className="group relative aspect-square overflow-hidden rounded-xl border border-border bg-muted/40">
+                    <div key={idx} className="group relative aspect-square overflow-hidden rounded-sm border border-border bg-muted/40">
                         <Image
                           src={img.url}
                           alt="Preview"
@@ -818,7 +818,7 @@ export default function EditProduct({ id }) {
                         <button 
                             type="button" 
                             onClick={() => removeImage(idx)} 
-                            className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-lg border border-border bg-background/95 text-destructive shadow-sm opacity-0 transition-all hover:bg-destructive hover:text-destructive-foreground group-hover:opacity-100"
+                            className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-sm border border-border bg-background/95 text-destructive shadow-sm opacity-0 transition-all hover:bg-destructive hover:text-destructive-foreground group-hover:opacity-100"
                         >
                             <Trash2 className="size-3.5" />
                         </button>
@@ -841,7 +841,7 @@ export default function EditProduct({ id }) {
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               className={cn(
-                'relative cursor-pointer rounded-xl border-2 border-dashed p-6 text-center transition-all duration-200',
+                'relative cursor-pointer rounded-sm border-2 border-dashed p-6 text-center transition-all duration-200',
                 isDragOver
                   ? 'border-border bg-muted/60'
                   : 'border-border bg-muted/20 hover:border-border hover:bg-muted/35',
@@ -849,7 +849,7 @@ export default function EditProduct({ id }) {
             >
               <input type="file" multiple accept="image/*" onChange={handleFileSelect} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
               <div className="space-y-3">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-border bg-muted text-foreground">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-sm border border-border bg-muted text-foreground">
                   <CloudUpload className="size-6" />
                 </div>
                 <div>
@@ -862,7 +862,7 @@ export default function EditProduct({ id }) {
           <Accordion type="multiple" defaultValue={["jewelry-specs"]} className="w-full space-y-4">
                     
           {/* 1. Jewelry Specifications */}
-          <AccordionItem value="jewelry-specs" className="rounded-xl border border-border bg-background shadow-sm px-4">
+          <AccordionItem value="jewelry-specs" className="rounded-sm border border-border bg-background shadow-sm px-4">
             <AccordionTrigger className="hover:no-underline py-4">
               <div className="flex flex-col items-start text-left">
                 <span className="text-sm font-semibold text-foreground">Jewelry Specifications</span>
@@ -1402,7 +1402,7 @@ export default function EditProduct({ id }) {
           </AccordionItem>
 
           {/* 2. Product Details */}
-          <AccordionItem value="short-description" className="rounded-xl border border-border bg-background shadow-sm px-4">
+          <AccordionItem value="short-description" className="rounded-sm border border-border bg-background shadow-sm px-4">
             <AccordionTrigger className="hover:no-underline py-4">
               <div className="flex flex-col items-start text-left">
                 <span className="text-sm font-semibold text-foreground">Product Details</span>
@@ -1421,7 +1421,7 @@ export default function EditProduct({ id }) {
           </AccordionItem>
 
           {/* 3. Product Description (Long Description) */}
-          <AccordionItem value="description" className="rounded-xl border border-border bg-background shadow-sm px-4">
+          <AccordionItem value="description" className="rounded-sm border border-border bg-background shadow-sm px-4">
             <AccordionTrigger className="hover:no-underline py-4">
               <div className="flex flex-col items-start text-left">
                 <span className="text-sm font-semibold text-foreground">Product Description</span>
@@ -1440,7 +1440,7 @@ export default function EditProduct({ id }) {
           </AccordionItem>
 
           {/* 4. Marketing Flags & Badges */}
-          <AccordionItem value="marketing" className="rounded-xl border border-border bg-background shadow-sm px-4">
+          <AccordionItem value="marketing" className="rounded-sm border border-border bg-background shadow-sm px-4">
             <AccordionTrigger className="hover:no-underline py-4">
               <div className="flex flex-col items-start text-left">
                 <span className="text-sm font-semibold text-foreground">Marketing Flags & Badges</span>
@@ -1472,7 +1472,7 @@ export default function EditProduct({ id }) {
                       type="button"
                       onClick={() => setPrimaryTag("")}
                       className={cn(
-                        "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer",
+                        "inline-flex items-center gap-1.5 rounded-sm border px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer",
                         primaryTag === ""
                           ? `border-border bg-foreground text-background shadow-sm`
                           : "border-border bg-background text-muted-foreground hover:border-border hover:bg-muted"
@@ -1489,7 +1489,7 @@ export default function EditProduct({ id }) {
                           type="button"
                           onClick={() => setPrimaryTag(tag.id)}
                           className={cn(
-                            "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer",
+                            "inline-flex items-center gap-1.5 rounded-sm border px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer",
                             isSelected
                               ? `border-border ${tag.bgColor} ${tag.color} shadow-sm`
                               : "border-border bg-background text-muted-foreground hover:border-border hover:bg-muted"
@@ -1519,7 +1519,7 @@ export default function EditProduct({ id }) {
                             );
                           }}
                           className={cn(
-                            "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer",
+                            "inline-flex items-center gap-1.5 rounded-sm border px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer",
                             isSelected
                               ? `border-border ${tag.bgColor} ${tag.color} shadow-sm`
                               : "border-border bg-background text-muted-foreground hover:border-border hover:bg-muted"
@@ -1537,7 +1537,7 @@ export default function EditProduct({ id }) {
           </AccordionItem>
 
           {/* 5. SEO & Metadata */}
-          <AccordionItem value="seo" className="rounded-xl border border-border bg-background shadow-sm px-4">
+          <AccordionItem value="seo" className="rounded-sm border border-border bg-background shadow-sm px-4">
             <AccordionTrigger className="hover:no-underline py-4">
               <div className="flex flex-col items-start text-left">
                 <span className="text-sm font-semibold text-foreground">SEO & Metadata</span>
@@ -1560,7 +1560,7 @@ export default function EditProduct({ id }) {
                     size="sm"
                     disabled={seoButtonDisabled}
                     onClick={handleGenerateSeo}
-                    className="rounded-lg shadow-sm text-xs font-semibold h-8"
+                    className="rounded-sm shadow-sm text-xs font-semibold h-8"
                   >
                     {isGeneratingSeo ? (
                       <>
@@ -1579,7 +1579,7 @@ export default function EditProduct({ id }) {
                 </div>
                 <div
                   className={cn(
-                    'inline-flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[11px] font-semibold h-8',
+                    'inline-flex shrink-0 items-center gap-1.5 rounded-sm border px-2.5 py-1 text-[11px] font-semibold h-8',
                     seoReady
                       ? 'border-border bg-muted text-foreground'
                       : 'border-border bg-muted/60 text-muted-foreground',
@@ -1642,7 +1642,7 @@ export default function EditProduct({ id }) {
             </div>
 
             <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-              <div className="min-w-0 rounded-xl border border-border bg-background p-4 shadow-sm">
+              <div className="min-w-0 rounded-sm border border-border bg-background p-4 shadow-sm">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">Search Preview</p>
                 <div className="mt-3 space-y-2">
                   <p className="line-clamp-2 text-base font-semibold leading-snug text-foreground">{seoPreviewTitle}</p>
@@ -1651,14 +1651,14 @@ export default function EditProduct({ id }) {
                 </div>
               </div>
 
-              <div className="min-w-0 rounded-xl border border-border bg-background p-4 shadow-sm">
+              <div className="min-w-0 rounded-sm border border-border bg-background p-4 shadow-sm">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">Completion Check</p>
                 <div className="mt-3 space-y-2">
                   {seoChecks.map((item) => (
                     <div
                       key={item.label}
                       className={cn(
-                        'flex items-center justify-between rounded-lg border px-3 py-2 text-xs font-medium',
+                        'flex items-center justify-between rounded-sm border px-3 py-2 text-xs font-medium',
                         item.complete
                         ? 'border-border bg-muted text-foreground'
                           : 'border-border bg-muted/40 text-muted-foreground',
@@ -1713,7 +1713,7 @@ export default function EditProduct({ id }) {
                   <Label className="mb-1.5 text-xs font-semibold">Social Banner Image</Label>
 
                   {/* Upload button & Quick Pickers */}
-                  <div className="space-y-3 rounded-xl border border-border bg-muted/30 p-3.5">
+                  <div className="space-y-3 rounded-sm border border-border bg-muted/30 p-3.5">
                     <div className="flex flex-wrap items-center gap-2.5">
                       <input
                         ref={ogImageFileInputRef}
@@ -1728,7 +1728,7 @@ export default function EditProduct({ id }) {
                         size="sm"
                         disabled={isUploadingOgImage}
                         onClick={() => ogImageFileInputRef.current?.click()}
-                        className="rounded-lg shadow-sm text-xs font-semibold gap-2 border border-border h-8"
+                        className="rounded-sm shadow-sm text-xs font-semibold gap-2 border border-border h-8"
                       >
                         {isUploadingOgImage ? (
                           <>
@@ -1768,7 +1768,7 @@ export default function EditProduct({ id }) {
                                 type="button"
                                 onClick={() => setSeoOgImage(img.url)}
                                 className={cn(
-                                  "relative size-11 rounded-lg overflow-hidden border-2 transition-all p-0.5 bg-background",
+                                  "relative size-11 rounded-sm overflow-hidden border-2 transition-all p-0.5 bg-background",
                                   isSelected
                                     ? "border-foreground ring-2 ring-foreground/20 scale-105"
                                     : "border-border hover:border-muted-foreground/50 opacity-70 hover:opacity-100"
@@ -1802,7 +1802,7 @@ export default function EditProduct({ id }) {
               </div>
 
               {/* Live WhatsApp / Social Card Preview */}
-              <div className="mt-4 rounded-xl border border-border bg-muted/20 p-3.5 space-y-3">
+              <div className="mt-4 rounded-sm border border-border bg-muted/20 p-3.5 space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
                     <Share2 className="size-3.5 text-foreground" />
@@ -1811,7 +1811,7 @@ export default function EditProduct({ id }) {
                   
                   {/* Preview Controls */}
                   <div className="flex items-center gap-1.5 text-xs">
-                    <div className="inline-flex rounded-lg border border-border bg-background p-0.5">
+                    <div className="inline-flex rounded-sm border border-border bg-background p-0.5">
                       <button
                         type="button"
                         onClick={() => setOgPreviewFit('cover')}
@@ -1834,7 +1834,7 @@ export default function EditProduct({ id }) {
                       </button>
                     </div>
 
-                    <div className="inline-flex rounded-lg border border-border bg-background p-0.5 shadow-sm">
+                    <div className="inline-flex rounded-sm border border-border bg-background p-0.5 shadow-sm">
                       <button
                         type="button"
                         onClick={() => setSeoOgImageRatio('1.91:1')}
@@ -1859,7 +1859,7 @@ export default function EditProduct({ id }) {
                   </div>
                 </div>
 
-                <div className="max-w-md mx-auto rounded-xl overflow-hidden border border-border shadow-md bg-neutral-900 text-white">
+                <div className="max-w-md mx-auto rounded-sm overflow-hidden border border-border shadow-md bg-neutral-900 text-white">
                   <div
                     className={cn(
                     "relative w-full overflow-hidden border-b border-neutral-800",

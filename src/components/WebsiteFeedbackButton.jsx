@@ -18,7 +18,7 @@ export default function WebsiteFeedbackButton({ className = '', variant = 'list-
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className={cn("inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary font-semibold text-xs transition-colors cursor-pointer", className)}
+          className={cn("inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-primary/10 hover:bg-primary/20 text-primary font-semibold text-xs transition-colors cursor-pointer", className)}
         >
           {children || 'Give Website Feedback'}
         </button>

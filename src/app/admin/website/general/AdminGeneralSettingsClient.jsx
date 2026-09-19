@@ -51,7 +51,7 @@ export default function AdminGeneralSettingsClient({ initialSettings }) {
 
   return (
     <div className="w-full max-w-4xl space-y-6">
-      <div className="surface-card rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border border-border">
+      <div className="surface-card rounded-sm p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border border-border">
         <div className="max-w-md">
           <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary uppercase tracking-wider mb-2">
             Store Identity

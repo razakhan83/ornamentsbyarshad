@@ -13,7 +13,7 @@ import { requireAdmin } from '@/lib/requireAdmin';
 import { cn } from '@/lib/utils';
 
 const DashboardChart = dynamic(() => import('@/components/admin/DashboardChart'), {
-  loading: () => <div className="h-[320px] w-full animate-pulse rounded-lg bg-muted/40" />,
+  loading: () => <div className="h-[320px] w-full animate-pulse rounded-sm bg-muted/40" />,
 });
 
 const statsConfig = [
@@ -131,7 +131,7 @@ async function DashboardContent({ session }) {
   return (
     <div className="admin-page-stack w-full gap-4">
       {/* Header Banner */}
-      <div className="admin-surface rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-border/80 relative overflow-hidden bg-card">
+      <div className="admin-surface rounded-sm p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-border/80 relative overflow-hidden bg-card">
         <div className="min-w-0">
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
             {getGreeting()}, {session?.user?.name?.split(' ')[0] || 'Admin'}

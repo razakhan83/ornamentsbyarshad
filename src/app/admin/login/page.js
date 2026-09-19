@@ -30,7 +30,7 @@ export default async function AdminLoginPage() {
 
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-[#737373] hover:text-[#121212] transition-colors py-1.5 px-3 rounded-lg hover:bg-[#F2EFE9]"
+          className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-[#737373] hover:text-[#121212] transition-colors py-1.5 px-3 rounded-sm hover:bg-[#F2EFE9]"
         >
           <ArrowLeft className="size-4" />
           <span>Back to store</span>
@@ -39,14 +39,14 @@ export default async function AdminLoginPage() {
 
       {/* ── Center Content: Minimalist Admin Card ── */}
       <main className="flex-1 flex items-center justify-center my-6">
-        <div className="w-full max-w-[440px] bg-white border border-[#E8E5DF] rounded-2xl shadow-[0_4px_25px_-5px_rgba(0,0,0,0.05)] p-7 sm:p-9">
+        <div className="w-full max-w-[440px] bg-white border border-[#E8E5DF] rounded-sm shadow-[0_4px_25px_-5px_rgba(0,0,0,0.05)] p-7 sm:p-9">
           <Suspense fallback={
             <div className="space-y-4 py-8 animate-pulse">
               <div className="h-4 w-32 bg-[#F2EFE9] rounded" />
               <div className="h-8 w-48 bg-[#F2EFE9] rounded" />
-              <div className="h-11 w-full bg-[#F2EFE9] rounded-xl mt-6" />
-              <div className="h-11 w-full bg-[#F2EFE9] rounded-xl" />
-              <div className="h-11 w-full bg-[#121212]/10 rounded-xl mt-4" />
+              <div className="h-11 w-full bg-[#F2EFE9] rounded-sm mt-6" />
+              <div className="h-11 w-full bg-[#F2EFE9] rounded-sm" />
+              <div className="h-11 w-full bg-[#121212]/10 rounded-sm mt-4" />
             </div>
           }>
             <AdminLoginFormClient />

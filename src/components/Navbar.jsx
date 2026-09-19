@@ -93,7 +93,7 @@ const MobileSearchOverlay = dynamic(() => import('@/components/MobileSearchOverl
 
 const NavbarSidebarFooter = dynamic(() => import('@/components/NavbarSidebarFooter'), {
   ssr: false,
-  loading: () => <Skeleton className="min-h-10 w-full rounded-xl" aria-hidden="true" />,
+  loading: () => <Skeleton className="min-h-10 w-full rounded-sm" aria-hidden="true" />,
 });
 
 const MobileBottomNav = dynamic(() => import('@/components/MobileBottomNav'), {
@@ -110,7 +110,7 @@ function MobileMenuSkeleton() {
     <div className="flex h-full w-full flex-col bg-sidebar">
       {/* Tabs list skeleton */}
       <div className="flex w-full items-center p-4 pb-2">
-        <div className="grid h-10 w-full grid-cols-2 gap-2 rounded-lg bg-muted/40 p-1">
+        <div className="grid h-10 w-full grid-cols-2 gap-2 rounded-sm bg-muted/40 p-1">
           <Skeleton className="h-8 w-full rounded-md bg-muted/60" />
           <Skeleton className="h-8 w-full rounded-md bg-transparent" />
         </div>
@@ -119,7 +119,7 @@ function MobileMenuSkeleton() {
       {/* Menu items skeleton */}
       <div className="flex-1 px-4 py-2 space-y-2.5">
         {[1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="flex h-9 items-center gap-4 rounded-lg bg-gray-50/50 px-3 py-1.5 border border-transparent">
+          <div key={i} className="flex h-9 items-center gap-4 rounded-sm bg-gray-50/50 px-3 py-1.5 border border-transparent">
             <Skeleton className="size-4 rounded bg-muted/65 shrink-0" />
             <Skeleton className="h-3.5 w-24 rounded bg-muted/50" />
           </div>
@@ -133,7 +133,7 @@ function MobileMenuSkeleton() {
             <Skeleton key={i} className="size-[18px] rounded-full bg-muted/60" />
           ))}
         </div>
-        <Skeleton className="h-9 w-full rounded-lg bg-muted/50" />
+        <Skeleton className="h-9 w-full rounded-sm bg-muted/50" />
       </div>
     </div>
   );
@@ -403,7 +403,7 @@ function NavbarContent({
 
   function navLinkClass(path) {
     return cn(
-      'inline-flex min-h-10 items-center rounded-lg px-3 py-2 text-sm transition-[color,transform] duration-200 ease-[cubic-bezier(0.2,0,0,1)] active:scale-[0.96]',
+      'inline-flex min-h-10 items-center rounded-sm px-3 py-2 text-sm transition-[color,transform] duration-200 ease-[cubic-bezier(0.2,0,0,1)] active:scale-[0.96]',
       pathname === path
         ? 'font-bold text-primary'
         : 'font-medium text-muted-foreground hover:text-foreground'
@@ -412,7 +412,7 @@ function NavbarContent({
 
   function desktopNavButtonClass(isActive = false) {
     return cn(
-      'inline-flex min-h-10 items-center rounded-lg px-3 py-2 text-sm transition-[color,transform] duration-200 ease-[cubic-bezier(0.2,0,0,1)] active:scale-[0.96]',
+      'inline-flex min-h-10 items-center rounded-sm px-3 py-2 text-sm transition-[color,transform] duration-200 ease-[cubic-bezier(0.2,0,0,1)] active:scale-[0.96]',
       isActive
         ? 'font-bold text-primary'
         : 'font-medium text-muted-foreground hover:text-foreground'
@@ -439,7 +439,7 @@ function NavbarContent({
     { href: '/products', label: 'All Products', icon: LayoutGrid },
   ];
   const mobileMenuButtonClass =
-    'min-h-10 rounded-xl px-2.5 py-2 text-sidebar-foreground transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.2,0,0,1)] hover:bg-sidebar-accent/45 hover:text-sidebar-accent-foreground data-[active=true]:text-sidebar-primary-foreground active:scale-[0.99]';
+    'min-h-10 rounded-sm px-2.5 py-2 text-sidebar-foreground transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.2,0,0,1)] hover:bg-sidebar-accent/45 hover:text-sidebar-accent-foreground data-[active=true]:text-sidebar-primary-foreground active:scale-[0.99]';
   const navActionButtonClass =
     'nav-icon-button relative rounded-none md:border border-transparent md:border-border/60 bg-transparent md:bg-background p-0 text-foreground transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#A67C52]/40 hover:bg-[#F4F2EE] hover:text-[#A67C52] hover:shadow-[0_4px_16px_rgba(166,124,82,0.12)] active:scale-95 active:translate-y-0';
   const announcementItems = normalizeAnnouncementItems(announcementBarMessages, announcementBarText);

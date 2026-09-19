@@ -22,9 +22,9 @@ export default function SplashScreen({ onComplete }) {
             </div>
 
             <div className="absolute bottom-20 flex animate-fadeIn items-center gap-3 text-sm font-semibold uppercase tracking-widest text-primary-foreground/70" style={{ animationDelay: '0.8s' }}>
-                <div className="h-2 w-2 rounded-xl bg-accent animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                <div className="h-2 w-2 rounded-xl bg-accent animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                <div className="h-2 w-2 rounded-xl bg-accent animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                <div className="h-2 w-2 rounded-sm bg-accent animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="h-2 w-2 rounded-sm bg-accent animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="h-2 w-2 rounded-sm bg-accent animate-bounce" style={{ animationDelay: '300ms' }}></div>
             </div>
         </div>
     );

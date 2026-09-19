@@ -87,7 +87,7 @@ function AccountMenuButton({ icon: Icon, label, onClick, destructive = false }) 
       variant="ghost"
       onClick={onClick}
       className={cn(
-        'h-auto w-full justify-start rounded-2xl px-4 py-3 text-left',
+        'h-auto w-full justify-start rounded-sm px-4 py-3 text-left',
         destructive
           ? 'text-destructive hover:bg-destructive/8 hover:text-destructive'
           : 'text-foreground hover:bg-muted/70'
@@ -135,7 +135,8 @@ export default function MobileBottomNav({
   const accountPanelOpen = session ? accountOpen : isAuthOpen;
 
   useEffect(() => {
-    setAccountLoading(false);
+    const t = setTimeout(() => setAccountLoading(false), 0);
+    return () => clearTimeout(t);
   }, [pathname]);
 
   useEffect(() => {
@@ -347,7 +348,7 @@ export default function MobileBottomNav({
                   </>
                 ) : (
                   <>
-                    <div className="rounded-2xl border border-border/70 bg-muted/45 px-4 py-4">
+                    <div className="rounded-sm border border-border/70 bg-muted/45 px-4 py-4">
                       <p className="text-sm leading-6 text-muted-foreground">
                         Save the pieces you love, track your deliveries, and keep your next checkout effortless.
                       </p>
@@ -359,7 +360,7 @@ export default function MobileBottomNav({
                         onAccountOpenChange(false);
                         onAuthOpenChange?.(true);
                       }}
-                      className="h-12 rounded-xl"
+                      className="h-12 rounded-sm"
                     >
                       <UserPlus data-icon="inline-start" />
                       Sign Up
@@ -374,7 +375,7 @@ export default function MobileBottomNav({
       </Drawer>
 
       <AlertDialog open={logoutConfirmOpen} onOpenChange={setLogoutConfirmOpen}>
-        <AlertDialogContent className="max-w-[300px] p-5 rounded-xl gap-4" showCloseButton={false}>
+        <AlertDialogContent className="max-w-[300px] p-5 rounded-sm gap-4" showCloseButton={false}>
           <div className="flex justify-between items-start">
             <AlertDialogTitle className="text-base font-semibold">Are you sure to logout?</AlertDialogTitle>
             <Button 
@@ -394,7 +395,7 @@ export default function MobileBottomNav({
                 setLogoutConfirmOpen(false);
                 signOut();
               }}
-              className="w-full rounded-lg font-semibold"
+              className="w-full rounded-sm font-semibold"
             >
               Logout
             </Button>

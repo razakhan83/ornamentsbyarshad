@@ -149,7 +149,7 @@ export default function OrderQuickViewDialog({
         {triggerLabel}
       </DialogTrigger>
 
-      <DialogContent className="max-h-[92vh] w-[calc(100%-1rem)] max-w-xl overflow-hidden p-0 sm:max-w-2xl rounded-2xl" showCloseButton>
+      <DialogContent className="max-h-[92vh] w-[calc(100%-1rem)] max-w-xl overflow-hidden p-0 sm:max-w-2xl rounded-sm" showCloseButton>
         {/* Header Actions */}
         <DialogHeader className="flex flex-row items-center justify-between border-b border-border pl-5 pr-12 py-3.5">
           <DialogTitle className="text-sm font-bold text-foreground">
@@ -266,7 +266,7 @@ export default function OrderQuickViewDialog({
                       >
                         {/* Image + Title */}
                         <div className="flex items-center gap-3 min-w-0 flex-1">
-                          <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
+                          <div className="relative size-12 shrink-0 overflow-hidden rounded-sm border border-border bg-muted">
                             {item?.image ? (
                               <Image
                                 src={item.image}

@@ -15,30 +15,30 @@ export default function AdminOrdersSkeleton() {
       {/* Tabs */}
       <div className="hidden md:flex flex-col gap-2 border-b border-border pb-3">
         <div className="flex flex-wrap items-center gap-2">
-          <Skeleton className="h-8.5 w-14 rounded-lg" />
-          <Skeleton className="h-8.5 w-20 rounded-lg" />
-          <Skeleton className="h-8.5 w-36 rounded-lg" />
-          <Skeleton className="h-8.5 w-28 rounded-lg" />
-          <Skeleton className="h-8.5 w-24 rounded-lg" />
-          <Skeleton className="h-8.5 w-24 rounded-lg" />
-          <Skeleton className="h-8.5 w-32 rounded-lg" />
-          <Skeleton className="h-8.5 w-28 rounded-lg" />
-          <Skeleton className="h-8.5 w-28 rounded-lg" />
+          <Skeleton className="h-8.5 w-14 rounded-sm" />
+          <Skeleton className="h-8.5 w-20 rounded-sm" />
+          <Skeleton className="h-8.5 w-36 rounded-sm" />
+          <Skeleton className="h-8.5 w-28 rounded-sm" />
+          <Skeleton className="h-8.5 w-24 rounded-sm" />
+          <Skeleton className="h-8.5 w-24 rounded-sm" />
+          <Skeleton className="h-8.5 w-32 rounded-sm" />
+          <Skeleton className="h-8.5 w-28 rounded-sm" />
+          <Skeleton className="h-8.5 w-28 rounded-sm" />
           <div className="mx-1 h-5 w-px bg-border" />
-          <Skeleton className="h-8.5 w-24 rounded-lg" />
+          <Skeleton className="h-8.5 w-24 rounded-sm" />
         </div>
       </div>
 
       {/* Mobile Select */}
       <div className="md:hidden">
-        <Skeleton className="h-8 w-full rounded-lg" />
+        <Skeleton className="h-8 w-full rounded-sm" />
       </div>
 
       {/* Filter Toolbar */}
       <div className="admin-filter-shell flex flex-col md:flex-row md:items-center justify-between gap-3 w-full">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-2 flex-1 min-w-0">
           <Skeleton className="h-8 w-28 rounded-md" />
-          <Skeleton className="h-8 w-full md:max-w-sm rounded-lg" />
+          <Skeleton className="h-8 w-full md:max-w-sm rounded-sm" />
         </div>
         <div className="flex flex-row flex-wrap items-center gap-2 border-t border-border/50 pt-2 md:border-0 md:pt-0 shrink-0">
           <Skeleton className="h-7 w-24 rounded-md" />
@@ -48,7 +48,7 @@ export default function AdminOrdersSkeleton() {
       </div>
 
       {/* Desktop Table Skeleton */}
-      <div className="hidden overflow-hidden rounded-xl border border-border bg-card md:block shadow-xs">
+      <div className="hidden overflow-hidden rounded-sm border border-border bg-card md:block shadow-xs">
         <table className="w-full text-left">
           <thead>
             <tr className="border-b border-border bg-muted/40 text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">

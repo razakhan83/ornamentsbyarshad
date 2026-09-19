@@ -41,11 +41,11 @@ function SingleOrderSkeleton() {
         <div className="grid gap-4 md:gap-6 md:grid-cols-3">
           {/* Left Column */}
           <div className="flex flex-col gap-4 md:gap-6 md:col-span-2">
-            <div className="rounded-xl border bg-card text-card-foreground shadow-sm h-32 flex flex-col justify-center p-6 gap-4">
+            <div className="rounded-sm border bg-card text-card-foreground shadow-sm h-32 flex flex-col justify-center p-6 gap-4">
               <div className="h-6 w-48 bg-muted rounded"></div>
               <div className="h-4 w-32 bg-muted rounded"></div>
             </div>
-            <div className="rounded-xl border bg-card text-card-foreground shadow-sm h-96 p-6">
+            <div className="rounded-sm border bg-card text-card-foreground shadow-sm h-96 p-6">
               <div className="h-6 w-32 bg-muted rounded mb-2"></div>
               <div className="h-4 w-24 bg-muted rounded mb-6"></div>
               <div className="space-y-4">
@@ -61,7 +61,7 @@ function SingleOrderSkeleton() {
 
           {/* Right Column */}
           <div className="flex flex-col gap-4 md:gap-6 md:col-span-1">
-            <div className="rounded-xl border bg-card text-card-foreground shadow-sm h-48 p-6">
+            <div className="rounded-sm border bg-card text-card-foreground shadow-sm h-48 p-6">
               <div className="h-6 w-32 bg-muted rounded mb-6"></div>
               <div className="space-y-4">
                 <div className="h-4 w-full bg-muted rounded"></div>
@@ -69,7 +69,7 @@ function SingleOrderSkeleton() {
                 <div className="h-4 w-full bg-muted rounded"></div>
               </div>
             </div>
-            <div className="rounded-xl border bg-card text-card-foreground shadow-sm h-48 p-6">
+            <div className="rounded-sm border bg-card text-card-foreground shadow-sm h-48 p-6">
               <div className="h-6 w-40 bg-muted rounded mb-6"></div>
               <div className="space-y-4">
                 <div className="h-4 w-3/4 bg-muted rounded"></div>
@@ -135,7 +135,7 @@ async function SingleOrderContent({ params, searchParams }) {
         <OrderDetailsClient order={order} />
         
         {!session && (
-          <div className="mt-8 rounded-xl border border-accent/25 bg-accent/12 p-6 text-center">
+          <div className="mt-8 rounded-sm border border-accent/25 bg-accent/12 p-6 text-center">
             <p className="text-sm font-medium text-accent-foreground">
               Viewing as Guest. <Link href="/api/auth/signin" className="font-bold underline hover:text-foreground">Sign in</Link> to save this order to your account permanently.
             </p>

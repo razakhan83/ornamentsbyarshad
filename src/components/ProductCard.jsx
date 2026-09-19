@@ -55,7 +55,7 @@ export default function ProductCard({ product, className = "", priority = false 
     >
       {/* Product Image Area with Category Background Color & Soft Premium Rounded Edges */}
       <div 
-        className="relative w-full aspect-[4/5] overflow-hidden rounded-[8px] transition-[border-color,box-shadow,background-color] duration-300"
+        className="relative w-full aspect-[4/5] overflow-hidden rounded-sm transition-[border-color,box-shadow,background-color] duration-300"
         style={{ backgroundColor: getProductCategoryBgColor(product) }}
       >
         <ProductCardWishlistSlot product={product} />
@@ -187,7 +187,7 @@ export default function ProductCard({ product, className = "", priority = false 
           draggable={false}
         >
           <h3
-            className="text-xs sm:text-[13.5px] font-medium text-[#121212] leading-snug line-clamp-2 min-h-[2.1rem] sm:min-h-[2.35rem] hover:text-[#A67C52] transition-colors"
+            className="text-xs sm:text-[13.5px] font-serif tracking-wide text-[#1a1a1a] leading-snug line-clamp-2 min-h-[2.1rem] sm:min-h-[2.35rem] hover:text-[#A67C52] transition-colors"
             title={productName}
           >
             {productName}
@@ -216,7 +216,7 @@ export default function ProductCard({ product, className = "", priority = false 
         <div className="mt-1.5 flex items-baseline gap-1.5 sm:gap-2 flex-nowrap whitespace-nowrap min-w-0 w-full overflow-hidden">
           <p
             className={cn(
-              "font-semibold text-[#121212] tabular-nums whitespace-nowrap shrink-0",
+              "font-semibold text-[#1a1a1a] tabular-nums whitespace-nowrap shrink-0",
               sellingPrice >= 100000
                 ? "text-[11.5px] min-[360px]:text-[12.5px] sm:text-[13.5px] md:text-sm"
                 : "text-xs min-[360px]:text-[13px] sm:text-sm"

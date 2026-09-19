@@ -97,7 +97,7 @@ export default function NotificationsPage() {
             <div className="flex flex-col divide-y divide-border/40">
               {Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="flex items-start gap-4 p-4 sm:p-6">
-                  <Skeleton className="size-10 shrink-0 rounded-xl" />
+                  <Skeleton className="size-10 shrink-0 rounded-sm" />
                   <div className="flex flex-1 flex-col gap-2">
                     <Skeleton className="h-4 w-3/4 rounded-md" />
                     <Skeleton className="h-3 w-1/4 rounded-md" />
@@ -124,7 +124,7 @@ export default function NotificationsPage() {
                         <Circle className="size-2 fill-primary text-primary" />
                       </div>
                     )}
-                    <div className={cn("flex size-10 shrink-0 items-center justify-center rounded-xl border", colorClass)}>
+                    <div className={cn("flex size-10 shrink-0 items-center justify-center rounded-sm border", colorClass)}>
                       <Icon className="size-5" />
                     </div>
                     <div className="flex flex-1 flex-col gap-1.5">

@@ -24,9 +24,9 @@ export function normalizeAnnouncementMessages(messages = [], fallbackText = '') 
 
 export function SettingSection({ icon: Icon, title, description, children }) {
   return (
-    <section className="surface-card rounded-xl p-5 md:p-6">
+    <section className="surface-card rounded-sm p-5 md:p-6">
       <div className="mb-5 flex items-center gap-3">
-        <div className="flex size-10 items-center justify-center rounded-lg border border-border bg-muted text-foreground">
+        <div className="flex size-10 items-center justify-center rounded-sm border border-border bg-muted text-foreground">
           <Icon className="size-4" />
         </div>
         <div>
@@ -41,7 +41,7 @@ export function SettingSection({ icon: Icon, title, description, children }) {
 
 export function ToggleField({ checked, onCheckedChange, title, description }) {
   return (
-    <Field orientation="horizontal" className="items-start justify-between rounded-lg border border-border bg-muted/35 px-4 py-3">
+    <Field orientation="horizontal" className="items-start justify-between rounded-sm border border-border bg-muted/35 px-4 py-3">
       <FieldContent>
         <FieldLabel>{title}</FieldLabel>
         <FieldDescription>{description}</FieldDescription>
@@ -66,7 +66,7 @@ export function LogoUploadCard({
   onUpload,
 }) {
   return (
-    <Field className="rounded-2xl border border-border bg-background/75 p-4">
+    <Field className="rounded-sm border border-border bg-background/75 p-4">
       <FieldContent className="gap-4">
         <div className="flex items-start justify-between gap-3">
           <div>
@@ -79,7 +79,7 @@ export function LogoUploadCard({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="rounded-xl"
+                className="rounded-sm"
                 onClick={() => onChange(field, '')}
                 disabled={uploading}
               >
@@ -87,7 +87,7 @@ export function LogoUploadCard({
                 Remove
               </Button>
             ) : null}
-            <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted">
+            <label className="inline-flex cursor-pointer items-center gap-2 rounded-sm border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted">
               {uploading ? <Loader2 className="size-3.5 animate-spin" /> : <Upload className="size-3.5" />}
               {uploading ? 'Uploading' : 'Upload'}
               <input
@@ -101,7 +101,7 @@ export function LogoUploadCard({
           </div>
         </div>
 
-        <div className={`relative flex min-h-36 items-center justify-center overflow-hidden rounded-2xl border border-border ${surfaceClassName}`}>
+        <div className={`relative flex min-h-36 items-center justify-center overflow-hidden rounded-sm border border-border ${surfaceClassName}`}>
           {value ? (
             <Image
               src={value}

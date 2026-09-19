@@ -56,7 +56,7 @@ function SortableProductItem({ product, index, onRemove }) {
       ref={setNodeRef}
       style={style}
       className={cn(
-        'group flex items-center justify-between gap-3 rounded-xl border border-border/80 bg-card p-3 transition-all shadow-2xs hover:border-primary/40 hover:shadow-sm',
+        'group flex items-center justify-between gap-3 rounded-sm border border-border/80 bg-card p-3 transition-all shadow-2xs hover:border-primary/40 hover:shadow-sm',
         isDragging && 'opacity-80 ring-2 ring-primary bg-accent/60 shadow-xl'
       )}
     >
@@ -66,19 +66,19 @@ function SortableProductItem({ product, index, onRemove }) {
           type="button"
           {...attributes}
           {...listeners}
-          className="cursor-grab active:cursor-grabbing p-1.5 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors touch-none shrink-0"
+          className="cursor-grab active:cursor-grabbing p-1.5 text-muted-foreground hover:text-foreground rounded-sm hover:bg-muted transition-colors touch-none shrink-0"
           title="Drag to change order"
         >
           <GripVertical className="h-4 w-4" />
         </button>
 
         {/* Position Badge */}
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary text-xs font-black text-primary-foreground shadow-2xs">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm bg-primary text-xs font-black text-primary-foreground shadow-2xs">
           #{index + 1}
         </span>
 
         {/* Image Thumbnail */}
-        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-border/80 bg-muted/30">
+        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-sm border border-border/80 bg-muted/30">
           {product.image ? (
             <Image
               src={product.image}
@@ -119,7 +119,7 @@ function SortableProductItem({ product, index, onRemove }) {
         variant="ghost"
         size="icon"
         onClick={() => onRemove(product._id)}
-        className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl shrink-0 transition-colors"
+        className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-sm shrink-0 transition-colors"
         title="Unpin from front"
       >
         <Trash2 className="h-4 w-4" />
@@ -266,7 +266,7 @@ export default function CategoryShowcaseDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="w-[96vw] max-w-[1100px] sm:!max-w-[1100px] md:!max-w-[1100px] max-h-[92vh] flex flex-col p-0 gap-0 overflow-hidden rounded-2xl border border-border shadow-2xl bg-background">
+      <DialogContent className="w-[96vw] max-w-[1100px] sm:!max-w-[1100px] md:!max-w-[1100px] max-h-[92vh] flex flex-col p-0 gap-0 overflow-hidden rounded-sm border border-border shadow-2xl bg-background">
         {/* Header */}
         <div className="px-6 py-4 border-b border-border bg-muted/20 flex items-center justify-between">
           <div>
@@ -289,7 +289,7 @@ export default function CategoryShowcaseDialog({
         {/* Content Body */}
         <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5">
           {/* Quick Settings Bar */}
-          <div className="grid gap-4 lg:grid-cols-12 rounded-2xl border border-border/80 bg-card p-4 sm:p-5 shadow-xs">
+          <div className="grid gap-4 lg:grid-cols-12 rounded-sm border border-border/80 bg-card p-4 sm:p-5 shadow-xs">
             {/* 1. Limit Controller (7 cols) */}
             <div className="lg:col-span-7 flex flex-col justify-between space-y-3">
               <div className="flex items-center justify-between">
@@ -309,7 +309,7 @@ export default function CategoryShowcaseDialog({
                     type="button"
                     onClick={() => setLimit(val)}
                     className={cn(
-                      'px-3 py-1.5 text-xs font-bold rounded-xl border transition-all cursor-pointer',
+                      'px-3 py-1.5 text-xs font-bold rounded-sm border transition-all cursor-pointer',
                       limit === val
                         ? 'bg-primary text-primary-foreground border-primary shadow-xs ring-2 ring-primary/30'
                         : 'bg-background hover:bg-muted text-foreground border-border'
@@ -327,7 +327,7 @@ export default function CategoryShowcaseDialog({
                     max="24"
                     value={limit}
                     onChange={(e) => setLimit(Math.min(24, Math.max(1, Number(e.target.value) || 8)))}
-                    className="h-8 text-xs w-16 text-center font-bold rounded-lg"
+                    className="h-8 text-xs w-16 text-center font-bold rounded-sm"
                   />
                 </div>
               </div>
@@ -342,7 +342,7 @@ export default function CategoryShowcaseDialog({
               <div className="grid gap-2">
                 <label
                   className={cn(
-                    'flex items-center justify-between gap-2 p-2 px-3 rounded-xl border cursor-pointer transition-all text-xs',
+                    'flex items-center justify-between gap-2 p-2 px-3 rounded-sm border cursor-pointer transition-all text-xs',
                     selectionMode === 'pinned_first'
                       ? 'border-primary bg-primary/5 text-foreground font-bold ring-1 ring-primary/40'
                       : 'border-border bg-background/50 text-muted-foreground hover:bg-muted/30'
@@ -361,7 +361,7 @@ export default function CategoryShowcaseDialog({
 
                 <label
                   className={cn(
-                    'flex items-center justify-between gap-2 p-2 px-3 rounded-xl border cursor-pointer transition-all text-xs',
+                    'flex items-center justify-between gap-2 p-2 px-3 rounded-sm border cursor-pointer transition-all text-xs',
                     selectionMode === 'curated_only'
                       ? 'border-primary bg-primary/5 text-foreground font-bold ring-1 ring-primary/40'
                       : 'border-border bg-background/50 text-muted-foreground hover:bg-muted/30'
@@ -399,10 +399,10 @@ export default function CategoryShowcaseDialog({
                 </div>
 
                 {/* Sortable List Area */}
-                <div className="flex-1 min-h-[300px] max-h-[420px] overflow-y-auto space-y-2 rounded-2xl border-2 border-dashed border-border p-3 bg-muted/10">
+                <div className="flex-1 min-h-[300px] max-h-[420px] overflow-y-auto space-y-2 rounded-sm border-2 border-dashed border-border p-3 bg-muted/10">
                   {pinnedProducts.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full min-h-[260px] text-center p-6">
-                      <div className="h-12 w-12 rounded-2xl bg-muted/60 flex items-center justify-center text-muted-foreground mb-3 border border-border">
+                      <div className="h-12 w-12 rounded-sm bg-muted/60 flex items-center justify-center text-muted-foreground mb-3 border border-border">
                         <Package className="h-6 w-6" />
                       </div>
                       <p className="text-sm font-bold text-foreground">No Products Pinned Yet</p>
@@ -427,7 +427,7 @@ export default function CategoryShowcaseDialog({
                 </div>
 
                 {/* Live Status Banner */}
-                <div className="rounded-xl bg-primary/10 border border-primary/25 p-3 text-xs text-foreground flex items-center justify-between shadow-2xs">
+                <div className="rounded-sm bg-primary/10 border border-primary/25 p-3 text-xs text-foreground flex items-center justify-between shadow-2xs">
                   <span className="font-medium">Storefront Result:</span>
                   <span className="font-bold text-primary">
                     {selectionMode === 'pinned_first'
@@ -455,7 +455,7 @@ export default function CategoryShowcaseDialog({
                     placeholder="Search products by title..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="h-9 text-xs pl-9 pr-8 rounded-xl bg-background"
+                    className="h-9 text-xs pl-9 pr-8 rounded-sm bg-background"
                   />
                   {searchQuery && (
                     <button
@@ -469,7 +469,7 @@ export default function CategoryShowcaseDialog({
                 </div>
 
                 {/* Available Products List */}
-                <div className="flex-1 min-h-[300px] max-h-[420px] overflow-y-auto space-y-2 rounded-2xl border border-border p-3 bg-card shadow-xs">
+                <div className="flex-1 min-h-[300px] max-h-[420px] overflow-y-auto space-y-2 rounded-sm border border-border p-3 bg-card shadow-xs">
                   {unpinnedProducts.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full min-h-[260px] text-center p-6 text-muted-foreground">
                       <p className="text-xs font-medium">
@@ -482,10 +482,10 @@ export default function CategoryShowcaseDialog({
                     unpinnedProducts.map((product) => (
                       <div
                         key={product._id}
-                        className="flex items-center justify-between gap-3 rounded-xl border border-border/70 bg-background p-2.5 hover:border-primary/50 hover:bg-muted/20 transition-all shadow-2xs"
+                        className="flex items-center justify-between gap-3 rounded-sm border border-border/70 bg-background p-2.5 hover:border-primary/50 hover:bg-muted/20 transition-all shadow-2xs"
                       >
                         <div className="flex items-center gap-3 min-w-0 flex-1">
-                          <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-border/70 bg-muted/40">
+                          <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-sm border border-border/70 bg-muted/40">
                             {product.image ? (
                               <Image
                                 src={product.image}
@@ -523,7 +523,7 @@ export default function CategoryShowcaseDialog({
                           variant="outline"
                           size="sm"
                           onClick={() => handlePinProduct(product._id)}
-                          className="h-8 px-3.5 text-xs font-bold gap-1.5 rounded-xl shrink-0 border-primary/30 bg-primary/5 text-primary hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all shadow-2xs cursor-pointer"
+                          className="h-8 px-3.5 text-xs font-bold gap-1.5 rounded-sm shrink-0 border-primary/30 bg-primary/5 text-primary hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all shadow-2xs cursor-pointer"
                         >
                           <Plus className="h-3.5 w-3.5" />
                           Pin
@@ -545,7 +545,7 @@ export default function CategoryShowcaseDialog({
             size="sm"
             onClick={onClose}
             disabled={saving}
-            className="text-xs font-semibold rounded-xl"
+            className="text-xs font-semibold rounded-sm"
           >
             Cancel
           </Button>
@@ -555,7 +555,7 @@ export default function CategoryShowcaseDialog({
             size="sm"
             onClick={handleSave}
             disabled={saving || loading}
-            className="text-xs font-bold px-6 h-9 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer"
+            className="text-xs font-bold px-6 h-9 rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer"
           >
             {saving ? (
               <>

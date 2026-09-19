@@ -104,7 +104,7 @@ export default function SignInFormClient() {
               value={formData.name}
               onChange={handleInputChange}
               placeholder="e.g. Ayesha Khan"
-              className="w-full h-11 px-3.5 rounded-xl border border-[#E0DCD5] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/20"
+              className="w-full h-11 px-3.5 rounded-sm border border-[#E0DCD5] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/20"
             />
           </div>
         )}
@@ -122,7 +122,7 @@ export default function SignInFormClient() {
             value={formData.email}
             onChange={handleInputChange}
             placeholder="name@example.com"
-            className="w-full h-11 px-3.5 rounded-xl border border-[#E0DCD5] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/20"
+            className="w-full h-11 px-3.5 rounded-sm border border-[#E0DCD5] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/20"
           />
         </div>
 
@@ -139,7 +139,7 @@ export default function SignInFormClient() {
             value={formData.password}
             onChange={handleInputChange}
             placeholder="••••••••"
-            className="w-full h-11 px-3.5 rounded-xl border border-[#E0DCD5] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/20"
+            className="w-full h-11 px-3.5 rounded-sm border border-[#E0DCD5] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/20"
           />
         </div>
 
@@ -169,7 +169,7 @@ export default function SignInFormClient() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full h-11 mt-2 bg-[#121212] hover:bg-[#262626] text-white text-sm font-semibold rounded-xl flex items-center justify-center transition-all shadow-xs active:scale-[0.99] cursor-pointer disabled:opacity-70"
+          className="w-full h-11 mt-2 bg-[#121212] hover:bg-[#262626] text-white text-sm font-semibold rounded-sm flex items-center justify-center transition-all shadow-xs active:scale-[0.99] cursor-pointer disabled:opacity-70"
         >
           {isLoading ? (
             <span className="flex items-center gap-2">
@@ -185,7 +185,7 @@ export default function SignInFormClient() {
         <div className="pt-2">
           <GoogleSignInButton
             callbackUrl={callbackUrl}
-            className="h-11 rounded-xl text-xs sm:text-sm font-medium border border-[#E0DCD5] bg-white hover:bg-[#FAF9F6] text-[#121212] shadow-2xs"
+            className="h-11 rounded-sm text-xs sm:text-sm font-medium border border-[#E0DCD5] bg-white hover:bg-[#FAF9F6] text-[#121212] shadow-2xs"
           />
         </div>
 
@@ -219,7 +219,7 @@ export default function SignInFormClient() {
 
       {/* Forgot Password Dialog */}
       <Dialog open={forgotModalOpen} onOpenChange={setForgotModalOpen}>
-        <DialogContent className="max-w-md bg-white text-[#121212] rounded-2xl p-6 shadow-xl border border-[#E8E5DF]">
+        <DialogContent className="max-w-md bg-white text-[#121212] rounded-sm p-6 shadow-xl border border-[#E8E5DF]">
           <DialogHeader className="pb-2">
             <DialogTitle className="text-lg font-bold text-[#121212]">
               Password Assistance
@@ -234,7 +234,7 @@ export default function SignInFormClient() {
             <button
               type="button"
               onClick={() => setForgotModalOpen(false)}
-              className="px-4 py-2 bg-[#121212] text-white text-xs font-semibold rounded-xl hover:bg-neutral-800"
+              className="px-4 py-2 bg-[#121212] text-white text-xs font-semibold rounded-sm hover:bg-neutral-800"
             >
               Close
             </button>

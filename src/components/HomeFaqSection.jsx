@@ -24,7 +24,7 @@ export default function HomeFaqSection() {
         </div>
 
         {/* ── Clean Accordion Items (No Numbers) ── */}
-        <div className="rounded-2xl border border-border bg-card p-2 sm:p-4 shadow-none divide-y divide-border/60">
+        <div className="rounded-sm border border-border bg-card p-2 sm:p-4 shadow-none divide-y divide-border/60">
           <Accordion type="single" collapsible="true" defaultValue="h1" className="w-full">
             {HOME_FAQS.map((faq) => (
               <AccordionItem
@@ -44,7 +44,7 @@ export default function HomeFaqSection() {
         </div>
 
         {/* ── Clean Horizontal Bottom Bar ── */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl border border-border/70 bg-muted/30 px-5 py-3.5 text-xs sm:text-sm text-muted-foreground">
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-sm border border-border/70 bg-muted/30 px-5 py-3.5 text-xs sm:text-sm text-muted-foreground">
           <span className="text-center sm:text-left">
             Have more questions about your order?
           </span>

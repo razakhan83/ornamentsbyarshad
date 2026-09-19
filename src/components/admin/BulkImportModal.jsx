@@ -93,7 +93,7 @@ export default function BulkImportModal({ open, onOpenChange, onSuccess }) {
         </DialogHeader>
 
         <div className="flex flex-col gap-6 py-4">
-          <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-xl bg-muted/20">
+          <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-sm bg-muted/20">
             <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
               <Upload className="h-6 w-6 text-primary" />
             </div>
@@ -119,7 +119,7 @@ export default function BulkImportModal({ open, onOpenChange, onSuccess }) {
             )}
           </div>
 
-          <div className="flex items-center justify-between px-4 py-3 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900 rounded-lg">
+          <div className="flex items-center justify-between px-4 py-3 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900 rounded-sm">
             <div className="flex items-start gap-3">
               <AlertCircle className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5" />
               <div className="flex flex-col gap-1">
@@ -134,7 +134,7 @@ export default function BulkImportModal({ open, onOpenChange, onSuccess }) {
           </div>
 
           {result && (
-            <div className={`p-4 rounded-lg flex gap-3 text-sm border ${result.success ? 'bg-green-50 text-green-700 border-green-200 dark:bg-green-950/30 dark:text-green-400 dark:border-green-900' : 'bg-red-50 text-red-700 border-red-200 dark:bg-red-950/30 dark:text-red-400 dark:border-red-900'}`}>
+            <div className={`p-4 rounded-sm flex gap-3 text-sm border ${result.success ? 'bg-green-50 text-green-700 border-green-200 dark:bg-green-950/30 dark:text-green-400 dark:border-green-900' : 'bg-red-50 text-red-700 border-red-200 dark:bg-red-950/30 dark:text-red-400 dark:border-red-900'}`}>
               {result.success ? <CheckCircle2 className="h-5 w-5 shrink-0" /> : <AlertCircle className="h-5 w-5 shrink-0" />}
               <div>{result.message}</div>
             </div>

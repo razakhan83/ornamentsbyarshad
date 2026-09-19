@@ -83,7 +83,7 @@ export default function LinkOrdersForm() {
               <FieldDescription>
                 Use the number you gave at checkout, for example `0300 1234567`.
               </FieldDescription>
-              <InputGroup className="min-h-11 rounded-xl">
+              <InputGroup className="min-h-11 rounded-sm">
                 <InputGroupAddon align="inline-start" className="pl-3 text-muted-foreground">
                   <InputGroupText>
                     <Phone />
@@ -104,7 +104,7 @@ export default function LinkOrdersForm() {
                   <InputGroupButton
                     type="submit"
                     size="sm"
-                    className="h-8 min-w-[120px] rounded-lg px-4"
+                    className="h-8 min-w-[120px] rounded-sm px-4"
                     disabled={isPending || !phone.trim()}
                   >
                     {isPending ? <Loader2 className="animate-spin" /> : 'Link Orders'}

@@ -38,9 +38,9 @@ const HTML_SNIPPETS = [
   { label: 'Bold', snippet: '<strong>Bold text</strong>' },
   { label: 'List', snippet: '<ul>\n  <li>Key point 1</li>\n  <li>Key point 2</li>\n</ul>\n' },
   { label: 'Link', snippet: '<a href="https://wa.me/" class="text-primary underline font-medium">WhatsApp Link</a>' },
-  { label: 'Callout Box', snippet: '<div class="p-4 rounded-xl bg-primary/10 border border-primary/20 text-foreground">\n  <strong>Note:</strong> Important announcement or message here.\n</div>\n' },
+  { label: 'Callout Box', snippet: '<div class="p-4 rounded-sm bg-primary/10 border border-primary/20 text-foreground">\n  <strong>Note:</strong> Important announcement or message here.\n</div>\n' },
   { label: 'Table', snippet: '<table class="w-full border-collapse my-4">\n  <thead>\n    <tr>\n      <th class="border border-border p-2.5 bg-muted/40 text-left font-semibold">Header 1</th>\n      <th class="border border-border p-2.5 bg-muted/40 text-left font-semibold">Header 2</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td class="border border-border p-2.5">Row 1 Cell 1</td>\n      <td class="border border-border p-2.5">Row 1 Cell 2</td>\n    </tr>\n  </tbody>\n</table>\n' },
-  { label: 'Image', snippet: '<img src="https://..." alt="Custom image" class="w-full rounded-2xl my-4" />\n' },
+  { label: 'Image', snippet: '<img src="https://..." alt="Custom image" class="w-full rounded-sm my-4" />\n' },
 ];
 
 function makeNewPage(pages = []) {
@@ -234,7 +234,7 @@ export default function AdminCustomPagesClient({ initialPages }) {
 
   return (
     <div className="w-full pb-10 md:pb-0 space-y-6">
-      <div className="surface-card rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border border-border">
+      <div className="surface-card rounded-sm p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border border-border">
         <div className="max-w-md">
           <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary uppercase tracking-wider mb-2">
             Content Management
@@ -272,12 +272,12 @@ export default function AdminCustomPagesClient({ initialPages }) {
       </div>
 
       {pages.length === 0 ? (
-        <div className="surface-card rounded-2xl p-12 text-center">
+        <div className="surface-card rounded-sm p-12 text-center">
           <p className="font-medium text-muted-foreground">No custom pages yet. Add your first page to begin.</p>
         </div>
       ) : (
         <div className="grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
-          <aside className="surface-card rounded-2xl p-4 md:p-5">
+          <aside className="surface-card rounded-sm p-4 md:p-5">
             <div className="mb-4">
               <p className="text-sm font-semibold text-foreground">Page List</p>
               <p className="mt-1 text-xs text-muted-foreground">
@@ -296,7 +296,7 @@ export default function AdminCustomPagesClient({ initialPages }) {
                     type="button"
                     onClick={() => setSelectedSlug(page.slug)}
                     className={cn(
-                      'flex w-full flex-col gap-2 rounded-xl border px-3 py-3 text-left transition-colors',
+                      'flex w-full flex-col gap-2 rounded-sm border px-3 py-3 text-left transition-colors',
                       isSelected
                         ? 'border-border bg-muted/60'
                         : 'border-border/60 bg-background hover:bg-muted/30'
@@ -333,7 +333,7 @@ export default function AdminCustomPagesClient({ initialPages }) {
                 title={selectedPage.title || `Page ${selectedIndex + 1}`}
                 description="Edit the selected page details, content, and SEO settings."
               >
-                <div className="flex flex-col gap-3 rounded-xl border border-border bg-muted/20 px-4 py-4 md:flex-row md:items-center md:justify-between">
+                <div className="flex flex-col gap-3 rounded-sm border border-border bg-muted/20 px-4 py-4 md:flex-row md:items-center md:justify-between">
                   <div className="min-w-0">
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Page Path</p>
                     <p className="mt-1 truncate text-sm font-semibold text-foreground">/{selectedPage.slug}</p>
@@ -440,12 +440,12 @@ export default function AdminCustomPagesClient({ initialPages }) {
                       </div>
 
                       {/* Mode Toggle */}
-                      <div className="flex items-center rounded-xl border border-border bg-muted/40 p-1 gap-1 shrink-0">
+                      <div className="flex items-center rounded-sm border border-border bg-muted/40 p-1 gap-1 shrink-0">
                         <button
                           type="button"
                           onClick={() => setEditorMode('html')}
                           className={cn(
-                            'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer',
+                            'flex items-center gap-1.5 px-3 py-1.5 rounded-sm text-xs font-semibold transition-all cursor-pointer',
                             editorMode === 'html'
                               ? 'bg-background text-foreground shadow-xs border border-border/60'
                               : 'text-muted-foreground hover:text-foreground'
@@ -458,7 +458,7 @@ export default function AdminCustomPagesClient({ initialPages }) {
                           type="button"
                           onClick={() => setEditorMode('text')}
                           className={cn(
-                            'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer',
+                            'flex items-center gap-1.5 px-3 py-1.5 rounded-sm text-xs font-semibold transition-all cursor-pointer',
                             editorMode === 'text'
                               ? 'bg-background text-foreground shadow-xs border border-border/60'
                               : 'text-muted-foreground hover:text-foreground'
@@ -471,7 +471,7 @@ export default function AdminCustomPagesClient({ initialPages }) {
                           type="button"
                           onClick={() => setEditorMode('preview')}
                           className={cn(
-                            'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer',
+                            'flex items-center gap-1.5 px-3 py-1.5 rounded-sm text-xs font-semibold transition-all cursor-pointer',
                             editorMode === 'preview'
                               ? 'bg-background text-foreground shadow-xs border border-border/60'
                               : 'text-muted-foreground hover:text-foreground'
@@ -485,7 +485,7 @@ export default function AdminCustomPagesClient({ initialPages }) {
 
                     {/* HTML Quick Snippet Toolbar (Only in HTML mode) */}
                     {editorMode === 'html' && (
-                      <div className="mb-2.5 flex flex-wrap items-center gap-1.5 p-2 rounded-xl border border-border/80 bg-muted/20">
+                      <div className="mb-2.5 flex flex-wrap items-center gap-1.5 p-2 rounded-sm border border-border/80 bg-muted/20">
                         <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider px-1">
                           Quick Insert:
                         </span>
@@ -513,7 +513,7 @@ export default function AdminCustomPagesClient({ initialPages }) {
 
                     <FieldContent>
                       {editorMode === 'preview' ? (
-                        <div className="min-h-[340px] max-h-[520px] overflow-y-auto rounded-xl border border-border bg-card p-6">
+                        <div className="min-h-[340px] max-h-[520px] overflow-y-auto rounded-sm border border-border bg-card p-6">
                           <div className="mb-4 pb-3 border-b border-border/60 flex items-center justify-between">
                             <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                               Live Storefront Preview ({selectedPage.title || 'Page'})
@@ -523,7 +523,7 @@ export default function AdminCustomPagesClient({ initialPages }) {
                           {selectedPage.content?.trim() ? (
                             /<[a-z][\s\S]*>/i.test(selectedPage.content) ? (
                               <div
-                                className="custom-page-html-content space-y-4 text-[15px] leading-[1.85] text-foreground/85 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-foreground [&_h1]:mt-6 [&_h1]:mb-3 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-foreground [&_h2]:mt-8 [&_h2]:mb-3 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-foreground [&_h3]:mt-6 [&_h3]:mb-2 [&_p]:my-3.5 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:my-1.5 [&_a]:text-primary [&_a]:underline [&_a]:font-medium hover:[&_a]:opacity-85 [&_table]:w-full [&_table]:border-collapse [&_table]:my-6 [&_th]:border [&_th]:border-border [&_th]:p-3 [&_th]:bg-muted/40 [&_th]:font-semibold [&_th]:text-left [&_td]:border [&_td]:border-border [&_td]:p-3 [&_blockquote]:border-l-4 [&_blockquote]:border-primary/60 [&_blockquote]:pl-4 [&_blockquote]:py-1 [&_blockquote]:italic [&_blockquote]:my-4 [&_img]:rounded-xl [&_img]:my-5 [&_img]:max-w-full [&_hr]:my-8 [&_hr]:border-border [&_strong]:font-bold [&_strong]:text-foreground"
+                                className="custom-page-html-content space-y-4 text-[15px] leading-[1.85] text-foreground/85 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-foreground [&_h1]:mt-6 [&_h1]:mb-3 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-foreground [&_h2]:mt-8 [&_h2]:mb-3 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-foreground [&_h3]:mt-6 [&_h3]:mb-2 [&_p]:my-3.5 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:my-1.5 [&_a]:text-primary [&_a]:underline [&_a]:font-medium hover:[&_a]:opacity-85 [&_table]:w-full [&_table]:border-collapse [&_table]:my-6 [&_th]:border [&_th]:border-border [&_th]:p-3 [&_th]:bg-muted/40 [&_th]:font-semibold [&_th]:text-left [&_td]:border [&_td]:border-border [&_td]:p-3 [&_blockquote]:border-l-4 [&_blockquote]:border-primary/60 [&_blockquote]:pl-4 [&_blockquote]:py-1 [&_blockquote]:italic [&_blockquote]:my-4 [&_img]:rounded-sm [&_img]:my-5 [&_img]:max-w-full [&_hr]:my-8 [&_hr]:border-border [&_strong]:font-bold [&_strong]:text-foreground"
                                 dangerouslySetInnerHTML={{ __html: selectedPage.content }}
                               />
                             ) : (
@@ -587,7 +587,7 @@ export default function AdminCustomPagesClient({ initialPages }) {
                 </FieldGroup>
 
                 <div className="grid gap-4 lg:grid-cols-2">
-                  <Field orientation="horizontal" className="items-start justify-between rounded-lg border border-border bg-muted/35 px-4 py-3">
+                  <Field orientation="horizontal" className="items-start justify-between rounded-sm border border-border bg-muted/35 px-4 py-3">
                     <FieldContent>
                       <FieldLabel>Page Enabled</FieldLabel>
                       <FieldDescription>Disable a page without deleting its content.</FieldDescription>
@@ -598,7 +598,7 @@ export default function AdminCustomPagesClient({ initialPages }) {
                     />
                   </Field>
 
-                  <Field orientation="horizontal" className="items-start justify-between rounded-lg border border-border bg-muted/35 px-4 py-3">
+                  <Field orientation="horizontal" className="items-start justify-between rounded-sm border border-border bg-muted/35 px-4 py-3">
                     <FieldContent>
                       <FieldLabel>Show In Footer</FieldLabel>
                       <FieldDescription>Include this page in the storefront quick links list.</FieldDescription>

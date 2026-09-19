@@ -393,12 +393,12 @@ export default function OrdersClient({ initialOrders }) {
 
           {/* Tabs Header */}
           <div className="mb-3">
-            <div className="grid grid-cols-2 sm:inline-flex p-1 bg-[#F1F3F5] rounded-xl ring-1 ring-black/5 w-full sm:w-auto">
+            <div className="grid grid-cols-2 sm:inline-flex p-1 bg-[#F1F3F5] rounded-sm ring-1 ring-black/5 w-full sm:w-auto">
               <button 
                 type="button"
                 onClick={() => setActiveTab('not_shipped')} 
                 className={cn(
-                  "flex items-center justify-center px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-[13px] font-semibold rounded-lg transition-all text-center cursor-pointer select-none",
+                  "flex items-center justify-center px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-[13px] font-semibold rounded-sm transition-all text-center cursor-pointer select-none",
                   activeTab === 'not_shipped' 
                     ? "bg-white text-gray-900 shadow-sm ring-1 ring-black/5 font-bold" 
                     : "text-gray-500 hover:text-gray-900 hover:bg-gray-200/50"
@@ -410,7 +410,7 @@ export default function OrdersClient({ initialOrders }) {
                 type="button"
                 onClick={() => setActiveTab('delivered')} 
                 className={cn(
-                  "flex items-center justify-center px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-[13px] font-semibold rounded-lg transition-all text-center cursor-pointer select-none",
+                  "flex items-center justify-center px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-[13px] font-semibold rounded-sm transition-all text-center cursor-pointer select-none",
                   activeTab === 'delivered' 
                     ? "bg-white text-gray-900 shadow-sm ring-1 ring-black/5 font-bold" 
                     : "text-gray-500 hover:text-gray-900 hover:bg-gray-200/50"
@@ -438,7 +438,7 @@ export default function OrdersClient({ initialOrders }) {
             {activeTab === 'delivered' && (
               <div className="shrink-0">
                 <Select value={timeFilter} onValueChange={setTimeFilter}>
-                  <SelectTrigger className="w-auto min-w-[120px] sm:min-w-[140px] bg-white border border-gray-200/90 font-medium text-[11.5px] sm:text-xs text-gray-700 hover:bg-gray-50/80 focus:ring-0 rounded-lg h-8 px-2.5 shadow-none ring-0">
+                  <SelectTrigger className="w-auto min-w-[120px] sm:min-w-[140px] bg-white border border-gray-200/90 font-medium text-[11.5px] sm:text-xs text-gray-700 hover:bg-gray-50/80 focus:ring-0 rounded-sm h-8 px-2.5 shadow-none ring-0">
                     <SelectValue placeholder="Time filter" />
                   </SelectTrigger>
                   <SelectContent align="end">
@@ -464,7 +464,7 @@ export default function OrdersClient({ initialOrders }) {
               const StatusIcon = statusDetails.icon;
               
               return (
-                <div key={order._id} className="rounded-xl border border-gray-200 bg-white shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col">
+                <div key={order._id} className="rounded-sm border border-gray-200 bg-white shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col">
                   {/* Card Header */}
                   <div className="bg-[#F8F9FA] px-4 sm:px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row justify-between sm:items-center text-sm gap-4 sm:gap-0 rounded-t-xl">
                     
@@ -568,14 +568,14 @@ export default function OrdersClient({ initialOrders }) {
                         {isDelivered ? (
                           <>
                             {((order.items?.length > 0 && order.items.every(i => i.isReviewed)) || reviewedOrders.includes(order._id)) ? (
-                              <Button disabled className="bg-gray-100 text-gray-400 rounded-xl h-11 px-6 shadow-none font-semibold w-full sm:w-auto cursor-not-allowed">
+                              <Button disabled className="bg-gray-100 text-gray-400 rounded-sm h-11 px-6 shadow-none font-semibold w-full sm:w-auto cursor-not-allowed">
                                 <CheckCircle2 className="size-4 mr-2 text-emerald-600" />
                                 Reviewed
                               </Button>
                             ) : (
                               <Button 
                                 onClick={() => setFeedbackOrder(order)}
-                                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-11 px-6 shadow-sm font-semibold transition-all active:scale-[0.98] w-full sm:w-auto"
+                                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-sm h-11 px-6 shadow-sm font-semibold transition-all active:scale-[0.98] w-full sm:w-auto"
                               >
                                 <MessageSquare className="size-4 mr-2" />
                                 Give feedback
@@ -584,7 +584,7 @@ export default function OrdersClient({ initialOrders }) {
                           </>
                         ) : (
                           <>
-                            <Button render={<Link href={`/orders/${order._id}`} />} nativeButton={false} className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-11 px-6 shadow-sm font-semibold transition-all active:scale-[0.98] w-full sm:w-auto">
+                            <Button render={<Link href={`/orders/${order._id}`} />} nativeButton={false} className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-sm h-11 px-6 shadow-sm font-semibold transition-all active:scale-[0.98] w-full sm:w-auto">
                               View your items
                             </Button>
                           </>
@@ -595,7 +595,7 @@ export default function OrdersClient({ initialOrders }) {
                 </div>
               );
             }) : (
-              <Empty className="rounded-2xl border border-dashed border-gray-200 py-16 px-4 bg-white text-center">
+              <Empty className="rounded-sm border border-dashed border-gray-200 py-16 px-4 bg-white text-center">
                 <EmptyHeader>
                   <div className="mx-auto mb-4 flex items-center justify-center">
                     <Image
@@ -614,7 +614,7 @@ export default function OrdersClient({ initialOrders }) {
                   </EmptyDescription>
                 </EmptyHeader>
                 <div className="mt-6 flex justify-center">
-                  <Button render={<Link href="/products" />} nativeButton={false} className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-11 px-6 font-semibold shadow-sm transition-all active:scale-[0.98]">
+                  <Button render={<Link href="/products" />} nativeButton={false} className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-sm h-11 px-6 font-semibold shadow-sm transition-all active:scale-[0.98]">
                     Start Shopping
                   </Button>
                 </div>
@@ -625,15 +625,15 @@ export default function OrdersClient({ initialOrders }) {
         
         {/* Right Column (20% Sticky Sidebar) */}
         <div className="w-full lg:w-[280px] xl:w-[320px] shrink-0 pt-0 lg:pt-[72px]">
-          <div className="sticky top-24 rounded-2xl border border-gray-200 bg-[#F8F9FA] p-6 shadow-sm flex flex-col">
-            <div className="size-12 rounded-xl bg-white ring-1 ring-gray-200/60 shadow-sm flex items-center justify-center mb-5">
+          <div className="sticky top-24 rounded-sm border border-gray-200 bg-[#F8F9FA] p-6 shadow-sm flex flex-col">
+            <div className="size-12 rounded-sm bg-white ring-1 ring-gray-200/60 shadow-sm flex items-center justify-center mb-5">
                <MessageSquare className="size-6 text-primary" />
             </div>
             <h3 className="text-[17px] font-bold text-gray-900 mb-2">Need help with an order?</h3>
             <p className="text-[13px] text-gray-500 mb-6 leading-relaxed">
               If you have any questions about delivery, tracking, or refunds, our customer support team is available on WhatsApp and email.
             </p>
-            <Button render={<Link href="/contact-us" />} nativeButton={false} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-11 font-semibold shadow-sm transition-all active:scale-[0.98]">
+            <Button render={<Link href="/contact-us" />} nativeButton={false} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-sm h-11 font-semibold shadow-sm transition-all active:scale-[0.98]">
               Contact Support
             </Button>
           </div>
@@ -810,7 +810,7 @@ const FeedbackModal = ({ order, onRemindLater, onDismissPermanently, onClose, on
   if (submitted) {
     return (
       <div className="fixed inset-0 z-[500] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-        <div className="bg-white rounded-3xl w-full max-w-sm p-8 text-center shadow-2xl transform scale-100 animate-in zoom-in-95 duration-300 flex flex-col items-center">
+        <div className="bg-white rounded-sm w-full max-w-sm p-8 text-center shadow-2xl transform scale-100 animate-in zoom-in-95 duration-300 flex flex-col items-center">
           <div className="mb-4 flex items-center justify-center">
             <Image
               src="/undraw_thumbs-up_f300.svg"
@@ -829,7 +829,7 @@ const FeedbackModal = ({ order, onRemindLater, onDismissPermanently, onClose, on
 
   return (
     <div className="fixed inset-0 z-[500] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-      <div className="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-xl shadow-2xl flex flex-col max-h-[90dvh] sm:max-h-[85vh] h-auto animate-in slide-in-from-bottom-10 sm:zoom-in-95 duration-300 overflow-hidden">
+      <div className="bg-white rounded-t-2xl sm:rounded-sm w-full max-w-xl shadow-2xl flex flex-col max-h-[90dvh] sm:max-h-[85vh] h-auto animate-in slide-in-from-bottom-10 sm:zoom-in-95 duration-300 overflow-hidden">
         
         {/* Fixed Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-100 shrink-0 bg-white z-10 gap-3">
@@ -841,7 +841,7 @@ const FeedbackModal = ({ order, onRemindLater, onDismissPermanently, onClose, on
             <button 
               type="button"
               onClick={onDismissPermanently}
-              className="text-xs text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-2.5 py-1.5 rounded-lg font-semibold transition-colors cursor-pointer"
+              className="text-xs text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-2.5 py-1.5 rounded-sm font-semibold transition-colors cursor-pointer"
               title="Don't ask for reviews on any order again"
             >
               Close All
@@ -867,7 +867,7 @@ const FeedbackModal = ({ order, onRemindLater, onDismissPermanently, onClose, on
               <div key={itemKey} className={cn("py-6 first:pt-0 last:pb-0")}>
                 {/* Product Info */}
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="relative size-12 sm:size-14 rounded-lg bg-gray-100 shrink-0 overflow-hidden border border-gray-200">
+                  <div className="relative size-12 sm:size-14 rounded-sm bg-gray-100 shrink-0 overflow-hidden border border-gray-200">
                     {item.image ? (
                       <Image src={item.image} alt={item.name} fill className="object-cover" unoptimized />
                     ) : (
@@ -917,7 +917,7 @@ const FeedbackModal = ({ order, onRemindLater, onDismissPermanently, onClose, on
                         value={itemReview.text}
                         onChange={(e) => updateReview(itemKey, 'text', e.target.value)}
                         placeholder="What did you like or dislike?"
-                        className="w-full rounded-xl border border-gray-200 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none h-24 bg-gray-50/50"
+                        className="w-full rounded-sm border border-gray-200 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none h-24 bg-gray-50/50"
                       />
                     </div>
 
@@ -929,7 +929,7 @@ const FeedbackModal = ({ order, onRemindLater, onDismissPermanently, onClose, on
                       </div>
                       <div className="flex gap-3">
                         {itemReview.images.map((img, idx) => (
-                          <div key={idx} className="relative size-16 sm:size-20 rounded-xl border border-gray-200 overflow-hidden group">
+                          <div key={idx} className="relative size-16 sm:size-20 rounded-sm border border-gray-200 overflow-hidden group">
                             <Image src={img.preview} alt={`Upload ${idx+1}`} fill className="object-cover" />
                             <button 
                               onClick={() => removeImage(itemKey, idx)}
@@ -941,7 +941,7 @@ const FeedbackModal = ({ order, onRemindLater, onDismissPermanently, onClose, on
                         ))}
                         
                         {itemReview.images.length < 2 && (
-                          <label className="size-16 sm:size-20 rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 flex flex-col items-center justify-center cursor-pointer transition-colors text-gray-500">
+                          <label className="size-16 sm:size-20 rounded-sm border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 flex flex-col items-center justify-center cursor-pointer transition-colors text-gray-500">
                             <Camera className="size-5 mb-1 text-gray-400" />
                             <span className="text-[9px] font-bold uppercase tracking-wider">Upload</span>
                             <input 
@@ -967,14 +967,14 @@ const FeedbackModal = ({ order, onRemindLater, onDismissPermanently, onClose, on
           <Button 
             variant="outline" 
             onClick={onRemindLater}
-            className="flex-1 h-12 rounded-xl text-gray-600 font-semibold border-gray-200 hover:bg-gray-100 transition-all"
+            className="flex-1 h-12 rounded-sm text-gray-600 font-semibold border-gray-200 hover:bg-gray-100 transition-all"
           >
             Remind me later
           </Button>
           <Button 
             onClick={handleSubmit}
             disabled={!hasAnyRating || isSubmitting}
-            className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 h-12 rounded-sm bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">

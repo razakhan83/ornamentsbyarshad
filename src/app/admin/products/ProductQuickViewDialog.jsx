@@ -77,7 +77,7 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
       <DialogContent
         showCloseButton={false}
         className="w-screen h-[100dvh] max-w-none m-0 rounded-none p-0 flex flex-col overflow-hidden border-0 bg-background
-                   sm:w-[96vw] sm:max-w-6xl sm:h-[90vh] sm:max-h-[90vh] sm:m-auto sm:rounded-2xl sm:border sm:shadow-2xl"
+                   sm:w-[96vw] sm:max-w-6xl sm:h-[90vh] sm:max-h-[90vh] sm:m-auto sm:rounded-sm sm:border sm:shadow-2xl"
       >
         {/* ── Layout: stacked on mobile, side-by-side on desktop ── */}
         <div className="flex flex-col md:flex-row flex-1 overflow-hidden min-h-0">
@@ -91,17 +91,17 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
 
               {isLoading && images.length === 0 ? (
                 <div className="flex flex-col gap-3">
-                  <Skeleton className="w-full aspect-square rounded-xl" />
+                  <Skeleton className="w-full aspect-square rounded-sm" />
                   <div className="grid grid-cols-3 gap-2">
-                    <Skeleton className="aspect-square rounded-lg" />
-                    <Skeleton className="aspect-square rounded-lg" />
-                    <Skeleton className="aspect-square rounded-lg" />
+                    <Skeleton className="aspect-square rounded-sm" />
+                    <Skeleton className="aspect-square rounded-sm" />
+                    <Skeleton className="aspect-square rounded-sm" />
                   </div>
                 </div>
               ) : images.length > 0 ? (
                 <div className="flex flex-col gap-3">
                   <div 
-                    className="relative w-full aspect-square rounded-xl overflow-hidden border border-border/40 shadow-sm"
+                    className="relative w-full aspect-square rounded-sm overflow-hidden border border-border/40 shadow-sm"
                     style={{ backgroundColor: getProductCategoryBgColor(product) }}
                   >
                     <Image
@@ -117,7 +117,7 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
                       {images.slice(1).map((img, idx) => (
                         <div
                           key={idx}
-                          className="relative aspect-square rounded-lg overflow-hidden border border-border/40 shadow-sm hover:ring-2 hover:ring-primary/30 transition-all"
+                          className="relative aspect-square rounded-sm overflow-hidden border border-border/40 shadow-sm hover:ring-2 hover:ring-primary/30 transition-all"
                           style={{ backgroundColor: getProductCategoryBgColor(product) }}
                         >
                           <Image
@@ -133,7 +133,7 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
                   )}
                 </div>
               ) : (
-                <div className="flex flex-1 flex-col items-center justify-center rounded-xl border border-dashed border-border/50 bg-muted/10 text-muted-foreground min-h-[200px]">
+                <div className="flex flex-1 flex-col items-center justify-center rounded-sm border border-dashed border-border/50 bg-muted/10 text-muted-foreground min-h-[200px]">
                   <PackageOpen className="size-12 mb-3 opacity-20" />
                   <span className="text-sm font-medium">No images uploaded</span>
                 </div>
@@ -238,7 +238,7 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
                       {images.map((img, idx) => (
                         <div
                           key={idx}
-                          className="relative shrink-0 w-[75vw] aspect-square rounded-xl overflow-hidden border border-border/40 shadow-sm snap-start"
+                          className="relative shrink-0 w-[75vw] aspect-square rounded-sm overflow-hidden border border-border/40 shadow-sm snap-start"
                         >
                           <Image
                             src={img.url}
@@ -251,7 +251,7 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
                       ))}
                     </div>
                   ) : (
-                    <div className="flex aspect-[2/1] items-center justify-center rounded-xl border border-dashed border-border/40 bg-muted/10 text-muted-foreground">
+                    <div className="flex aspect-[2/1] items-center justify-center rounded-sm border border-dashed border-border/40 bg-muted/10 text-muted-foreground">
                       <PackageOpen className="size-8 opacity-20 mr-2" />
                       <span className="text-xs">No images uploaded</span>
                     </div>
@@ -261,7 +261,7 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
                 {/* Pricing + Categories */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Pricing card */}
-                  <div className="rounded-xl border border-border/50 bg-muted/10 p-4 space-y-2">
+                  <div className="rounded-sm border border-border/50 bg-muted/10 p-4 space-y-2">
                     <p className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
                       <Tag className="size-3" /> Pricing
                     </p>
@@ -284,7 +284,7 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
                   </div>
 
                   {/* Categories card */}
-                  <div className="rounded-xl border border-border/50 bg-muted/10 p-4 space-y-2">
+                  <div className="rounded-sm border border-border/50 bg-muted/10 p-4 space-y-2">
                     <p className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
                       <Settings2 className="size-3" /> Categories
                     </p>
@@ -306,18 +306,18 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
                 <div className="space-y-2.5">
                   <h3 className="text-sm font-semibold text-foreground">Description</h3>
                   {isLoading && !product.Description ? (
-                    <div className="space-y-2 rounded-xl border border-border/40 bg-muted/5 p-4">
+                    <div className="space-y-2 rounded-sm border border-border/40 bg-muted/5 p-4">
                       <Skeleton className="h-3.5 w-full" />
                       <Skeleton className="h-3.5 w-[90%]" />
                       <Skeleton className="h-3.5 w-[80%]" />
                     </div>
                   ) : product.Description ? (
                     <div
-                      className="prose prose-sm dark:prose-invert max-w-none rounded-xl border border-border/40 bg-muted/5 p-4 text-muted-foreground leading-relaxed"
+                      className="prose prose-sm dark:prose-invert max-w-none rounded-sm border border-border/40 bg-muted/5 p-4 text-muted-foreground leading-relaxed"
                       dangerouslySetInnerHTML={{ __html: product.Description }}
                     />
                   ) : (
-                    <div className="flex items-center justify-center rounded-xl border border-dashed border-border/40 bg-muted/5 p-6">
+                    <div className="flex items-center justify-center rounded-sm border border-dashed border-border/40 bg-muted/5 p-6">
                       <p className="text-sm text-muted-foreground text-center">No description added yet.</p>
                     </div>
                   )}
@@ -341,14 +341,14 @@ export function ProductQuickViewDialog({ open, onOpenChange, product: rowProduct
                   </div>
 
                   {isLoading && !product.seoTitle && !product.seoDescription ? (
-                    <div className="space-y-3 rounded-xl border border-border/40 bg-muted/5 p-4">
+                    <div className="space-y-3 rounded-sm border border-border/40 bg-muted/5 p-4">
                       <Skeleton className="h-3 w-20" />
                       <Skeleton className="h-4 w-[60%]" />
                       <Skeleton className="h-3 w-24" />
                       <Skeleton className="h-3.5 w-full" />
                     </div>
                   ) : (
-                    <div className="rounded-xl border border-border/40 bg-muted/5 p-4 space-y-4">
+                    <div className="rounded-sm border border-border/40 bg-muted/5 p-4 space-y-4">
                       <div>
                         <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground block mb-1">
                           Title

@@ -9,10 +9,10 @@ function ReviewCard({ name, body, rating, date }) {
   const initial = (name || 'U').charAt(0).toUpperCase();
 
   return (
-    <div className="rounded-xl border border-border bg-muted/35 p-4 transition-all duration-200 hover:border-primary/20">
+    <div className="rounded-sm border border-border bg-muted/35 p-4 transition-all duration-200 hover:border-primary/20">
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-sm font-bold text-primary">
+          <div className="flex size-8 items-center justify-center rounded-sm bg-primary/10 text-sm font-bold text-primary">
             {initial}
           </div>
           <div className="flex flex-col">

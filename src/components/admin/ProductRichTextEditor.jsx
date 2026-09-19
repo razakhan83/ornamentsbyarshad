@@ -27,7 +27,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const toolbarButtonClass =
-  "h-9 w-9 rounded-lg border border-border bg-background text-muted-foreground shadow-sm transition-colors hover:bg-muted hover:text-foreground";
+  "h-9 w-9 rounded-sm border border-border bg-background text-muted-foreground shadow-sm transition-colors hover:bg-muted hover:text-foreground";
 
 function ToolbarButton({ icon: Icon, label, onClick }) {
   return (
@@ -174,7 +174,7 @@ export default function ProductRichTextEditor({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-2xl border border-border bg-background shadow-sm",
+        "overflow-hidden rounded-sm border border-border bg-background shadow-sm",
         className
       )}
     >
@@ -286,7 +286,7 @@ export default function ProductRichTextEditor({
           data-placeholder={placeholder}
           onInput={syncEditorValue}
           onBlur={handleBlur}
-          className="rich-editor min-h-[280px] w-full px-4 py-4 text-sm leading-7 text-foreground outline-none empty:before:pointer-events-none empty:before:block empty:before:text-muted-foreground empty:before:content-[attr(data-placeholder)] [&_a]:text-primary [&_a]:underline [&_blockquote]:border-l-4 [&_blockquote]:border-border [&_blockquote]:pl-4 [&_h1]:my-3 [&_h1]:text-2xl [&_h1]:font-black [&_h1]:tracking-tight [&_h2]:my-3 [&_h2]:text-xl [&_h2]:font-bold [&_img]:my-4 [&_img]:max-w-full [&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-2xl [&_li]:my-1 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:my-2 [&_ul]:list-disc [&_ul]:pl-6 [&_video]:my-4 [&_video]:max-w-full"
+          className="rich-editor min-h-[280px] w-full px-4 py-4 text-sm leading-7 text-foreground outline-none empty:before:pointer-events-none empty:before:block empty:before:text-muted-foreground empty:before:content-[attr(data-placeholder)] [&_a]:text-primary [&_a]:underline [&_blockquote]:border-l-4 [&_blockquote]:border-border [&_blockquote]:pl-4 [&_h1]:my-3 [&_h1]:text-2xl [&_h1]:font-black [&_h1]:tracking-tight [&_h2]:my-3 [&_h2]:text-xl [&_h2]:font-bold [&_img]:my-4 [&_img]:max-w-full [&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-sm [&_li]:my-1 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:my-2 [&_ul]:list-disc [&_ul]:pl-6 [&_video]:my-4 [&_video]:max-w-full"
         />
       ) : (
         <textarea

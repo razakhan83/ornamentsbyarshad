@@ -125,7 +125,7 @@ export default function CampaignsClient({ initialDiscounted = [] }) {
 
         <div className="flex items-center gap-3">
           <Button 
-            className="rounded-xl shadow-sm gap-2"
+            className="rounded-sm shadow-sm gap-2"
             onClick={() => setIsAddModalOpen(true)}
           >
             <Plus className="size-4" />
@@ -143,8 +143,8 @@ export default function CampaignsClient({ initialDiscounted = [] }) {
 
               {selectedProduct ? (
                 <div className="space-y-4 py-2">
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/40 border">
-                    <div className="relative size-12 rounded-lg border overflow-hidden bg-muted shrink-0">
+                  <div className="flex items-center gap-3 p-3 rounded-sm bg-muted/40 border">
+                    <div className="relative size-12 rounded-sm border overflow-hidden bg-muted shrink-0">
                       {getPrimaryProductImage(selectedProduct)?.url && (
                         <Image src={getPrimaryProductImage(selectedProduct).url} alt={selectedProduct.Name} fill className="object-cover" />
                       )}
@@ -191,7 +191,7 @@ export default function CampaignsClient({ initialDiscounted = [] }) {
                     />
                   </div>
 
-                  <div className="flex-1 overflow-y-auto max-h-[50vh] divide-y divide-border border rounded-xl">
+                  <div className="flex-1 overflow-y-auto max-h-[50vh] divide-y divide-border border rounded-sm">
                     {availableProducts.length === 0 ? (
                       <div className="p-8 text-center text-muted-foreground text-sm">
                         No matching products available to add.
@@ -202,7 +202,7 @@ export default function CampaignsClient({ initialDiscounted = [] }) {
                         return (
                           <div key={p._id} className="flex items-center justify-between p-3 hover:bg-muted/40 transition-colors">
                             <div className="flex items-center gap-3 min-w-0">
-                              <div className="relative size-11 rounded-lg border overflow-hidden bg-muted shrink-0">
+                              <div className="relative size-11 rounded-sm border overflow-hidden bg-muted shrink-0">
                                 {img?.url && (
                                   <Image src={img.url} alt={p.Name} fill className="object-cover" />
                                 )}
@@ -216,7 +216,7 @@ export default function CampaignsClient({ initialDiscounted = [] }) {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="rounded-lg shrink-0 gap-1"
+                              className="rounded-sm shrink-0 gap-1"
                               onClick={() => {
                                 setSelectedProduct(p);
                                 setDiscountPercentInput(15);
@@ -238,7 +238,7 @@ export default function CampaignsClient({ initialDiscounted = [] }) {
       </div>
 
       {/* Special Offers List */}
-      <div className="surface-card rounded-2xl border border-border/70 overflow-hidden shadow-sm">
+      <div className="surface-card rounded-sm border border-border/70 overflow-hidden shadow-sm">
         <div className="p-4 border-b border-border bg-muted/20 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="font-bold text-sm text-foreground">Active Special Offers</span>
@@ -272,7 +272,7 @@ export default function CampaignsClient({ initialDiscounted = [] }) {
               return (
                 <div key={product._id} className="p-3.5 sm:p-4 flex items-center justify-between gap-3 hover:bg-muted/20 transition-colors">
                   <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-                    <div className="relative size-12 sm:size-14 rounded-xl border border-border/60 overflow-hidden bg-muted shrink-0 shadow-sm">
+                    <div className="relative size-12 sm:size-14 rounded-sm border border-border/60 overflow-hidden bg-muted shrink-0 shadow-sm">
                       {img?.url ? (
                         <Image src={img.url} alt={product.Name} fill className="object-cover" />
                       ) : null}
@@ -305,7 +305,7 @@ export default function CampaignsClient({ initialDiscounted = [] }) {
                       type="button"
                       variant="ghost"
                       size="icon-sm"
-                      className="rounded-lg text-destructive hover:bg-destructive/10"
+                      className="rounded-sm text-destructive hover:bg-destructive/10"
                       onClick={() => handleApplyDiscount(product, 0)}
                       title="Remove Discount"
                     >

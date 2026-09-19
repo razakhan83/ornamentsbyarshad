@@ -515,8 +515,8 @@ export default function AdminUsersClient({
       )}
 
       {!isCustomersView ? (
-        <div className="flex items-start gap-4 rounded-xl border border-border bg-muted/40 p-4">
-          <div className="shrink-0 rounded-lg bg-muted p-2 text-foreground">
+        <div className="flex items-start gap-4 rounded-sm border border-border bg-muted/40 p-4">
+          <div className="shrink-0 rounded-sm bg-muted p-2 text-foreground">
             <ShieldAlert className="size-5" />
           </div>
           <div>
@@ -544,7 +544,7 @@ export default function AdminUsersClient({
             {isLoadingOrders ? (
               <div className="space-y-4">
                 {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="rounded-xl border border-border bg-card p-4">
+                  <div key={i} className="rounded-sm border border-border bg-card p-4">
                     <div className="flex items-start justify-between mb-3">
                       <Skeleton className="h-5 w-24 rounded-md" />
                       <Skeleton className="h-5 w-20 rounded-full" />
@@ -575,7 +575,7 @@ export default function AdminUsersClient({
             ) : (
               <StaggerContainer className="space-y-4">
                 {customerOrders.map((order) => (
-                  <StaggerItem key={order._id} className="relative group rounded-xl border border-border bg-card p-4 transition-all hover:shadow-sm hover:border-border/80">
+                  <StaggerItem key={order._id} className="relative group rounded-sm border border-border bg-card p-4 transition-all hover:shadow-sm hover:border-border/80">
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <Link href={`/admin/orders?search=${order.orderId}`} className="font-semibold text-foreground hover:underline flex items-center gap-1.5">

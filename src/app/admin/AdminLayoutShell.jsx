@@ -267,7 +267,7 @@ export default function AdminLayoutShell({ children, sessionUser }) {
         href={href}
         onClick={() => setSidebarOpen(false)}
         className={cn(
-          'flex min-h-8 items-center gap-2 rounded-lg px-2.5 py-1.5 text-[12px] font-medium transition-[background-color,color,transform] duration-200 active:scale-[0.98]',
+          'flex min-h-8 items-center gap-2 rounded-sm px-2.5 py-1.5 text-[12px] font-medium transition-[background-color,color,transform] duration-200 active:scale-[0.98]',
           active
             ? 'bg-[#F5EFE6] text-[#121212] font-semibold'
             : 'text-foreground/70 hover:bg-muted/70 hover:text-foreground',
@@ -316,7 +316,7 @@ export default function AdminLayoutShell({ children, sessionUser }) {
     return (
       <AccordionTrigger
         className={cn(
-          'min-h-8 rounded-lg border-0 px-2.5 py-1.5 text-[12px] font-medium hover:no-underline transition-colors',
+          'min-h-8 rounded-sm border-0 px-2.5 py-1.5 text-[12px] font-medium hover:no-underline transition-colors',
           active
             ? 'bg-[#F5EFE6] text-[#121212] font-semibold'
             : 'bg-transparent text-foreground/70 hover:bg-muted/60 hover:text-foreground'
@@ -436,7 +436,7 @@ export default function AdminLayoutShell({ children, sessionUser }) {
           href="/"
           onClick={() => setSidebarOpen(false)}
           className={cn(
-            'flex min-h-8 items-center gap-2 rounded-lg border border-border bg-white px-2.5 py-1.5 text-[12px] font-medium text-foreground transition-[background-color,transform,border-color] duration-200 hover:bg-muted/70 active:scale-[0.98]',
+            'flex min-h-8 items-center gap-2 rounded-sm border border-border bg-white px-2.5 py-1.5 text-[12px] font-medium text-foreground transition-[background-color,transform,border-color] duration-200 hover:bg-muted/70 active:scale-[0.98]',
             desktopSidebarCollapsed && 'justify-center px-0'
           )}
           title="Back to Store"
@@ -445,7 +445,7 @@ export default function AdminLayoutShell({ children, sessionUser }) {
           <span className={cn(desktopSidebarCollapsed && 'hidden')}>Back to Store</span>
         </Link>
 
-        <div className={cn('flex items-center gap-2 rounded-lg border border-border bg-white px-2.5 py-2', desktopSidebarCollapsed && 'justify-center px-1.5')}>
+        <div className={cn('flex items-center gap-2 rounded-sm border border-border bg-white px-2.5 py-2', desktopSidebarCollapsed && 'justify-center px-1.5')}>
           <Avatar className="size-7 border border-border">
             <AvatarImage src={sessionUser?.image} alt={sessionUser?.name || 'Admin'} />
             <AvatarFallback className="bg-muted text-foreground">{(sessionUser?.name || 'A').charAt(0)}</AvatarFallback>
@@ -460,7 +460,7 @@ export default function AdminLayoutShell({ children, sessionUser }) {
           type="button"
           onClick={() => signOut({ callbackUrl: '/admin/login' })}
           className={cn(
-            'flex min-h-8 items-center gap-2 rounded-lg border border-border bg-white px-2.5 py-1.5 text-[12px] font-medium text-foreground transition-[background-color,transform,border-color] duration-200 hover:bg-muted/70 active:scale-[0.98]',
+            'flex min-h-8 items-center gap-2 rounded-sm border border-border bg-white px-2.5 py-1.5 text-[12px] font-medium text-foreground transition-[background-color,transform,border-color] duration-200 hover:bg-muted/70 active:scale-[0.98]',
             desktopSidebarCollapsed && 'justify-center px-0'
           )}
           title="Logout"

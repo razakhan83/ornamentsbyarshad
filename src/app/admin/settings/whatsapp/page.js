@@ -12,7 +12,7 @@ export default async function WhatsAppSettingsPage() {
           Configure automated customer WhatsApp order confirmations, tracking alerts, and direct customer support.
         </p>
       </div>
-      <div className="surface-card rounded-2xl p-8 flex flex-col items-center justify-center min-h-[360px] border border-dashed border-border text-center">
+      <div className="surface-card rounded-sm p-8 flex flex-col items-center justify-center min-h-[360px] border border-dashed border-border text-center">
         <div className="mb-6 flex items-center justify-center">
           <Image
             src="/undraw_online-chat_qx4x.svg"

@@ -59,7 +59,7 @@ function FloatingWhatsAppContent({ whatsappNumber = '', storeName = 'Ornaments b
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'whatsapp-float fixed right-4 md:right-6 bottom-[calc(env(safe-area-inset-bottom)+4.6rem)] md:bottom-8 z-[340] inline-flex size-12 sm:size-14 items-center justify-center rounded-full sm:rounded-2xl border border-[#F2D6A2]/60 bg-gradient-to-tr from-[#8C6239] via-[#A67C52] to-[#BFA17A] text-white shadow-[0_12px_32px_rgba(166,124,82,0.42)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform transform-gpu hover:scale-110 hover:brightness-105 active:scale-95 group cursor-pointer',
+        'whatsapp-float fixed right-4 md:right-6 bottom-[calc(env(safe-area-inset-bottom)+4.6rem)] md:bottom-8 z-[340] inline-flex size-12 sm:size-14 items-center justify-center rounded-full sm:rounded-sm border border-[#F2D6A2]/60 bg-gradient-to-tr from-[#8C6239] via-[#A67C52] to-[#BFA17A] text-white shadow-[0_12px_32px_rgba(166,124,82,0.42)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform transform-gpu hover:scale-110 hover:brightness-105 active:scale-95 group cursor-pointer',
         isBottomNavHidden
           ? 'translate-y-[3.4rem] md:translate-y-0'
           : 'translate-y-0'

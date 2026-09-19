@@ -6,7 +6,7 @@ export default function LiveTrafficSkeleton() {
       {/* Top Header Skeleton */}
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <Skeleton className="h-7 w-32 rounded-lg" />
+          <Skeleton className="h-7 w-32 rounded-sm" />
           <Skeleton className="h-5 w-14 rounded-full" />
         </div>
         <Skeleton className="h-8 w-20 rounded-md shrink-0" />
@@ -31,13 +31,13 @@ export default function LiveTrafficSkeleton() {
       </section>
 
       {/* World Map Skeleton */}
-      <div className="w-full h-[290px] sm:h-[400px] md:h-[500px] bg-card border border-border/80 rounded-2xl p-4 flex flex-col justify-between shadow-xs overflow-hidden relative">
+      <div className="w-full h-[290px] sm:h-[400px] md:h-[500px] bg-card border border-border/80 rounded-sm p-4 flex flex-col justify-between shadow-xs overflow-hidden relative">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Skeleton className="h-6 w-32 rounded-lg" />
-            <Skeleton className="h-6 w-28 rounded-lg hidden sm:block" />
+            <Skeleton className="h-6 w-32 rounded-sm" />
+            <Skeleton className="h-6 w-28 rounded-sm hidden sm:block" />
           </div>
-          <Skeleton className="h-7 w-16 rounded-lg" />
+          <Skeleton className="h-7 w-16 rounded-sm" />
         </div>
         <div className="flex-1 flex items-center justify-center">
           <div className="flex flex-col items-center gap-2">
@@ -54,7 +54,7 @@ export default function LiveTrafficSkeleton() {
       {/* Bottom Grid Skeleton (Sessions Table & Top Cities) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Table Skeleton (2 cols) */}
-        <div className="lg:col-span-2 border bg-card rounded-xl p-4 sm:p-6 space-y-4 shadow-sm">
+        <div className="lg:col-span-2 border bg-card rounded-sm p-4 sm:p-6 space-y-4 shadow-sm">
           <div className="flex items-center justify-between pb-3 border-b">
             <div className="space-y-1.5">
               <Skeleton className="h-5 w-36 rounded" />
@@ -76,7 +76,7 @@ export default function LiveTrafficSkeleton() {
         </div>
 
         {/* Top Cities Skeleton (1 col) */}
-        <div className="border bg-card rounded-xl p-4 sm:p-6 space-y-4 shadow-sm">
+        <div className="border bg-card rounded-sm p-4 sm:p-6 space-y-4 shadow-sm">
           <div className="flex items-center justify-between pb-3 border-b">
             <div className="space-y-1.5">
               <Skeleton className="h-5 w-24 rounded" />

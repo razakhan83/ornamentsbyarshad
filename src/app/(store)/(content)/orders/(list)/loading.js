@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 function OrderCardSkeleton() {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col">
+    <div className="rounded-sm border border-gray-200 bg-white shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col">
       {/* Card Header Strip */}
       <div className="bg-[#F8F9FA] px-4 sm:px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row justify-between sm:items-center gap-4 sm:gap-0">
         <div className="flex flex-row gap-8 sm:gap-16">
@@ -37,7 +37,7 @@ function OrderCardSkeleton() {
         {/* Item Rows */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2">
           <div className="flex items-center gap-4 min-w-0 flex-1">
-            <Skeleton className="size-16 sm:size-20 rounded-xl bg-gray-200 shrink-0" />
+            <Skeleton className="size-16 sm:size-20 rounded-sm bg-gray-200 shrink-0" />
             <div className="space-y-2 min-w-0 flex-1">
               <Skeleton className="h-4 w-48 sm:w-72 bg-gray-300" />
               <Skeleton className="h-3 w-24 bg-gray-200" />
@@ -45,8 +45,8 @@ function OrderCardSkeleton() {
             </div>
           </div>
           <div className="flex sm:flex-col gap-2 w-full sm:w-44 shrink-0">
-            <Skeleton className="h-9 w-full rounded-xl bg-gray-200" />
-            <Skeleton className="h-9 w-full rounded-xl bg-gray-200" />
+            <Skeleton className="h-9 w-full rounded-sm bg-gray-200" />
+            <Skeleton className="h-9 w-full rounded-sm bg-gray-200" />
           </div>
         </div>
       </div>
@@ -63,17 +63,17 @@ export default function Loading() {
           <div className="w-full lg:flex-1 flex flex-col min-w-0">
             {/* Header */}
             <div className="flex items-center gap-3 mb-6">
-              <Skeleton className="h-9 w-44 bg-gray-300 rounded-lg" />
+              <Skeleton className="h-9 w-44 bg-gray-300 rounded-sm" />
               <Skeleton className="h-6 w-10 bg-gray-200 rounded-full" />
             </div>
 
             {/* Tabs & Filter Bar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-              <div className="flex p-1 bg-[#F1F3F5] rounded-xl w-max gap-1">
-                <Skeleton className="h-9 w-32 rounded-lg bg-white shadow-sm" />
-                <Skeleton className="h-9 w-36 rounded-lg bg-gray-200/60" />
+              <div className="flex p-1 bg-[#F1F3F5] rounded-sm w-max gap-1">
+                <Skeleton className="h-9 w-32 rounded-sm bg-white shadow-sm" />
+                <Skeleton className="h-9 w-36 rounded-sm bg-gray-200/60" />
               </div>
-              <Skeleton className="h-10 w-40 rounded-xl bg-[#F1F3F5]" />
+              <Skeleton className="h-10 w-40 rounded-sm bg-[#F1F3F5]" />
             </div>
 
             {/* Orders Cards List */}
@@ -85,11 +85,11 @@ export default function Loading() {
 
           {/* Right Column (Sidebar) */}
           <div className="w-full lg:w-80 shrink-0">
-            <div className="rounded-2xl border border-gray-200 bg-[#F8F9FA] p-6 space-y-4">
+            <div className="rounded-sm border border-gray-200 bg-[#F8F9FA] p-6 space-y-4">
               <Skeleton className="h-5 w-32 bg-gray-300" />
               <Skeleton className="h-3.5 w-full bg-gray-200" />
               <Skeleton className="h-3.5 w-4/5 bg-gray-200" />
-              <Skeleton className="h-11 w-full rounded-xl bg-primary/20" />
+              <Skeleton className="h-11 w-full rounded-sm bg-primary/20" />
             </div>
           </div>
         </div>

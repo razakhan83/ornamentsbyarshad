@@ -273,7 +273,7 @@ export default function CreateCouponPage() {
             </CardHeader>
             <CardContent>
               <FieldGroup>
-                <Field orientation="horizontal" className="justify-between bg-muted/30 p-4 rounded-xl border border-border/50">
+                <Field orientation="horizontal" className="justify-between bg-muted/30 p-4 rounded-sm border border-border/50">
                   <FieldContent>
                     <FieldTitle>Active Status</FieldTitle>
                     <FieldDescription>Turn this coupon on or off.</FieldDescription>

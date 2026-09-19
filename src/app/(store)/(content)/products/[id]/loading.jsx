@@ -13,10 +13,10 @@ export default function ProductDetailLoading() {
           
           {/* Left Gallery Frame */}
           <div className="w-full md:w-[48%] lg:w-[46%] space-y-3">
-            <Skeleton className="aspect-[4/5] w-full rounded-2xl sm:rounded-3xl border border-[#E8E5DF]/50 bg-[#F4F2EE]/70" />
+            <Skeleton className="aspect-[4/5] w-full rounded-sm sm:rounded-sm border border-[#E8E5DF]/50 bg-[#F4F2EE]/70" />
             <div className="hidden md:flex gap-2.5 pt-0.5">
               {Array.from({ length: 4 }).map((_, index) => (
-                <Skeleton key={index} className="aspect-[4/5] w-16 rounded-lg border border-[#E8E5DF]/40 bg-[#F4F2EE]/60" />
+                <Skeleton key={index} className="aspect-[4/5] w-16 rounded-sm border border-[#E8E5DF]/40 bg-[#F4F2EE]/60" />
               ))}
             </div>
           </div>

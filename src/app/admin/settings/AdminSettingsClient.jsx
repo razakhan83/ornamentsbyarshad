@@ -113,7 +113,7 @@ function AdminAccessSection() {
         <StaggerContainer className="space-y-2 pt-2">
           {[1, 2].map((item) => (
             <StaggerItem key={item}>
-              <Skeleton className="h-11 rounded-lg w-full" />
+              <Skeleton className="h-11 rounded-sm w-full" />
             </StaggerItem>
           ))}
         </StaggerContainer>
@@ -122,7 +122,7 @@ function AdminAccessSection() {
           <StaggerItem className="space-y-2">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Configured admins</p>
             {configuredAdmins.length === 0 ? (
-              <p className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
+              <p className="rounded-sm border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
                 No configured admin emails found in environment variables.
               </p>
             ) : (
@@ -130,7 +130,7 @@ function AdminAccessSection() {
                 {configuredAdmins.map((email) => (
                   <li
                     key={email}
-                    className="flex items-center justify-between gap-3 rounded-lg border border-border bg-muted/35 px-4 py-2.5"
+                    className="flex items-center justify-between gap-3 rounded-sm border border-border bg-muted/35 px-4 py-2.5"
                   >
                     <div className="flex min-w-0 items-center gap-2">
                       <ShieldCheck className="size-4 shrink-0 text-foreground" />
@@ -148,7 +148,7 @@ function AdminAccessSection() {
           <StaggerItem className="space-y-2">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Additional admins</p>
             {dynamicAdmins.length === 0 ? (
-              <p className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
+              <p className="rounded-sm border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
                 No additional admins yet. Add one above.
               </p>
             ) : (
@@ -156,7 +156,7 @@ function AdminAccessSection() {
                 {dynamicAdmins.map((email) => (
                   <li
                     key={email}
-                    className="flex items-center justify-between gap-3 rounded-lg border border-border bg-muted/35 px-4 py-2.5"
+                    className="flex items-center justify-between gap-3 rounded-sm border border-border bg-muted/35 px-4 py-2.5"
                   >
                     <div className="flex min-w-0 items-center gap-2">
                       <ShieldCheck className="size-4 shrink-0 text-foreground" />

@@ -220,7 +220,7 @@ function StockDialog({ open, product, quantity, onQuantityChange, saving, onOpen
             ))}
           </div>
 
-          <div className="flex items-center justify-between rounded-lg border border-border/80 bg-muted/30 px-3 py-2 text-xs">
+          <div className="flex items-center justify-between rounded-sm border border-border/80 bg-muted/30 px-3 py-2 text-xs">
             <span className="text-muted-foreground font-medium">Status Preview:</span>
             <span className={cn(
               "font-bold px-2 py-0.5 rounded text-[11px] border",
@@ -739,7 +739,7 @@ export default function AdminProductsClient({
 
       {/* Bulk Action Toolbar - appears when products are selected */}
       {selectedProducts.length > 0 && (
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-2.5 rounded-lg border border-border bg-muted/40 p-2.5 sm:px-4 shadow-xs animate-in fade-in slide-in-from-top-1 duration-200">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2.5 rounded-sm border border-border bg-muted/40 p-2.5 sm:px-4 shadow-xs animate-in fade-in slide-in-from-top-1 duration-200">
           <div className="flex items-center gap-2">
             <span className="flex size-5 items-center justify-center rounded-full bg-foreground text-[11px] font-bold text-background">
               {selectedProducts.length}
@@ -824,7 +824,7 @@ export default function AdminProductsClient({
       )}
 
       {/* Desktop Products Table - Clean Order Management Style */}
-      <div className={cn("hidden overflow-hidden rounded-lg border border-border bg-card md:block transition-opacity", isPending && "opacity-70")}>
+      <div className={cn("hidden overflow-hidden rounded-sm border border-border bg-card md:block transition-opacity", isPending && "opacity-70")}>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
@@ -1038,7 +1038,7 @@ export default function AdminProductsClient({
       {/* Mobile Card List - Order Management Style */}
       <div className={cn("md:hidden flex flex-col gap-2.5 transition-opacity", isPending && "opacity-70")}>
         {products.length === 0 ? (
-          <div className="rounded-lg border border-border bg-card px-4 py-12 text-center text-xs text-muted-foreground">
+          <div className="rounded-sm border border-border bg-card px-4 py-12 text-center text-xs text-muted-foreground">
             No products found.
           </div>
         ) : (
@@ -1052,7 +1052,7 @@ export default function AdminProductsClient({
               <div
                 key={product._id}
                 className={cn(
-                  "flex flex-col gap-2.5 rounded-lg border border-border bg-card p-3 shadow-xs transition-colors",
+                  "flex flex-col gap-2.5 rounded-sm border border-border bg-card p-3 shadow-xs transition-colors",
                   isSelected && "bg-muted/40 border-primary/40"
                 )}
               >

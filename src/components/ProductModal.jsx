@@ -47,14 +47,14 @@ export default function ProductModal({ product, onClose, whatsappNumber = '', st
             >
                 {/* Modal */}
                 <div
-                    className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-card border border-border/80 shadow-2xl animate-fadeInUp"
+                    className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-sm bg-card border border-border/80 shadow-2xl animate-fadeInUp"
                     style={{ willChange: 'transform, opacity' }}
                     onClick={(e) => e.stopPropagation()}
                 >
                     <button
                         onClick={onClose}
                         aria-label="Close dialog"
-                        className="absolute right-4 top-4 z-10 flex size-9 items-center justify-center rounded-xl bg-muted/80 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
+                        className="absolute right-4 top-4 z-10 flex size-9 items-center justify-center rounded-sm bg-muted/80 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
                     >
                         <X className="size-4.5" />
                     </button>

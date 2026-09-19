@@ -123,17 +123,17 @@ export default function AbandonedCartsClient({ initialCarts = [] }) {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="admin-surface rounded-xl p-4 border border-border/70">
+        <div className="admin-surface rounded-sm p-4 border border-border/70">
           <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Active Abandoned Carts</p>
           <h3 className="mt-1 text-2xl font-bold text-amber-600 tabular-nums">{stats.activeCount}</h3>
         </div>
-        <div className="admin-surface rounded-xl p-4 border border-border/70">
+        <div className="admin-surface rounded-sm p-4 border border-border/70">
           <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Potential Revenue</p>
           <h3 className="mt-1 text-2xl font-bold text-foreground tabular-nums">
             Rs. {stats.totalPotential.toLocaleString('en-PK')}
           </h3>
         </div>
-        <div className="admin-surface rounded-xl p-4 border border-border/70">
+        <div className="admin-surface rounded-sm p-4 border border-border/70">
           <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Recovered Orders</p>
           <h3 className="mt-1 text-2xl font-bold text-emerald-600 tabular-nums">{stats.recoveredCount}</h3>
         </div>
@@ -141,7 +141,7 @@ export default function AbandonedCartsClient({ initialCarts = [] }) {
 
       {/* Filter & Search Toolbar */}
       <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
-        <div className="flex p-1 bg-muted/60 rounded-lg w-full sm:w-auto overflow-x-auto">
+        <div className="flex p-1 bg-muted/60 rounded-sm w-full sm:w-auto overflow-x-auto">
           {[
             { key: 'ABANDONED', label: `Abandoned (${stats.activeCount})` },
             { key: 'RECOVERED', label: `Recovered (${stats.recoveredCount})` },
@@ -170,7 +170,7 @@ export default function AbandonedCartsClient({ initialCarts = [] }) {
             placeholder="Search by phone, name, city..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="h-8.5 pl-8 text-xs rounded-lg"
+            className="h-8.5 pl-8 text-xs rounded-sm"
           />
         </div>
       </div>
@@ -178,7 +178,7 @@ export default function AbandonedCartsClient({ initialCarts = [] }) {
       {/* Cart List */}
       <div className="grid grid-cols-1 gap-3">
         {filteredCarts.length === 0 ? (
-          <div className="admin-surface rounded-xl p-10 flex flex-col items-center justify-center text-center border border-dashed border-border">
+          <div className="admin-surface rounded-sm p-10 flex flex-col items-center justify-center text-center border border-dashed border-border">
             <ShoppingBag className="size-10 text-muted-foreground/50 mb-2" />
             <h4 className="text-sm font-semibold text-foreground">No abandoned carts found</h4>
             <p className="text-xs text-muted-foreground mt-1">
@@ -189,7 +189,7 @@ export default function AbandonedCartsClient({ initialCarts = [] }) {
           filteredCarts.map((cart) => (
             <div
               key={cart._id}
-              className="admin-surface rounded-xl p-4 border border-border/80 hover:border-border transition-all flex flex-col gap-3"
+              className="admin-surface rounded-sm p-4 border border-border/80 hover:border-border transition-all flex flex-col gap-3"
             >
               {/* Header row */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border/50 pb-3">
@@ -248,7 +248,7 @@ export default function AbandonedCartsClient({ initialCarts = [] }) {
                       href={getWhatsAppUrl(cart)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs transition-colors shadow-xs"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs transition-colors shadow-xs"
                     >
                       <MessageCircle className="size-3.5" />
                       Contact WhatsApp

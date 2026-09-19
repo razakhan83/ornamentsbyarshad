@@ -310,7 +310,7 @@ export default function AdminNotificationCenter() {
                         <Circle className="size-1.5 fill-foreground text-foreground" />
                       </div>
                     )}
-                    <div className={cn("flex size-9 shrink-0 items-center justify-center rounded-xl", colorClass)}>
+                    <div className={cn("flex size-9 shrink-0 items-center justify-center rounded-sm", colorClass)}>
                       <Icon className="size-4" />
                     </div>
                     <div className="flex flex-1 flex-col gap-1 pr-4">

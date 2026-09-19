@@ -17,7 +17,7 @@ export default function CheckoutPageSkeleton() {
           </div>
           
           <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
-            <Skeleton className="h-7 w-32 rounded-lg" />
+            <Skeleton className="h-7 w-32 rounded-sm" />
           </div>
 
           <div className="z-10 flex items-center">
@@ -49,7 +49,7 @@ export default function CheckoutPageSkeleton() {
                 <Skeleton className="h-3.5 w-12 rounded" />
               </div>
               <div className="space-y-3">
-                <Skeleton className="h-12 w-full rounded-xl" />
+                <Skeleton className="h-12 w-full rounded-sm" />
                 <div className={styles.checkboxRow}>
                   <Skeleton className="size-4 rounded shrink-0" />
                   <Skeleton className="h-3.5 w-60 rounded" />
@@ -64,11 +64,11 @@ export default function CheckoutPageSkeleton() {
               </div>
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-3">
-                  <Skeleton className="h-12 rounded-xl" />
-                  <Skeleton className="h-12 rounded-xl" />
+                  <Skeleton className="h-12 rounded-sm" />
+                  <Skeleton className="h-12 rounded-sm" />
                 </div>
-                <Skeleton className="h-16 w-full rounded-xl" />
-                <Skeleton className="h-12 w-full rounded-xl" />
+                <Skeleton className="h-16 w-full rounded-sm" />
+                <Skeleton className="h-12 w-full rounded-sm" />
                 <div className={styles.checkboxRow}>
                   <Skeleton className="size-4 rounded" />
                   <Skeleton className="h-3.5 w-52 rounded" />
@@ -81,7 +81,7 @@ export default function CheckoutPageSkeleton() {
               <div className="mb-2">
                 <Skeleton className="h-5 w-32 rounded-md" />
               </div>
-              <div className="rounded-xl border border-border/60 p-4 flex items-center justify-between">
+              <div className="rounded-sm border border-border/60 p-4 flex items-center justify-between">
                 <div className="space-y-1.5">
                   <Skeleton className="h-4 w-32 rounded" />
                   <Skeleton className="h-3 w-48 rounded" />
@@ -97,7 +97,7 @@ export default function CheckoutPageSkeleton() {
                 <Skeleton className="h-3 w-56 rounded" />
               </div>
               
-              <div className="rounded-xl border border-border/60 overflow-hidden divide-y divide-border/60">
+              <div className="rounded-sm border border-border/60 overflow-hidden divide-y divide-border/60">
                 <div className="p-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Skeleton className="size-4 rounded-full" />
@@ -123,13 +123,13 @@ export default function CheckoutPageSkeleton() {
             <div className="md:hidden mt-6 mb-3 border-t border-border/60 pt-6 space-y-3">
               <Skeleton className="h-5 w-28 rounded-md" />
               <div className="space-y-2">
-                <Skeleton className="h-12 w-full rounded-xl" />
-                <Skeleton className="h-12 w-full rounded-xl" />
+                <Skeleton className="h-12 w-full rounded-sm" />
+                <Skeleton className="h-12 w-full rounded-sm" />
               </div>
             </div>
 
             {/* Desktop CTA */}
-            <Skeleton className="hidden md:flex h-13 w-full rounded-xl mb-4" />
+            <Skeleton className="hidden md:flex h-13 w-full rounded-sm mb-4" />
 
             {/* Trust links */}
             <div className={styles.trustLinks}>
@@ -199,7 +199,7 @@ export default function CheckoutPageSkeleton() {
             <Skeleton className="h-2.5 w-10 rounded" />
             <Skeleton className="h-5 w-28 rounded" />
           </div>
-          <Skeleton className="h-11 w-36 rounded-xl shrink-0" />
+          <Skeleton className="h-11 w-36 rounded-sm shrink-0" />
         </div>
       </div>
     </>

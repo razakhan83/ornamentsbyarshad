@@ -169,7 +169,7 @@ export default function ManualCustomersClient() {
           </div>
         </div>
 
-        <div className="flex-1 rounded-xl border bg-card text-card-foreground shadow-sm">
+        <div className="flex-1 rounded-sm border bg-card text-card-foreground shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -209,10 +209,10 @@ export default function ManualCustomersClient() {
                       </td>
                       <td className="p-4 align-middle text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <Button variant="ghost" size="icon" className="size-8 rounded-lg cursor-pointer" onClick={() => openModal(customer)}>
+                          <Button variant="ghost" size="icon" className="size-8 rounded-sm cursor-pointer" onClick={() => openModal(customer)}>
                             <Edit className="size-3.5" />
                           </Button>
-                          <Button variant="ghost" size="icon" className="size-8 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive cursor-pointer" onClick={() => setDeleteId(customer._id)}>
+                          <Button variant="ghost" size="icon" className="size-8 rounded-sm text-muted-foreground hover:bg-destructive/10 hover:text-destructive cursor-pointer" onClick={() => setDeleteId(customer._id)}>
                             <Trash2 className="size-3.5" />
                           </Button>
                         </div>

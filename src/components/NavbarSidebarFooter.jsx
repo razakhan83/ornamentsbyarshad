@@ -30,7 +30,7 @@ export default function NavbarSidebarFooter({ mobileMenuButtonClass = '', onClos
           onCloseSidebar();
           onOpenAuth();
         }}
-        className="h-9 min-h-9 w-full rounded-lg px-3 py-1.5 shadow-none text-[14px]"
+        className="h-9 min-h-9 w-full rounded-sm px-3 py-1.5 shadow-none text-[14px]"
       />
     );
   }
@@ -44,7 +44,7 @@ export default function NavbarSidebarFooter({ mobileMenuButtonClass = '', onClos
               type="button"
               variant="ghost"
               onClick={() => setLogoutConfirmOpen(true)}
-              className="h-8.5 min-h-8.5 w-full justify-center rounded-lg px-2.5 py-1 text-xs font-medium transition-all duration-200 active:scale-[0.98] text-red-600 hover:text-red-700 hover:bg-red-500/10 dark:text-red-400 shadow-none cursor-pointer"
+              className="h-8.5 min-h-8.5 w-full justify-center rounded-sm px-2.5 py-1 text-xs font-medium transition-all duration-200 active:scale-[0.98] text-red-600 hover:text-red-700 hover:bg-red-500/10 dark:text-red-400 shadow-none cursor-pointer"
             >
               <LogOut className="mr-2 size-3.5 text-red-500 dark:text-red-400" />
               Logout
@@ -54,7 +54,7 @@ export default function NavbarSidebarFooter({ mobileMenuButtonClass = '', onClos
       </div>
 
       <AlertDialog open={logoutConfirmOpen} onOpenChange={setLogoutConfirmOpen}>
-        <AlertDialogContent className="max-w-[320px] p-5 rounded-2xl gap-4" showCloseButton={false}>
+        <AlertDialogContent className="max-w-[320px] p-5 rounded-sm gap-4" showCloseButton={false}>
           <div className="flex justify-between items-start">
             <AlertDialogHeader className="text-left space-y-1">
               <AlertDialogTitle className="text-base font-semibold text-foreground">Log out of your account?</AlertDialogTitle>
@@ -76,7 +76,7 @@ export default function NavbarSidebarFooter({ mobileMenuButtonClass = '', onClos
               type="button"
               variant="outline"
               onClick={() => setLogoutConfirmOpen(false)}
-              className="flex-1 rounded-lg text-xs h-9 font-medium"
+              className="flex-1 rounded-sm text-xs h-9 font-medium"
             >
               Cancel
             </Button>
@@ -88,7 +88,7 @@ export default function NavbarSidebarFooter({ mobileMenuButtonClass = '', onClos
                 onCloseSidebar?.();
                 signOut();
               }}
-              className="flex-1 rounded-lg text-xs h-9 font-semibold bg-red-600 hover:bg-red-700 text-white"
+              className="flex-1 rounded-sm text-xs h-9 font-semibold bg-red-600 hover:bg-red-700 text-white"
             >
               Log Out
             </Button>

@@ -78,7 +78,7 @@ export default function HomeVideoCatalog({ title, pcVideo, mobileVideo }) {
       {title ? (
         <h2 className="sr-only">{title}</h2>
       ) : null}
-      <div className="relative overflow-hidden rounded-2xl bg-muted/20">
+      <div className="relative overflow-hidden rounded-sm bg-muted/20">
         {pcVideo?.url && isDesktop && (
           <div className="relative hidden sm:block aspect-[21/9] xl:aspect-[3/1]">
             {!pcLoaded && (

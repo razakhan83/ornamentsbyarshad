@@ -149,7 +149,7 @@ export default function ProductCardAddToCartButtonClient({ product, isOutOfStock
       data-state={animationState}
       aria-busy={isBusy}
       className={cn(
-        "group w-full rounded-lg font-semibold transition-all duration-300 ease-out h-8 px-3 text-xs sm:h-9 sm:px-4 sm:text-[13px] border border-solid shadow-sm relative overflow-hidden",
+        "group w-full rounded-sm font-semibold transition-all duration-300 ease-out h-8 px-3 text-xs sm:h-9 sm:px-4 sm:text-[13px] border border-solid shadow-sm relative overflow-hidden",
         isOutOfStock
           ? "cursor-not-allowed text-muted-foreground/80 bg-[#f3f4f6] border-transparent"
           : "bg-primary text-white border-transparent hover:bg-primary/90 hover:shadow-[0_0_15px_rgba(1,83,71,0.3)] hover:-translate-y-0.5 active:scale-[0.98]"

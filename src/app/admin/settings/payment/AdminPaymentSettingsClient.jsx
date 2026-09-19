@@ -111,7 +111,7 @@ export default function AdminPaymentSettingsClient({ initialSettings }) {
 
       <div className="space-y-6">
         {/* 1. AsaanPay Online Gateway Card (Standard Clean Shadcn) */}
-        <Card className="rounded-xl border border-border shadow-xs">
+        <Card className="rounded-sm border border-border shadow-xs">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
@@ -130,7 +130,7 @@ export default function AdminPaymentSettingsClient({ initialSettings }) {
           </CardHeader>
           <CardContent className="space-y-4 pt-0">
             {/* Enable Switch */}
-            <div className="flex items-center justify-between rounded-lg border border-border bg-muted/30 p-3.5">
+            <div className="flex items-center justify-between rounded-sm border border-border bg-muted/30 p-3.5">
               <div className="space-y-0.5">
                 <FieldLabel className="text-sm font-medium">Enable AsaanPay</FieldLabel>
                 <FieldDescription className="text-xs">
@@ -273,7 +273,7 @@ export default function AdminPaymentSettingsClient({ initialSettings }) {
         </Card>
 
         {/* 2. Bank Deposit Card (Standard Clean Shadcn) */}
-        <Card className="rounded-xl border border-border shadow-xs">
+        <Card className="rounded-sm border border-border shadow-xs">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
@@ -291,7 +291,7 @@ export default function AdminPaymentSettingsClient({ initialSettings }) {
             </div>
           </CardHeader>
           <CardContent className="space-y-4 pt-0">
-            <div className="flex items-center justify-between rounded-lg border border-border bg-muted/30 p-3.5">
+            <div className="flex items-center justify-between rounded-sm border border-border bg-muted/30 p-3.5">
               <div className="space-y-0.5">
                 <FieldLabel className="text-sm font-medium">Enable Bank Deposit</FieldLabel>
                 <FieldDescription className="text-xs">

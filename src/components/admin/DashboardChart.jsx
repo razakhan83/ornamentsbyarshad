@@ -89,7 +89,7 @@ export default function DashboardChart({ initialData = [], initialPeriod = 'mont
         </div>
 
         {/* Timeframe Toggle Pills */}
-        <div className="inline-flex items-center gap-1 rounded-lg border border-border/80 bg-muted/40 p-1 self-start sm:self-auto shadow-2xs">
+        <div className="inline-flex items-center gap-1 rounded-sm border border-border/80 bg-muted/40 p-1 self-start sm:self-auto shadow-2xs">
           {[
             { id: 'weekly', label: 'Weekly' },
             { id: 'monthly', label: 'Monthly' },
@@ -114,7 +114,7 @@ export default function DashboardChart({ initialData = [], initialPeriod = 'mont
       {/* Chart Canvas */}
       <div className="relative flex-1 min-h-[210px] w-full pt-1">
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-card/60 backdrop-blur-xs z-10 rounded-lg">
+          <div className="absolute inset-0 flex items-center justify-center bg-card/60 backdrop-blur-xs z-10 rounded-sm">
             <Loader2 className="size-5 animate-spin text-emerald-600" />
           </div>
         )}
@@ -158,7 +158,7 @@ export default function DashboardChart({ initialData = [], initialPeriod = 'mont
                 const ordersVal = Number(payload[0]?.payload?.orders || 0);
                 const avgVal = ordersVal > 0 ? Math.round(revenueVal / ordersVal) : 0;
                 return (
-                  <div className="rounded-xl border border-border/80 bg-card/95 backdrop-blur-md p-3 shadow-xl text-xs space-y-2 min-w-[170px]">
+                  <div className="rounded-sm border border-border/80 bg-card/95 backdrop-blur-md p-3 shadow-xl text-xs space-y-2 min-w-[170px]">
                     <div className="flex items-center gap-1.5 pb-1.5 border-b border-border/60 text-muted-foreground font-medium">
                       <Calendar className="size-3 text-muted-foreground" />
                       <span className="text-foreground font-bold">{label}</span>

@@ -30,7 +30,7 @@ export default function CategoryPillCard({ category, index = 0, href, className 
       className={cn("group relative flex flex-col select-none w-full", className)}
     >
       <div
-        className="relative w-full aspect-[4/5] overflow-hidden rounded-2xl bg-[#F4F4F5] shadow-xs transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+        className="relative w-full aspect-[4/5] overflow-hidden rounded-sm bg-[#F4F4F5] shadow-xs transition-transform duration-500 ease-out group-hover:scale-[1.02]"
         style={category?.bgColor ? { backgroundColor: category.bgColor } : { backgroundColor: '#F4F4F5' }}
       >
         {categoryImage ? (

@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import AnimatedStats from '@/components/AnimatedStats';
 import WhatsAppIcon from '@/components/icons/WhatsAppIcon';
 import TiltedProductMarquee from '@/components/TiltedProductMarquee';
@@ -18,13 +19,13 @@ export default async function HomeBelowFold() {
       <section id="store-brand-story" className="border-t border-b border-[#E8E5DF] bg-[#FAF9F6] py-16 md:py-24">
         <div className="mx-auto max-w-[1440px] px-4 sm:px-6 xl:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <div className="relative aspect-[4/5] sm:aspect-[3/2] lg:aspect-[4/5] overflow-hidden bg-[#F4F2EE] rounded-2xl sm:rounded-3xl">
+            <div className="relative aspect-[4/5] sm:aspect-[3/2] lg:aspect-[4/5] overflow-hidden bg-[#F4F2EE] rounded-sm sm:rounded-sm">
               <Image
                 src="/Gemini_Generated_Image_fhmgenfhmgenfhmg.jpg"
                 alt="The Art of Eternal Craftsmanship - Ornaments by Arshad"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="size-full object-cover rounded-2xl sm:rounded-3xl transition-transform duration-700 hover:scale-105"
+                className="size-full object-cover rounded-sm sm:rounded-sm transition-transform duration-700 hover:scale-105"
                 loading="lazy"
               />
             </div>
@@ -41,12 +42,12 @@ export default async function HomeBelowFold() {
                 At <strong>Ornaments by Arshad</strong>, every piece is sculpted as a timeless heirloom. Handcrafted by master artisans using ethically sourced gemstones, conflict-free diamonds, and certified hallmarked gold, our creations embody grace, sovereignty, and unmatched refinement.
               </p>
               <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                <a
+                <Link
                   href="/about-us"
                   className="inline-flex items-center justify-center bg-[#121212] text-white px-8 py-4 text-xs font-sans uppercase tracking-[0.2em] font-semibold rounded-none hover:bg-neutral-800 transition-all active:scale-[0.98] text-center"
                 >
                   Discover Our Story
-                </a>
+                </Link>
                 <a
                   href={whatsappLink || '#'}
                   target="_blank"

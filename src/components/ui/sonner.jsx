@@ -12,13 +12,13 @@ function Toaster({ ...props }) {
         className: 'max-w-[320px]',
         classNames: {
           toast:
-            "group toast !bg-card !text-foreground !border-border shadow-lg rounded-xl font-sans pointer-events-auto",
+            "group toast !bg-card !text-foreground !border-border shadow-lg rounded-sm font-sans pointer-events-auto",
           title: "group-[.toast]:text-foreground group-[.toast]:font-semibold",
           description: "group-[.toast]:text-muted-foreground",
           actionButton:
-            "!bg-primary !text-primary-foreground rounded-lg font-semibold px-4 py-2 shrink-0 ms-auto border border-primary shadow-md",
+            "!bg-primary !text-primary-foreground rounded-sm font-semibold px-4 py-2 shrink-0 ms-auto border border-primary shadow-md",
           cancelButton:
-            "!bg-secondary !text-muted-foreground rounded-lg border border-border",
+            "!bg-secondary !text-muted-foreground rounded-sm border border-border",
           success:
             "!border-success/25 !bg-card",
           error:

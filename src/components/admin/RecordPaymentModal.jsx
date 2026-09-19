@@ -92,7 +92,7 @@ export default function RecordPaymentModal({ isOpen, invoice, onClose, onSuccess
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 py-2">
-          <div className="p-3 rounded-lg bg-zinc-50 border border-zinc-200 flex justify-between items-center text-sm">
+          <div className="p-3 rounded-sm bg-zinc-50 border border-zinc-200 flex justify-between items-center text-sm">
             <span className="text-zinc-600 font-medium">Balance Due:</span>
             <span className="font-bold text-emerald-700 text-base">
               Rs. {Number(invoice.balanceDue || 0).toLocaleString('en-PK')}

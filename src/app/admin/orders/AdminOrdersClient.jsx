@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { formatDistanceToNow } from 'date-fns';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { AlertTriangle, Calendar, Eye, Receipt, RotateCcw, Search, Trash2, X, Download, Edit, Zap, Check, CheckCircle2, ChevronsUpDown, MoreHorizontal, PackageCheck, Truck, Plus, Printer, Send, FileText, Upload, Globe, UserCog } from 'lucide-react';
+import { AlertTriangle, Calendar, Eye, Receipt, RotateCcw, Search, Trash2, X, Download, Edit, Zap, Check, CheckCircle2, ChevronsUpDown, MoreHorizontal, Package, PackageCheck, Truck, Plus, Printer, Send, FileText, Upload, Globe, UserCog } from 'lucide-react';
 import AppPagination from '@/components/AppPagination';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -226,7 +226,7 @@ function buildHref(pathname, searchParams, updates) {
 
 function OrdersTablePendingSkeleton({ showNocColumns = false }) {
   return (
-    <div className="hidden overflow-hidden rounded-xl border border-border bg-card md:block shadow-xs">
+    <div className="hidden overflow-hidden rounded-sm border border-border bg-card md:block shadow-xs">
       <table className="w-full text-left">
         <thead>
           <tr className="border-b border-border bg-muted/40">
@@ -1977,7 +1977,7 @@ export default function AdminOrdersClient({
                 navigate({ status: tab.id, page: null });
               }}
               className={cn(
-                "h-8.5 rounded-lg px-3.5 text-xs font-semibold transition-all md:h-8.5 md:text-[12.5px] cursor-pointer",
+                "h-8.5 rounded-sm px-3.5 text-xs font-semibold transition-all md:h-8.5 md:text-[12.5px] cursor-pointer",
                 statusFilter === tab.id
                   ? "shadow-sm"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/80"
@@ -1998,7 +1998,7 @@ export default function AdminOrdersClient({
               navigate({ status: TRASH_TAB_ID, page: null });
             }}
             className={cn(
-              'h-8.5 rounded-lg px-3.5 text-xs font-semibold transition-all md:h-8.5 md:text-[12.5px] cursor-pointer',
+              'h-8.5 rounded-sm px-3.5 text-xs font-semibold transition-all md:h-8.5 md:text-[12.5px] cursor-pointer',
               statusFilter !== TRASH_TAB_ID && 'text-destructive/70 hover:text-destructive hover:bg-destructive/10'
             )}
           >
@@ -2054,7 +2054,7 @@ export default function AdminOrdersClient({
               navigate({ status: val, page: null });
             }}
           >
-            <SelectTrigger className="w-full h-9 rounded-xl bg-background border-border text-xs font-semibold shadow-none">
+            <SelectTrigger className="w-full h-9 rounded-sm bg-background border-border text-xs font-semibold shadow-none">
               <SelectValue placeholder="Select Status" />
             </SelectTrigger>
             <SelectContent>
@@ -2114,7 +2114,7 @@ export default function AdminOrdersClient({
       {/* ── Trash Panel ── */}
       {isTrashView && (
         <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between gap-3 rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3">
+          <div className="flex items-center justify-between gap-3 rounded-sm border border-destructive/20 bg-destructive/5 px-4 py-3">
             <div className="flex items-center gap-2 text-destructive">
               <Trash2 className="size-4" />
               <p className="text-[13px] font-semibold">Trash</p>
@@ -2134,13 +2134,13 @@ export default function AdminOrdersClient({
           </div>
 
           {trashOrders.length === 0 ? (
-            <div className="rounded-xl border border-border bg-card px-4 py-12 text-center">
+            <div className="rounded-sm border border-border bg-card px-4 py-12 text-center">
               <Trash2 className="mx-auto mb-2 size-8 text-muted-foreground/30" />
               <p className="text-sm font-medium text-foreground">Trash is empty</p>
               <p className="mt-0.5 text-[12px] text-muted-foreground">Deleted orders will appear here for 50 days.</p>
             </div>
           ) : (
-            <div className="overflow-hidden rounded-xl border border-border bg-card">
+            <div className="overflow-hidden rounded-sm border border-border bg-card">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-border bg-muted/40 text-left text-[11px] font-medium uppercase tracking-[0.06em] text-muted-foreground">
@@ -2284,7 +2284,7 @@ export default function AdminOrdersClient({
       {/* ── Filter Bar & Actions ── */}
       {selectedOrders.length > 0 ? (
         /* Floating / Selected Mode Action Bar */
-        <div className="admin-filter-shell flex flex-wrap items-center justify-between gap-2.5 w-full bg-primary/5 border border-primary/20 rounded-xl px-3 py-2 animate-in fade-in duration-150">
+        <div className="admin-filter-shell flex flex-wrap items-center justify-between gap-2.5 w-full bg-primary/5 border border-primary/20 rounded-sm px-3 py-2 animate-in fade-in duration-150">
           <div className="flex items-center gap-2">
             <Badge variant="secondary" className="font-semibold text-xs px-2.5 py-0.5">
               {selectedOrders.length} selected
@@ -2303,7 +2303,7 @@ export default function AdminOrdersClient({
           <div className="flex items-center gap-2 flex-wrap">
             {/* Status Selector Dropdown */}
             <Select value={bulkStatus} onValueChange={setBulkStatus}>
-              <SelectTrigger className="h-7.5 w-[140px] text-xs bg-background rounded-lg border-border/80">
+              <SelectTrigger className="h-7.5 w-[140px] text-xs bg-background rounded-sm border-border/80">
                 <SelectValue placeholder="Move to status" />
               </SelectTrigger>
               <SelectContent>
@@ -2334,7 +2334,7 @@ export default function AdminOrdersClient({
               size="sm"
               onClick={() => setBulkDeleteConfirmOpen(true)}
               disabled={isBulkDeleting || isBulkUpdating || pendingWorkflowAction !== ''}
-              className="h-7.5 px-2.5 text-xs gap-1.5 rounded-lg shadow-xs cursor-pointer"
+              className="h-7.5 px-2.5 text-xs gap-1.5 rounded-sm shadow-xs cursor-pointer"
             >
               {isBulkDeleting ? <Spinner data-icon="inline-start" className="size-3" /> : <Trash2 className="size-3.5" />}
               Move to Trash
@@ -2359,7 +2359,7 @@ export default function AdminOrdersClient({
             {/* Date Filters Row (Left side) */}
             <div className="flex items-center gap-2">
               <Select value={getQuickDateValue()} onValueChange={handleQuickDateFilter}>
-                <SelectTrigger className="h-8.5 flex-1 md:w-[130px] rounded-lg border-border bg-background text-xs shadow-none">
+                <SelectTrigger className="h-8.5 flex-1 md:w-[130px] rounded-sm border-border bg-background text-xs shadow-none">
                   <SelectValue placeholder="Date Filter" />
                 </SelectTrigger>
                 <SelectContent>
@@ -2378,12 +2378,12 @@ export default function AdminOrdersClient({
 
               <Popover open={Boolean(isDatePopoverOpen)} onOpenChange={setIsDatePopoverOpen}>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" size="icon" type="button" className="size-8.5 shrink-0 rounded-lg border-border bg-background shadow-none relative cursor-pointer" title="Custom Date Range">
+                  <Button variant="outline" size="icon" type="button" className="size-8.5 shrink-0 rounded-sm border-border bg-background shadow-none relative cursor-pointer" title="Custom Date Range">
                     <Calendar className="size-3.5 text-muted-foreground" />
                     {(startDate || endDate) && <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-primary" />}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent align="start" className="w-auto p-4 rounded-xl shadow-lg border-border">
+                <PopoverContent align="start" className="w-auto p-4 rounded-sm shadow-lg border-border">
                   <div className="flex flex-col gap-3">
                     <p className="text-xs font-semibold text-foreground">Filter by Custom Date Range</p>
                     <div className="flex items-center gap-2">
@@ -2461,7 +2461,7 @@ export default function AdminOrdersClient({
                 <Search className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" data-icon />
                 <Input
                   placeholder="Search order ID, customer, phone..."
-                  className="h-8.5 rounded-lg border-border bg-background pl-9 pr-[68px] text-xs shadow-none w-full"
+                  className="h-8.5 rounded-sm border-border bg-background pl-9 pr-[68px] text-xs shadow-none w-full"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -2501,12 +2501,12 @@ export default function AdminOrdersClient({
             {statusFilter === 'all' ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-8 px-3 text-xs font-medium rounded-lg flex items-center gap-1.5 text-foreground hover:bg-muted cursor-pointer">
+                  <Button variant="outline" size="sm" className="h-8 px-3 text-xs font-medium rounded-sm flex items-center gap-1.5 text-foreground hover:bg-muted cursor-pointer">
                     <Zap className="size-3.5 text-muted-foreground" />
                     <span>Reports</span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-52 p-1.5 rounded-xl shadow-lg border-border" align="end">
+                <DropdownMenuContent className="w-52 p-1.5 rounded-sm shadow-lg border-border" align="end">
                   <DropdownMenuGroup>
                     <DropdownMenuLabel className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Courier Exports</DropdownMenuLabel>
                     <DropdownMenuItem
@@ -2543,7 +2543,7 @@ export default function AdminOrdersClient({
 
       {/* ── Desktop Table ── */}
       {isPending ? <OrdersTablePendingSkeleton showNocColumns={showNocColumns} enableSecondaryNoc={enableSecondaryNoc} /> : (
-      <div className="hidden overflow-hidden rounded-xl border border-border bg-card md:block shadow-xs">
+      <div className="hidden overflow-hidden rounded-sm border border-border bg-card md:block shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
                 <thead>
@@ -3010,7 +3010,7 @@ export default function AdminOrdersClient({
           }
         }}
       >
-        <DialogContent className="max-h-[100dvh] w-full max-w-full overflow-x-hidden overflow-y-auto rounded-none border-0 p-3 sm:max-h-[90vh] sm:w-[calc(100vw-2rem)] sm:max-w-3xl sm:rounded-2xl sm:border sm:p-5 lg:max-w-5xl lg:p-6 xl:max-w-6xl">
+        <DialogContent className="max-h-[100dvh] w-full max-w-full overflow-x-hidden overflow-y-auto rounded-none border-0 p-3 sm:max-h-[90vh] sm:w-[calc(100vw-2rem)] sm:max-w-3xl sm:rounded-sm sm:border sm:p-5 lg:max-w-5xl lg:p-6 xl:max-w-6xl">
           <DialogHeader>
             <DialogTitle className="text-base font-semibold">Create Draft Order</DialogTitle>
           </DialogHeader>
@@ -3018,7 +3018,7 @@ export default function AdminOrdersClient({
             {/* Form start */}
             <div className="grid gap-3 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] xl:items-start lg:gap-4">
               <div className="min-w-0 space-y-3">
-                <div className="relative z-20 min-w-0 rounded-2xl border border-border/80 bg-card p-3 shadow-[0_14px_30px_-32px_rgba(15,23,42,0.4)] lg:p-4">
+                <div className="relative z-20 min-w-0 rounded-sm border border-border/80 bg-card p-3 shadow-[0_14px_30px_-32px_rgba(15,23,42,0.4)] lg:p-4">
                   <div className="mb-3 flex items-center justify-between gap-3">
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Customer</p>
@@ -3030,7 +3030,7 @@ export default function AdminOrdersClient({
                     <FieldLabel className="flex items-center gap-1.5 text-[12px]">Full Name <span className="text-destructive">*</span></FieldLabel>
                     <div className="relative">
                       <Input
-                        className={cn('h-9 rounded-xl px-3 text-[13px]', !draftForm.customerName && 'border-destructive/80 ring-1 ring-destructive/80')}
+                        className={cn('h-9 rounded-sm px-3 text-[13px]', !draftForm.customerName && 'border-destructive/80 ring-1 ring-destructive/80')}
                         value={draftForm.customerName}
                         onChange={(event) => onCustomerNameChange(event.target.value)}
                         onFocus={() => {
@@ -3048,7 +3048,7 @@ export default function AdminOrdersClient({
                         </div>
                       )}
                       {customerSuggestionsOpen && customerSuggestions.length > 0 ? (
-                        <div className="absolute top-full z-[120] mt-1 w-full overflow-hidden rounded-xl border border-border bg-popover shadow-lg">
+                        <div className="absolute top-full z-[120] mt-1 w-full overflow-hidden rounded-sm border border-border bg-popover shadow-lg">
                           <div className="max-h-56 overflow-y-auto p-1">
                             {customerSuggestions.map((cust) => (
                               <button
@@ -3058,7 +3058,7 @@ export default function AdminOrdersClient({
                                   event.preventDefault();
                                   selectCustomer(cust);
                                 }}
-                                className="flex w-full flex-col items-start rounded-lg px-3 py-2 text-left text-[13px] text-foreground transition-colors hover:bg-muted"
+                                className="flex w-full flex-col items-start rounded-sm px-3 py-2 text-left text-[13px] text-foreground transition-colors hover:bg-muted"
                               >
                                 <span className="font-medium">{cust.name}</span>
                                 <span className="text-[11px] text-muted-foreground">{cust.phone} {cust.city ? `- ${cust.city}` : ''}</span>
@@ -3072,7 +3072,7 @@ export default function AdminOrdersClient({
                   <Field>
                     <FieldLabel className="flex items-center gap-1.5 text-[12px]">Phone <span className="text-destructive">*</span></FieldLabel>
                     <Input
-                      className={cn('h-9 rounded-xl px-3 text-[13px]', !draftForm.customerPhone && 'border-destructive/80 ring-1 ring-destructive/80')}
+                      className={cn('h-9 rounded-sm px-3 text-[13px]', !draftForm.customerPhone && 'border-destructive/80 ring-1 ring-destructive/80')}
                       value={draftForm.customerPhone}
                       onChange={(event) => updateDraftField('customerPhone', event.target.value)}
                       autoComplete="new-password"
@@ -3086,7 +3086,7 @@ export default function AdminOrdersClient({
                     <FieldLabel className="flex items-center gap-1.5 text-[12px]">City <span className="text-destructive">*</span></FieldLabel>
                     <div className="relative">
                       <Input
-                        className={cn('h-9 rounded-xl px-3 text-[13px]', !draftForm.customerCity && 'border-destructive/80 ring-1 ring-destructive/80')}
+                        className={cn('h-9 rounded-sm px-3 text-[13px]', !draftForm.customerCity && 'border-destructive/80 ring-1 ring-destructive/80')}
                         value={draftForm.customerCity}
                         autoComplete="new-password"
                         onChange={(event) => {
@@ -3101,7 +3101,7 @@ export default function AdminOrdersClient({
                         required
                       />
                       {citySuggestionsOpen && filteredDraftCities.length > 0 ? (
-                        <div className="absolute top-full z-[120] mt-1 w-full overflow-hidden rounded-xl border border-border bg-popover shadow-lg">
+                        <div className="absolute top-full z-[120] mt-1 w-full overflow-hidden rounded-sm border border-border bg-popover shadow-lg">
                           <div className="max-h-56 overflow-y-auto p-1">
                             {filteredDraftCities.map((city) => (
                               <button
@@ -3112,7 +3112,7 @@ export default function AdminOrdersClient({
                                   updateDraftField('customerCity', city);
                                   setCitySuggestionsOpen(false);
                                 }}
-                                className="flex w-full items-center rounded-lg px-3 py-2 text-left text-[13px] text-foreground transition-colors hover:bg-muted"
+                                className="flex w-full items-center rounded-sm px-3 py-2 text-left text-[13px] text-foreground transition-colors hover:bg-muted"
                               >
                                 {city}
                               </button>
@@ -3124,12 +3124,12 @@ export default function AdminOrdersClient({
                   </Field>
                   <Field>
                     <FieldLabel className="flex items-center gap-1.5 text-[12px]">Landmark</FieldLabel>
-                    <Input className="h-9 rounded-xl px-3 text-[13px]" value={draftForm.landmark} onChange={(event) => updateDraftField('landmark', event.target.value)} autoComplete="new-password" />
+                    <Input className="h-9 rounded-sm px-3 text-[13px]" value={draftForm.landmark} onChange={(event) => updateDraftField('landmark', event.target.value)} autoComplete="new-password" />
                   </Field>
                   <Field className="md:col-span-2">
                     <FieldLabel className="flex items-center gap-1.5 text-[12px]">Full Address <span className="text-destructive">*</span></FieldLabel>
                     <Input
-                      className={cn('h-9 rounded-xl px-3 text-[13px]', !draftForm.customerAddress && 'border-destructive/80 ring-1 ring-destructive/80')}
+                      className={cn('h-9 rounded-sm px-3 text-[13px]', !draftForm.customerAddress && 'border-destructive/80 ring-1 ring-destructive/80')}
                       value={draftForm.customerAddress}
                       onChange={(event) => updateDraftField('customerAddress', event.target.value)}
                       autoComplete="new-password"
@@ -3138,12 +3138,12 @@ export default function AdminOrdersClient({
                   </Field>
                   <Field className="md:col-span-2">
                     <FieldLabel className="flex items-center gap-1.5 text-[12px]">Notes</FieldLabel>
-                    <Textarea rows={3} className="min-h-24 rounded-xl px-3 py-2 text-[13px]" value={draftForm.notes} onChange={(event) => updateDraftField('notes', event.target.value)} placeholder="Internal note" />
+                    <Textarea rows={3} className="min-h-24 rounded-sm px-3 py-2 text-[13px]" value={draftForm.notes} onChange={(event) => updateDraftField('notes', event.target.value)} placeholder="Internal note" />
                   </Field>
                 </FieldGroup>
               </div>
 
-              <div className="relative z-10 min-w-0 rounded-2xl border border-border/80 bg-card p-3 shadow-[0_14px_30px_-32px_rgba(15,23,42,0.4)] lg:p-4">
+              <div className="relative z-10 min-w-0 rounded-sm border border-border/80 bg-card p-3 shadow-[0_14px_30px_-32px_rgba(15,23,42,0.4)] lg:p-4">
                 <div className="mb-3">
                     <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Order Setup</p>
                   </div>
@@ -3155,7 +3155,7 @@ export default function AdminOrdersClient({
                         <Input
                           type="number"
                           min="0"
-                          className="h-9 rounded-xl px-3 text-[13px]"
+                          className="h-9 rounded-sm px-3 text-[13px]"
                           value={draftForm.manualCodAmount}
                           onChange={(event) => updateDraftField('manualCodAmount', event.target.value)}
                           placeholder={`Auto (= ${formatPrice(draftTotalAmount || 0)})`}
@@ -3170,7 +3170,7 @@ export default function AdminOrdersClient({
                       <Field>
                         <FieldLabel className="flex items-center gap-1.5 text-[12px]">Source Tag</FieldLabel>
                         <Select value={draftForm.sourceTag || undefined} onValueChange={(value) => updateDraftField('sourceTag', value)}>
-                          <SelectTrigger className="h-9 rounded-xl px-3 text-[13px]">
+                          <SelectTrigger className="h-9 rounded-sm px-3 text-[13px]">
                             <SelectValue placeholder="Pick source..." />
                           </SelectTrigger>
                           <SelectContent className="z-[300]">
@@ -3188,11 +3188,11 @@ export default function AdminOrdersClient({
                     <div className="grid gap-3 sm:grid-cols-2">
                       <Field>
                         <FieldLabel className="flex items-center gap-1.5 text-[12px]">Item Type</FieldLabel>
-                        <Input className="h-9 rounded-xl px-3 text-[13px]" value={draftForm.itemType} onChange={(event) => updateDraftField('itemType', event.target.value)} />
+                        <Input className="h-9 rounded-sm px-3 text-[13px]" value={draftForm.itemType} onChange={(event) => updateDraftField('itemType', event.target.value)} />
                       </Field>
                       <Field>
                         <FieldLabel className="flex items-center gap-1.5 text-[12px]">Weight (kg)</FieldLabel>
-                        <Input type="number" step="0.5" min="0.5" className="h-9 rounded-xl px-3 text-[13px]" value={draftForm.weight} onChange={(event) => updateDraftField('weight', event.target.value)} />
+                        <Input type="number" step="0.5" min="0.5" className="h-9 rounded-sm px-3 text-[13px]" value={draftForm.weight} onChange={(event) => updateDraftField('weight', event.target.value)} />
                       </Field>
                     </div>
                   </FieldGroup>
@@ -3200,7 +3200,7 @@ export default function AdminOrdersClient({
               </div>
 
               <div className="min-w-0 space-y-3">
-                <div className="min-w-0 rounded-2xl border border-border/80 bg-card p-3 shadow-[0_14px_30px_-32px_rgba(15,23,42,0.4)] lg:p-4">
+                <div className="min-w-0 rounded-sm border border-border/80 bg-card p-3 shadow-[0_14px_30px_-32px_rgba(15,23,42,0.4)] lg:p-4">
                   <div className="mb-3 flex items-center justify-between gap-3">
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Items</p>
@@ -3214,7 +3214,7 @@ export default function AdminOrdersClient({
                     <FieldLabel className="flex items-center gap-1.5 text-[12px]">Search & Add Items <span className="text-destructive">*</span></FieldLabel>
                       <Popover open={productPickerOpen} onOpenChange={setProductPickerOpen}>
                         <PopoverTrigger asChild>
-                          <Button variant="outline" className="h-9 w-full justify-between rounded-xl px-3 text-[13px] font-normal">
+                          <Button variant="outline" className="h-9 w-full justify-between rounded-sm px-3 text-[13px] font-normal">
                             <span className="truncate text-muted-foreground">Search products, categories, or tags</span>
                             <Plus data-icon="inline-end" />
                           </Button>
@@ -3252,7 +3252,7 @@ export default function AdminOrdersClient({
                                       className="px-3 py-3"
                                     >
                                       <div className="flex min-w-0 flex-1 items-center gap-3">
-                                        <div className="relative size-12 shrink-0 overflow-hidden rounded-xl border border-border/80 bg-muted">
+                                        <div className="relative size-12 shrink-0 overflow-hidden rounded-sm border border-border/80 bg-muted">
                                           {primaryImage?.url ? (
                                             <Image
                                               src={primaryImage.url}
@@ -3293,35 +3293,35 @@ export default function AdminOrdersClient({
                   </Field>
 
                   {/* Custom Item */}
-                  <div className="mb-3 rounded-xl border border-dashed border-border bg-muted/20 p-2.5">
+                  <div className="mb-3 rounded-sm border border-dashed border-border bg-muted/20 p-2.5">
                     <p className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Custom Item</p>
                     <div className="flex gap-2">
                       <Input
-                        className="h-8 flex-1 rounded-xl px-2.5 text-[12px]"
+                        className="h-8 flex-1 rounded-sm px-2.5 text-[12px]"
                         placeholder="Item name"
                         value={draftForm.customItemName}
                         onChange={(e) => updateDraftField('customItemName', e.target.value)}
                       />
                       <Input
                         type="number"
-                        className="h-8 w-24 rounded-xl px-2.5 text-[12px]"
+                        className="h-8 w-24 rounded-sm px-2.5 text-[12px]"
                         placeholder="Price"
                         value={draftForm.customItemPrice}
                         onChange={(e) => updateDraftField('customItemPrice', e.target.value)}
                       />
-                      <Button type="button" size="sm" variant="secondary" className="h-8 rounded-xl text-[12px]" onClick={addCustomItemToDraft}>
+                      <Button type="button" size="sm" variant="secondary" className="h-8 rounded-sm text-[12px]" onClick={addCustomItemToDraft}>
                         <Plus className="size-3.5" />
                       </Button>
                     </div>
                   </div>
 
                   {draftItems.length === 0 ? (
-                    <div className="rounded-xl border border-dashed border-border bg-muted/20 px-4 py-6 text-center text-[12px] text-muted-foreground">
+                    <div className="rounded-sm border border-dashed border-border bg-muted/20 px-4 py-6 text-center text-[12px] text-muted-foreground">
                       Add products to build the draft order.
                     </div>
                   ) : (
                     <>
-                        <div className="hidden overflow-hidden rounded-xl border border-border md:block">
+                        <div className="hidden overflow-hidden rounded-sm border border-border md:block">
                           <div>
                     <table className="w-full table-fixed">
                       <thead className="bg-muted/40 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
@@ -3337,7 +3337,7 @@ export default function AdminOrdersClient({
                         <tr key={item.productId}>
                           <td className="px-3 py-2">
                             <div className="flex min-w-0 items-center gap-3">
-                              <div className="relative size-10 overflow-hidden rounded-lg border border-border/80 bg-muted">
+                              <div className="relative size-10 overflow-hidden rounded-sm border border-border/80 bg-muted">
                                 {item.image ? (
                                   <Image
                                     src={item.image}
@@ -3352,7 +3352,7 @@ export default function AdminOrdersClient({
                             </div>
                           </td>
                             <td className="px-3 py-2">
-                              <Input type="number" min="1" className="ml-auto h-8 w-16 rounded-lg px-2 text-[12px]" value={item.quantity} onChange={(event) => updateDraftItemQuantity(item.productId, event.target.value)} />
+                              <Input type="number" min="1" className="ml-auto h-8 w-16 rounded-sm px-2 text-[12px]" value={item.quantity} onChange={(event) => updateDraftItemQuantity(item.productId, event.target.value)} />
                             </td>
                           <td className="px-3 py-2 text-right text-[12px] font-semibold text-foreground">
                             {formatPrice(Number(item.price || 0) * Number(item.quantity || 0))}
@@ -3372,9 +3372,9 @@ export default function AdminOrdersClient({
 
                         <div className="space-y-2.5 md:hidden">
                           {draftItems.map((item) => (
-                            <div key={item.productId} className="rounded-xl border border-border bg-card p-3">
+                            <div key={item.productId} className="rounded-sm border border-border bg-card p-3">
                               <div className="flex items-start gap-3">
-                                <div className="relative size-12 shrink-0 overflow-hidden rounded-xl border border-border/80 bg-muted">
+                                <div className="relative size-12 shrink-0 overflow-hidden rounded-sm border border-border/80 bg-muted">
                                   {item.image ? (
                                     <Image
                                     src={item.image}
@@ -3395,7 +3395,7 @@ export default function AdminOrdersClient({
                               <div className="mt-2 flex items-center justify-between gap-3">
                                 <div className="flex items-center gap-2">
                                   <FieldLabel className="text-[11px] text-muted-foreground">Qty</FieldLabel>
-                                  <Input type="number" min="1" className="h-8 w-16 rounded-lg px-2 text-[12px]" value={item.quantity} onChange={(event) => updateDraftItemQuantity(item.productId, event.target.value)} />
+                                  <Input type="number" min="1" className="h-8 w-16 rounded-sm px-2 text-[12px]" value={item.quantity} onChange={(event) => updateDraftItemQuantity(item.productId, event.target.value)} />
                                 </div>
                                 <Button type="button" variant="ghost" size="icon" className="size-8 shrink-0 text-muted-foreground" onClick={() => removeDraftItem(item.productId)}>
                                   <Trash2 className="size-4" />
@@ -3451,7 +3451,7 @@ export default function AdminOrdersClient({
 
       {/* Edit Order Dialog */}
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-        <DialogContent className="max-h-[90vh] sm:max-w-[700px] w-[calc(100vw-32px)] overflow-y-auto p-5 sm:p-7 rounded-2xl shadow-2xl border border-border">
+        <DialogContent className="max-h-[90vh] sm:max-w-[700px] w-[calc(100vw-32px)] overflow-y-auto p-5 sm:p-7 rounded-sm shadow-2xl border border-border">
           <DialogHeader className="pb-2 border-b border-border/60">
             <DialogTitle className="text-base sm:text-lg font-bold text-foreground">
               Edit Order <span className="font-mono text-primary font-semibold">{editingOrder?.orderId}</span>
@@ -3467,11 +3467,11 @@ export default function AdminOrdersClient({
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <Field className="space-y-1">
                   <FieldLabel htmlFor="customerName" className="text-[12px] font-semibold text-foreground">Customer Name</FieldLabel>
-                  <Input id="customerName" name="customerName" className="h-9 text-[13px] rounded-lg" defaultValue={editingOrder.customerName} required />
+                  <Input id="customerName" name="customerName" className="h-9 text-[13px] rounded-sm" defaultValue={editingOrder.customerName} required />
                 </Field>
                 <Field className="space-y-1">
                   <FieldLabel htmlFor="customerPhone" className="text-[12px] font-semibold text-foreground">Phone Number</FieldLabel>
-                  <Input id="customerPhone" name="customerPhone" className="h-9 text-[13px] rounded-lg" defaultValue={editingOrder.customerPhone} required />
+                  <Input id="customerPhone" name="customerPhone" className="h-9 text-[13px] rounded-sm" defaultValue={editingOrder.customerPhone} required />
                 </Field>
               </div>
 
@@ -3485,7 +3485,7 @@ export default function AdminOrdersClient({
                         variant="outline"
                         role="combobox"
                         aria-expanded={cityOpen}
-                        className="h-9 w-full justify-between text-[13px] font-normal rounded-lg"
+                        className="h-9 w-full justify-between text-[13px] font-normal rounded-sm"
                       >
                         <span className="truncate">{editingOrder.customerCity || editingOrder.city || "Select city..."}</span>
                         <ChevronsUpDown className="size-3.5 opacity-50 ml-1 shrink-0" />
@@ -3525,18 +3525,18 @@ export default function AdminOrdersClient({
                 </Field>
                 <Field className="sm:col-span-2 space-y-1">
                   <FieldLabel htmlFor="customerAddress" className="text-[12px] font-semibold text-foreground">Complete Shipping Address</FieldLabel>
-                  <Input id="customerAddress" name="customerAddress" className="h-9 text-[13px] rounded-lg" defaultValue={editingOrder.customerAddress} required />
+                  <Input id="customerAddress" name="customerAddress" className="h-9 text-[13px] rounded-sm" defaultValue={editingOrder.customerAddress} required />
                 </Field>
               </div>
 
               {/* Section 3: Special Instructions / Courier Note */}
               <Field className="space-y-1">
                 <FieldLabel htmlFor="notes" className="text-[12px] font-semibold text-foreground">Special Instructions / Courier Note</FieldLabel>
-                <Input id="notes" name="notes" className="h-9 text-[13px] rounded-lg" defaultValue={editingOrder.notes || ''} placeholder="e.g. Call customer before delivery, urgent parcel..." />
+                <Input id="notes" name="notes" className="h-9 text-[13px] rounded-sm" defaultValue={editingOrder.notes || ''} placeholder="e.g. Call customer before delivery, urgent parcel..." />
               </Field>
 
               {/* Section 4: Ordered Items */}
-              <div className="flex flex-col gap-3 rounded-xl border border-border bg-muted/20 p-3.5 sm:p-4">
+              <div className="flex flex-col gap-3 rounded-sm border border-border bg-muted/20 p-3.5 sm:p-4">
                 <div className="flex items-center justify-between pb-2 border-b border-border/50">
                   <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Ordered Items ({editItems.length})</p>
                   <span className="text-[12px] font-bold text-foreground">
@@ -3550,7 +3550,7 @@ export default function AdminOrdersClient({
                     <Search className="absolute left-3 top-2.5 size-4 text-muted-foreground" />
                     <Input
                       placeholder="Search product by name, category, or tag to add..."
-                      className="h-9 pl-9 pr-9 text-[13px] rounded-lg border border-border bg-background focus:border-primary"
+                      className="h-9 pl-9 pr-9 text-[13px] rounded-sm border border-border bg-background focus:border-primary"
                       value={editProductSearch}
                       onChange={(e) => {
                         const val = e.target.value;
@@ -3594,7 +3594,7 @@ export default function AdminOrdersClient({
 
                   {/* Live Search Results Dropdown */}
                   {editProductSearch.trim() !== '' && (
-                    <div className="max-h-56 overflow-y-auto rounded-lg border border-border bg-background shadow-lg divide-y divide-border/60">
+                    <div className="max-h-56 overflow-y-auto rounded-sm border border-border bg-background shadow-lg divide-y divide-border/60">
                       {availableEditProducts.length === 0 ? (
                         <p className="p-3 text-center text-[12px] text-muted-foreground">No matching products found.</p>
                       ) : (
@@ -3650,9 +3650,9 @@ export default function AdminOrdersClient({
                       <div key={idx} className="flex items-center justify-between gap-3 py-2.5">
                         <div className="flex items-center gap-3 min-w-0 flex-1">
                           {item.image ? (
-                            <img src={item.image} alt={item.name || 'Product'} className="size-10 rounded-lg object-cover border shrink-0 bg-background" />
+                            <img src={item.image} alt={item.name || 'Product'} className="size-10 rounded-sm object-cover border shrink-0 bg-background" />
                           ) : (
-                            <div className="size-10 rounded-lg bg-muted flex items-center justify-center shrink-0 text-muted-foreground">
+                            <div className="size-10 rounded-sm bg-muted flex items-center justify-center shrink-0 text-muted-foreground">
                               <Package className="size-5" />
                             </div>
                           )}
@@ -3662,7 +3662,7 @@ export default function AdminOrdersClient({
                           </div>
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
-                          <div className="flex items-center rounded-lg border border-border bg-background p-0.5">
+                          <div className="flex items-center rounded-sm border border-border bg-background p-0.5">
                             <Button
                               type="button"
                               variant="ghost"
@@ -3710,11 +3710,11 @@ export default function AdminOrdersClient({
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <Field className="space-y-1">
                   <FieldLabel htmlFor="manualCodAmount" className="text-[12px] font-semibold text-foreground">COD Amount (Override)</FieldLabel>
-                  <Input id="manualCodAmount" name="manualCodAmount" type="number" className="h-9 text-[13px] rounded-lg" placeholder="Blank = auto bill total" defaultValue={editingOrder.manualCodAmount ?? ''} />
+                  <Input id="manualCodAmount" name="manualCodAmount" type="number" className="h-9 text-[13px] rounded-sm" placeholder="Blank = auto bill total" defaultValue={editingOrder.manualCodAmount ?? ''} />
                 </Field>
                 <Field className="space-y-1">
                   <FieldLabel htmlFor="weight" className="text-[12px] font-semibold text-foreground">Parcel Weight (kg)</FieldLabel>
-                  <Input id="weight" name="weight" type="number" step="0.5" className="h-9 text-[13px] rounded-lg" defaultValue={editingOrder.weight ?? 2} required />
+                  <Input id="weight" name="weight" type="number" step="0.5" className="h-9 text-[13px] rounded-sm" defaultValue={editingOrder.weight ?? 2} required />
                 </Field>
               </div>
 
@@ -3752,7 +3752,7 @@ export default function AdminOrdersClient({
 
       {/* NOC Express Bulk Booking Dialog */}
       <Dialog open={nocBookingOpen} onOpenChange={setNocBookingOpen}>
-        <DialogContent className="max-w-md bg-white text-gray-900 rounded-2xl p-6 shadow-xl border border-gray-200">
+        <DialogContent className="max-w-md bg-white text-gray-900 rounded-sm p-6 shadow-xl border border-gray-200">
           <DialogHeader className="pb-2">
             <DialogTitle className="flex items-center gap-2 text-lg font-bold text-gray-900">
               <Truck className="size-5 text-sky-600" />
@@ -3777,7 +3777,7 @@ export default function AdminOrdersClient({
                         key={portal.id}
                         type="button"
                         onClick={() => setSelectedNocPortal(portal.id)}
-                        className={`flex items-center justify-between p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                        className={`flex items-center justify-between p-3 rounded-sm border text-left transition-all cursor-pointer ${
                           isSelected
                             ? 'border-sky-600 bg-sky-50 text-sky-900 ring-2 ring-sky-500/20 font-semibold'
                             : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300 hover:bg-gray-50'
@@ -3802,7 +3802,7 @@ export default function AdminOrdersClient({
                 </div>
               </div>
             ) : (
-              <div className="p-3 rounded-xl bg-sky-50 border border-sky-200 text-xs flex items-center justify-between">
+              <div className="p-3 rounded-sm bg-sky-50 border border-sky-200 text-xs flex items-center justify-between">
                 <span className="font-semibold text-sky-900">Courier Account:</span>
                 <span className="font-bold text-sky-800 bg-white px-2.5 py-1 rounded-md border border-sky-300 text-[11px]">
                   Main Account (Portal 1)
@@ -3811,7 +3811,7 @@ export default function AdminOrdersClient({
             )}
 
             {/* Simple White Light Summary Box */}
-            <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-200 text-xs flex items-center justify-between">
+            <div className="p-3.5 rounded-sm bg-gray-50 border border-gray-200 text-xs flex items-center justify-between">
               <span className="font-semibold text-gray-700">Selected Orders:</span>
               <span className="font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 text-xs">
                 {selectedOrders.length} Order(s)
@@ -3820,14 +3820,14 @@ export default function AdminOrdersClient({
           </div>
 
           <DialogFooter className="pt-2 flex items-center justify-end gap-2">
-            <Button variant="outline" size="sm" onClick={() => setNocBookingOpen(false)} className="rounded-xl h-10 px-4 text-gray-700 hover:bg-gray-100 border-gray-300">
+            <Button variant="outline" size="sm" onClick={() => setNocBookingOpen(false)} className="rounded-sm h-10 px-4 text-gray-700 hover:bg-gray-100 border-gray-300">
               Cancel
             </Button>
             <Button
               size="sm"
               onClick={handleBulkNocBooking}
               disabled={isBookingNoc}
-              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl h-10 px-5 shadow-sm"
+              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-sm h-10 px-5 shadow-sm"
             >
               {isBookingNoc ? <Spinner data-icon="inline-start" /> : <Send className="size-4 mr-1.5" />}
               {isBookingNoc ? 'Booking...' : `Confirm & Book (${selectedOrders.length})`}
@@ -3860,7 +3860,7 @@ export default function AdminOrdersClient({
 
       {/* NOC Express Booking Success & Print Slips Popup Dialog */}
       <Dialog open={!!nocPrintResult} onOpenChange={(open) => !open && setNocPrintResult(null)}>
-        <DialogContent className="max-w-md bg-white text-gray-900 rounded-2xl p-6 shadow-xl border border-gray-200">
+        <DialogContent className="max-w-md bg-white text-gray-900 rounded-sm p-6 shadow-xl border border-gray-200">
           <DialogHeader className="pb-2">
             <DialogTitle className="flex items-center gap-2 text-lg font-bold text-gray-900">
               <CheckCircle2 className="size-5 text-emerald-600" />
@@ -3873,7 +3873,7 @@ export default function AdminOrdersClient({
 
           <div className="space-y-3 py-3">
             {/* NOC Account Used Indicator */}
-            <div className="flex items-center justify-between p-3 rounded-xl bg-sky-50 border border-sky-200 text-xs">
+            <div className="flex items-center justify-between p-3 rounded-sm bg-sky-50 border border-sky-200 text-xs">
               <span className="font-semibold text-gray-700">Account Used:</span>
               <span className="font-bold text-sky-900 bg-sky-100 px-3 py-1 rounded-full border border-sky-300">
                 {nocPrintResult?.portalKey === 'portal_2' ? 'Secondary Account (Portal 2)' : 'Main Account (Portal 1)'}
@@ -3881,13 +3881,13 @@ export default function AdminOrdersClient({
             </div>
 
             {nocPrintResult?.orders?.length > 0 && (
-              <div className="p-3 rounded-xl bg-gray-50 border border-gray-200 space-y-2 max-h-48 overflow-y-auto">
+              <div className="p-3 rounded-sm bg-gray-50 border border-gray-200 space-y-2 max-h-48 overflow-y-auto">
                 <span className="text-[11px] font-bold text-gray-600 uppercase tracking-wider block">Booked Orders & Slips:</span>
                 <div className="space-y-1.5">
                   {nocPrintResult.orders.map((o, idx) => {
                     const slipUrl = o.labelUrl;
                     return (
-                      <div key={idx} className="flex items-center justify-between gap-2 p-2 bg-white rounded-lg border border-gray-200 text-xs">
+                      <div key={idx} className="flex items-center justify-between gap-2 p-2 bg-white rounded-sm border border-gray-200 text-xs">
                         <div className="min-w-0 flex-1">
                           <span className="font-bold text-gray-900">{o.orderId}</span>
                           {o.trackingNumber && (
@@ -3919,7 +3919,7 @@ export default function AdminOrdersClient({
               variant="outline"
               size="sm"
               onClick={() => setNocPrintResult(null)}
-              className="rounded-xl h-10 px-4 text-gray-700 hover:bg-gray-100 border-gray-300 font-medium"
+              className="rounded-sm h-10 px-4 text-gray-700 hover:bg-gray-100 border-gray-300 font-medium"
             >
               Close
             </Button>
@@ -3938,7 +3938,7 @@ export default function AdminOrdersClient({
                   });
                   setNocPrintResult(null);
                 }}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl h-10 px-5 shadow-sm flex items-center gap-1.5 cursor-pointer"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-sm h-10 px-5 shadow-sm flex items-center gap-1.5 cursor-pointer"
               >
                 <Printer className="size-4" />
                 Print All Slips ({nocPrintResult.orders.length})
@@ -3950,7 +3950,7 @@ export default function AdminOrdersClient({
                   window.open(nocPrintResult.labelUrl, '_blank');
                   setNocPrintResult(null);
                 }}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl h-10 px-5 shadow-sm flex items-center gap-1.5 cursor-pointer"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-sm h-10 px-5 shadow-sm flex items-center gap-1.5 cursor-pointer"
               >
                 <Printer className="size-4" />
                 Print Airway Slip
@@ -3962,7 +3962,7 @@ export default function AdminOrdersClient({
 
       {/* NOC Print Slips Account Selection Dialog */}
       <Dialog open={!!nocPrintAccountModal} onOpenChange={(open) => !open && setNocPrintAccountModal(null)}>
-        <DialogContent className="max-w-md bg-white text-gray-900 rounded-2xl p-6 shadow-xl border border-gray-200">
+        <DialogContent className="max-w-md bg-white text-gray-900 rounded-sm p-6 shadow-xl border border-gray-200">
           <DialogHeader className="pb-2">
             <DialogTitle className="flex items-center gap-2 text-lg font-bold text-gray-900">
               <Printer className="size-5 text-emerald-600" />
@@ -3975,7 +3975,7 @@ export default function AdminOrdersClient({
 
           <div className="space-y-3 py-3">
             {/* Main Account Option */}
-            <div className="p-3.5 rounded-xl bg-sky-50/80 border border-sky-200 flex items-center justify-between">
+            <div className="p-3.5 rounded-sm bg-sky-50/80 border border-sky-200 flex items-center justify-between">
               <div>
                 <span className="text-xs font-bold text-sky-900 block">Main Account (Portal 1)</span>
                 <span className="text-[11px] text-sky-700">{nocPrintAccountModal?.p1Count || 0} order slip(s) ready</span>
@@ -3987,14 +3987,14 @@ export default function AdminOrdersClient({
                   if (nocPrintAccountModal.p1Url) window.open(nocPrintAccountModal.p1Url, '_blank');
                   setNocPrintAccountModal(null);
                 }}
-                className="bg-sky-600 hover:bg-sky-700 text-white text-xs rounded-lg px-3 py-1.5 h-8 font-semibold cursor-pointer"
+                className="bg-sky-600 hover:bg-sky-700 text-white text-xs rounded-sm px-3 py-1.5 h-8 font-semibold cursor-pointer"
               >
                 Print ({nocPrintAccountModal?.p1Count || 0})
               </Button>
             </div>
 
             {/* Secondary Account Option */}
-            <div className="p-3.5 rounded-xl bg-purple-50/80 border border-purple-200 flex items-center justify-between">
+            <div className="p-3.5 rounded-sm bg-purple-50/80 border border-purple-200 flex items-center justify-between">
               <div>
                 <span className="text-xs font-bold text-purple-900 block">Secondary Account (Portal 2)</span>
                 <span className="text-[11px] text-purple-700">{nocPrintAccountModal?.p2Count || 0} order slip(s) ready</span>
@@ -4006,7 +4006,7 @@ export default function AdminOrdersClient({
                   if (nocPrintAccountModal.p2Url) window.open(nocPrintAccountModal.p2Url, '_blank');
                   setNocPrintAccountModal(null);
                 }}
-                className="bg-purple-600 hover:bg-purple-700 text-white text-xs rounded-lg px-3 py-1.5 h-8 font-semibold cursor-pointer"
+                className="bg-purple-600 hover:bg-purple-700 text-white text-xs rounded-sm px-3 py-1.5 h-8 font-semibold cursor-pointer"
               >
                 Print ({nocPrintAccountModal?.p2Count || 0})
               </Button>
@@ -4018,7 +4018,7 @@ export default function AdminOrdersClient({
               variant="outline"
               size="sm"
               onClick={() => setNocPrintAccountModal(null)}
-              className="rounded-xl h-9 px-4 text-gray-700 border-gray-300"
+              className="rounded-sm h-9 px-4 text-gray-700 border-gray-300"
             >
               Cancel
             </Button>
@@ -4031,7 +4031,7 @@ export default function AdminOrdersClient({
                 });
                 setNocPrintAccountModal(null);
               }}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl h-9 px-4 shadow-sm flex items-center gap-1.5"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-sm h-9 px-4 shadow-sm flex items-center gap-1.5"
             >
               <Printer className="size-3.5" />
               Print All ({nocPrintAccountModal?.allUrls?.length || 0})

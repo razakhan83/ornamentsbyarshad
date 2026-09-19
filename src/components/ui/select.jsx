@@ -15,7 +15,7 @@ const SelectTrigger = React.forwardRef(
     <SelectPrimitive.Trigger
       ref={ref}
       className={cn(
-        "flex h-10 w-full items-center justify-between gap-2 rounded-lg border border-border bg-input px-3 py-2 text-sm font-medium text-foreground outline-none shadow-xs transition-[color,box-shadow,border-color,background-color] duration-150",
+        "flex h-10 w-full items-center justify-between gap-2 rounded-sm border border-border bg-input px-3 py-2 text-sm font-medium text-foreground outline-none shadow-xs transition-[color,box-shadow,border-color,background-color] duration-150",
         "hover:bg-background",
         "focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50",
         "disabled:cursor-not-allowed disabled:opacity-50",
@@ -39,7 +39,7 @@ const SelectContent = React.forwardRef(
       <SelectPrimitive.Content
         ref={ref}
         className={cn(
-          "relative z-[9999] max-h-[300px] min-w-[8rem] overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg",
+          "relative z-[9999] max-h-[300px] min-w-[8rem] overflow-hidden rounded-sm border border-border bg-popover text-popover-foreground shadow-lg",
           "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
           "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
           position === "popper" &&
@@ -80,7 +80,7 @@ const SelectItem = React.forwardRef(
     <SelectPrimitive.Item
       ref={ref}
       className={cn(
-        "relative flex w-full cursor-pointer select-none items-center rounded-lg py-2.5 pl-3 pr-8 text-sm font-medium outline-none transition-colors",
+        "relative flex w-full cursor-pointer select-none items-center rounded-sm py-2.5 pl-3 pr-8 text-sm font-medium outline-none transition-colors",
         "hover:bg-muted hover:text-foreground",
         "focus:bg-muted focus:text-foreground",
         "data-[state=checked]:bg-secondary data-[state=checked]:text-primary",

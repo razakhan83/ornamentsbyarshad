@@ -59,7 +59,7 @@ export default function SuggestionsModal() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-[92vw] rounded-2xl p-5 sm:max-w-md sm:p-6 md:p-8" hideClose={false}>
+      <DialogContent className="max-w-[92vw] rounded-sm p-5 sm:max-w-md sm:p-6 md:p-8" hideClose={false}>
         {success ? (
           <div className="flex flex-col items-center justify-center py-6 text-center animate-in fade-in duration-300">
             <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
@@ -85,7 +85,7 @@ export default function SuggestionsModal() {
             </DialogHeader>
 
             {error && (
-              <div className="rounded-lg bg-destructive/10 p-3 text-xs font-semibold text-destructive animate-in fade-in">
+              <div className="rounded-sm bg-destructive/10 p-3 text-xs font-semibold text-destructive animate-in fade-in">
                 {error}
               </div>
             )}
@@ -101,7 +101,7 @@ export default function SuggestionsModal() {
                       type="button"
                       onClick={() => setFormData({ ...formData, type: t.value })}
                       className={[
-                        'py-2 px-1 text-center rounded-lg border text-[11px] sm:text-xs font-semibold transition active:scale-[0.98]',
+                        'py-2 px-1 text-center rounded-sm border text-[11px] sm:text-xs font-semibold transition active:scale-[0.98]',
                         formData.type === t.value
                           ? 'border-primary bg-primary/5 text-primary'
                           : 'border-border bg-background hover:bg-muted text-muted-foreground',
@@ -122,7 +122,7 @@ export default function SuggestionsModal() {
                   placeholder="Your full name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="h-10 sm:h-11 rounded-lg border-border"
+                  className="h-10 sm:h-11 rounded-sm border-border"
                   required
                 />
               </div>
@@ -136,7 +136,7 @@ export default function SuggestionsModal() {
                   placeholder="e.g. 03001234567 or email@domain.com"
                   value={formData.contact}
                   onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                  className="h-10 sm:h-11 rounded-lg border-border"
+                  className="h-10 sm:h-11 rounded-sm border-border"
                   required
                 />
               </div>
@@ -149,7 +149,7 @@ export default function SuggestionsModal() {
                   placeholder="Tell us what you want to request or suggest..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="min-h-24 sm:min-h-28 rounded-lg border-border resize-none"
+                  className="min-h-24 sm:min-h-28 rounded-sm border-border resize-none"
                   required
                 />
               </div>
@@ -158,7 +158,7 @@ export default function SuggestionsModal() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-10 sm:h-11 rounded-lg font-bold text-sm"
+              className="w-full h-10 sm:h-11 rounded-sm font-bold text-sm"
             >
               {loading ? (
                 <>

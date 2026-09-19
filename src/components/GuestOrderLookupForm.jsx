@@ -68,7 +68,7 @@ export default function GuestOrderLookupForm() {
             placeholder="e.g. ORD-ABC123"
             value={orderId}
             onChange={(event) => setOrderId(event.target.value.toUpperCase())}
-            className="w-full h-11 pl-10 pr-4 text-sm rounded-lg border border-border bg-background shadow-2xs placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+            className="w-full h-11 pl-10 pr-4 text-sm rounded-sm border border-border bg-background shadow-2xs placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
             disabled={isPending}
             required
           />
@@ -89,7 +89,7 @@ export default function GuestOrderLookupForm() {
             placeholder="e.g. 0300 1234567"
             value={phone}
             onChange={(event) => setPhone(event.target.value)}
-            className="w-full h-11 pl-10 pr-4 text-sm rounded-lg border border-border bg-background shadow-2xs placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+            className="w-full h-11 pl-10 pr-4 text-sm rounded-sm border border-border bg-background shadow-2xs placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
             disabled={isPending}
             required
           />
@@ -101,7 +101,7 @@ export default function GuestOrderLookupForm() {
 
       <Button 
         type="submit" 
-        className="w-full h-11 text-sm font-semibold rounded-lg shadow-sm hover:bg-primary/90 transition-all mt-2"
+        className="w-full h-11 text-sm font-semibold rounded-sm shadow-sm hover:bg-primary/90 transition-all mt-2"
         disabled={isPending || !orderId.trim() || !phone.trim()}
       >
         {isPending ? (

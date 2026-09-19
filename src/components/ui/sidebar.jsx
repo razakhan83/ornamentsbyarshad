@@ -180,7 +180,7 @@ function SidebarMenuButton({
   ...props
 }) {
   const buttonClassName = cn(
-    "flex min-h-11 w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-left text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-1 transition-[background-color,color,transform,border-color] duration-200 ease-[cubic-bezier(0.2,0,0,1)] active:scale-[0.96] [&>span:last-child]:truncate [&_svg]:size-4 [&_svg]:shrink-0",
+    "flex min-h-11 w-full items-center gap-3 rounded-sm px-3.5 py-2.5 text-left text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-1 transition-[background-color,color,transform,border-color] duration-200 ease-[cubic-bezier(0.2,0,0,1)] active:scale-[0.96] [&>span:last-child]:truncate [&_svg]:size-4 [&_svg]:shrink-0",
     isActive
       ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-[0_16px_28px_-24px_color-mix(in_oklab,var(--color-sidebar-primary)_42%,transparent)]"
       : "bg-sidebar-accent/70 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",

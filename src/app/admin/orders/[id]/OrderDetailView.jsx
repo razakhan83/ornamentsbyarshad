@@ -327,11 +327,11 @@ export default function OrderDetailView({
   return (
     <div className="space-y-8 max-w-[1550px] mx-auto pb-16">
       {/* ── Top Header Bar (Flat, Clean) ── */}
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between rounded-xl bg-card border border-border p-5">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between rounded-sm bg-card border border-border p-5">
         <div className="flex flex-wrap items-center gap-4">
           <Link
             href="/admin/orders"
-            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), "h-9 px-3 rounded-lg gap-2 text-sm font-medium text-muted-foreground hover:text-foreground")}
+            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), "h-9 px-3 rounded-sm gap-2 text-sm font-medium text-muted-foreground hover:text-foreground")}
           >
             <ArrowLeft className="size-4" />
             <span>Back to Orders</span>
@@ -394,7 +394,7 @@ export default function OrderDetailView({
               variant="outline"
               size="sm"
               onClick={() => setEditModalOpen(true)}
-              className="h-9 px-3.5 rounded-lg gap-2 text-xs font-semibold text-foreground hover:bg-muted cursor-pointer"
+              className="h-9 px-3.5 rounded-sm gap-2 text-xs font-semibold text-foreground hover:bg-muted cursor-pointer"
             >
               <Pencil className="size-3.5 text-muted-foreground" />
               <span>Edit Order</span>
@@ -406,7 +406,7 @@ export default function OrderDetailView({
             variant="outline"
             size="sm"
             onClick={handlePrintInvoice}
-            className="h-9 px-3.5 rounded-lg gap-2 text-xs font-medium text-foreground hover:bg-muted cursor-pointer"
+            className="h-9 px-3.5 rounded-sm gap-2 text-xs font-medium text-foreground hover:bg-muted cursor-pointer"
           >
             <FileText className="size-3.5 text-muted-foreground" />
             <span>Invoice</span>
@@ -417,7 +417,7 @@ export default function OrderDetailView({
             variant="ghost"
             size="icon"
             onClick={() => setTrashModalOpen(true)}
-            className="size-9 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 cursor-pointer"
+            className="size-9 rounded-sm text-muted-foreground hover:text-destructive hover:bg-destructive/10 cursor-pointer"
             title="Move to Trash"
           >
             <Trash2 className="size-4" />
@@ -430,10 +430,10 @@ export default function OrderDetailView({
         {/* ════════ LEFT COLUMN (7 COLS) ════════ */}
         <div className="lg:col-span-7 space-y-8">
           {/* Card 1: Customer & Delivery Info */}
-          <section className="rounded-xl bg-card border border-border p-6 space-y-6">
+          <section className="rounded-sm bg-card border border-border p-6 space-y-6">
             <div className="flex items-center justify-between border-b border-border pb-4">
               <div className="flex items-center gap-3 text-foreground font-bold text-base">
-                <div className="flex size-9 items-center justify-center rounded-lg bg-muted text-foreground">
+                <div className="flex size-9 items-center justify-center rounded-sm bg-muted text-foreground">
                   <User className="size-4" />
                 </div>
                 <span>Customer & Delivery Information</span>
@@ -475,7 +475,7 @@ export default function OrderDetailView({
                       href={whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-muted hover:bg-muted/80 text-foreground border border-border transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm text-xs font-semibold bg-muted hover:bg-muted/80 text-foreground border border-border transition-colors cursor-pointer"
                       title="Open WhatsApp Chat"
                     >
                       <MessageCircle className="size-3.5 text-emerald-600" />
@@ -485,7 +485,7 @@ export default function OrderDetailView({
                   {callUrl && (
                     <a
                       href={callUrl}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-muted hover:bg-muted/80 text-foreground border border-border transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm text-xs font-semibold bg-muted hover:bg-muted/80 text-foreground border border-border transition-colors cursor-pointer"
                       title="Call Phone"
                     >
                       <Phone className="size-3.5 text-muted-foreground" />
@@ -522,10 +522,10 @@ export default function OrderDetailView({
           </section>
 
           {/* Card 2: Items Breakdown */}
-          <section className="rounded-xl bg-card border border-border p-6 space-y-6">
+          <section className="rounded-sm bg-card border border-border p-6 space-y-6">
             <div className="flex items-center justify-between border-b border-border pb-4">
               <div className="flex items-center gap-3 text-foreground font-bold text-base">
-                <div className="flex size-9 items-center justify-center rounded-lg bg-muted text-foreground">
+                <div className="flex size-9 items-center justify-center rounded-sm bg-muted text-foreground">
                   <Package className="size-4" />
                 </div>
                 <span>Ordered Items</span>
@@ -539,7 +539,7 @@ export default function OrderDetailView({
               {(order.items || []).map((item, idx) => (
                 <div key={item._id || idx} className="py-4 first:pt-0 last:pb-0 flex items-start gap-4">
                   {item.image && (
-                    <div className="relative size-16 rounded-lg overflow-hidden border border-border bg-muted shrink-0">
+                    <div className="relative size-16 rounded-sm overflow-hidden border border-border bg-muted shrink-0">
                       <Image
                         src={item.image}
                         alt={item.name || 'Product'}
@@ -597,7 +597,7 @@ export default function OrderDetailView({
 
           {/* Card 3: Previous Orders by Customer */}
           {customerOtherOrders.length > 0 && (
-            <section className="rounded-xl bg-card border border-border p-6 space-y-4">
+            <section className="rounded-sm bg-card border border-border p-6 space-y-4">
               <div className="flex items-center justify-between border-b border-border pb-3">
                 <span className="font-bold text-foreground text-sm flex items-center gap-2">
                   <CreditCard className="size-4 text-muted-foreground" />
@@ -609,7 +609,7 @@ export default function OrderDetailView({
                   <Link
                     key={past._id}
                     href={`/admin/orders/${past._id}`}
-                    className="py-2.5 flex items-center justify-between hover:bg-muted/30 px-2 rounded-lg transition-colors"
+                    className="py-2.5 flex items-center justify-between hover:bg-muted/30 px-2 rounded-sm transition-colors"
                   >
                     <div>
                       <span className="font-mono font-bold text-sm text-foreground hover:underline">
@@ -637,7 +637,7 @@ export default function OrderDetailView({
         {/* ════════ RIGHT COLUMN (5 COLS) ════════ */}
         <div className="lg:col-span-5 space-y-8">
           {/* Card: Status Controls */}
-          <section className="rounded-xl bg-card border border-border p-6 space-y-4">
+          <section className="rounded-sm bg-card border border-border p-6 space-y-4">
             <div className="border-b border-border pb-3">
               <span className="font-bold text-foreground text-base flex items-center gap-2">
                 <CheckCircle2 className="size-4 text-primary" />
@@ -655,7 +655,7 @@ export default function OrderDetailView({
                   disabled={isUpdatingStatus || order.status === st}
                   onClick={() => handleQuickStatusChange(st)}
                   className={cn(
-                    'h-9 text-xs font-semibold rounded-lg justify-start px-3 transition-all cursor-pointer',
+                    'h-9 text-xs font-semibold rounded-sm justify-start px-3 transition-all cursor-pointer',
                     order.status === st && 'ring-2 ring-primary ring-offset-2'
                   )}
                 >
@@ -666,10 +666,10 @@ export default function OrderDetailView({
           </section>
 
           {/* Card: Order History Timeline */}
-          <section className="rounded-xl bg-card border border-border p-6 space-y-6 sticky top-6">
+          <section className="rounded-sm bg-card border border-border p-6 space-y-6 sticky top-6">
             <div className="flex items-center justify-between border-b border-border pb-4">
               <div className="flex items-center gap-3 text-foreground font-bold text-base">
-                <div className="flex size-9 items-center justify-center rounded-lg bg-muted text-foreground">
+                <div className="flex size-9 items-center justify-center rounded-sm bg-muted text-foreground">
                   <History className="size-4" />
                 </div>
                 <span>Order Timeline</span>
@@ -714,7 +714,7 @@ export default function OrderDetailView({
 
       {/* ── Edit Modal ── */}
       <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
-        <DialogContent className="sm:max-w-lg rounded-xl p-6">
+        <DialogContent className="sm:max-w-lg rounded-sm p-6">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
               <Pencil className="size-5 text-primary" />
@@ -729,7 +729,7 @@ export default function OrderDetailView({
                 type="text"
                 value={editFormData.customerName}
                 onChange={(e) => setEditFormData(prev => ({ ...prev, customerName: e.target.value }))}
-                className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-9 rounded-sm border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               />
             </div>
@@ -741,7 +741,7 @@ export default function OrderDetailView({
                   type="text"
                   value={editFormData.customerPhone}
                   onChange={(e) => setEditFormData(prev => ({ ...prev, customerPhone: e.target.value }))}
-                  className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary font-mono"
+                  className="w-full h-9 rounded-sm border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary font-mono"
                   required
                 />
               </div>
@@ -753,7 +753,7 @@ export default function OrderDetailView({
                   list="pakistan-cities"
                   value={editFormData.customerCity}
                   onChange={(e) => setEditFormData(prev => ({ ...prev, customerCity: e.target.value }))}
-                  className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full h-9 rounded-sm border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <datalist id="pakistan-cities">
                   {PAKISTAN_CITIES.map((c) => (
@@ -768,7 +768,7 @@ export default function OrderDetailView({
               <textarea
                 value={editFormData.customerAddress}
                 onChange={(e) => setEditFormData(prev => ({ ...prev, customerAddress: e.target.value }))}
-                className="w-full rounded-lg border border-border bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary min-h-[70px]"
+                className="w-full rounded-sm border border-border bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary min-h-[70px]"
               />
             </div>
 
@@ -779,7 +779,7 @@ export default function OrderDetailView({
                   type="text"
                   value={editFormData.landmark}
                   onChange={(e) => setEditFormData(prev => ({ ...prev, landmark: e.target.value }))}
-                  className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full h-9 rounded-sm border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
 
@@ -790,7 +790,7 @@ export default function OrderDetailView({
                   value={editFormData.manualCodAmount}
                   onChange={(e) => setEditFormData(prev => ({ ...prev, manualCodAmount: e.target.value }))}
                   placeholder={String(order.totalAmount)}
-                  className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary font-mono"
+                  className="w-full h-9 rounded-sm border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary font-mono"
                 />
               </div>
             </div>
@@ -800,7 +800,7 @@ export default function OrderDetailView({
               <textarea
                 value={editFormData.notes}
                 onChange={(e) => setEditFormData(prev => ({ ...prev, notes: e.target.value }))}
-                className="w-full rounded-lg border border-border bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary min-h-[50px]"
+                className="w-full rounded-sm border border-border bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary min-h-[50px]"
               />
             </div>
 
@@ -810,7 +810,7 @@ export default function OrderDetailView({
                 variant="outline"
                 size="sm"
                 onClick={() => setEditModalOpen(false)}
-                className="rounded-lg h-9 px-4 text-xs font-semibold"
+                className="rounded-sm h-9 px-4 text-xs font-semibold"
               >
                 Cancel
               </Button>
@@ -818,7 +818,7 @@ export default function OrderDetailView({
                 type="submit"
                 size="sm"
                 disabled={isSavingEdit}
-                className="rounded-lg h-9 px-5 text-xs font-bold cursor-pointer"
+                className="rounded-sm h-9 px-5 text-xs font-bold cursor-pointer"
               >
                 {isSavingEdit ? 'Saving...' : 'Save Changes'}
               </Button>
@@ -829,7 +829,7 @@ export default function OrderDetailView({
 
       {/* ── Move to Trash Modal ── */}
       <Dialog open={trashModalOpen} onOpenChange={setTrashModalOpen}>
-        <DialogContent className="sm:max-w-md rounded-xl p-6">
+        <DialogContent className="sm:max-w-md rounded-sm p-6">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold text-destructive flex items-center gap-2">
               <Trash2 className="size-5" />
@@ -846,7 +846,7 @@ export default function OrderDetailView({
               variant="outline"
               size="sm"
               onClick={() => setTrashModalOpen(false)}
-              className="rounded-lg h-9 px-4 text-xs font-semibold"
+              className="rounded-sm h-9 px-4 text-xs font-semibold"
             >
               Cancel
             </Button>
@@ -856,7 +856,7 @@ export default function OrderDetailView({
               size="sm"
               onClick={handleMoveToTrash}
               disabled={isTrashing}
-              className="rounded-lg h-9 px-5 text-xs font-bold cursor-pointer"
+              className="rounded-sm h-9 px-5 text-xs font-bold cursor-pointer"
             >
               {isTrashing ? 'Moving...' : 'Move to Trash'}
             </Button>

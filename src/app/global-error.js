@@ -24,7 +24,7 @@ export default function GlobalError({ error, unstable_retry }) {
     <html lang="en">
       <body className="m-0 font-sans">
         <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background px-4 text-center">
-          <div className="flex size-16 items-center justify-center rounded-xl bg-destructive/10 text-destructive">
+          <div className="flex size-16 items-center justify-center rounded-sm bg-destructive/10 text-destructive">
             <AlertTriangle className="size-8" />
           </div>
           <div>
@@ -35,7 +35,7 @@ export default function GlobalError({ error, unstable_retry }) {
           </div>
           <button
             onClick={() => (typeof unstable_retry === 'function' ? unstable_retry() : window.location.reload())}
-            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition-all duration-200 hover:bg-muted active:scale-[0.98]"
+            className="inline-flex items-center gap-2 rounded-sm border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition-all duration-200 hover:bg-muted active:scale-[0.98]"
           >
             <RotateCcw className="size-4" />
             Try again
