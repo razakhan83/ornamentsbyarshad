@@ -26,32 +26,32 @@ export function postMetaEvent(payload) {
   });
 }
 
+function sendClientFbq(eventName, customData = {}, options = {}) {
+  if (typeof window === 'undefined') return;
+
+  const fire = () => {
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', eventName, customData, options);
+      return true;
+    }
+    return false;
+  };
+
+  if (!fire()) {
+    let retries = 0;
+    const interval = setInterval(() => {
+      retries++;
+      if (fire() || retries >= 25) {
+        clearInterval(interval);
+      }
+    }, 100);
+  }
+}
+
 export function trackPageViewEvent() {
   const eventId = createEventId('pageview');
 
-  const fireClientEvent = () => {
-    if (typeof window.fbq === 'function') {
-      window.fbq('track', 'PageView', {}, { eventID: eventId });
-    }
-  };
-
-  if (typeof window !== 'undefined') {
-    if (typeof window.fbq === 'function') {
-      fireClientEvent();
-    } else {
-      // Retry for up to 2 seconds if fbq isn't initialized yet
-      let retries = 0;
-      const interval = setInterval(() => {
-        retries++;
-        if (typeof window.fbq === 'function') {
-          fireClientEvent();
-          clearInterval(interval);
-        } else if (retries >= 20) {
-          clearInterval(interval);
-        }
-      }, 100);
-    }
-  }
+  sendClientFbq('PageView', {}, { eventID: eventId });
 
   postMetaEvent({
     eventName: 'PageView',
@@ -79,9 +79,7 @@ export function trackViewContentEvent({
     currency: 'PKR',
   };
 
-  if (typeof window.fbq === 'function') {
-    window.fbq('track', 'ViewContent', customData, { eventID: eventId });
-  }
+  sendClientFbq('ViewContent', customData, { eventID: eventId });
 
   postMetaEvent({
     eventName: 'ViewContent',
@@ -119,9 +117,7 @@ export function trackAddToCartEvent({
     currency: 'PKR',
   };
 
-  if (typeof window.fbq === 'function') {
-    window.fbq('track', 'AddToCart', customData, { eventID: eventId });
-  }
+  sendClientFbq('AddToCart', customData, { eventID: eventId });
 
   postMetaEvent({
     eventName: 'AddToCart',
@@ -138,9 +134,7 @@ export function trackSearchEvent({ searchString }) {
   const eventId = createEventId('search');
   const customData = { search_string: term };
 
-  if (typeof window.fbq === 'function') {
-    window.fbq('track', 'Search', customData, { eventID: eventId });
-  }
+  sendClientFbq('Search', customData, { eventID: eventId });
 
   postMetaEvent({
     eventName: 'Search',
@@ -163,9 +157,7 @@ export function trackInitiateCheckoutEvent({ cart = [], total = 0 }) {
     content_ids: contentIds,
   };
 
-  if (typeof window.fbq === 'function') {
-    window.fbq('track', 'InitiateCheckout', customData, { eventID: eventId });
-  }
+  sendClientFbq('InitiateCheckout', customData, { eventID: eventId });
 
   postMetaEvent({
     eventName: 'InitiateCheckout',
@@ -188,9 +180,7 @@ export function trackPurchaseEvent({ orderId, cart = [], total = 0 }) {
     content_ids: contentIds,
   };
 
-  if (typeof window.fbq === 'function') {
-    window.fbq('track', 'Purchase', customData, { eventID: eventId });
-  }
+  sendClientFbq('Purchase', customData, { eventID: eventId });
 
   postMetaEvent({
     eventName: 'Purchase',

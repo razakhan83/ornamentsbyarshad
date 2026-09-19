@@ -32,7 +32,7 @@ export default function TrackingScripts({
       cleanup();
     };
 
-    const events = ['click', 'keydown', 'touchstart'];
+    const events = ['click', 'keydown', 'touchstart', 'scroll', 'mousemove'];
     const addListeners = () => {
       events.forEach((evt) => window.addEventListener(evt, triggerLoad, { passive: true, once: true }));
     };
@@ -43,10 +43,10 @@ export default function TrackingScripts({
 
     if ('requestIdleCallback' in window) {
       window.requestIdleCallback(() => {
-        timer = setTimeout(triggerLoad, 5000);
-      }, { timeout: 6000 });
+        timer = setTimeout(triggerLoad, 2000);
+      }, { timeout: 3000 });
     } else {
-      timer = setTimeout(triggerLoad, 5000);
+      timer = setTimeout(triggerLoad, 2000);
     }
 
     addListeners();
@@ -72,8 +72,7 @@ n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,
 'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '${facebookPixelId}');
-fbq('track', 'PageView');`}
+fbq('init', '${facebookPixelId}');`}
           </Script>
           <noscript>
             {/* eslint-disable-next-line @next/next/no-img-element */}
