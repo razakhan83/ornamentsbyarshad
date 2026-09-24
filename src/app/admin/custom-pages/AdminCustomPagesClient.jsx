@@ -15,6 +15,7 @@ import {
   Trash2,
   Type,
   Wand2,
+  Monitor
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
@@ -244,15 +245,8 @@ export default function AdminCustomPagesClient({ initialPages }) {
             Edit policy and information pages in the same clean admin style without touching code.
           </p>
         </div>
-        <div className="shrink-0 flex items-center justify-center">
-          <Image
-            src="/undraw_website-setup_o2zf.svg"
-            alt="Custom Pages Setup"
-            width={160}
-            height={130}
-            className="h-auto w-[130px] sm:w-[150px] object-contain select-none opacity-95"
-            priority
-          />
+        <div className="shrink-0 flex items-center justify-center p-6 bg-primary/5 rounded-full ring-8 ring-primary/5">
+          <Monitor className="size-14 text-primary opacity-80" strokeWidth={1.5} />
         </div>
       </div>
 

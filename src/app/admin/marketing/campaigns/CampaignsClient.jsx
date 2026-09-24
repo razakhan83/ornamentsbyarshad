@@ -10,7 +10,8 @@ import {
   Plus, 
   Search, 
   Percent,
-  TrendingDown
+  TrendingDown,
+  Megaphone
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -251,13 +252,9 @@ export default function CampaignsClient({ initialDiscounted = [] }) {
 
         {products.length === 0 ? (
           <div className="p-12 sm:p-16 text-center flex flex-col items-center justify-center gap-3">
-            <Image
-              src="/undraw_social-ideas_3znc.svg"
-              alt="No campaigns"
-              width={160}
-              height={120}
-              className="h-auto w-[140px] sm:w-[160px] object-contain select-none opacity-90 mb-1"
-            />
+            <div className="mb-2 p-4 bg-muted/60 dark:bg-muted/30 rounded-full">
+              <Megaphone className="size-10 text-muted-foreground/70" strokeWidth={1.5} />
+            </div>
             <p className="font-semibold text-foreground text-base">No active special offers</p>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-sm">
               Click &quot;Add Special Offer&quot; to apply discounts to products and showcase them on your homepage.

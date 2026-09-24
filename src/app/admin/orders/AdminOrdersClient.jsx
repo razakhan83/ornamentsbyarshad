@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { formatDistanceToNow } from 'date-fns';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { AlertTriangle, Calendar, Eye, Receipt, RotateCcw, Search, Trash2, X, Download, Edit, Zap, Check, CheckCircle2, ChevronsUpDown, MoreHorizontal, Package, PackageCheck, Truck, Plus, Printer, Send, FileText, Upload, Globe, UserCog } from 'lucide-react';
+import { AlertTriangle, Calendar, Eye, Receipt, RotateCcw, Search, Trash2, X, Download, Edit, Zap, Check, CheckCircle2, ChevronsUpDown, MoreHorizontal, Package, PackageCheck, Truck, Plus, Printer, Send, FileText, Upload, Globe, UserCog, SearchX } from 'lucide-react';
 import AppPagination from '@/components/AppPagination';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -2582,15 +2582,11 @@ export default function AdminOrdersClient({
                     <tr>
                       <td colSpan={showNocColumns ? (enableSecondaryNoc ? 14 : 13) : 9} className="px-4 py-14 text-center">
                         <div className="flex flex-col items-center justify-center">
-                          <Image
-                            src="/undraw_relaxing-outdoors_s653.svg"
-                            alt="No orders found"
-                            width={160}
-                            height={120}
-                            className="mb-3 h-auto w-36 object-contain opacity-90"
-                          />
+                          <div className="mb-4 p-4 bg-muted/60 dark:bg-muted/30 rounded-full">
+                            <SearchX className="size-10 text-muted-foreground/70" />
+                          </div>
                           <p className="text-base font-semibold text-foreground">No orders found</p>
-                          <p className="mt-0.5 text-xs text-muted-foreground">Try adjusting your search or filters.</p>
+                          <p className="mt-1 text-sm text-muted-foreground">Try adjusting your search or filters.</p>
                           {hasActiveFilters && (
                             <Button variant="outline" size="sm" onClick={clearFilters} className="admin-cta-button mt-3 rounded-md">
                               Clear all filters
@@ -2835,16 +2831,12 @@ export default function AdminOrdersClient({
         )}
 
         {displayOrders.length === 0 ? (
-          <div className="border-y border-border bg-card px-3 py-8 text-center flex flex-col items-center justify-center">
-            <Image
-              src="/undraw_relaxing-outdoors_s653.svg"
-              alt="No orders found"
-              width={140}
-              height={105}
-              className="mb-3 h-auto w-32 object-contain opacity-90"
-            />
-            <p className="text-sm font-medium text-foreground">No orders found</p>
-            <p className="mt-0.5 text-[12px] text-muted-foreground">Try adjusting your search or filters.</p>
+          <div className="border-y border-border bg-card px-3 py-10 text-center flex flex-col items-center justify-center">
+            <div className="mb-3 p-3 bg-muted/60 dark:bg-muted/30 rounded-full">
+              <SearchX className="size-8 text-muted-foreground/70" />
+            </div>
+            <p className="text-base font-semibold text-foreground">No orders found</p>
+            <p className="mt-1 text-sm text-muted-foreground">Try adjusting your search or filters.</p>
             {hasActiveFilters && (
               <Button variant="outline" size="sm" onClick={clearFilters} className="admin-cta-button mt-3">
                 Clear all filters

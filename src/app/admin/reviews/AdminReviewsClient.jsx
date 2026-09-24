@@ -420,13 +420,9 @@ export default function AdminReviewsClient({
               <TableRow>
                 <TableCell colSpan={7} className="h-72 text-center py-8">
                   <div className="flex flex-col items-center justify-center gap-3">
-                    <Image
-                      src="/undraw_polaroid_qqdz.svg"
-                      alt="No reviews illustration"
-                      width={160}
-                      height={120}
-                      className="h-auto w-[140px] sm:w-[160px] object-contain opacity-90 select-none"
-                    />
+                    <div className="mb-2 p-4 bg-muted/60 dark:bg-muted/30 rounded-full">
+                      <Star className="size-10 text-muted-foreground/70" strokeWidth={1.5} />
+                    </div>
                     <p className="font-semibold text-foreground text-sm">No reviews found</p>
                     <p className="text-xs text-muted-foreground max-w-xs">
                       Customer reviews and attached photo feedback will appear here as orders get fulfilled.

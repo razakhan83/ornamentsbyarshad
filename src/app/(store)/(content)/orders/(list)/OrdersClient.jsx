@@ -22,7 +22,9 @@ import {
   Camera,
   Copy,
   Check,
-  BadgeCheck
+  BadgeCheck,
+  ThumbsUp,
+  SearchX
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -64,7 +66,6 @@ const getOrderStatusDetails = (status) => {
       return {
         label: 'Order Confirmed',
         icon: ClipboardCheck,
-        svgImage: '/undraw_order-confirmed_m9e9 (1).svg',
         color: 'text-blue-600',
       };
     case 'In Process':
@@ -72,7 +73,6 @@ const getOrderStatusDetails = (status) => {
       return {
         label: norm,
         icon: Clock,
-        svgImage: '/undraw_processing_bto8.svg',
         color: 'text-amber-600',
       };
     case 'Shipped':
@@ -80,35 +80,30 @@ const getOrderStatusDetails = (status) => {
       return {
         label: norm,
         icon: Truck,
-        svgImage: '/undraw_delivery-address_409g.svg',
         color: 'text-sky-600',
       };
     case 'Delivered':
       return {
         label: 'Delivered',
         icon: BadgeCheck,
-        svgImage: '/undraw_order-delivered_gy61.svg',
         color: 'text-emerald-600',
       };
     case 'Cancelled':
       return {
         label: 'Cancelled',
         icon: X,
-        svgImage: null,
         color: 'text-red-500',
       };
     case 'Returned':
       return {
         label: 'Returned',
         icon: CheckCircle2,
-        svgImage: null,
         color: 'text-purple-600',
       };
     default:
       return {
         label: norm,
         icon: Package,
-        svgImage: '/undraw_order-confirmed_m9e9 (1).svg',
         color: 'text-gray-600',
       };
   }
@@ -507,14 +502,8 @@ export default function OrdersClient({ initialOrders }) {
                             </h3>
                             <p className="text-xs sm:text-sm text-gray-500">Your package was delivered successfully.</p>
                           </div>
-                          <div className="shrink-0 select-none">
-                            <Image
-                              src="/undraw_order-delivered_gy61.svg"
-                              alt="Delivered"
-                              width={90}
-                              height={65}
-                              className="h-12 sm:h-16 w-auto object-contain"
-                            />
+                          <div className="shrink-0 select-none p-3 bg-gray-50/80 rounded-full border border-gray-100">
+                            <BadgeCheck className="size-8 sm:size-10 text-emerald-600" strokeWidth={1.5} />
                           </div>
                         </div>
                       ) : (
@@ -535,15 +524,9 @@ export default function OrdersClient({ initialOrders }) {
                               Currently <span className="text-gray-900 font-bold">{statusDetails.label}</span>
                             </p>
                           </div>
-                          {statusDetails.svgImage ? (
-                            <div className="shrink-0 select-none">
-                              <Image
-                                src={statusDetails.svgImage}
-                                alt={statusDetails.label}
-                                width={90}
-                                height={65}
-                                className="h-12 sm:h-16 w-auto object-contain"
-                              />
+                          {statusDetails.icon ? (
+                            <div className="shrink-0 select-none p-3 bg-gray-50/80 rounded-full border border-gray-100">
+                              <statusDetails.icon className={cn("size-8 sm:size-10", statusDetails.color)} strokeWidth={1.5} />
                             </div>
                           ) : null}
                         </div>
@@ -598,13 +581,9 @@ export default function OrdersClient({ initialOrders }) {
               <Empty className="rounded-sm border border-dashed border-gray-200 py-16 px-4 bg-white text-center">
                 <EmptyHeader>
                   <div className="mx-auto mb-4 flex items-center justify-center">
-                    <Image
-                      src="/undraw_delivery-address_409g.svg"
-                      alt="No orders illustration"
-                      width={180}
-                      height={140}
-                      className="h-auto w-[160px] sm:w-[180px] object-contain opacity-95 select-none"
-                    />
+                    <div className="p-4 bg-gray-50 rounded-full">
+                      <SearchX className="size-10 text-gray-400" strokeWidth={1.5} />
+                    </div>
                   </div>
                   <EmptyTitle className="text-xl font-bold text-gray-900 mt-2">No orders found</EmptyTitle>
                   <EmptyDescription className="text-sm text-gray-500 mt-1 max-w-sm mx-auto">
@@ -812,13 +791,9 @@ const FeedbackModal = ({ order, onRemindLater, onDismissPermanently, onClose, on
       <div className="fixed inset-0 z-[500] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
         <div className="bg-white rounded-sm w-full max-w-sm p-8 text-center shadow-2xl transform scale-100 animate-in zoom-in-95 duration-300 flex flex-col items-center">
           <div className="mb-4 flex items-center justify-center">
-            <Image
-              src="/undraw_thumbs-up_f300.svg"
-              alt="Thank you for feedback"
-              width={140}
-              height={110}
-              className="h-auto w-[120px] object-contain select-none"
-            />
+            <div className="p-4 bg-emerald-50 rounded-full text-emerald-500">
+              <ThumbsUp className="size-10" strokeWidth={1.5} />
+            </div>
           </div>
           <h2 className="text-xl font-bold text-gray-900 mb-1.5">Thank you!</h2>
           <p className="text-gray-500 text-sm leading-relaxed">Your feedback will help other shoppers make better choices.</p>

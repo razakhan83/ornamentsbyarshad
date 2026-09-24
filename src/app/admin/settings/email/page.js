@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { Mail } from 'lucide-react';
 import { requireAdmin } from '@/lib/requireAdmin';
 
 export default async function EmailSettingsPage() {
@@ -13,15 +13,8 @@ export default async function EmailSettingsPage() {
         </p>
       </div>
       <div className="surface-card rounded-sm p-8 flex flex-col items-center justify-center min-h-[360px] border border-dashed border-border text-center">
-        <div className="mb-6 flex items-center justify-center">
-          <Image
-            src="/undraw_subscribe_w8sz.svg"
-            alt="Email Notifications Illustration"
-            width={200}
-            height={160}
-            className="h-auto w-[180px] sm:w-[220px] object-contain select-none opacity-95"
-            priority
-          />
+        <div className="mb-6 flex items-center justify-center p-6 bg-primary/5 rounded-full ring-8 ring-primary/5">
+          <Mail className="size-16 text-primary opacity-80" strokeWidth={1.5} />
         </div>
         <div className="text-center max-w-sm">
           <p className="font-semibold text-base text-foreground">Transactional Email Pipeline Active</p>

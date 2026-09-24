@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Loader2, RadioTower, Save } from 'lucide-react';
+import { Loader2, RadioTower, Save, Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -60,15 +60,8 @@ export default function AdminSocialSettingsClient({ initialSettings }) {
             Manage customer contact links, social destinations, and tracking pixels (Facebook & TikTok) in one place.
           </p>
         </div>
-        <div className="shrink-0 flex items-center justify-center">
-          <Image
-            src="/undraw_social-ideas_3znc.svg"
-            alt="Social Marketing Illustration"
-            width={160}
-            height={130}
-            className="h-auto w-[130px] sm:w-[150px] object-contain select-none opacity-95"
-            priority
-          />
+        <div className="shrink-0 flex items-center justify-center p-6 bg-primary/5 rounded-full ring-8 ring-primary/5">
+          <Share2 className="size-14 text-primary opacity-80" strokeWidth={1.5} />
         </div>
       </div>
 
