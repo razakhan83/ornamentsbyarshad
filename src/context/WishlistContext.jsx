@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
 import { useSession } from 'next-auth/react';
 
 const WishlistContext = createContext(null);
@@ -121,7 +121,24 @@ function buildNextWishlistState(current, itemId, product, shouldRemove) {
 
 export function WishlistProvider({ children }) {
   const { data: session, status } = useSession();
-  const [state, setState] = useState(getInitialWishlistState);
+  
+  const storeRef = useRef();
+  if (!storeRef.current) {
+    let state = getInitialWishlistState();
+    const listeners = new Set();
+    storeRef.current = {
+      getState: () => state,
+      setState: (newState) => {
+        state = typeof newState === 'function' ? newState(state) : newState;
+        listeners.forEach((l) => l());
+      },
+      subscribe: (listener) => {
+        listeners.add(listener);
+        return () => listeners.delete(listener);
+      }
+    };
+  }
+  const store = storeRef.current;
 
   useEffect(() => {
     let ignore = false;
@@ -134,7 +151,7 @@ export function WishlistProvider({ children }) {
 
       if (!session) {
         if (!ignore) {
-          setState({
+          store.setState({
             items: guestItems,
             ids: guestIds,
             isLoading: false,
@@ -144,7 +161,7 @@ export function WishlistProvider({ children }) {
       }
 
       if (!ignore) {
-        setState((current) => ({ ...current, isLoading: true }));
+        store.setState((current) => ({ ...current, isLoading: true }));
       }
 
       try {
@@ -164,7 +181,7 @@ export function WishlistProvider({ children }) {
           const nextIds = Array.isArray(syncData?.data?.ids) ? syncData.data.ids : [];
 
           if (!ignore) {
-            setState({
+            store.setState({
               items: nextItems,
               ids: nextIds,
               isLoading: false,
@@ -184,7 +201,7 @@ export function WishlistProvider({ children }) {
         if (!ignore) {
           const nextItems = Array.isArray(data?.data?.items) ? data.data.items : [];
           const nextIds = Array.isArray(data?.data?.ids) ? data.data.ids : [];
-          setState({
+          store.setState({
             items: nextItems,
             ids: nextIds,
             isLoading: false,
@@ -193,7 +210,7 @@ export function WishlistProvider({ children }) {
       } catch (error) {
         console.error('Failed to load wishlist', error);
         if (!ignore) {
-          setState({
+          store.setState({
             items: guestItems,
             ids: guestIds,
             isLoading: false,
@@ -206,19 +223,20 @@ export function WishlistProvider({ children }) {
     return () => {
       ignore = true;
     };
-  }, [session, status]);
+  }, [session, status, store]);
 
   const toggleWishlist = useCallback(async (product) => {
     const itemId = getWishlistItemId(product);
     if (!itemId) return { success: false, isWishlisted: false };
 
-    const isWishlisted = state.ids.includes(itemId);
+    const currentState = store.getState();
+    const isWishlisted = currentState.ids.includes(itemId);
     const eventId = typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
       ? crypto.randomUUID()
       : `${Date.now()}-${itemId}`;
 
-    const optimisticState = buildNextWishlistState(state, itemId, product, isWishlisted);
-    setState(optimisticState);
+    const optimisticState = buildNextWishlistState(currentState, itemId, product, isWishlisted);
+    store.setState(optimisticState);
 
     if (!session) {
       if (optimisticState) {
@@ -245,7 +263,7 @@ export function WishlistProvider({ children }) {
         throw new Error(data?.error || 'Failed to update wishlist');
       }
 
-      setState((current) => ({
+      store.setState((current) => ({
         ...current,
         ids: Array.isArray(data?.data?.ids) ? data.data.ids : current.ids,
         items: Array.isArray(data?.data?.items) ? data.data.items : current.items,
@@ -260,30 +278,53 @@ export function WishlistProvider({ children }) {
     } catch (error) {
       console.error('Failed to toggle wishlist', error);
       const rollbackState = buildNextWishlistState(optimisticState, itemId, product, !isWishlisted);
-      setState(rollbackState);
+      store.setState(rollbackState);
       writeGuestWishlistSnapshot(rollbackState.ids, rollbackState.items);
 
       return { success: false, isWishlisted };
     }
-  }, [session, state]);
+  }, [session, store]);
 
   const value = useMemo(
     () => ({
-      items: state.items,
-      ids: state.ids,
-      isLoading: state.isLoading,
-      wishlistCount: state.ids.length,
-      isWishlisted(productId) {
-        return state.ids.includes(String(productId || '').trim());
-      },
+      store,
       toggleWishlist,
     }),
-    [state, toggleWishlist],
+    [store, toggleWishlist],
   );
 
   return <WishlistContext.Provider value={value}>{children}</WishlistContext.Provider>;
 }
 
 export function useWishlist() {
-  return useContext(WishlistContext);
+  const context = useContext(WishlistContext);
+  if (!context) throw new Error("useWishlist must be used within a WishlistProvider");
+  const state = useSyncExternalStore(context.store.subscribe, context.store.getState, context.store.getState);
+  return {
+    items: state.items,
+    ids: state.ids,
+    isLoading: state.isLoading,
+    wishlistCount: state.ids.length,
+    isWishlisted: (productId) => state.ids.includes(String(productId || '').trim()),
+    toggleWishlist: context.toggleWishlist,
+  };
+}
+
+export function useWishlistActions() {
+  const context = useContext(WishlistContext);
+  if (!context) throw new Error("useWishlistActions must be used within a WishlistProvider");
+  return { toggleWishlist: context.toggleWishlist };
+}
+
+export function useIsWishlisted(productId) {
+  const context = useContext(WishlistContext);
+  if (!context) return false;
+  
+  const idStr = String(productId || '').trim();
+  
+  return useSyncExternalStore(
+    context.store.subscribe,
+    () => context.store.getState().ids.includes(idStr),
+    () => context.store.getState().ids.includes(idStr)
+  );
 }

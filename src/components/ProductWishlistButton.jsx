@@ -4,21 +4,27 @@ import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { useWishlist } from '@/context/WishlistContext';
+import { useIsWishlisted, useWishlistActions } from '@/context/WishlistContext';
 import { cn } from '@/lib/utils';
 
 export default function ProductWishlistButton({ product, mode = 'grid', className = '' }) {
-  const { isWishlisted, toggleWishlist, isLoading = false } = useWishlist() || {};
   const [isSubmitting, setIsSubmitting] = useState(false);
   const productId = String(product?._id || product?.id || product?.slug || '').trim();
-  const active = typeof isWishlisted === 'function' ? isWishlisted(productId) : false;
+  const active = useIsWishlisted(productId);
+  
+  let toggleWishlist;
+  try {
+    const actions = useWishlistActions();
+    toggleWishlist = actions.toggleWishlist;
+  } catch(e) {}
+  
   const productName = product?.Name || product?.name || 'Item';
 
   async function handleToggle(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    if (!productId || typeof toggleWishlist !== 'function' || isSubmitting || isLoading) return;
+    if (!productId || typeof toggleWishlist !== 'function' || isSubmitting) return;
 
     setIsSubmitting(true);
     try {
@@ -44,11 +50,11 @@ export default function ProductWishlistButton({ product, mode = 'grid', classNam
         aria-checked={active}
         aria-label={active ? 'Remove from wishlist' : 'Add to wishlist'}
         onClick={handleToggle}
-        disabled={isSubmitting || isLoading}
+        disabled={isSubmitting}
         className={cn(
           'inline-flex items-center justify-center p-0 bg-transparent border-0 shadow-none text-[#121212] hover:text-[#A67C52] transition-transform duration-200 active:scale-90 cursor-pointer select-none',
           active && 'text-red-500',
-          (isSubmitting || isLoading) && 'pointer-events-none opacity-70',
+          isSubmitting && 'pointer-events-none opacity-70',
           className
         )}
       >
@@ -65,11 +71,11 @@ export default function ProductWishlistButton({ product, mode = 'grid', classNam
         aria-checked={active}
         aria-label={active ? 'Remove from wishlist' : 'Add to wishlist'}
         onClick={handleToggle}
-        disabled={isSubmitting || isLoading}
+        disabled={isSubmitting}
         className={cn(
           'inline-flex h-11 items-center justify-center gap-2 rounded-sm border border-[color:color-mix(in_oklab,var(--color-primary)_16%,var(--color-border))] bg-[color:color-mix(in_oklab,var(--color-input)_92%,white)] px-4 text-sm font-medium text-foreground shadow-[0_1px_0_color-mix(in_oklab,var(--color-background)_65%,white)] transition-[border-color,background-color,box-shadow,color,transform] duration-200 hover:bg-[color:color-mix(in_oklab,var(--color-muted)_74%,white)] hover:text-foreground active:scale-[0.96]',
           active && 'border-destructive/25 text-destructive',
-          (isSubmitting || isLoading) && 'pointer-events-none opacity-70',
+          isSubmitting && 'pointer-events-none opacity-70',
           className,
         )}
       >
@@ -89,13 +95,13 @@ export default function ProductWishlistButton({ product, mode = 'grid', classNam
       data-state={active ? 'checked' : 'unchecked'}
       value="on"
       onClick={handleToggle}
-      disabled={isSubmitting || isLoading}
+      disabled={isSubmitting}
       className={cn(
         "absolute right-2.5 top-2.5 z-20 flex size-8 sm:size-9 items-center justify-center rounded-full border border-[#E8E5DF] bg-white/95 text-[#121212] shadow-xs outline-none transition-all duration-300 ease-out hover:scale-110 active:scale-95 cursor-pointer",
         active
           ? 'border-red-500/30 text-red-500 opacity-100'
           : 'opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus-visible:opacity-100',
-        (isSubmitting || isLoading) && 'pointer-events-none opacity-60',
+        isSubmitting && 'pointer-events-none opacity-60',
         className,
       )}
     >

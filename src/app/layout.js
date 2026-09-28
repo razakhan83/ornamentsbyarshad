@@ -77,11 +77,11 @@ export const metadata = {
     locale: 'en_PK',
     images: [
       {
-        url: `${getSiteUrl()}/opengraph-image.png`,
-        secureUrl: `${getSiteUrl()}/opengraph-image.png`,
+        url: `${getSiteUrl()}/OG Main Image.jpg`,
+        secureUrl: `${getSiteUrl()}/OG Main Image.jpg`,
         width: 1200,
         height: 630,
-        type: 'image/png',
+        type: 'image/jpeg',
         alt: socialPreviewAlt,
       },
     ],
@@ -92,7 +92,7 @@ export const metadata = {
     description: SITE_DESCRIPTION,
     images: [
       {
-        url: `${getSiteUrl()}/opengraph-image.png`,
+        url: `${getSiteUrl()}/OG Main Image.jpg`,
         width: 1200,
         height: 630,
         alt: socialPreviewAlt,

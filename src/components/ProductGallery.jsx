@@ -31,16 +31,15 @@ export default function ProductGallery({ images, primaryTag, product }) {
 
   const [lensState, setLensState] = useState({
     show: false,
-    x: 0,
-    y: 0,
-    targetX: 0,
-    targetY: 0,
     containerWidth: 0,
     containerHeight: 0,
     isTouch: false,
   });
 
   const containerRef = useRef(null);
+  const lensRef = useRef(null);
+  const zoomImageRef = useRef(null);
+  const cachedRectRef = useRef(null);
   const pointerStartRef = useRef({ x: 0, y: 0, time: 0 });
   const lightboxTouchStartRef = useRef(0);
 
@@ -134,9 +133,20 @@ export default function ProductGallery({ images, primaryTag, product }) {
     };
   }, [isLightboxOpen, normalizedImages.length]);
 
+  const cacheRect = useCallback(() => {
+    if (containerRef.current) {
+      cachedRectRef.current = containerRef.current.getBoundingClientRect();
+      setLensState(prev => ({
+        ...prev,
+        containerWidth: cachedRectRef.current.width,
+        containerHeight: cachedRectRef.current.height
+      }));
+    }
+  }, []);
+
   const handlePointerMove = useCallback((clientX, clientY, isTouch = false) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
+    if (!cachedRectRef.current) return;
+    const rect = cachedRectRef.current;
     const targetX = Math.max(0, Math.min(clientX - rect.left, rect.width));
     const targetY = Math.max(0, Math.min(clientY - rect.top, rect.height));
 
@@ -162,19 +172,17 @@ export default function ProductGallery({ images, primaryTag, product }) {
     const clampedX = Math.max(radius + padding, Math.min(rect.width - radius - padding, x));
     const clampedY = Math.max(radius + padding, Math.min(rect.height - radius - padding, y));
 
-    setLensState({
-      show: true,
-      x: clampedX,
-      y: clampedY,
-      targetX,
-      targetY,
-      containerWidth: rect.width,
-      containerHeight: rect.height,
-      isTouch,
-    });
+    if (lensRef.current && zoomImageRef.current) {
+      lensRef.current.style.transform = `translate3d(${clampedX - radius}px, ${clampedY - radius}px, 0)`;
+      zoomImageRef.current.style.transform = `translate3d(${-targetX * zoomLevel + radius}px, ${-targetY * zoomLevel + radius}px, 0)`;
+    }
   }, []);
 
   const handleMouseMove = (e) => {
+    if (!lensState.show) {
+      cacheRect();
+      setLensState(prev => ({ ...prev, show: true, isTouch: false }));
+    }
     handlePointerMove(e.clientX, e.clientY, false);
   };
 
@@ -187,6 +195,8 @@ export default function ProductGallery({ images, primaryTag, product }) {
     if (e.touches && e.touches[0]) {
       e.preventDefault?.();
       e.stopPropagation?.();
+      cacheRect();
+      setLensState(prev => ({ ...prev, show: true, isTouch: true }));
       handlePointerMove(e.touches[0].clientX, e.touches[0].clientY, true);
     }
   };
@@ -432,29 +442,31 @@ export default function ProductGallery({ images, primaryTag, product }) {
         {/* Touch target indicator ring on mobile */}
         {isMagnifierActive && lensState.show && lensState.isTouch && (
           <div
-            className="pointer-events-none absolute z-25 rounded-full size-8 border-2 border-[#A67C52] bg-[#A67C52]/20 -translate-x-1/2 -translate-y-1/2 animate-pulse"
-            style={{
-              left: `${lensState.targetX}px`,
-              top: `${lensState.targetY}px`,
-            }}
+            className="pointer-events-none absolute z-25 rounded-full size-8 border-2 border-[#A67C52] bg-[#A67C52]/20 -translate-x-1/2 -translate-y-1/2 animate-pulse hidden"
           />
         )}
 
         {/* Circular Jeweler's Loupe Lens */}
         {isMagnifierActive && lensState.show && zoomImageUrl && (
           <div
-            className="pointer-events-none absolute z-30 rounded-full border-[3px] border-[#A67C52] ring-4 ring-white/95 shadow-[0_20px_48px_rgba(0,0,0,0.5)] bg-no-repeat overflow-hidden transition-opacity duration-150 animate-in fade-in-0 zoom-in-95"
+            ref={lensRef}
+            className="pointer-events-none absolute left-0 top-0 z-30 rounded-full border-[3px] border-[#A67C52] ring-4 ring-white/95 bg-no-repeat overflow-hidden transition-opacity duration-150 animate-in fade-in-0 zoom-in-95"
             style={{
               width: `${lensDiameter}px`,
               height: `${lensDiameter}px`,
-              left: `${lensState.x - lensRadius}px`,
-              top: `${lensState.y - lensRadius}px`,
               backgroundColor: getProductCategoryBgColor(product) || '#FAF9F6',
-              backgroundImage: `url(${zoomImageUrl})`,
-              backgroundSize: `${lensState.containerWidth * zoomLevel}px ${lensState.containerHeight * zoomLevel}px`,
-              backgroundPosition: `${-lensState.targetX * zoomLevel + lensRadius}px ${-lensState.targetY * zoomLevel + lensRadius}px`,
             }}
           >
+            <img 
+               ref={zoomImageRef}
+               src={zoomImageUrl}
+               alt=""
+               className="absolute max-w-none origin-top-left"
+               style={{
+                  width: `${(cachedRectRef.current?.width || 0) * zoomLevel}px`,
+                  height: `${(cachedRectRef.current?.height || 0) * zoomLevel}px`,
+               }}
+            />
             {/* High-end Jeweler reflection and center focus crosshair */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-black/5 via-transparent to-white/20 pointer-events-none" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-2 rounded-full bg-[#A67C52]/80 border border-white shadow-xs pointer-events-none" />
@@ -521,13 +533,13 @@ export default function ProductGallery({ images, primaryTag, product }) {
       {/* Luxury Fullscreen Lightbox Modal */}
       {typeof document !== 'undefined' && isLightboxOpen && createPortal(
         <div 
-          className="fixed inset-0 z-[9999] bg-[#0A0A0A]/95 backdrop-blur-md flex flex-col justify-between select-none animate-in fade-in-0 duration-200"
+          className="fixed inset-0 z-[9999] bg-black/85 flex flex-col justify-between select-none animate-in fade-in-0 duration-200"
           role="dialog"
           aria-modal="true"
           aria-label="Fullscreen Product Gallery"
         >
           {/* Top Bar */}
-          <div className="flex items-center justify-between px-3.5 sm:px-6 py-3 z-50 text-white border-b border-white/10 bg-black/75 backdrop-blur-md gap-2">
+          <div className="flex items-center justify-between px-3.5 sm:px-6 py-3 z-50 text-white border-b border-white/10 bg-black/85 gap-2">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
               <span className="font-serif text-xs sm:text-base font-normal tracking-wide text-neutral-200 truncate">
                 {productName}
@@ -580,7 +592,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
                   handleLightboxNavigate(lightboxIndex > 0 ? lightboxIndex - 1 : normalizedImages.length - 1);
                 }}
                 title="Previous image"
-                className="absolute left-3 sm:left-8 z-40 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 shadow-xl backdrop-blur-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                className="absolute left-3 sm:left-8 z-40 p-2.5 sm:p-3 rounded-full bg-black/85 text-white border border-white/20 shadow-xl transition-all hover:scale-105 active:scale-95 cursor-pointer"
               >
                 <ChevronLeft className="size-5 sm:size-6 stroke-[2]" />
               </button>
@@ -623,7 +635,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
                   handleLightboxNavigate(lightboxIndex < normalizedImages.length - 1 ? lightboxIndex + 1 : 0);
                 }}
                 title="Next image"
-                className="absolute right-3 sm:right-8 z-40 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 shadow-xl backdrop-blur-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                className="absolute right-3 sm:right-8 z-40 p-2.5 sm:p-3 rounded-full bg-black/85 text-white border border-white/20 shadow-xl transition-all hover:scale-105 active:scale-95 cursor-pointer"
               >
                 <ChevronRight className="size-5 sm:size-6 stroke-[2]" />
               </button>
@@ -632,7 +644,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
 
           {/* Bottom Thumbnail Strip */}
           {hasMultipleImages && (
-            <div className="px-4 py-3.5 z-50 border-t border-white/10 bg-black/50 backdrop-blur-md flex items-center justify-center gap-2.5 sm:gap-3 overflow-x-auto">
+            <div className="px-4 py-3.5 z-50 border-t border-white/10 bg-black/85 flex items-center justify-center gap-2.5 sm:gap-3 overflow-x-auto">
               {normalizedImages.map((image, idx) => (
                 <button
                   key={idx}

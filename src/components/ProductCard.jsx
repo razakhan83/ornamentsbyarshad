@@ -67,7 +67,7 @@ export default function ProductCard({ product, className = "", priority = false 
               type="button"
               onClick={prevImage}
               aria-label="Previous image"
-              className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/80 sm:bg-white/90 hover:bg-white text-[#121212] flex items-center justify-center shadow-xs backdrop-blur-[2px] border border-[#E8E5DF] opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-[opacity,transform,background-color] duration-200 cursor-pointer active:scale-90"
+              className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/80 sm:bg-white/90 hover:bg-white text-[#121212] flex items-center justify-center shadow-xs border border-[#E8E5DF] opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-[opacity,transform,background-color] duration-200 cursor-pointer active:scale-90"
             >
               {/* Invisible touch/click expansion padding (keeps visual size intact, expands tap zone) */}
               <span className="absolute -inset-3 sm:-inset-4 pointer-events-auto" />
@@ -77,7 +77,7 @@ export default function ProductCard({ product, className = "", priority = false 
               type="button"
               onClick={nextImage}
               aria-label="Next image"
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/80 sm:bg-white/90 hover:bg-white text-[#121212] flex items-center justify-center shadow-xs backdrop-blur-[2px] border border-[#E8E5DF] opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-[opacity,transform,background-color] duration-200 cursor-pointer active:scale-90"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 size-6 sm:size-7 rounded-full bg-white/80 sm:bg-white/90 hover:bg-white text-[#121212] flex items-center justify-center shadow-xs border border-[#E8E5DF] opacity-70 sm:opacity-0 sm:group-hover:opacity-100 transition-[opacity,transform,background-color] duration-200 cursor-pointer active:scale-90"
             >
               {/* Invisible touch/click expansion padding (keeps visual size intact, expands tap zone) */}
               <span className="absolute -inset-3 sm:-inset-4 pointer-events-auto" />
@@ -124,7 +124,7 @@ export default function ProductCard({ product, className = "", priority = false 
                     loading={priority && idx === 0 ? "eager" : "lazy"}
                     decoding="async"
                     className={cn(
-                      "object-cover transition-transform duration-500 ease-out will-change-transform",
+                      "object-cover transition-transform duration-500 ease-out",
                       "md:group-hover:scale-105",
                       isUnavailable && "grayscale-[30%] opacity-75"
                     )}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, startTransition } from 'react';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
@@ -69,11 +69,15 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
   }, [pathname, activeCategory, currentPrice, currentMetal, currentInstock, currentSort]);
 
   function handlePriceChange(value) {
-    router.push(buildUrl({ price: value }), { scroll: false });
+    startTransition(() => {
+      router.push(buildUrl({ price: value }), { scroll: false });
+    });
   }
 
   function handleInstockChange(checked) {
-    router.push(buildUrl({ instock: checked }), { scroll: false });
+    startTransition(() => {
+      router.push(buildUrl({ instock: checked }), { scroll: false });
+    });
   }
 
   function handleClearAll() {
@@ -81,7 +85,9 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
     if (activeCategory && activeCategory !== 'all') params.set('category', activeCategory);
     if (currentSort && currentSort !== 'newest') params.set('sort', currentSort);
     const query = params.toString();
-    router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    startTransition(() => {
+      router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    });
   }
 
   return (
@@ -132,7 +138,9 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
               value={currentMetal || 'all'}
               onValueChange={(val) => {
                 const newMetal = val === 'all' ? '' : val;
-                router.push(buildUrl({ metal: newMetal }), { scroll: false });
+                startTransition(() => {
+                  router.push(buildUrl({ metal: newMetal }), { scroll: false });
+                });
               }}
             >
               <SelectTrigger className="h-10 w-full border border-[#E8E5DF] bg-white px-3.5 text-xs uppercase tracking-wider font-semibold focus:ring-1 focus:ring-[#121212] rounded-[6px]">

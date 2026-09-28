@@ -106,44 +106,9 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
   const rawMobileVideoSrc = slide.images.mobileVideoSrc;
   const mobileVideoSrc = useMemo(() => optimizeCloudinaryVideoUrl(rawMobileVideoSrc), [rawMobileVideoSrc]);
 
-  const [cachedVideoSrc, setCachedVideoSrc] = useState(mobileVideoSrc);
   const videoRef = useRef(null);
   const [videoError, setVideoError] = useState(false);
   const [isVideoReady, setIsVideoReady] = useState(false);
-
-  // Persistent Cache Storage: Store video locally so subsequent opens & reloads play instantly in 0ms
-  useEffect(() => {
-    if (!mobileVideoSrc || typeof window === 'undefined' || !('caches' in window)) return;
-
-    let isCancelled = false;
-    const cacheName = 'ornaments-hero-video-v1';
-
-    window.caches
-      .open(cacheName)
-      .then(async (cache) => {
-        try {
-          const match = await cache.match(mobileVideoSrc);
-          if (match) {
-            const blob = await match.blob();
-            if (!isCancelled) {
-              const blobUrl = URL.createObjectURL(blob);
-              setCachedVideoSrc(blobUrl);
-            }
-          } else {
-            fetch(mobileVideoSrc)
-              .then((res) => {
-                if (res.ok) cache.put(mobileVideoSrc, res.clone());
-              })
-              .catch(() => {});
-          }
-        } catch {}
-      })
-      .catch(() => {});
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [mobileVideoSrc]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -160,7 +125,7 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
     } else {
       video.pause();
     }
-  }, [isActive, mobileVideoSrc, videoError, cachedVideoSrc]);
+  }, [isActive, mobileVideoSrc, videoError]);
 
   const desktopOptimized = optimizeCloudinaryUrl(desktopSrc, CLOUDINARY_IMAGE_PRESETS.heroFull);
   const mobileOptimized = optimizeCloudinaryUrl(mobileSrc, CLOUDINARY_IMAGE_PRESETS.heroMobile);
@@ -196,27 +161,8 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
           </div>
         ) : null}
 
-        {/* Mobile View: Video plays first. Video's own start frame screenshot is shown blurred until video plays */}
         {!videoError ? (
           <div className="block md:hidden absolute inset-0 h-full w-full overflow-hidden bg-neutral-950">
-            {/* Blur view derived directly from video's starting frame */}
-            {videoPoster || videoBlur ? (
-              <div
-                className={`absolute inset-0 h-full w-full overflow-hidden transition-opacity duration-700 pointer-events-none ${
-                  isVideoReady ? 'opacity-0' : 'opacity-100'
-                }`}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={videoBlur || videoPoster}
-                  alt={slide.alt || 'Video preview'}
-                  fetchPriority={isPriority ? 'high' : 'auto'}
-                  loading={isPriority ? 'eager' : 'lazy'}
-                  className="absolute inset-0 h-full w-full object-cover blur-md scale-105"
-                />
-              </div>
-            ) : null}
-
             <video
               ref={(el) => {
                 if (el) {
@@ -225,21 +171,22 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
                 }
                 videoRef.current = el;
               }}
-              src={cachedVideoSrc || mobileVideoSrc}
               poster={videoPoster || undefined}
               autoPlay
               loop
               muted
               playsInline
               webkit-playsinline="true"
-              preload="auto"
+              preload="metadata"
               onPlaying={() => setIsVideoReady(true)}
               onLoadedData={() => setIsVideoReady(true)}
               onError={() => setVideoError(true)}
               className={`relative z-[1] h-full w-full object-cover transition-opacity duration-500 ${
                 isVideoReady ? 'opacity-100' : 'opacity-0'
               }`}
-            />
+            >
+              <source src={mobileVideoSrc} type="video/mp4" />
+            </video>
           </div>
         ) : mobileOptimized ? (
           <div className="block md:hidden absolute inset-0 h-full w-full">
@@ -472,11 +419,15 @@ export default function HeroSlider({ slides = [] }) {
                 onClick={() => goToSlide(index)}
                 className="flex min-h-[32px] min-w-[32px] -m-1 items-center justify-center cursor-pointer p-0 border-0 bg-transparent outline-none focus-visible:ring-2 focus-visible:ring-white/80 rounded-full"
               >
-                <span
-                  className={`h-2 rounded-full shadow-md transition-all duration-300 origin-center pointer-events-none block ${
-                    safeActiveIndex === index ? 'w-8 bg-white' : 'w-2 bg-white/55 hover:bg-white/80'
-                  }`}
-                />
+                <div className="relative w-8 h-2 flex items-center justify-center">
+                  <span
+                    className="absolute inset-0 h-2 bg-white rounded-full shadow-md transition-transform duration-300 origin-center pointer-events-none block"
+                    style={{
+                      transform: safeActiveIndex === index ? 'scaleX(1)' : 'scaleX(0.25)',
+                      opacity: safeActiveIndex === index ? 1 : 0.55
+                    }}
+                  />
+                </div>
               </button>
             ))}
           </div>

@@ -290,19 +290,6 @@
   }
 }
 
-@keyframes home-enter {
-  /* Removed filter:blur — forces full GPU rasterization of entire subtree */
-  /* on every frame. opacity+transform are compositor-only (60 FPS on mobile) */
-  from {
-    opacity: 0;
-    transform: translate3d(0, 14px, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
 
 @keyframes hero-fade-in {
   /* Removed filter:saturate — expensive on mobile GPU */
@@ -827,45 +814,9 @@
     animation: fade-in 220ms ease-out both;
   }
 
-  .products-page-meta {
-    opacity: 0;
-    animation: home-enter 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: 60ms;
-  }
-
-  .products-page-heading {
-    opacity: 0;
-    animation: home-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: 110ms;
-  }
-
-  .products-page-toolbar {
-    opacity: 0;
-    animation: home-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: 70ms;
-  }
-
-  .products-page-results-meta,
-  .products-page-empty,
-  .products-page-footer {
-    opacity: 0;
-    animation: home-enter 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: 110ms;
-  }
-
-  .products-grid-card {
-    opacity: 0;
-    animation: home-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: var(--products-card-delay, 0ms);
-  }
-
   .products-grid-skeleton-card {
     opacity: 1;
     animation: none;
-  }
-
-  .navbar-search-shell[data-state="open"] .navbar-search-inner {
-    animation: home-enter 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }
 
@@ -988,32 +939,7 @@ body:has(#checkout-root) .store-deferred-chrome {
   display: none !important;
 }
 
-/* Product Catalog Infinite Scroll & Scroll-Triggered Card Reveal */
-@keyframes productCardReveal {
-  0% {
-    opacity: 0;
-    transform: translateY(18px) scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
 
-.products-card-reveal {
-  animation: productCardReveal 420ms cubic-bezier(0.25, 1, 0.5, 1) both;
-  animation-delay: var(--reveal-delay, 0ms);
-  backface-visibility: hidden;
-  transform: translateZ(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .products-card-reveal {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
 
 /* Product Detail Page Mobile Sticky Bar dynamic positioning */
 @media (max-width: 767px) {

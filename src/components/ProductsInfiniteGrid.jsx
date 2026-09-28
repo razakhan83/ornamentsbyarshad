@@ -159,18 +159,10 @@ export default function ProductsInfiniteGrid({
       {/* Main product cards grid */}
       <div className={gridClassName}>
         {products.map((product, index) => {
-          // Newly loaded batches get staggered reveal delay
-          const isInitialBatch = index < 20;
-          const staggerDelay = `${(index % 20) * 35}ms`;
-
           return (
             <div
               key={`${product.slug || product._id || product.id}-${index}`}
-              className={cn(
-                'products-grid-card w-full min-w-0',
-                !isInitialBatch && 'products-card-reveal'
-              )}
-              style={!isInitialBatch ? { '--reveal-delay': staggerDelay } : undefined}
+              className="products-grid-card w-full min-w-0 transition-opacity duration-500 animate-in fade-in-0"
             >
               <ProductCard product={product} priority={index < 4} />
             </div>
