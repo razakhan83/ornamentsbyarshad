@@ -3,7 +3,7 @@ export const SITE_NAME = 'Ornaments by Arshad';
 export const SITE_TITLE_DEFAULT = 'Ornaments by Arshad | Timeless Luxury & Handcrafted Elegance';
 
 export const SITE_DESCRIPTION =
-  'Discover handcrafted luxury jewelry, certified diamond rings, 22K/18K gold necklaces, heirloom bangles, and bespoke bridal jewelry by Ornaments by Arshad.';
+  'Handcrafted luxury jewelry, 22K pure gold heirlooms, and bespoke bridal masterworks.';
 
 const TITLE_SUFFIX_PATTERN = /\s*[|–—-]\s*Ornaments by Arshad\s*$/i;
 
