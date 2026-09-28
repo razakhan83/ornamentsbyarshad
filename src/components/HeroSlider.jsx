@@ -117,11 +117,35 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
     video.defaultMuted = true;
     video.muted = true;
 
-    if (isActive) {
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {});
+    const attemptPlay = () => {
+      if (isActive && video.paused) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Autoplay blocked, we retry on interaction
+          });
+        }
       }
+    };
+
+    if (isActive) {
+      attemptPlay();
+      
+      const onInteract = () => {
+        if (isActive && video.paused) {
+          attemptPlay();
+        }
+      };
+      
+      window.addEventListener('touchstart', onInteract, { once: true, passive: true });
+      window.addEventListener('scroll', onInteract, { once: true, passive: true });
+      window.addEventListener('click', onInteract, { once: true, passive: true });
+
+      return () => {
+        window.removeEventListener('touchstart', onInteract);
+        window.removeEventListener('scroll', onInteract);
+        window.removeEventListener('click', onInteract);
+      };
     } else {
       video.pause();
     }
@@ -178,19 +202,15 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
                 }
                 videoRef.current = el;
               }}
-              poster={videoPoster || undefined}
               autoPlay
               loop
               muted
               playsInline
-              webkit-playsinline="true"
               preload="auto"
               onPlaying={() => setIsVideoReady(true)}
               onLoadedData={() => setIsVideoReady(true)}
               onError={() => setVideoError(true)}
-              className={`absolute inset-0 z-[1] h-full w-full object-cover transition-opacity duration-700 ${
-                isVideoReady ? 'opacity-100' : 'opacity-0'
-              }`}
+              className="absolute inset-0 z-[1] h-full w-full object-cover bg-transparent"
             >
               <source src={mobileVideoSrc} type="video/mp4" />
             </video>
