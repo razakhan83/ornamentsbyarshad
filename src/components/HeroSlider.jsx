@@ -163,6 +163,13 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
 
         {!videoError ? (
           <div className="block md:hidden absolute inset-0 h-full w-full overflow-hidden bg-neutral-950">
+            {videoBlur && (
+              <img
+                src={videoBlur}
+                alt="Loading video..."
+                className="absolute inset-0 h-full w-full object-cover blur-md scale-105"
+              />
+            )}
             <video
               ref={(el) => {
                 if (el) {
@@ -177,11 +184,11 @@ function HeroSlideMedia({ slide, isPriority, isActive }) {
               muted
               playsInline
               webkit-playsinline="true"
-              preload="metadata"
+              preload="auto"
               onPlaying={() => setIsVideoReady(true)}
               onLoadedData={() => setIsVideoReady(true)}
               onError={() => setVideoError(true)}
-              className={`relative z-[1] h-full w-full object-cover transition-opacity duration-500 ${
+              className={`absolute inset-0 z-[1] h-full w-full object-cover transition-opacity duration-700 ${
                 isVideoReady ? 'opacity-100' : 'opacity-0'
               }`}
             >

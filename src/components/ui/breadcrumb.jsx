@@ -1,7 +1,7 @@
 import * as React from "react"
-import Link from "next/link"
-
-import { cn } from "@/lib/utils"
+import { mergeProps } from "@base-ui/react/merge-props"
+import { useRender } from "@base-ui/react/use-render"
+import { cn } from "cn"
 import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react"
 
 function Breadcrumb({
@@ -25,7 +25,7 @@ function BreadcrumbList({
     <ol
       data-slot="breadcrumb-list"
       className={cn(
-        "flex flex-wrap items-center gap-1 sm:gap-1.5 text-[10.5px] sm:text-[11px] uppercase tracking-[0.14em] text-muted-foreground",
+        "flex flex-wrap items-center gap-1.5 text-sm wrap-break-word text-muted-foreground",
         className
       )}
       {...props} />
@@ -46,29 +46,19 @@ function BreadcrumbItem({
 
 function BreadcrumbLink({
   className,
-  href,
-  children,
+  render,
   ...props
 }) {
-  if (href) {
-    return (
-      <Link
-        href={href}
-        className={cn("transition-colors hover:text-foreground", className)}
-        {...props}
-      >
-        {children}
-      </Link>
-    );
-  }
-  return (
-    <a
-      className={cn("transition-colors hover:text-foreground", className)}
-      {...props}
-    >
-      {children}
-    </a>
-  );
+  return useRender({
+    defaultTagName: "a",
+    props: mergeProps({
+      className: cn("transition-colors hover:text-foreground", className),
+    }, props),
+    render,
+    state: {
+      slot: "breadcrumb-link",
+    },
+  });
 }
 
 function BreadcrumbPage({
@@ -96,7 +86,7 @@ function BreadcrumbSeparator({
       data-slot="breadcrumb-separator"
       role="presentation"
       aria-hidden="true"
-      className={cn("[&>svg]:size-2.5 sm:[&>svg]:size-3 opacity-60", className)}
+      className={cn("[&>svg]:size-3.5", className)}
       {...props}>
       {children ?? (
         <ChevronRightIcon />
