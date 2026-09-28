@@ -513,7 +513,7 @@ export default function EditProduct({ id }) {
       ? `Price: Rs. ${Number(Price).toLocaleString('en-PK')}. ${trimmedSeoDescription || plainDescription || 'Buy online from Ornaments by Arshad.'}`
       : trimmedSeoDescription || plainDescription || 'Buy online from Ornaments by Arshad.');
   const socialPreviewImage = getProductSocialShareImage(
-    seoOgImage.trim() || images?.[0]?.url || '/OG Main Image.jpg',
+    seoOgImage.trim() || images?.[0]?.url || '/og-main-image.jpg',
     seoOgImageRatio,
     ogPreviewFit
   );
