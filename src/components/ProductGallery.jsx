@@ -303,7 +303,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
       {/* Preload the high-res zoom image to prevent delay on first hover */}
       {zoomImageUrl && (
         <div className="hidden" aria-hidden="true">
-          <img src={zoomImageUrl} alt="" loading="eager" fetchpriority="low" />
+          <img src={zoomImageUrl} alt="" loading="eager" fetchPriority="low" />
         </div>
       )}
       {/* Main Large Image Container */}
