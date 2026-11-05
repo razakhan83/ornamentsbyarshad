@@ -15,7 +15,7 @@ export default function HomeFaqSection() {
       <div className="container mx-auto max-w-4xl px-4 sm:px-6">
         {/* ── Section Header ── */}
         <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-1.5">
-          <h2 className="text-2xl font-bold tracking-tight text-primary sm:text-3xl lg:text-4xl">
+          <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-medium tracking-wide text-[#121212] uppercase">
             Frequently Asked Questions
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground">
@@ -24,7 +24,7 @@ export default function HomeFaqSection() {
         </div>
 
         {/* ── Clean Accordion Items (No Numbers) ── */}
-        <div className="rounded-sm border border-border bg-card p-2 sm:p-4 shadow-none divide-y divide-border/60">
+        <div className="rounded-none border border-border bg-card p-2 sm:p-4 shadow-none divide-y divide-border/60">
           <Accordion type="single" collapsible="true" defaultValue="h1" className="w-full">
             {HOME_FAQS.map((faq) => (
               <AccordionItem
@@ -44,7 +44,7 @@ export default function HomeFaqSection() {
         </div>
 
         {/* ── Clean Horizontal Bottom Bar ── */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-sm border border-border/70 bg-muted/30 px-5 py-3.5 text-xs sm:text-sm text-muted-foreground">
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-none border border-border/70 bg-muted/30 px-5 py-3.5 text-xs sm:text-sm text-muted-foreground">
           <span className="text-center sm:text-left">
             Have more questions about your order?
           </span>

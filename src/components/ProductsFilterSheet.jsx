@@ -93,7 +93,7 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
   return (
     <Sheet>
       <SheetTrigger
-        className="relative inline-flex h-8.5 shrink-0 items-center justify-center gap-1.5 rounded-[6px] border border-[#121212]/30 bg-white px-3 text-xs uppercase tracking-wider font-semibold shadow-none transition-all outline-none hover:bg-[#121212] hover:text-white cursor-pointer select-none"
+        className="relative inline-flex h-8.5 shrink-0 items-center justify-center gap-1.5 rounded-none border border-[#121212]/30 bg-white px-3 text-xs uppercase tracking-wider font-semibold shadow-none transition-all outline-none hover:bg-[#121212] hover:text-white cursor-pointer select-none"
         aria-label="Open filters"
       >
         <SlidersHorizontal className="size-3.5" />
@@ -105,7 +105,7 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
         ) : null}
       </SheetTrigger>
 
-      <SheetContent side="bottom" className="rounded-t-2xl border-t border-[#E8E5DF] bg-[#FAF9F6] px-0 pb-[calc(env(safe-area-inset-bottom)+5.5rem)] pt-0 md:side-right md:rounded-none">
+      <SheetContent side="bottom" className="rounded-none border-t border-[#E8E5DF] bg-[#FAF9F6] px-0 pb-[calc(env(safe-area-inset-bottom)+5.5rem)] pt-0 md:side-right md:rounded-none">
         <SheetHeader className="flex flex-row items-center justify-between border-b border-border px-5 py-3.5 pr-14">
           <SheetTitle className="text-base font-bold flex items-center gap-2">
             Filter Products
@@ -121,7 +121,7 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
               variant="ghost"
               size="sm"
               onClick={handleClearAll}
-              className="h-7 px-2 text-xs font-semibold text-primary hover:text-primary hover:bg-primary/10 rounded-md transition-colors"
+              className="h-7 px-2 text-xs font-semibold text-primary hover:text-primary hover:bg-primary/10 rounded-none transition-colors"
             >
               Clear All
             </Button>
@@ -143,10 +143,10 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
                 });
               }}
             >
-              <SelectTrigger className="h-10 w-full border border-[#E8E5DF] bg-white px-3.5 text-xs uppercase tracking-wider font-semibold focus:ring-1 focus:ring-[#121212] rounded-[6px]">
+              <SelectTrigger className="h-10 w-full border border-[#E8E5DF] bg-white px-3.5 text-xs uppercase tracking-wider font-semibold focus:ring-1 focus:ring-[#121212] rounded-none">
                 <SelectValue placeholder="All Metals" />
               </SelectTrigger>
-              <SelectContent align="start" className="rounded-[8px] border border-[#E8E5DF] bg-white shadow-lg">
+              <SelectContent align="start" className="rounded-none border border-[#E8E5DF] bg-white shadow-lg">
                 <SelectItem value="all" className="text-xs uppercase tracking-wider font-medium">All Metals</SelectItem>
                 <SelectItem value="gold" className="text-xs uppercase tracking-wider font-medium">Gold</SelectItem>
                 <SelectItem value="silver" className="text-xs uppercase tracking-wider font-medium">Silver</SelectItem>
@@ -173,7 +173,7 @@ export default function ProductsFilterSheet({ activeCategory = 'all', currentSor
                 <ToggleGroupItem
                   key={bucket.value}
                   value={bucket.value}
-                  className="h-9 rounded-sm px-3.5 text-sm font-medium aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                  className="h-9 rounded-none px-3.5 text-sm font-medium aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
                 >
                   {bucket.label}
                 </ToggleGroupItem>

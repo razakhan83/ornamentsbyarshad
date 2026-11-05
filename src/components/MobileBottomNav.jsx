@@ -87,7 +87,7 @@ function AccountMenuButton({ icon: Icon, label, onClick, destructive = false }) 
       variant="ghost"
       onClick={onClick}
       className={cn(
-        'h-auto w-full justify-start rounded-sm px-4 py-3 text-left',
+        'h-auto w-full justify-start rounded-none px-4 py-3 text-left',
         destructive
           ? 'text-destructive hover:bg-destructive/8 hover:text-destructive'
           : 'text-foreground hover:bg-muted/70'
@@ -129,7 +129,7 @@ export default function MobileBottomNav({
   const mobileDrawerContentClassName =
     'pointer-events-none z-[60] border-0 bg-transparent shadow-none md:hidden data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:max-h-none data-[vaul-drawer-direction=bottom]:rounded-none';
   const mobileDrawerPanelClassName =
-    'pointer-events-auto mx-auto w-full max-w-xl max-h-[calc(80vh-var(--mobile-bottom-nav-offset))] overflow-y-auto rounded-t-[1.35rem] border-t border-border/80 bg-popover text-sm text-popover-foreground shadow-[0_-18px_50px_rgba(15,23,42,0.12)]';
+    'pointer-events-auto mx-auto w-full max-w-xl max-h-[calc(80vh-var(--mobile-bottom-nav-offset))] overflow-y-auto rounded-none border-t border-border/80 bg-popover text-sm text-popover-foreground shadow-[0_-18px_50px_rgba(15,23,42,0.12)]';
   const mobileDrawerShellClassName =
     'pointer-events-none mx-auto flex w-full max-w-xl flex-col justify-end';
   const accountPanelOpen = session ? accountOpen : isAuthOpen;
@@ -301,7 +301,7 @@ export default function MobileBottomNav({
               <div className="flex flex-col gap-4 px-5 pb-4 pt-1">
                 {session ? (
                   <>
-                    <div className="flex items-center gap-3 rounded-[1.4rem] border border-border/70 bg-muted/45 px-4 py-3.5">
+                    <div className="flex items-center gap-3 rounded-none border border-border/70 bg-muted/45 px-4 py-3.5">
                       <Avatar className="size-11">
                         <AvatarImage src={session.user?.image} alt={session.user?.name || 'User'} />
                         <AvatarFallback>{(session.user?.name || 'U').charAt(0)}</AvatarFallback>
@@ -348,7 +348,7 @@ export default function MobileBottomNav({
                   </>
                 ) : (
                   <>
-                    <div className="rounded-sm border border-border/70 bg-muted/45 px-4 py-4">
+                    <div className="rounded-none border border-border/70 bg-muted/45 px-4 py-4">
                       <p className="text-sm leading-6 text-muted-foreground">
                         Save the pieces you love, track your deliveries, and keep your next checkout effortless.
                       </p>
@@ -360,7 +360,7 @@ export default function MobileBottomNav({
                         onAccountOpenChange(false);
                         onAuthOpenChange?.(true);
                       }}
-                      className="h-12 rounded-sm"
+                      className="h-12 rounded-none"
                     >
                       <UserPlus data-icon="inline-start" />
                       Sign Up
@@ -375,13 +375,13 @@ export default function MobileBottomNav({
       </Drawer>
 
       <AlertDialog open={logoutConfirmOpen} onOpenChange={setLogoutConfirmOpen}>
-        <AlertDialogContent className="max-w-[300px] p-5 rounded-sm gap-4" showCloseButton={false}>
+        <AlertDialogContent className="max-w-[300px] p-5 rounded-none gap-4" showCloseButton={false}>
           <div className="flex justify-between items-start">
             <AlertDialogTitle className="text-base font-semibold">Are you sure to logout?</AlertDialogTitle>
             <Button 
               variant="ghost" 
               size="icon" 
-              className="size-7 rounded-md -mt-1.5 -mr-1.5 text-muted-foreground hover:bg-muted"
+              className="size-7 rounded-none -mt-1.5 -mr-1.5 text-muted-foreground hover:bg-muted"
               onClick={() => setLogoutConfirmOpen(false)}
             >
               <X className="size-4" />
@@ -395,7 +395,7 @@ export default function MobileBottomNav({
                 setLogoutConfirmOpen(false);
                 signOut();
               }}
-              className="w-full rounded-sm font-semibold"
+              className="w-full rounded-none font-semibold"
             >
               Logout
             </Button>

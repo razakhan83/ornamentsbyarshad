@@ -14,8 +14,8 @@ function Textarea({
     <textarea
       data-slot="textarea"
       className={cn(
-        "min-h-28 w-full rounded-sm border px-3.5 py-3 text-sm leading-6 text-foreground shadow-none outline-none transition-[border-color,background-color,color] duration-200 ease-out resize-y",
-        "border-slate-300 dark:border-border/80 bg-card",
+        "min-h-28 w-full rounded-none border px-3.5 py-3 text-sm leading-6 text-foreground shadow-none outline-none transition-[border-color,background-color,color] duration-200 ease-out resize-y",
+        "border-[#E8E5DF] bg-card",
         "placeholder:text-muted-foreground/70",
         "hover:border-slate-400 dark:hover:border-border",
         "focus-visible:border-primary focus-visible:bg-card focus-visible:ring-3 focus-visible:ring-primary/15",

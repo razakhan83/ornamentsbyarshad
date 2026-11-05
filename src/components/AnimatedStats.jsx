@@ -74,12 +74,12 @@ function StatItem({ stat }) {
       ref={itemRef}
       className={cn(
         'flex flex-col items-center justify-center p-4 sm:p-7 md:p-8 text-center',
-        'bg-card border border-border/80 rounded-sm shadow-none',
+        'bg-card border border-border/80 rounded-none shadow-none',
         'transition-all duration-300'
       )}
     >
       <div className="mb-2.5 sm:mb-3 flex items-center justify-center text-primary">
-        <stat.icon strokeWidth={1.75} className="size-6 sm:size-7 md:size-8" />
+        <stat.icon strokeWidth={1.5} className="size-6 sm:size-7 md:size-8" />
       </div>
       <div className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-1 md:mb-1.5 tabular-nums">
         {displayValue}
@@ -97,12 +97,11 @@ export default function AnimatedStats() {
       <SectionDoodleBackground />
       <div className="relative z-10 container mx-auto max-w-7xl px-4">
         <div className="mb-10 sm:mb-14 md:mb-20 text-center">
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif font-bold tracking-tight text-foreground">
-            Why Choose <br className="block md:hidden" />
-            <span className="text-primary">Ornaments by Arshad?</span>
+          <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-medium tracking-wide text-[#121212] uppercase">
+            Why Choose Ornaments by Arshad
           </h2>
           <p className="mt-4 sm:mt-6 text-muted-foreground text-xs sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed text-balance">
-            Your destination for <span className="font-semibold text-primary">certified fine jewelry</span> and <span className="font-semibold text-primary">heirloom craftsmanship</span>. We ensure pure gold hallmarking, certified natural gemstones, and bespoke elegance.
+            Your destination for certified fine jewelry and heirloom craftsmanship. We ensure pure gold hallmarking, certified natural gemstones, and bespoke elegance.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-4 md:gap-8">

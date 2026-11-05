@@ -282,7 +282,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
 
   if (normalizedImages.length === 0) {
     return (
-      <div className="relative flex aspect-[4/5] w-full items-center justify-center overflow-hidden bg-[#FAF9F6] border border-[#E8E5DF] text-neutral-400 rounded-sm">
+      <div className="relative flex aspect-[4/5] w-full items-center justify-center overflow-hidden bg-[#FAF9F6] border border-[#E8E5DF] text-neutral-400 rounded-none">
         <ImageIcon className="size-16 stroke-[1]" />
       </div>
     );
@@ -306,7 +306,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
           <img src={zoomImageUrl} alt="" loading="eager" fetchpriority="low" />
         </div>
       )}
-      {/* Main Large Image Container with Smooth Rounded Borders */}
+      {/* Main Large Image Container */}
       <div
         ref={containerRef}
         onMouseMove={handleMouseMove}
@@ -315,7 +315,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         className={cn(
-          "relative aspect-[4/5] w-full overflow-hidden rounded-sm border border-[#E8E5DF] shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-colors duration-300 group/gallery",
+          "relative aspect-[4/5] w-full overflow-hidden rounded-none border border-[#E8E5DF] shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-colors duration-300 group/gallery",
           isMagnifierActive ? "cursor-crosshair touch-none" : "cursor-zoom-in"
         )}
         style={{ backgroundColor: getProductCategoryBgColor(product) }}
@@ -333,7 +333,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
         {/* Product Tag Badge */}
         {mainTag && (
           <div 
-            className="absolute left-3 top-3 sm:left-4 sm:top-4 z-25 pointer-events-auto flex items-center gap-1.5 px-3 py-1 text-[9.5px] sm:text-[10px] font-sans uppercase tracking-[0.2em] font-semibold text-white bg-[#121212]/95 backdrop-blur-sm rounded-md shadow-xs"
+            className="absolute left-3 top-3 sm:left-4 sm:top-4 z-25 pointer-events-auto flex items-center gap-1.5 px-3 py-1 text-[9.5px] sm:text-[10px] font-sans uppercase tracking-[0.2em] font-semibold text-white bg-[#121212]/95 backdrop-blur-sm rounded-none shadow-xs"
             title={mainTag.label}
           >
             {mainTag.label}
@@ -409,9 +409,9 @@ export default function ProductGallery({ images, primaryTag, product }) {
           setApi={setMainApi}
           opts={mainOptions}
           ssr={mainSsr}
-          className="h-full rounded-sm overflow-hidden"
+          className="h-full rounded-none overflow-hidden"
         >
-          <CarouselContent viewportClassName="h-full rounded-sm" className="ml-0 h-full">
+          <CarouselContent viewportClassName="h-full rounded-none" className="ml-0 h-full">
             {normalizedImages.map((image, index) => {
               const isFirstImage = index === 0;
               return (
@@ -419,7 +419,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
                   <div 
                     onPointerDown={handleImagePointerDown}
                     onPointerUp={handleImagePointerUp}
-                    className="relative h-full min-h-0 w-full overflow-hidden rounded-sm p-0 cursor-zoom-in"
+                    className="relative h-full min-h-0 w-full overflow-hidden rounded-none p-0 cursor-zoom-in"
                   >
                     <Image
                       src={optimizeCloudinaryUrl(image.url, CLOUDINARY_IMAGE_PRESETS.productGalleryMain)}
@@ -499,7 +499,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
         )}
       </div>
 
-      {/* Desktop Thumbnail Strip with Matching Rounded Corners */}
+      {/* Desktop Thumbnail Strip */}
       {hasMultipleImages ? (
         <div className="hidden md:grid grid-cols-5 gap-3 w-full">
           {normalizedImages.map((image, index) => (
@@ -509,7 +509,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
               onClick={() => handleThumbnailClick(index)}
               aria-label={`Show product image ${index + 1}`}
               aria-pressed={index === selectedIndex}
-              className={`relative aspect-[4/5] w-full cursor-pointer overflow-hidden rounded-sm border transition-all duration-300 ${
+              className={`relative aspect-[4/5] w-full cursor-pointer overflow-hidden rounded-none border transition-all duration-300 ${
                 index === selectedIndex
                   ? 'border-[#121212] opacity-100 ring-2 ring-[#121212]'
                   : 'border-[#E8E5DF] opacity-70 hover:opacity-100 hover:border-[#121212]/50'
@@ -521,7 +521,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
                 alt={`Thumbnail ${index + 1}`}
                 fill
                 sizes="120px"
-                className="object-cover rounded-sm"
+                className="object-cover rounded-none"
                 {...getBlurPlaceholderProps(image.blurDataURL)}
                 loading="lazy"
               />
@@ -652,7 +652,7 @@ export default function ProductGallery({ images, primaryTag, product }) {
                   onClick={() => handleLightboxNavigate(idx)}
                   aria-label={`View image ${idx + 1}`}
                   className={cn(
-                    "relative size-12 sm:size-14 rounded-sm overflow-hidden border transition-all cursor-pointer shrink-0",
+                    "relative size-12 sm:size-14 rounded-none overflow-hidden border transition-all cursor-pointer shrink-0",
                     idx === lightboxIndex 
                       ? "border-white ring-2 ring-white scale-105 opacity-100" 
                       : "border-white/20 opacity-50 hover:opacity-90"

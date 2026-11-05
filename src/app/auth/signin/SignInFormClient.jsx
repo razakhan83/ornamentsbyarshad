@@ -82,10 +82,10 @@ export default function SignInFormClient() {
       {/* ── Subtitle Kicker & Main Heading ── */}
       <div className="mb-6 text-left">
         <p className="text-xs sm:text-sm font-medium text-[#737373] tracking-wide">
-          {mode === 'signin' ? 'Please enter your details' : 'Create your customer profile'}
+          {mode === 'signin' ? 'Please enter your details' : 'Create your account'}
         </p>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#121212] mt-1">
-          {mode === 'signin' ? 'Welcome back' : 'Create an account'}
+        <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-normal tracking-wide text-[#121212] uppercase mt-1">
+          {mode === 'signin' ? 'Welcome Back' : 'Create Account'}
         </h1>
       </div>
 
@@ -104,7 +104,7 @@ export default function SignInFormClient() {
               value={formData.name}
               onChange={handleInputChange}
               placeholder="e.g. Ayesha Khan"
-              className="w-full h-11 px-3.5 rounded-sm border border-[#E0DCD5] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/20"
+              className="w-full h-11 px-3.5 rounded-none border border-[#E8E5DF] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-1 focus:ring-[#A67C52]"
             />
           </div>
         )}
@@ -122,7 +122,7 @@ export default function SignInFormClient() {
             value={formData.email}
             onChange={handleInputChange}
             placeholder="name@example.com"
-            className="w-full h-11 px-3.5 rounded-sm border border-[#E0DCD5] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/20"
+            className="w-full h-11 px-3.5 rounded-none border border-[#E8E5DF] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-1 focus:ring-[#A67C52]"
           />
         </div>
 
@@ -139,7 +139,7 @@ export default function SignInFormClient() {
             value={formData.password}
             onChange={handleInputChange}
             placeholder="••••••••"
-            className="w-full h-11 px-3.5 rounded-sm border border-[#E0DCD5] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/20"
+            className="w-full h-11 px-3.5 rounded-none border border-[#E8E5DF] bg-white text-sm text-[#121212] placeholder:text-[#9E9E9E] outline-none transition-colors focus:border-[#A67C52] focus:ring-1 focus:ring-[#A67C52]"
           />
         </div>
 
@@ -169,7 +169,7 @@ export default function SignInFormClient() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full h-11 mt-2 bg-[#121212] hover:bg-[#262626] text-white text-sm font-semibold rounded-sm flex items-center justify-center transition-all shadow-xs active:scale-[0.99] cursor-pointer disabled:opacity-70"
+          className="w-full h-11 mt-2 bg-[#A67C52] hover:bg-[#8F673F] text-white text-xs uppercase tracking-[0.18em] font-semibold rounded-none flex items-center justify-center transition-all shadow-none active:scale-[0.99] cursor-pointer disabled:opacity-70"
         >
           {isLoading ? (
             <span className="flex items-center gap-2">

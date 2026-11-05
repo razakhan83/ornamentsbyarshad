@@ -35,30 +35,24 @@ export default function FooterNewsletter({ inline = true }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-full max-w-sm">
-      <div className="relative flex items-center">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Your email address..."
-          required
-          disabled={isLoading}
-          className="h-10 w-full rounded-none border border-[#E8E5DF] bg-white px-3 text-xs text-[#121212] placeholder:text-[#888888] focus:border-[#121212] focus:outline-none transition-colors pr-10"
-        />
-        <button
-          type="submit"
-          disabled={isLoading}
-          aria-label="Subscribe to newsletter"
-          className="absolute right-0 h-10 w-10 flex items-center justify-center bg-[#121212] text-white hover:bg-[#A67C52] transition-colors cursor-pointer disabled:opacity-50"
-        >
-          {isLoading ? (
-            <span className="text-[10px]">...</span>
-          ) : (
-            <ArrowRight className="size-3.5" />
-          )}
-        </button>
-      </div>
+    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 w-full max-w-md">
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Your email address..."
+        required
+        disabled={isLoading}
+        className="h-11 w-full rounded-none border border-[#E8E5DF] bg-white px-3.5 text-xs text-[#121212] placeholder:text-[#888888] focus:border-[#A67C52] focus:outline-none transition-colors"
+      />
+      <button
+        type="submit"
+        disabled={isLoading}
+        aria-label="Subscribe to newsletter"
+        className="h-11 px-6 inline-flex items-center justify-center rounded-none bg-[#A67C52] hover:bg-[#8F673F] text-white font-semibold text-xs uppercase tracking-[0.18em] transition-colors cursor-pointer disabled:opacity-50 shrink-0"
+      >
+        {isLoading ? '...' : 'Subscribe'}
+      </button>
     </form>
   );
 }

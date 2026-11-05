@@ -23,13 +23,13 @@ export default function NotFound() {
       <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
         <Link
           href="/"
-          className="h-12 px-8 inline-flex items-center justify-center rounded-none bg-[#121212] text-white hover:bg-neutral-800 font-semibold text-xs uppercase tracking-[0.18em] transition-all"
+          className="h-11 px-8 inline-flex items-center justify-center rounded-none bg-[#A67C52] text-white hover:bg-[#8F673F] font-semibold text-xs uppercase tracking-[0.18em] transition-all"
         >
           Return to Home
         </Link>
         <Link
           href="/products"
-          className="h-12 px-8 inline-flex items-center justify-center rounded-none border border-[#121212] bg-white hover:bg-[#FAF9F6] text-[#121212] font-semibold text-xs uppercase tracking-[0.18em] transition-all"
+          className="h-11 px-8 inline-flex items-center justify-center rounded-none border border-[#121212] bg-white hover:bg-[#FAF9F6] text-[#121212] font-semibold text-xs uppercase tracking-[0.18em] transition-all"
         >
           Explore Creations
         </Link>

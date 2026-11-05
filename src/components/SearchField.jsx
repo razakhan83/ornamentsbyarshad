@@ -244,7 +244,7 @@ export default function SearchField({
                     key={`${product._id || product.id || "result"}-${index}`}
                     type="button"
                     onClick={() => product.onSelect?.(product)}
-                    className="flex w-full items-center gap-3 px-3 py-2 text-left hover:bg-neutral-50/80 transition-colors cursor-pointer group rounded"
+                    className="flex w-full items-center gap-3 px-3 py-2 text-left hover:bg-neutral-50/80 transition-colors cursor-pointer group rounded-none"
                   >
                     <div className="relative size-9 overflow-hidden bg-[#F4F2EE] shrink-0">
                       {primaryImageSrc ? (

@@ -118,7 +118,7 @@ export default function MobileSearchOverlay({ open, onOpenChange }) {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search products"
-                className="w-full h-11 pl-10 pr-9 bg-muted/40 border border-transparent focus:bg-background focus:border-primary/30 focus:ring-[3px] focus:ring-primary/10 rounded-full text-[15px] transition-all outline-none"
+                className="w-full h-11 pl-10 pr-9 bg-white border border-[#E8E5DF] focus:bg-background focus:border-[#121212] focus:ring-0 rounded-none text-xs font-sans tracking-wide transition-all outline-none"
               />
               {searchTerm && (
                 <button type="button" onClick={() => setSearchTerm('')} className="absolute right-3 p-1 text-muted-foreground hover:text-foreground">
@@ -147,7 +147,7 @@ export default function MobileSearchOverlay({ open, onOpenChange }) {
                           onOpenChange(false);
                           router.push(`/products?category=${encodeURIComponent(category.slug || category.id)}`);
                         }}
-                        className="px-3.5 py-2 bg-muted/40 hover:bg-muted border border-border/40 rounded-full text-sm font-medium transition-colors active:scale-95"
+                        className="px-3.5 py-2 bg-white hover:bg-neutral-50 border border-[#E8E5DF] rounded-none text-xs uppercase tracking-wider font-medium transition-colors active:scale-95"
                       >
                         {category.label || category.name}
                       </button>
@@ -168,7 +168,7 @@ export default function MobileSearchOverlay({ open, onOpenChange }) {
                           onOpenChange(false);
                           router.push(`/products/${product.slug || product._id || product.id}`);
                         }}
-                        className="flex items-center p-3 bg-muted/30 rounded-sm border border-border/40 text-left active:scale-[0.98] transition-transform"
+                        className="flex items-center p-3 bg-white rounded-none border border-[#E8E5DF] text-left active:scale-[0.98] transition-transform"
                       >
                         <span className="text-sm font-medium line-clamp-1">{product.Name || product.name}</span>
                       </button>
@@ -201,7 +201,7 @@ export default function MobileSearchOverlay({ open, onOpenChange }) {
                   <div className="mt-4 pb-6 px-1">
                     <button 
                       onClick={handleSearchSubmit}
-                      className="w-full py-3.5 bg-muted/50 hover:bg-muted text-foreground font-semibold rounded-sm transition-colors border border-border/50"
+                      className="w-full py-3.5 bg-white hover:bg-neutral-50 text-foreground font-semibold rounded-none transition-colors border border-[#E8E5DF]"
                     >
                       See more results for &quot;{debouncedSearch}&quot;
                     </button>

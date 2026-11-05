@@ -90,7 +90,7 @@ export default function ProductsToolbar({
                   type="button"
                   onClick={() => handleChange('price', pill.value)}
                   className={cn(
-                    'h-8 px-3 rounded-[6px] text-xs uppercase tracking-wider font-semibold transition-all duration-200 cursor-pointer border select-none active:scale-[0.96]',
+                    'h-8 px-3 rounded-none text-xs uppercase tracking-wider font-semibold transition-all duration-200 cursor-pointer border select-none active:scale-[0.96]',
                     isSelected
                       ? 'bg-[#121212] text-white border-[#121212] shadow-xs'
                       : 'bg-white hover:border-[#121212]/40 text-[#737373] hover:text-[#121212] border-[#E8E5DF]'
@@ -109,12 +109,12 @@ export default function ProductsToolbar({
           <div className="hidden sm:flex items-center gap-1">
             <span className="text-xs font-semibold text-[#737373] uppercase tracking-wider hidden lg:inline">Metal:</span>
             <Select value={currentMetal} onValueChange={(val) => handleChange('metal', val)}>
-              <SelectTrigger className="h-8.5 w-auto min-w-[95px] border border-[#E8E5DF] bg-white px-2.5 sm:px-3 text-xs uppercase tracking-wider font-semibold focus:ring-1 focus:ring-[#121212] hover:bg-[#FAF9F6] rounded-[6px] transition-colors">
+              <SelectTrigger className="h-8.5 w-auto min-w-[95px] border border-[#E8E5DF] bg-white px-2.5 sm:px-3 text-xs uppercase tracking-wider font-semibold focus:ring-1 focus:ring-[#121212] hover:bg-[#FAF9F6] rounded-none transition-colors">
                 <SelectValue placeholder="All Metals">
                   {currentMetal === 'gold' ? 'Gold' : currentMetal === 'silver' ? 'Silver' : 'All Metals'}
                 </SelectValue>
               </SelectTrigger>
-              <SelectContent align="end" className="rounded-[8px] border border-[#E8E5DF] bg-white shadow-lg">
+              <SelectContent align="end" className="rounded-none border border-[#E8E5DF] bg-white shadow-lg">
                 {metalOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value} className="text-xs uppercase tracking-wider font-medium">
                     {option.label}
@@ -128,10 +128,10 @@ export default function ProductsToolbar({
           <div className="flex items-center gap-1">
             <span className="text-xs font-semibold text-[#737373] uppercase tracking-wider hidden lg:inline">Sort:</span>
             <Select value={currentSort} onValueChange={(val) => handleChange('sort', val)}>
-              <SelectTrigger className="h-8.5 w-auto max-w-[130px] sm:max-w-none border border-[#E8E5DF] bg-white px-2.5 sm:px-3 text-xs uppercase tracking-wider font-semibold focus:ring-1 focus:ring-[#121212] hover:bg-[#FAF9F6] rounded-[6px] transition-colors">
+              <SelectTrigger className="h-8.5 w-auto max-w-[130px] sm:max-w-none border border-[#E8E5DF] bg-white px-2.5 sm:px-3 text-xs uppercase tracking-wider font-semibold focus:ring-1 focus:ring-[#121212] hover:bg-[#FAF9F6] rounded-none transition-colors">
                 <SelectValue placeholder="Newest First" />
               </SelectTrigger>
-              <SelectContent align="end" className="rounded-[8px] border border-[#E8E5DF] bg-white shadow-lg">
+              <SelectContent align="end" className="rounded-none border border-[#E8E5DF] bg-white shadow-lg">
                 {sortOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value} className="text-xs uppercase tracking-wider font-medium">
                     {option.label}
@@ -146,7 +146,7 @@ export default function ProductsToolbar({
             <button
               onClick={() => handleChange('layout', '1col')}
               className={cn(
-                "flex h-8.5 w-8.5 items-center justify-center rounded-[6px] transition-all cursor-pointer active:scale-[0.96] border",
+                "flex h-8.5 w-8.5 items-center justify-center rounded-none transition-all cursor-pointer active:scale-[0.96] border",
                 layout === '1col'
                   ? 'bg-[#121212] text-white border-[#121212] shadow-xs'
                   : 'bg-white text-[#737373] border-[#E8E5DF] hover:text-[#121212] hover:border-[#121212]/40'
@@ -160,7 +160,7 @@ export default function ProductsToolbar({
             <button
               onClick={() => handleChange('layout', '2col')}
               className={cn(
-                "flex h-8.5 w-8.5 items-center justify-center rounded-[6px] transition-all cursor-pointer active:scale-[0.96] border",
+                "flex h-8.5 w-8.5 items-center justify-center rounded-none transition-all cursor-pointer active:scale-[0.96] border",
                 layout === '2col' || !layout || layout === 'grid4'
                   ? 'bg-[#121212] text-white border-[#121212] shadow-xs'
                   : 'bg-white text-[#737373] border-[#E8E5DF] hover:text-[#121212] hover:border-[#121212]/40'

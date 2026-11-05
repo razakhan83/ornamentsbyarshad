@@ -47,14 +47,14 @@ export default function ProductModal({ product, onClose, whatsappNumber = '', st
             >
                 {/* Modal */}
                 <div
-                    className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-sm bg-card border border-border/80 shadow-2xl animate-fadeInUp"
+                    className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-none bg-card border border-border/80 shadow-2xl animate-fadeInUp"
                     style={{ willChange: 'transform, opacity' }}
                     onClick={(e) => e.stopPropagation()}
                 >
                     <button
                         onClick={onClose}
                         aria-label="Close dialog"
-                        className="absolute right-4 top-4 z-10 flex size-9 items-center justify-center rounded-sm bg-muted/80 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
+                        className="absolute right-4 top-4 z-10 flex size-9 items-center justify-center rounded-none bg-muted/80 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
                     >
                         <X className="size-4.5" />
                     </button>
@@ -84,12 +84,12 @@ export default function ProductModal({ product, onClose, whatsappNumber = '', st
                             <div className="flex flex-wrap gap-1.5 mb-2.5">
                                 {categories.length > 0 ? (
                                     categories.map((cat, i) => (
-                                        <Badge key={i} variant="secondary" className="rounded-md">
+                                        <Badge key={i} variant="secondary" className="rounded-none">
                                             {cat}
                                         </Badge>
                                     ))
                                 ) : (
-                                    <Badge variant="secondary" className="rounded-md">Premium Item</Badge>
+                                    <Badge variant="secondary" className="rounded-none">Premium Item</Badge>
                                 )}
                             </div>
 
@@ -111,7 +111,7 @@ export default function ProductModal({ product, onClose, whatsappNumber = '', st
                                             onClose();
                                         }
                                     }}
-                                    className="flex-1 h-11 rounded-[6px] font-semibold text-xs uppercase tracking-[0.18em] shadow-none active:scale-[0.98] transition-all duration-300 bg-[#A67C52] border border-[#A67C52] text-white hover:bg-[#121212] hover:border-[#121212] hover:text-white cursor-pointer"
+                                    className="flex-1 h-11 rounded-none font-semibold text-xs uppercase tracking-[0.18em] shadow-none active:scale-[0.98] transition-all duration-300 bg-[#A67C52] border border-[#A67C52] text-white hover:bg-[#8F673F] hover:border-[#8F673F] cursor-pointer"
                                 >
                                     <ShoppingCart className="size-4 mr-2" /> Add to Cart
                                 </Button>
@@ -124,7 +124,7 @@ export default function ProductModal({ product, onClose, whatsappNumber = '', st
                                 >
                                     <button
                                         type="button"
-                                        className="w-full h-11 inline-flex items-center justify-center gap-2 rounded-[6px] border border-[#E8E5DF] bg-transparent text-[#121212] font-semibold text-xs uppercase tracking-[0.18em] transition-all duration-300 active:scale-[0.98] cursor-pointer shadow-none md:bg-transparent md:hover:bg-[#25D366] md:hover:border-[#25D366] md:hover:text-white group"
+                                        className="w-full h-11 inline-flex items-center justify-center gap-2 rounded-none border border-[#E8E5DF] bg-white text-[#121212] font-semibold text-xs uppercase tracking-[0.18em] transition-all duration-300 active:scale-[0.98] cursor-pointer shadow-none hover:bg-[#25D366] hover:border-[#25D366] hover:text-white group"
                                     >
                                         <WhatsAppIcon className="size-4 text-[#A67C52] group-hover:text-white transition-colors shrink-0" />
                                         <span>Order on WhatsApp</span>

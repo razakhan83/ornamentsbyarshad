@@ -30,7 +30,7 @@ function Skeleton({ className, animate, variant, ...props }) {
     <div
       aria-hidden="true"
       className={cn(
-        "relative overflow-hidden rounded-md bg-muted",
+        "relative overflow-hidden rounded-none bg-muted",
         resolvedVariant === "pulse" && isAnimated && "animate-pulse",
         className
       )}

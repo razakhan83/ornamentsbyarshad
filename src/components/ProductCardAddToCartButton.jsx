@@ -17,7 +17,7 @@ function AddToCartSkeleton({ mode }) {
       <Skeleton className="size-9 sm:size-10 shrink-0 rounded-full" aria-hidden="true" />
     );
   }
-  return <Skeleton className="w-full h-8 sm:h-9 rounded-md" aria-hidden="true" />;
+  return <Skeleton className="w-full h-8 sm:h-9 rounded-none" aria-hidden="true" />;
 }
 
 export default function ProductCardAddToCartButton(props) {

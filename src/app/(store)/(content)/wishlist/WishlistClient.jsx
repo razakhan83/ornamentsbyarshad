@@ -50,7 +50,7 @@ export default function WishlistClient() {
             <Button
               render={<Link href="/products" />}
               nativeButton={false}
-              className="rounded-none bg-[#121212] hover:bg-neutral-800 text-white text-xs uppercase tracking-[0.2em] font-medium h-11 px-8"
+              className="rounded-none bg-[#A67C52] hover:bg-[#8F673F] text-white text-xs uppercase tracking-[0.18em] font-semibold h-11 px-8"
             >
               Explore Collection
             </Button>

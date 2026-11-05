@@ -125,7 +125,7 @@ export default function CategoryIconCarousel({ categories = [] }) {
           {/* Section Header */}
           <div className="mb-3 md:mb-6 flex items-center justify-between gap-4 md:items-end">
             <div className="min-w-0 flex-1">
-              <h2 className="text-[1.25rem] leading-tight font-bold tracking-[-0.03em] text-primary [text-wrap:balance] sm:text-[1.5rem] md:text-[2.1rem]">
+              <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-medium tracking-wide text-[#121212] uppercase">
                 Collections
               </h2>
             </div>
@@ -135,7 +135,7 @@ export default function CategoryIconCarousel({ categories = [] }) {
               <Link
                 href="/categories"
                 prefetch={false}
-                className="inline-flex h-8 md:h-10 shrink-0 items-center justify-center gap-1 md:gap-1.5 whitespace-nowrap rounded-sm border border-primary/20 bg-background px-3 md:px-4 text-[13px] md:text-sm font-semibold text-primary outline-none select-none shadow-xs transition-[transform,background-color,color,border-color] duration-200 focus-visible:border-ring focus-visible:ring-2 hover:border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.97]"
+                className="inline-flex h-9 md:h-10 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-none border border-[#E8E5DF] bg-white px-3 md:px-4 text-xs md:text-[13px] font-semibold text-[#121212] uppercase tracking-[0.14em] outline-none select-none transition-colors duration-200 hover:border-[#A67C52] hover:bg-[#FAF9F6]"
               >
                 <span>View All</span>
                 <ArrowRight className="ml-1 size-3.5 md:size-4" />

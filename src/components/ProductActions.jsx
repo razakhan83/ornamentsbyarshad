@@ -43,7 +43,7 @@ export function ProductSocialActions({ product, className = '' }) {
             <Button
                 onClick={handleShare}
                 variant="outline"
-                className="size-11 rounded-sm border border-[#E8E5DF] bg-white text-[#121212] hover:bg-[#FAF9F6] transition-colors duration-200"
+                className="size-11 rounded-none border border-[#E8E5DF] bg-white text-[#121212] hover:bg-[#FAF9F6] transition-colors duration-200"
                 title="Share this creation"
             >
                 <Share2 className="size-4" />
@@ -51,7 +51,7 @@ export function ProductSocialActions({ product, className = '' }) {
             <ProductWishlistButton
                 product={product}
                 mode="detail"
-                className="hidden md:inline-flex size-11 shrink-0 rounded-sm border border-[#E8E5DF] bg-white text-[#121212] hover:bg-[#FAF9F6] [&>span]:hidden transition-colors duration-200"
+                className="hidden md:inline-flex size-11 shrink-0 rounded-none border border-[#E8E5DF] bg-white text-[#121212] hover:bg-[#FAF9F6] [&>span]:hidden transition-colors duration-200"
                 title="Save to Wishlist"
             />
         </div>
@@ -80,7 +80,7 @@ export function ProductWhatsAppOrderButton({ product, whatsappNumber = '', store
             type="button"
             onClick={handleWhatsApp}
             className={cn(
-                "w-full h-12 flex items-center justify-center gap-2.5 rounded-sm border border-[#E8E5DF] bg-transparent text-[#121212] uppercase tracking-[0.15em] text-xs font-semibold transition-all duration-300 cursor-pointer shadow-none md:bg-transparent md:hover:bg-[#25D366] md:hover:border-[#25D366] md:hover:text-white group",
+                "w-full h-12 flex items-center justify-center gap-2.5 rounded-none border border-[#E8E5DF] bg-transparent text-[#121212] uppercase tracking-[0.15em] text-xs font-semibold transition-all duration-300 cursor-pointer shadow-none md:bg-transparent md:hover:bg-[#25D366] md:hover:border-[#25D366] md:hover:text-white group",
                 className
             )}
         >
@@ -332,7 +332,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                                     type="button"
                                     onClick={() => setSelectedColor(colorName)}
                                     className={cn(
-                                        "relative px-3 py-1 text-xs font-medium tracking-wide transition-all duration-200 cursor-pointer rounded-sm border",
+                                        "relative px-3 py-1 text-xs font-medium tracking-wide transition-all duration-200 cursor-pointer rounded-none border",
                                         isSelected
                                             ? "border-[#121212] bg-[#121212] text-white shadow-xs"
                                             : "border-[#E8E5DF] bg-white text-[#121212] hover:border-[#121212]/50"
@@ -370,7 +370,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                                     type="button"
                                     onClick={() => setSelectedSize(sz)}
                                     className={cn(
-                                        "relative px-3 py-1 text-xs font-medium tracking-wide transition-all duration-200 cursor-pointer rounded-sm border",
+                                        "relative px-3 py-1 text-xs font-medium tracking-wide transition-all duration-200 cursor-pointer rounded-none border",
                                         isSelected
                                             ? "border-[#121212] bg-[#121212] text-white shadow-xs"
                                             : "border-[#E8E5DF] bg-white text-[#121212] hover:border-[#121212]/50"
@@ -396,7 +396,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                         <span className="text-lg font-light leading-none">{specsOpen ? "−" : "+"}</span>
                     </button>
                     {specsOpen && (
-                        <div className="mt-2.5 overflow-hidden rounded-sm border border-[#E8E5DF] bg-[#FAF9F6]">
+                        <div className="mt-2.5 overflow-hidden rounded-none border border-[#E8E5DF] bg-[#FAF9F6]">
                             <dl className="divide-y divide-[#E8E5DF] text-xs">
                                 {product.metalType && (
                                     <div className="grid grid-cols-3 p-2.5">
@@ -480,7 +480,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                 {/* Quantity Row */}
                 <div className="flex items-center justify-between">
                     <span className="text-xs font-medium text-[#121212]">Quantity</span>
-                    <div className="inline-flex items-center border border-[#E8E5DF] bg-white rounded-sm h-9 overflow-hidden">
+                    <div className="inline-flex items-center border border-[#E8E5DF] bg-white rounded-none h-9 overflow-hidden">
                         <button
                             type="button"
                             onClick={decrement}
@@ -508,21 +508,21 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                     {isOutOfStock ? (
                         <Button
                             onClick={() => setNotifyModalOpen(true)}
-                            className="h-11 w-full rounded-sm bg-[#121212] text-white hover:bg-neutral-800 uppercase tracking-[0.2em] text-xs font-semibold shadow-xs cursor-pointer"
+                            className="h-11 w-full rounded-none bg-[#A67C52] text-white hover:bg-[#8F673F] uppercase tracking-[0.2em] text-xs font-semibold shadow-none cursor-pointer"
                         >
                             Notify When Available
                         </Button>
                     ) : (
                         <>
-                            {/* Primary Add to Cart Button (Theme Gold with Black on hover) */}
+                            {/* Primary Add to Cart Button (Theme Gold with Darker Gold on hover) */}
                             <button
                                 type="button"
                                 onClick={handleAddToCart}
                                 disabled={addLock.isPending || isOutOfStock}
                                 className={cn(
-                                    "add-to-cart-button h-11.5 w-full inline-flex items-center justify-center rounded-sm font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-none cursor-pointer active:scale-[0.98] disabled:opacity-50",
+                                    "add-to-cart-button h-11.5 w-full inline-flex items-center justify-center rounded-none font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-none cursor-pointer active:scale-[0.98] disabled:opacity-50",
                                     "bg-[#A67C52] border border-[#A67C52] text-white",
-                                    "hover:bg-[#121212] hover:border-[#121212] hover:text-white"
+                                    "hover:bg-[#8F673F] hover:border-[#8F673F] hover:text-white"
                                 )}
                             >
                                 {addLock.isPending ? (
@@ -531,15 +531,15 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                                 {didJustAdd ? "Added to Cart" : "Add to Cart"}
                             </button>
 
-                            {/* Secondary Buy It Now Button (Mobile: Transparent Black Text, PC: Transparent -> Light Warm Hover) */}
+                            {/* Secondary Buy It Now Button */}
                             <button
                                 type="button"
                                 onClick={handleBuyNow}
                                 disabled={buyLock.isPending || isOutOfStock}
                                 className={cn(
-                                    "buy-now-button h-11.5 w-full inline-flex items-center justify-center rounded-sm font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-none cursor-pointer active:scale-[0.98] disabled:opacity-50",
-                                    "bg-transparent border border-[#E8E5DF] text-[#121212]",
-                                    "md:bg-transparent md:border-[#E8E5DF] md:text-[#121212] md:hover:bg-[#A67C52]/10 md:hover:border-[#A67C52] md:hover:text-[#121212]"
+                                    "buy-now-button h-11.5 w-full inline-flex items-center justify-center rounded-none font-semibold text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-none cursor-pointer active:scale-[0.98] disabled:opacity-50",
+                                    "bg-white border border-[#E8E5DF] text-[#121212]",
+                                    "hover:border-[#A67C52] hover:bg-[#FAF9F6] hover:text-[#121212]"
                                 )}
                             >
                                 {buyLock.isPending ? (
@@ -550,7 +550,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                         </>
                     )}
 
-                    {/* Order on WhatsApp Button (Mobile: Transparent Black Text, PC: Transparent -> Green Hover) */}
+                    {/* Order on WhatsApp Button */}
                     <button
                         type="button"
                         onClick={() => {
@@ -568,9 +568,9 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                             if (whatsappUrl) window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
                         }}
                         className={cn(
-                            "w-full h-11.5 inline-flex items-center justify-center gap-2.5 rounded-sm text-xs uppercase tracking-[0.18em] font-semibold transition-all duration-300 shadow-none active:scale-[0.98] cursor-pointer group",
-                            "bg-transparent border border-[#E8E5DF] text-[#121212]",
-                            "md:bg-transparent md:border-[#E8E5DF] md:text-[#121212] md:hover:bg-[#25D366] md:hover:border-[#25D366] md:hover:text-white"
+                            "w-full h-11.5 inline-flex items-center justify-center gap-2.5 rounded-none text-xs uppercase tracking-[0.18em] font-semibold transition-all duration-300 shadow-none active:scale-[0.98] cursor-pointer group",
+                            "bg-white border border-[#E8E5DF] text-[#121212]",
+                            "hover:border-[#25D366] hover:bg-[#25D366] hover:text-white"
                         )}
                     >
                         <WhatsAppIcon className="size-4 text-[#A67C52] group-hover:text-white transition-colors shrink-0" />
@@ -581,7 +581,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
 
             {/* Minimal Luxury Guarantees & Authenticity Strip */}
             <div className="order-8 md:order-6 border-t border-[#E8E5DF] pt-2.5 mt-0.5">
-                <div className="grid grid-cols-3 gap-1 py-2 px-2 bg-[#FAF9F6] border border-[#E8E5DF] rounded-sm">
+                <div className="grid grid-cols-3 gap-1 py-2 px-2 bg-[#FAF9F6] border border-[#E8E5DF] rounded-none">
                     <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1 sm:gap-2 py-0.5">
                         <Award className="size-3.5 text-[#A67C52] shrink-0" />
                         <div className="min-w-0">
@@ -609,7 +609,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
 
         {/* Size Guide Modal (Minimal, Clean, High Contrast for Mobile & Desktop) */}
         <Dialog open={sizeGuideOpen} onOpenChange={setSizeGuideOpen}>
-            <DialogContent className="w-[calc(100vw-1.5rem)] sm:w-full sm:max-w-xl md:max-w-2xl max-h-[88vh] overflow-y-auto overflow-x-hidden rounded-sm border border-[#E8E5DF] bg-[#FAF9F6] p-4 sm:p-7 shadow-2xl">
+            <DialogContent className="w-[calc(100vw-1.5rem)] sm:w-full sm:max-w-xl md:max-w-2xl max-h-[88vh] overflow-y-auto overflow-x-hidden rounded-none border border-[#E8E5DF] bg-[#FAF9F6] p-4 sm:p-7 shadow-2xl">
                 <DialogHeader className="space-y-1 text-left border-b border-[#E8E5DF] pb-3 sm:pb-4 pr-8">
                     <DialogTitle className="font-serif text-lg sm:text-2xl font-normal text-[#121212] tracking-normal sm:tracking-wide">
                         Jewelry & Ring Size Guide
@@ -621,7 +621,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
 
                 <div className="space-y-3.5 pt-2">
                     {/* Free Size Highlight Card */}
-                    <div className="flex items-start gap-3 rounded-sm border border-[#A67C52]/30 bg-[#A67C52]/10 p-3 sm:p-4 text-xs sm:text-sm">
+                    <div className="flex items-start gap-3 rounded-none border border-[#A67C52]/30 bg-[#A67C52]/10 p-3 sm:p-4 text-xs sm:text-sm">
                         <Sparkles className="size-4 text-[#A67C52] shrink-0 mt-0.5" />
                         <div className="text-[#2B2723] leading-relaxed text-xs sm:text-[13px]">
                             <span className="font-semibold text-[#121212] mr-1">
@@ -632,7 +632,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                     </div>
 
                     {/* Responsive Sizes Table */}
-                    <div className="overflow-hidden rounded-sm border border-[#E8E5DF] bg-white w-full">
+                    <div className="overflow-hidden rounded-none border border-[#E8E5DF] bg-white w-full">
                         <table className="w-full table-fixed text-left text-xs sm:text-sm">
                             <colgroup>
                                 <col className="w-[32%] sm:w-[30%]" />
@@ -688,7 +688,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                     </div>
 
                     {/* How to Measure Section */}
-                    <div className="rounded-sm border border-[#E8E5DF] bg-white p-3.5 sm:p-4 text-xs text-[#4A4744] space-y-1.5">
+                    <div className="rounded-none border border-[#E8E5DF] bg-white p-3.5 sm:p-4 text-xs text-[#4A4744] space-y-1.5">
                         <p className="font-semibold text-[#121212] uppercase tracking-wider text-[11px]">How to measure at home:</p>
                         <p className="leading-relaxed text-[#2B2723]">
                             Wrap a thin paper strip around your finger base, mark the overlap point, and measure against a ruler in mm.
@@ -748,7 +748,7 @@ export default function ProductActions({ product, whatsappNumber = '', storeName
                         <Button 
                             type="submit" 
                             disabled={notifySubmitting}
-                            className="rounded-none bg-[#121212] text-white hover:bg-neutral-800 uppercase tracking-wider text-xs"
+                            className="rounded-none bg-[#A67C52] text-white hover:bg-[#8F673F] uppercase tracking-wider text-xs"
                         >
                             {notifySubmitting ? 'Recording Request...' : 'Notify Me'}
                         </Button>

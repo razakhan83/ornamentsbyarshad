@@ -34,7 +34,7 @@ function SingleOrderSkeleton() {
             <div className="h-9 w-64 bg-muted rounded mb-2"></div>
             <div className="h-4 w-96 max-w-full bg-muted rounded"></div>
           </div>
-          <div className="h-10 w-40 bg-muted rounded-md"></div>
+          <div className="h-10 w-40 bg-muted rounded-none"></div>
         </div>
 
         {/* Content */}

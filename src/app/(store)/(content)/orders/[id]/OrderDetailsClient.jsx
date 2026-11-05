@@ -126,9 +126,9 @@ export default function OrderDetailsClient({ order }) {
           
           {/* Delivered / Review Banner if delivered */}
           {isDelivered && (
-            <div className="rounded-sm border border-amber-200/80 bg-gradient-to-r from-amber-50/90 via-orange-50/50 to-amber-50/30 p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="rounded-none border border-amber-200/80 bg-gradient-to-r from-amber-50/90 via-orange-50/50 to-amber-50/30 p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3.5">
-                <div className="size-11 rounded-sm bg-amber-500/10 border border-amber-400/30 flex items-center justify-center shrink-0">
+                <div className="size-11 rounded-none bg-amber-500/10 border border-amber-400/30 flex items-center justify-center shrink-0">
                   <Star className="size-5 text-amber-600 fill-amber-500" />
                 </div>
                 <div>
@@ -144,14 +144,14 @@ export default function OrderDetailsClient({ order }) {
               </div>
               <div>
                 {isAllReviewed ? (
-                  <Button disabled variant="outline" className="bg-white/80 border-gray-200 text-gray-400 rounded-sm h-10 px-5 font-semibold text-xs cursor-not-allowed">
+                  <Button disabled variant="outline" className="bg-white/80 border-gray-200 text-gray-400 rounded-none h-10 px-5 font-semibold text-xs cursor-not-allowed">
                     <CheckCircle2 className="size-4 mr-1.5 text-emerald-600" />
                     Reviewed
                   </Button>
                 ) : (
                   <Button 
                     onClick={() => setShowReviewModal(true)}
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-sm h-10 px-5 font-semibold text-xs shadow-sm transition-all active:scale-[0.98] w-full sm:w-auto"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-10 px-5 font-semibold text-xs shadow-sm transition-all active:scale-[0.98] w-full sm:w-auto"
                   >
                     <MessageSquare className="size-4 mr-1.5" />
                     Write a Review
@@ -210,7 +210,7 @@ export default function OrderDetailsClient({ order }) {
                     {currentOrder.items.map((item, idx) => (
                       <TableRow key={idx}>
                         <TableCell>
-                          <div className="relative size-12 rounded-md bg-muted overflow-hidden">
+                          <div className="relative size-12 rounded-none bg-muted overflow-hidden">
                             {item.image ? (
                                <Image src={item.image} alt={item.name} fill className="object-cover" unoptimized />
                             ) : (
@@ -237,7 +237,7 @@ export default function OrderDetailsClient({ order }) {
                 {currentOrder.items.map((item, idx) => (
                   <div key={idx} className="flex flex-col gap-3 py-4 px-4 min-w-0">
                     <div className="flex gap-4 min-w-0">
-                      <div className="relative size-16 rounded-md border bg-muted overflow-hidden shrink-0">
+                      <div className="relative size-16 rounded-none border bg-muted overflow-hidden shrink-0">
                         {item.image ? (
                            <Image src={item.image} alt={item.name} fill className="object-cover" unoptimized />
                         ) : (
@@ -288,7 +288,7 @@ export default function OrderDetailsClient({ order }) {
                       <Button
                         disabled
                         variant="outline"
-                        className="w-full text-xs h-10 rounded-sm bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed font-medium"
+                        className="w-full text-xs h-10 rounded-none bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed font-medium"
                       >
                         <Truck className="size-4 mr-2" />
                         Track Package (Preparing)
@@ -322,7 +322,7 @@ export default function OrderDetailsClient({ order }) {
                     ) : null}
                     <Button
                       onClick={() => setShowTrackingModal(true)}
-                      className="w-full bg-sky-600 hover:bg-sky-700 text-white font-medium rounded-sm h-10 shadow-sm cursor-pointer"
+                      className="w-full bg-sky-600 hover:bg-sky-700 text-white font-medium rounded-none h-10 shadow-sm cursor-pointer"
                     >
                       <Truck className="size-4 mr-2" />
                       Track Package

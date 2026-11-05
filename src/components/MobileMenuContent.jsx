@@ -78,16 +78,16 @@ export default function MobileMenuContent({
       <Tabs defaultValue="menu" className="flex flex-1 min-h-0 w-full flex-col overflow-hidden bg-[#FAF9F6]">
         {/* Header Tabs */}
         <div className="flex w-full shrink-0 items-center px-4 pt-3 pb-2.5 border-b border-[#E8E5DF]">
-          <TabsList className="grid h-9 w-full grid-cols-2 rounded-sm bg-[#EFECE6] p-1">
+          <TabsList className="grid h-9 w-full grid-cols-2 rounded-none bg-[#EFECE6] p-1">
             <TabsTrigger 
               value="menu" 
-              className="text-[11px] font-sans uppercase tracking-[0.16em] font-semibold rounded-md transition-all data-[state=active]:bg-white data-[state=active]:text-[#121212] data-[state=active]:shadow-xs text-[#737373]"
+              className="text-[11px] font-sans uppercase tracking-[0.16em] font-semibold rounded-none transition-all data-[state=active]:bg-white data-[state=active]:text-[#121212] data-[state=active]:shadow-xs text-[#737373]"
             >
               Menu
             </TabsTrigger>
             <TabsTrigger 
               value="categories" 
-              className="text-[11px] font-sans uppercase tracking-[0.16em] font-semibold rounded-md transition-all data-[state=active]:bg-white data-[state=active]:text-[#121212] data-[state=active]:shadow-xs text-[#737373]"
+              className="text-[11px] font-sans uppercase tracking-[0.16em] font-semibold rounded-none transition-all data-[state=active]:bg-white data-[state=active]:text-[#121212] data-[state=active]:shadow-xs text-[#737373]"
             >
               Collections
             </TabsTrigger>
@@ -113,7 +113,7 @@ export default function MobileMenuContent({
                   href={item.href}
                   onClick={() => setIsSidebarOpen(false)}
                   className={cn(
-                    "flex items-center px-4 py-3 rounded-sm text-xs font-sans tracking-[0.14em] uppercase transition-all duration-200 whitespace-nowrap",
+                    "flex items-center px-4 py-3 rounded-none text-xs font-sans tracking-[0.14em] uppercase transition-all duration-200 whitespace-nowrap",
                     isActive
                       ? "bg-[#121212] text-white font-semibold shadow-xs"
                       : "text-[#121212]/90 hover:bg-[#EFECE6] hover:text-[#121212] font-medium"
@@ -142,7 +142,7 @@ export default function MobileMenuContent({
                   type="button"
                   onClick={() => handleCategoryClick(category.slug || category.id || category._id)}
                   className={cn(
-                    "w-full flex items-center px-4 py-3 rounded-sm text-xs font-sans tracking-[0.14em] uppercase transition-all duration-200 text-left cursor-pointer whitespace-nowrap",
+                    "w-full flex items-center px-4 py-3 rounded-none text-xs font-sans tracking-[0.14em] uppercase transition-all duration-200 text-left cursor-pointer whitespace-nowrap",
                     isActive
                       ? "bg-[#121212] text-white font-semibold shadow-xs"
                       : "text-[#121212]/90 hover:bg-[#EFECE6] hover:text-[#121212] font-medium"
@@ -166,7 +166,7 @@ export default function MobileMenuContent({
               setIsSidebarOpen(false);
               signIn('google');
             }}
-            className="w-full flex items-center justify-center gap-2.5 bg-white hover:bg-neutral-50 active:scale-[0.98] text-[#121212] border border-[#E8E5DF] rounded-sm h-10 px-4 text-xs font-medium font-sans shadow-xs transition-all duration-200 cursor-pointer"
+            className="w-full flex items-center justify-center gap-2.5 bg-white hover:bg-neutral-50 active:scale-[0.98] text-[#121212] border border-[#E8E5DF] rounded-none h-10 px-4 text-xs font-medium font-sans shadow-xs transition-all duration-200 cursor-pointer"
           >
             <svg className="size-4 shrink-0" viewBox="0 0 24 24">
               <path
@@ -189,7 +189,7 @@ export default function MobileMenuContent({
             <span>Continue with Google</span>
           </button>
         ) : (
-          <div className="flex items-center justify-between gap-2.5 bg-white p-2.5 rounded-sm border border-[#E8E5DF]">
+          <div className="flex items-center justify-between gap-2.5 bg-white p-2.5 rounded-none border border-[#E8E5DF]">
             <div className="flex-1 min-w-0 flex items-center gap-2.5">
               <div className="size-7.5 rounded-full bg-[#121212] text-white font-semibold text-xs flex items-center justify-center shrink-0">
                 {(session.user?.name || session.user?.email || 'U')[0]?.toUpperCase()}
@@ -205,7 +205,7 @@ export default function MobileMenuContent({
               variant="ghost"
               size="sm"
               onClick={() => setLogoutConfirmOpen(true)}
-              className="h-7.5 px-2 rounded-md text-red-600 hover:text-red-700 hover:bg-red-50 text-[11px] font-medium transition-all active:scale-95 shadow-none shrink-0 gap-1 cursor-pointer"
+              className="h-7.5 px-2 rounded-none text-red-600 hover:text-red-700 hover:bg-red-50 text-[11px] font-medium transition-all active:scale-95 shadow-none shrink-0 gap-1 cursor-pointer"
               title="Sign Out"
             >
               <LogOut className="size-3.5 text-red-500" />
@@ -271,7 +271,7 @@ export default function MobileMenuContent({
       </div>
 
       <AlertDialog open={logoutConfirmOpen} onOpenChange={setLogoutConfirmOpen}>
-        <AlertDialogContent className="max-w-[320px] p-5 rounded-sm gap-4" showCloseButton={false}>
+        <AlertDialogContent className="max-w-[320px] p-5 rounded-none gap-4" showCloseButton={false}>
           <div className="flex justify-between items-start">
             <AlertDialogHeader className="text-left space-y-1">
               <AlertDialogTitle className="text-base font-semibold text-foreground">Log out of your account?</AlertDialogTitle>
@@ -282,7 +282,7 @@ export default function MobileMenuContent({
             <Button
               variant="ghost"
               size="icon"
-              className="size-7 rounded-md -mt-1 -mr-1 text-muted-foreground hover:bg-muted"
+              className="size-7 rounded-none -mt-1 -mr-1 text-muted-foreground hover:bg-muted"
               onClick={() => setLogoutConfirmOpen(false)}
             >
               <X className="size-4" />
@@ -293,7 +293,7 @@ export default function MobileMenuContent({
               type="button"
               variant="outline"
               onClick={() => setLogoutConfirmOpen(false)}
-              className="flex-1 rounded-sm text-xs h-9 font-medium"
+              className="flex-1 rounded-none text-xs h-9 font-medium"
             >
               Cancel
             </Button>
@@ -305,7 +305,7 @@ export default function MobileMenuContent({
                 setIsSidebarOpen(false);
                 signOut();
               }}
-              className="flex-1 rounded-sm text-xs h-9 font-semibold bg-red-600 hover:bg-red-700 text-white"
+              className="flex-1 rounded-none text-xs h-9 font-semibold bg-red-600 hover:bg-red-700 text-white"
             >
               Log Out
             </Button>

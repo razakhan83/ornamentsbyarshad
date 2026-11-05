@@ -106,7 +106,7 @@ function FloatingLabelInput({ label, id, value, className, wrapperClassName, isV
         value={value}
         {...props}
         className={cn(
-          'h-12 text-[15px] md:text-sm rounded-sm transition-all duration-150',
+          'h-12 text-[15px] md:text-sm rounded-none border border-[#E8E5DF] transition-all duration-150',
           className,
           hasValue ? 'pt-5 pb-1' : '',
           isValid ? 'border-emerald-500/80 pr-10 focus-visible:border-emerald-600 focus-visible:ring-emerald-500/15' : ''
@@ -142,7 +142,7 @@ function FloatingLabelTextarea({ label, id, value, className, wrapperClassName, 
         rows={rows}
         {...props}
         className={cn(
-          'min-h-[4.5rem] text-[15px] md:text-sm resize-none rounded-sm shadow-none transition-all duration-150',
+          'min-h-[4.5rem] text-[15px] md:text-sm resize-none rounded-none border border-[#E8E5DF] shadow-none transition-all duration-150',
           className,
           hasValue ? 'pt-5 pb-1.5' : 'pt-3.5',
           isValid ? 'border-emerald-500/80 pr-10 focus-visible:border-emerald-600 focus-visible:ring-emerald-500/15' : ''
@@ -323,7 +323,7 @@ function OrderSummaryContent({
             <div key={`${item.id}-${index}`} className="flex items-start gap-3 py-3.5 first:pt-0 last:pb-1">
               {/* Product Thumbnail */}
               <div 
-                className="relative size-16 shrink-0 rounded-sm overflow-hidden border border-border/70 shadow-2xs flex items-center justify-center"
+                className="relative size-16 shrink-0 rounded-none overflow-hidden border border-[#E8E5DF] shadow-none flex items-center justify-center"
                 style={{ backgroundColor: getProductCategoryBgColor(item) }}
               >
                 {imgUrl ? (
@@ -354,7 +354,7 @@ function OrderSummaryContent({
                       {formatPriceLabel(itemPrice)} each
                     </p>
                     {item.packLabel ? (
-                      <span className="inline-block text-[11px] font-medium text-muted-foreground bg-muted border border-border/50 px-1.5 py-0.5 rounded">
+                      <span className="inline-block text-[11px] font-medium text-muted-foreground bg-muted border border-border/50 px-1.5 py-0.5 rounded-none">
                         {item.packLabel}
                       </span>
                     ) : null}
@@ -363,11 +363,11 @@ function OrderSummaryContent({
 
                 <div className="flex items-center justify-between mt-2.5">
                   {/* Stepper Quantity Controls */}
-                  <div className="inline-flex items-center h-8 sm:h-7 rounded-sm border border-border/80 bg-background shadow-2xs">
+                  <div className="inline-flex items-center h-8 sm:h-7 rounded-none border border-[#E8E5DF] bg-background shadow-none">
                     <button
                       type="button"
                       onClick={() => handleQuantityDecrease ? handleQuantityDecrease(item) : null}
-                      className="relative flex items-center justify-center size-8 sm:size-7 text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-l-lg transition-colors active:scale-90 after:absolute after:-inset-1 after:content-['']"
+                      className="relative flex items-center justify-center size-8 sm:size-7 text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-none transition-colors active:scale-90 after:absolute after:-inset-1 after:content-['']"
                       aria-label="Decrease quantity"
                       title={item.quantity === 1 ? "Remove item" : "Decrease quantity"}
                     >
@@ -379,7 +379,7 @@ function OrderSummaryContent({
                     <button
                       type="button"
                       onClick={() => handleQuantityIncrease ? handleQuantityIncrease(item) : null}
-                      className="relative flex items-center justify-center size-8 sm:size-7 text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-r-lg transition-colors active:scale-90 after:absolute after:-inset-1 after:content-['']"
+                      className="relative flex items-center justify-center size-8 sm:size-7 text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-none transition-colors active:scale-90 after:absolute after:-inset-1 after:content-['']"
                       aria-label="Increase quantity"
                     >
                       <Plus className="size-3" />
@@ -390,7 +390,7 @@ function OrderSummaryContent({
                   <button
                     type="button"
                     onClick={() => handleRequestRemove ? handleRequestRemove(item) : null}
-                    className="inline-flex items-center gap-1 text-[12px] font-medium text-red-600 hover:text-red-700 hover:bg-red-500/10 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-950/40 px-2 py-1 rounded-md transition-colors active:scale-95 cursor-pointer"
+                    className="inline-flex items-center gap-1 text-[12px] font-medium text-red-600 hover:text-red-700 hover:bg-red-500/10 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-950/40 px-2 py-1 rounded-none transition-colors active:scale-95 cursor-pointer"
                     aria-label="Remove item"
                     title="Remove item"
                   >
@@ -1344,7 +1344,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
                       )}
                       triggerClassName="translate-y-0 scale-100 transition-none hover:bg-transparent active:translate-y-0 active:scale-100 data-[pressed]:translate-y-0 data-[pressed]:scale-100"
                       className={cn(
-                        'h-12 text-[15px] md:text-sm rounded-sm border border-slate-300 dark:border-border/80 bg-card shadow-none transition-colors duration-150',
+                        'h-12 text-[15px] md:text-sm rounded-none border border-[#E8E5DF] bg-card shadow-none transition-colors duration-150',
                         'hover:border-slate-400 dark:hover:border-border',
                         'focus-within:border-primary focus-within:ring-3 focus-within:ring-primary/15',
                         '[&_[data-slot=input-group-control]]:shadow-none [&_[data-slot=input-group-control]]:ring-0',
@@ -1352,7 +1352,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
                       )}
                     />
                     <ComboboxContent
-                      className="rounded-sm border border-slate-300 dark:border-border/80 bg-card p-0 shadow-lg"
+                      className="rounded-none border border-[#E8E5DF] bg-card p-0 shadow-lg"
                       sideOffset={8}
                     >
                       <ComboboxList className="max-h-72 p-2">
@@ -1365,7 +1365,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
                                 key={city.value}
                                 value={city}
                                 className={cn(
-                                  'rounded-md px-3 py-2.5 text-sm font-medium text-foreground transition-[background-color,color] duration-200 data-highlighted:bg-[color:color-mix(in_oklab,var(--color-muted)_58%,white)] sm:px-3.5',
+                                  'rounded-none px-3 py-2.5 text-sm font-medium text-foreground transition-[background-color,color] duration-200 data-highlighted:bg-[color:color-mix(in_oklab,var(--color-muted)_58%,white)] sm:px-3.5',
                                   selectedCity?.value === city.value &&
                                     'bg-[color:color-mix(in_oklab,var(--color-primary)_8%,white)] text-primary'
                                 )}
@@ -1388,7 +1388,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
                     id="save-info"
                     checked={saveInfo}
                     onChange={(e) => setSaveInfo(e.target.checked)}
-                    className="size-4 rounded accent-primary"
+                    className="size-4 rounded-none accent-primary"
                   />
                   <label htmlFor="save-info">Save this information for next time</label>
                 </div>
@@ -1406,7 +1406,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
 
                 {/* Credit card — coming soon */}
                 <div className={cn(styles.paymentOption, styles.paymentOptionDisabled, "relative overflow-hidden")}>
-                  <div className="absolute top-0 right-0 bg-primary/10 border-l border-b border-primary/15 text-primary text-[0.55rem] sm:text-[0.6rem] font-bold px-2 py-0.5 rounded-bl-md uppercase tracking-wider z-10">
+                  <div className="absolute top-0 right-0 bg-primary/10 border-l border-b border-primary/15 text-primary text-[0.55rem] sm:text-[0.6rem] font-bold px-2 py-0.5 rounded-none uppercase tracking-wider z-10">
                     Coming soon
                   </div>
                   <div className={styles.paymentOptionHeader}>
@@ -1543,7 +1543,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
               id="place-order-desktop"
               type="button"
               className={cn(
-                'hidden md:flex w-full h-13 rounded-sm items-center justify-center gap-2 font-bold text-base transition-all duration-300',
+                'hidden md:flex w-full h-13 rounded-none items-center justify-center gap-2 font-bold text-base transition-all duration-300',
                 submitting ? 'cursor-wait' : 'cursor-pointer',
                 isFormComplete
                   ? 'bg-primary text-primary-foreground hover:bg-primary/95 shadow-md active:scale-[0.98]'
@@ -1588,7 +1588,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
             id="place-order-mobile"
             type="button"
             className={cn(
-              'h-11 px-5 rounded-sm text-sm font-bold inline-flex items-center justify-center gap-2 transition-all duration-300 shrink-0',
+              'h-11 px-5 rounded-none text-sm font-bold inline-flex items-center justify-center gap-2 transition-all duration-300 shrink-0',
               submitting ? 'cursor-wait min-w-[148px]' : 'cursor-pointer',
               isFormComplete
                 ? 'bg-primary text-primary-foreground hover:bg-primary/95 shadow-sm active:scale-[0.97]'
@@ -1608,7 +1608,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
           REMOVE ITEM CONFIRMATION DIALOG
       ══════════════════════════════════════════════ */}
       <Dialog open={isRemoveModalOpen} onOpenChange={setIsRemoveModalOpen}>
-        <DialogContent className="sm:max-w-md p-6">
+        <DialogContent className="sm:max-w-md p-6 rounded-none">
           <DialogHeader className="space-y-2">
             <DialogTitle className="flex items-center gap-2 text-lg font-bold text-foreground">
               <AlertTriangle className="size-5 text-amber-500 shrink-0" />
@@ -1620,9 +1620,9 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
           </DialogHeader>
 
           {itemToRemove && (
-            <div className="flex items-center gap-3.5 p-3.5 my-2 rounded-sm border border-border/60 bg-muted/30">
+            <div className="flex items-center gap-3.5 p-3.5 my-2 rounded-none border border-border/60 bg-muted/30">
               <div 
-                className="relative size-14 shrink-0 rounded-sm overflow-hidden border border-border/40 flex items-center justify-center"
+                className="relative size-14 shrink-0 rounded-none overflow-hidden border border-border/40 flex items-center justify-center"
                 style={{ backgroundColor: getProductCategoryBgColor(itemToRemove) }}
               >
                 {getPrimaryProductImage(itemToRemove)?.url ? (
@@ -1653,7 +1653,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
                 setIsRemoveModalOpen(false);
                 setItemToRemove(null);
               }}
-              className="rounded-sm px-4"
+              className="rounded-none px-4"
             >
               Keep Item
             </Button>
@@ -1661,7 +1661,7 @@ export default function CheckoutClient({ settings, relatedProducts = [] }) {
               type="button"
               variant="destructive"
               onClick={handleConfirmRemove}
-              className="rounded-sm px-4 font-semibold"
+              className="rounded-none px-4 font-semibold"
             >
               Yes, Remove
             </Button>

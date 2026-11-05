@@ -13,7 +13,7 @@ function MarqueeCard({ product }) {
     <Link 
       href={`/products/${product.slug || product.id}`}
       prefetch={false}
-      className="block relative aspect-[4/5] rounded-sm overflow-hidden bg-card border border-border/40 shadow-sm hover:shadow-md hover:-translate-y-1 hover:scale-[1.02] transition-[transform,box-shadow,border-color,opacity] duration-300 w-[120px] sm:w-[150px] md:w-[180px] shrink-0 group/card flex flex-col"
+      className="block relative aspect-[4/5] rounded-none overflow-hidden bg-card border border-border/40 shadow-sm hover:shadow-md hover:-translate-y-1 hover:scale-[1.02] transition-[transform,box-shadow,border-color,opacity] duration-300 w-[120px] sm:w-[150px] md:w-[180px] shrink-0 group/card flex flex-col"
     >
       {/* Product Image Area */}
       <div className="relative w-full aspect-square bg-white flex items-center justify-center p-2.5 shrink-0 border-b border-border/10">
@@ -78,7 +78,7 @@ export default async function TiltedProductMarquee() {
     >
       {/* Title / Intro */}
       <div className="container relative z-20 mx-auto px-4 mb-6 text-center max-w-2xl">
-        <h2 className="text-xl md:text-2xl font-bold tracking-tight text-foreground mb-1.5">
+        <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-medium tracking-wide text-[#121212] uppercase mb-1.5">
           Discover Trending Products
         </h2>
         <p className="text-muted-foreground text-xs md:text-sm">

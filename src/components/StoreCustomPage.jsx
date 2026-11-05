@@ -5,6 +5,7 @@ import FaqAccordion from '@/components/FaqAccordion';
 import { getStoreSettings } from '@/lib/data';
 import { createWhatsAppUrl } from '@/lib/whatsapp';
 import { formatStorePhone, resolveStorePhone, storePhoneTelHref } from '@/lib/storeContact';
+import WhatsAppIcon from '@/components/icons/WhatsAppIcon';
 
 const PAGE_META = {
   'about-us': { Icon: Store, label: 'Our Story' },
@@ -170,7 +171,7 @@ export default async function StoreCustomPage({ page, storeName = 'Ornaments by 
             </div>
 
             {/* ── Title ── */}
-            <h1 className="text-[2rem] font-bold leading-tight tracking-tight text-foreground sm:text-[2.4rem]">
+            <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-normal tracking-wide text-[#121212] uppercase">
               {page?.title || 'Store Page'}
             </h1>
 
@@ -233,7 +234,7 @@ export default async function StoreCustomPage({ page, storeName = 'Ornaments by 
             )}
 
             <div className="mt-14 border-t border-border pt-8">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex flex-col gap-1 text-sm text-muted-foreground">
                   <p>
                     Questions about this page? Call{' '}
@@ -242,21 +243,23 @@ export default async function StoreCustomPage({ page, storeName = 'Ornaments by 
                     </a>
                     .
                   </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-3">
                   <a
                     href={whatsappUrl || '#'}
-                    className="inline-flex items-center gap-1.5 font-semibold text-foreground underline underline-offset-4 hover:text-primary"
+                    className="h-11 px-5 inline-flex items-center justify-center gap-2 rounded-none border border-[#E8E5DF] bg-white text-[#121212] hover:bg-[#FAF9F6] hover:border-[#A67C52] text-xs font-semibold uppercase tracking-[0.18em] transition-all"
                   >
-                    <Phone className="size-3.5" />
-                    Ask us on WhatsApp
+                    <WhatsAppIcon className="size-4 text-[#25D366]" />
+                    <span>Ask us on WhatsApp</span>
                   </a>
+                  <Link
+                    href="/products"
+                    className="h-11 px-5 inline-flex items-center justify-center gap-2 rounded-none border border-[#E8E5DF] bg-white text-[#121212] hover:bg-[#FAF9F6] hover:border-[#A67C52] text-xs font-semibold uppercase tracking-[0.18em] transition-all"
+                  >
+                    <span>Browse Products</span>
+                    <ArrowUpRight className="size-3.5" />
+                  </Link>
                 </div>
-                <Link
-                  href="/products"
-                  className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-foreground underline underline-offset-4 hover:text-primary"
-                >
-                  Browse Products
-                  <ArrowUpRight className="size-3.5" />
-                </Link>
               </div>
             </div>
           </article>

@@ -146,7 +146,7 @@ export default function NavbarDesktopAccountControl({ navActionButtonClass = '' 
       </DropdownMenu>
 
       <AlertDialog open={logoutConfirmOpen} onOpenChange={setLogoutConfirmOpen}>
-        <AlertDialogContent className="max-w-[320px] p-5 rounded-sm gap-4" showCloseButton={false}>
+        <AlertDialogContent className="max-w-[320px] p-5 rounded-none gap-4" showCloseButton={false}>
           <div className="flex justify-between items-start">
             <AlertDialogHeader className="text-left space-y-1">
               <AlertDialogTitle className="text-base font-semibold text-foreground">Log out of your account?</AlertDialogTitle>
@@ -157,7 +157,7 @@ export default function NavbarDesktopAccountControl({ navActionButtonClass = '' 
             <Button
               variant="ghost"
               size="icon"
-              className="size-7 rounded-md -mt-1 -mr-1 text-muted-foreground hover:bg-muted"
+              className="size-7 rounded-none -mt-1 -mr-1 text-muted-foreground hover:bg-muted"
               onClick={() => setLogoutConfirmOpen(false)}
             >
               <X className="size-4" />
@@ -168,7 +168,7 @@ export default function NavbarDesktopAccountControl({ navActionButtonClass = '' 
               type="button"
               variant="outline"
               onClick={() => setLogoutConfirmOpen(false)}
-              className="flex-1 rounded-sm text-xs h-9 font-medium"
+              className="flex-1 rounded-none text-xs h-9 font-medium"
             >
               Cancel
             </Button>
@@ -179,7 +179,7 @@ export default function NavbarDesktopAccountControl({ navActionButtonClass = '' 
                 setLogoutConfirmOpen(false);
                 signOut();
               }}
-              className="flex-1 rounded-sm text-xs h-9 font-semibold bg-red-600 hover:bg-red-700 text-white"
+              className="flex-1 rounded-none text-xs h-9 font-semibold bg-red-600 hover:bg-red-700 text-white"
             >
               Log Out
             </Button>

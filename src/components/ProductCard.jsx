@@ -55,7 +55,7 @@ export default function ProductCard({ product, className = "", priority = false 
     >
       {/* Product Image Area with Category Background Color & Soft Premium Rounded Edges */}
       <div 
-        className="relative w-full aspect-[4/5] overflow-hidden rounded-sm transition-[border-color,box-shadow,background-color] duration-300"
+        className="relative w-full aspect-[4/5] overflow-hidden rounded-none transition-[border-color,box-shadow,background-color] duration-300"
         style={{ backgroundColor: getProductCategoryBgColor(product) }}
       >
         <ProductCardWishlistSlot product={product} />
@@ -141,7 +141,7 @@ export default function ProductCard({ product, className = "", priority = false 
 
           {isUnavailable && (
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/30 pointer-events-none">
-              <span className="bg-[#121212] text-white px-3 py-1 text-[10px] font-sans font-medium uppercase tracking-[0.2em] rounded-[4px]">
+              <span className="bg-[#121212] text-white px-3 py-1 text-[10px] font-sans font-medium uppercase tracking-[0.2em] rounded-none">
                 Sold Out
               </span>
             </div>
@@ -187,7 +187,7 @@ export default function ProductCard({ product, className = "", priority = false 
           draggable={false}
         >
           <h3
-            className="text-xs sm:text-[13.5px] font-serif tracking-wide text-[#1a1a1a] leading-snug line-clamp-2 min-h-[2.1rem] sm:min-h-[2.35rem] hover:text-[#A67C52] transition-colors"
+            className="text-xs sm:text-[13.5px] font-sans font-medium text-[#1a1a1a] leading-snug line-clamp-2 min-h-[2.1rem] sm:min-h-[2.35rem] hover:text-[#A67C52] transition-colors"
             title={productName}
           >
             {productName}
